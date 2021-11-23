@@ -1,4 +1,5 @@
 import { Header } from "@/components/organism/Header/Header";
+import Main from "@/components/organism/Main/Main";
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts";
 import { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -32,7 +33,14 @@ const Homepage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main></main>
+      <Main>
+        <div className="card">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum harum
+          quibusdam accusantium voluptatum quam illo quisquam? Dignissimos
+          repellendus laboriosam voluptates est praesentium illo animi, soluta
+          libero, a iure quia molestiae?
+        </div>
+      </Main>
     </>
   );
 };

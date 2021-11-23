@@ -1,77 +1,93 @@
 import { COMMON_TNS, GLOSSARY_TNS } from "@/lib/i18n/consts";
 import { useTranslation } from "react-i18next";
-import styles from "./header.module.css";
 import { useTheme } from "next-themes";
 import React from "react";
 import { useRouter } from "next/router";
-import Switch from "@/components/atomic/Switch/Switch";
+import { MoonIcon, SunIcon, TranslateIcon } from "@heroicons/react/solid";
+import IconButton from "@/components/atomic/IconButton/IconButton";
+import { Popover, RadioGroup } from "@headlessui/react";
+import clsx from "clsx";
+import Link from "next/link";
 
 type HeaderProps = {};
 
-/** Make sure to pass GLOSSARY_TNS and COMMON_TNS to where it is called */
 export const Header: React.FC<HeaderProps> = (props) => {
   //const { children } = props;
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-
-  const { t, i18n } = useTranslation([GLOSSARY_TNS, COMMON_TNS]);
-
-  const handleSelectLang = (event: any) => {
-    //TODO as hook
-    const l = event.target.value;
-    i18n.changeLanguage(l);
-    router.push(router.route, undefined, { locale: l });
-  };
+  const { t, i18n } = useTranslation([COMMON_TNS]);
   const [isMounted, setIsMounted] = React.useState(false);
 
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const handleSelectLang = (locale: string) => {
+    i18n.changeLanguage(locale);
+    router.push(router.route, undefined, { locale });
+  };
 
   const switchTheme = () => {
     if (isMounted) setTheme(theme === "light" ? "dark" : "light");
   };
 
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <>
-      <header className="fixed top-0 w-full px-2 border-b-2 border-opacity-20 h-14 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
-        <div className="flex items-center justify-between max-w-lg m-auto">
+      <header className="fixed top-0 w-full px-2 border-b h-14 border-opacity-20 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
+        <div className="flex items-center h-full max-w-screen-xl mx-auto my-0">
           <div>
-            <label
-              htmlFor="lang"
-              className="hidden sm:inline-block uppercase-first"
-            >
-              {t("language")}:
-            </label>
-            <select
-              name="lang"
-              id="lang"
-              className="p-1 m-2 uppercase border-2 rounded-lg cursor-pointer focus:ring-2"
-              onChange={handleSelectLang}
-              defaultValue={router.locale}
-            >
-              {router.locales?.map((l) => (
-                <option value={l} key={l}>
-                  {l}
-                </option>
-              ))}
-            </select>
+            <Link href="/" passHref>
+              <a className="font-medium unstyled-a">E. Berke Karagöz</a>
+            </Link>
           </div>
-          <a
-            className="link"
-            href="https://github.com/BerkeKaragoz/next-ts-tailwindcss-i18n"
-          >
-            GitHub
-          </a>
-          <Switch
+
+          <div
+            className="flex-grow" //spacer
+          />
+
+          <IconButton
             onClick={switchTheme}
-            defaultChecked={theme === "light"}
-            disabled={!isMounted}
+            className="me-1"
+            aria-label={theme === "dark" ? t("light theme") : t("dark theme")}
           >
-            <span className="uppercase-first">
-              {t("light mode", { ns: COMMON_TNS })}:
-            </span>
-          </Switch>
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+          </IconButton>
+
+          <Popover className="relative">
+            <Popover.Button as={IconButton}>
+              <TranslateIcon />
+            </Popover.Button>
+
+            <Popover.Panel className="absolute right-0 z-10 mt-1">
+              <RadioGroup
+                value={i18n.language}
+                onChange={handleSelectLang}
+                className="shadow-lg card dark:bg-background-900 bg-opacity-80 dark:bg-opacity-80"
+              >
+                <RadioGroup.Label className="sr-only">
+                  Language
+                </RadioGroup.Label>
+                {router.locales?.map((locale) => (
+                  <RadioGroup.Option
+                    key={`radio-locale-${locale}`}
+                    value={locale}
+                    className={({ checked, active }) =>
+                      clsx([
+                        "p-2 m-1 select-none uppercase border rounded-lg cursor-pointer bg-background-50 border-primary-100 hover:bg-primary-100 dark:bg-background-900 dark:hover:bg-primary-900 dark:border-primary-900",
+                        {
+                          "bg-background-200 font-medium text-primary-600 dark:bg-background-800 dark:text-primary-400":
+                            checked,
+                          "text-primary-900": active,
+                        },
+                      ])
+                    }
+                  >
+                    {locale}
+                  </RadioGroup.Option>
+                ))}
+              </RadioGroup>
+            </Popover.Panel>
+          </Popover>
         </div>
       </header>
       <div className="h-14" />

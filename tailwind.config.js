@@ -34,14 +34,16 @@ module.exports = {
         primary: colors.sky,
         secondary: colors.amber,
         accent: colors.indigo,
-        background: colors.coolGray,
+        background: colors.blueGray,
       },
     },
   },
   variants: {
     animation: ["responsive", "motion-safe", "motion-reduce"],
     textIndent: ["responsive"],
-    extend: {},
+    extend: {
+      backgroundColor: ["active"],
+    },
   },
   plugins: [
     require("tailwindcss-typography")({

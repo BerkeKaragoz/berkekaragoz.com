@@ -3,5 +3,6 @@
   "return to homepage": "anasayfaya dön",
   "page not found": "sayfa bulunamadı",
   "server-side error occured": "sunucu tarafında hata oluştu",
-  "light mode": "gündüz modu"
+  "dark theme": "gece teması",
+  "light theme": "gündüz teması"
 }
