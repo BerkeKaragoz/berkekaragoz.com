@@ -10,6 +10,13 @@ module.exports = {
   ],
   darkMode: "class", // or 'media' or 'class', also darkMode increases bundle size noticeably
   theme: {
+    maxHeight: {
+      "screen-sm": "640px",
+      "screen-md": "768px",
+      "screen-lg": "1024px",
+      "screen-xl": "1280px",
+      "screen-2xl": "1536px",
+    },
     textIndent: {
       none: "0rem",
       xs: "1rem",

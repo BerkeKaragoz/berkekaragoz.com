@@ -1,7 +1,8 @@
 .card {
-  @apply p-1 border rounded-lg border-opacity-80 border-primary-300 dark:border-primary-700 bg-background-100 dark:bg-background-800;
+  @apply p-1 border rounded-lg border-opacity-80 border-primary-200 dark:border-primary-900 bg-background-100 dark:bg-background-800;
 }
 
 .card-input {
-  @apply inline-block transition-colors card hover:bg-opacity-80 active:bg-accent-200 dark:active:bg-accent-900;
+  @apply card;
+  @apply inline-block transition-colors border-primary-300 hover:bg-opacity-80 active:bg-accent-200 dark:border-primary-700 dark:active:bg-accent-900;
 }
