@@ -3,6 +3,7 @@ import React from "react";
 
 type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+//TODO disabled styling
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (props, ref) => {
     const { children, className, ...rest } = props;

@@ -33,8 +33,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <header className="fixed top-0 w-full px-2 border-b h-14 border-opacity-20 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
-        <div className="flex items-center h-full max-w-screen-xl mx-auto my-0">
+      <header className="fixed top-0 w-full px-2 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
+        <div className="flex items-center h-full max-w-screen-xl gap-2 mx-auto my-0">
           <div>
             <Link href="/" passHref>
               <a className="font-medium unstyled-a">E. Berke Karagöz</a>
@@ -47,7 +47,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
           <IconButton
             onClick={switchTheme}
-            className="me-1"
             aria-label={theme === "dark" ? t("light theme") : t("dark theme")}
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -90,7 +89,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           </Popover>
         </div>
       </header>
-      <div className="h-14" />
+      <div className="flex-shrink-0 h-14" />
     </>
   );
 };
