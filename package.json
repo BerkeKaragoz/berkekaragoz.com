@@ -15,6 +15,7 @@
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "clsx": "^1.1.1",
+    "debounce": "^1.2.1",
     "nanoid": "^3.1.30",
     "next": "12.0.3",
     "next-i18next": "^9.0.1",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
+    "@types/debounce": "^1.2.1",
     "@types/react": "17.0.34",
     "autoprefixer": "^10.4.0",
     "babel-jest": "^27.3.1",

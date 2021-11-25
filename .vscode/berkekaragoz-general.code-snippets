@@ -31,6 +31,6 @@
   "console.log a Variable Shorthand": {
     "prefix": "clv",
     "scope": "javascript,typescript,javascriptreact,typescriptreact",
-    "body": ["console.log(\"${TM_FILENAME_BASE} - $1\", $0);"]
+    "body": ["console.log(\"${TM_FILENAME_BASE} - ${1}\", $1);"]
   }
 }

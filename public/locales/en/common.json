@@ -4,5 +4,9 @@
   "page not found": "page not found",
   "server-side error occured": "server-side error occured",
   "dark theme": "dark theme",
-  "light theme": "light theme"
+  "light theme": "light theme",
+  "play": "play",
+  "pause": "pause",
+  "repeat": "repeat",
+  "no repeat": "no repeat"
 }

@@ -54,7 +54,7 @@ const Homepage: NextPage = () => {
               expedita quas repellendus doloribus voluptatem nesciunt unde modi?
               Vitae repellendus asperiores modi!
             </p>
-            <AudioPlayer />
+            <AudioPlayer src="./assets/sample-music.mp3" />
           </div>
         </section>
       </Main>

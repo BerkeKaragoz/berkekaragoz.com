@@ -1,12 +1,15 @@
 import IconButton from "@/components/atomic/IconButton/IconButton";
+import { COMMON_TNS, GLOSSARY_TNS } from "@/lib/i18n/consts";
 import {
   PauseIcon,
   PlayIcon,
   RefreshIcon,
+  VolumeOffIcon,
   VolumeUpIcon,
 } from "@heroicons/react/solid";
 import clsx from "clsx";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const seek = (ref: React.RefObject<HTMLMediaElement>, seekTime = 0) => {
   if (ref.current)
@@ -28,47 +31,58 @@ const renderSeconds = (seconds: number) => {
 };
 
 type AudioPlayerProps = {
-  audioProps?: React.DetailedHTMLProps<
-    React.AudioHTMLAttributes<HTMLAudioElement>,
-    HTMLAudioElement
+  src?: React.MediaHTMLAttributes<HTMLAudioElement>["src"];
+  audioProps?: Omit<
+    React.DetailedHTMLProps<
+      React.AudioHTMLAttributes<HTMLAudioElement>,
+      HTMLAudioElement
+    >,
+    "loop" | "muted" | "src"
   >;
   defaultLoop?: boolean;
+  defaultMuted?: boolean;
+  defaultVolume?: number;
 };
 
-//TODO debounce, rxjs?
-//TODO if needed https://github.com/facebook/react/issues/5867#issuecomment-846341156
-const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
+//TODO loading
+export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
   const {
+    src,
+    defaultLoop = false,
+    defaultMuted = false,
+    defaultVolume = 0.25,
     audioProps = {
-      src: "./assets/sample-music.mp3", //TODO TEMP
       preload: "metadata",
     },
-    defaultLoop = false,
     ...rest
   } = props;
 
-  const { loop: unusedLoop } = audioProps;
+  const { t: ct } = useTranslation([COMMON_TNS]);
 
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isMouseDown, setIsMouseDown] = React.useState(false);
   const [isLooping, setIsLooping] = React.useState(defaultLoop);
+  const [isMuted, setIsMuted] = React.useState(defaultMuted);
+  const [bufferedVolume, setBufferedVolume] = React.useState(defaultVolume);
   const [duration, setDuration] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState(0);
+  const [rangeTime, setRangeTime] = React.useState(0);
   const audioRef = React.useRef<HTMLAudioElement>(null);
+  const volumeRef = React.useRef<HTMLInputElement>(null);
   const progressRef = React.useRef<HTMLInputElement>(null);
-  const animationRef = React.useRef<number>(0);
 
   const play = () => {
     //state update is on subscribers
-    if (currentTime >= duration) seek(audioRef, 0);
-    animationRef.current = requestAnimationFrame(updateWhilePlaying);
-    return audioRef.current?.play();
+    if (audioRef.current) {
+      if (audioRef.current.currentTime >= duration) {
+        seek(audioRef, 0);
+      }
+      return audioRef.current?.play();
+    }
   };
 
   const pause = () => {
     //state update is on subscribers
     audioRef.current?.pause();
-    cancelAnimationFrame(animationRef.current);
   };
 
   const playHandler = () => {
@@ -77,6 +91,39 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
     } else {
       play();
     }
+  };
+
+  const rangeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rangeVal = e.target.valueAsNumber;
+    setRangeTime(rangeVal);
+  };
+
+  const volumeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      const vol = e.target.valueAsNumber;
+      if (isMuted) {
+        setIsMuted(false);
+      } else if (vol === 0) {
+        setIsMuted(true);
+        audioRef.current.volume = bufferedVolume;
+      } else {
+        audioRef.current.volume = vol;
+      }
+    }
+  };
+
+  const muteHandler = () => {
+    setIsMuted((state) => {
+      if (volumeRef.current) {
+        if (state) {
+          if (audioRef.current)
+            volumeRef.current.valueAsNumber = audioRef.current.volume;
+        } else {
+          volumeRef.current.valueAsNumber = 0;
+        }
+      }
+      return !state;
+    });
   };
 
   const onPlaySubscriber = () => {
@@ -94,71 +141,62 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
       }
   };
 
-  const updateCurrentTimeState = () => {
-    if (progressRef)
+  const onTimeUpdateSubscriber = (
+    e: React.SyntheticEvent<HTMLAudioElement>,
+  ) => {
+    if (!isMouseDown) {
       if (progressRef.current) {
-        const rangeVal = parseInt(progressRef.current.value);
-
-        progressRef.current.style.setProperty(
-          "--seek-before-width",
-          `${(rangeVal / duration) * 100}%`,
-        );
-        setCurrentTime(rangeVal);
+        const audioTime = e.currentTarget.currentTime;
+        progressRef.current.valueAsNumber = audioTime;
+        setRangeTime(audioTime);
       }
-  };
-
-  const updateWhilePlaying = () => {
-    if (audioRef && progressRef)
-      if (audioRef.current && progressRef.current) {
-        progressRef.current.value = audioRef.current.currentTime.toString();
-        updateCurrentTimeState();
-        animationRef.current = requestAnimationFrame(updateWhilePlaying);
-      }
-  };
-
-  const onProgressChange = () => {
-    if (audioRef && progressRef)
-      if (audioRef.current && progressRef.current) {
-        updateCurrentTimeState();
-        audioRef.current.currentTime = parseInt(progressRef.current.value);
-      }
-  };
-
-  const onVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const vol = parseFloat(e.target.value);
-    if (audioRef && audioRef.current && !isNaN(vol)) {
-      audioRef.current.volume = vol;
     }
   };
 
-  React.useEffect(() => {
-    if (audioRef)
-      if (audioRef.current) {
+  const updateDuration = () => {
+    if (audioRef && audioRef.current) {
+      if (audioRef.current.readyState > 0) {
         const dur = Math.ceil(audioRef.current.duration);
 
         setDuration(dur);
+      } else {
+        setDuration(0);
       }
-  }, [audioRef?.current?.readyState]);
+    }
+  };
+
+  React.useEffect(updateDuration, [audioRef?.current?.readyState]);
+
+  React.useEffect(() => {
+    if (audioRef.current && volumeRef.current) {
+      audioRef.current.volume = volumeRef.current.valueAsNumber;
+    }
+  }, [audioRef, volumeRef]);
 
   return (
     <div {...rest}>
       <audio
-        {...audioProps}
+        {...audioProps} //TODO combine passed funcs
+        src={src}
         loop={isLooping}
+        muted={isMuted}
         onEnded={onEndedSubscriber}
         onPlay={onPlaySubscriber}
         onPause={onPauseSubscriber}
+        onTimeUpdate={onTimeUpdateSubscriber}
+        onDurationChange={updateDuration}
         ref={audioRef}
       />
       <IconButton
         onClick={playHandler}
-        aria-label={isPlaying ? "pause" : "play"}
+        disabled={!src}
+        aria-label={isPlaying ? ct("pause") : ct("play")}
       >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
       </IconButton>
       <IconButton
         onClick={() => setIsLooping((s) => !s)}
-        aria-label={isLooping ? "no repeat" : "repeat"}
+        aria-label={isLooping ? ct("no repeat") : ct("repeat")}
       >
         <RefreshIcon
           className={clsx([
@@ -167,34 +205,39 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
           ])}
         />
       </IconButton>
-      <span>{renderSeconds(currentTime)}</span>
+      <span>{renderSeconds(rangeTime)}</span>
       <div>
         <input
           type="range"
-          ref={progressRef}
-          onChange={onProgressChange}
+          onChange={rangeChangeHandler}
           onMouseDown={() => setIsMouseDown(true)}
           onMouseUpCapture={() => setIsMouseDown(false)}
+          onMouseUp={() => {
+            seek(audioRef, progressRef.current?.valueAsNumber);
+          }}
           min={0}
           max={duration}
+          disabled={!src}
+          ref={progressRef}
         />
       </div>
-      {false && (
-        <span>{duration && !isNaN(duration) && renderSeconds(duration)}</span>
-      )}
-      <span>
-        {duration &&
-          !isNaN(duration) &&
-          `-${renderSeconds(duration - currentTime)}`}
-      </span>
+      {false && <span>{renderSeconds(duration)}</span>}
+      <span>{`-${renderSeconds(duration - rangeTime)}`}</span>
       <div>
+        <IconButton onClick={muteHandler}>
+          {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+        </IconButton>
         <input
           type="range"
           min={0}
           max={1}
           step={0.01}
-          defaultValue={0.25}
-          onChange={onVolumeChange}
+          defaultValue={defaultVolume}
+          onChange={volumeChangeHandler}
+          onMouseDown={() => {
+            if (audioRef.current) setBufferedVolume(audioRef.current.volume);
+          }}
+          ref={volumeRef}
         />
       </div>
     </div>

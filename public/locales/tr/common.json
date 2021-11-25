@@ -4,5 +4,9 @@
   "page not found": "sayfa bulunamadı",
   "server-side error occured": "sunucu tarafında hata oluştu",
   "dark theme": "gece teması",
-  "light theme": "gündüz teması"
+  "light theme": "gündüz teması",
+  "play": "oynat",
+  "pause": "duraklat",
+  "repeat": "tekrarla",
+  "no repeat": "tekrarlama"
 }
