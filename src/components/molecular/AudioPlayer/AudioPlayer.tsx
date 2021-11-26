@@ -1,5 +1,6 @@
 import IconButton from "@/components/atomic/IconButton/IconButton";
-import { COMMON_TNS, GLOSSARY_TNS } from "@/lib/i18n/consts";
+import Slider from "@/components/atomic/Slider/Slider";
+import { COMMON_TNS } from "@/lib/i18n/consts";
 import {
   PauseIcon,
   PlayIcon,
@@ -10,6 +11,9 @@ import {
 import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+const volumeMin = 0;
+const volumeMax = 1;
 
 const seek = (ref: React.RefObject<HTMLMediaElement>, seekTime = 0) => {
   if (ref.current)
@@ -68,6 +72,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
   const [rangeTime, setRangeTime] = React.useState(0);
   const audioRef = React.useRef<HTMLAudioElement>(null);
   const volumeRef = React.useRef<HTMLInputElement>(null);
+  const volumeSliderRef = React.useRef<HTMLDivElement>(null);
   const progressRef = React.useRef<HTMLInputElement>(null);
 
   const play = () => {
@@ -189,7 +194,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
       />
       <IconButton
         onClick={playHandler}
-        disabled={!src}
+        //disabled={!src}
+        disabled
         aria-label={isPlaying ? ct("pause") : ct("play")}
       >
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
@@ -200,15 +206,14 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
       >
         <RefreshIcon
           className={clsx([
-            { "text-primary-300 dark:text-primary-700": !isLooping },
-            { "text-primary-600 dark:text-primary-400": isLooping },
+            { "text-background-400 dark:text-background-500": !isLooping },
+            { "text-primary-500 dark:text-primary-400": isLooping },
           ])}
         />
       </IconButton>
       <span>{renderSeconds(rangeTime)}</span>
       <div>
-        <input
-          type="range"
+        <Slider
           onChange={rangeChangeHandler}
           onMouseDown={() => setIsMouseDown(true)}
           onMouseUpCapture={() => setIsMouseDown(false)}
@@ -227,18 +232,19 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
         <IconButton onClick={muteHandler}>
           {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
         </IconButton>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          defaultValue={defaultVolume}
-          onChange={volumeChangeHandler}
-          onMouseDown={() => {
-            if (audioRef.current) setBufferedVolume(audioRef.current.volume);
-          }}
-          ref={volumeRef}
-        />
+        <div>
+          <Slider
+            min={volumeMin}
+            max={volumeMax}
+            step={0.01}
+            defaultValue={defaultVolume}
+            onChange={volumeChangeHandler}
+            onMouseDown={() => {
+              if (audioRef.current) setBufferedVolume(audioRef.current.volume);
+            }}
+            ref={volumeRef}
+          />
+        </div>
       </div>
     </div>
   );
