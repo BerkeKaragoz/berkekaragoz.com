@@ -1,6 +1,7 @@
 import IconButton from "@/components/atomic/IconButton/IconButton";
 import Slider from "@/components/atomic/Slider/Slider";
 import { COMMON_TNS } from "@/lib/i18n/consts";
+import { placeholderBlurBase64, truncate } from "@/lib/utils";
 import {
   PauseIcon,
   PlayIcon,
@@ -11,6 +12,8 @@ import {
 import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import styles from "./audioPlayer.module.css";
+import Image, { ImageProps } from "next/image";
 
 const volumeMin = 0;
 const volumeMax = 1;
@@ -27,15 +30,18 @@ const seek = (ref: React.RefObject<HTMLMediaElement>, seekTime = 0) => {
 const renderSeconds = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
     .toString()
-    .padStart(2, "0");
+    .padStart(1, "0");
   const secs = Math.floor(seconds % 60)
     .toString()
     .padStart(2, "0");
   return `${mins}:${secs}`;
 };
 
-type AudioPlayerProps = {
+type AudioPlayerProps = React.HTMLProps<HTMLDivElement> & {
+  title?: string;
+  subtitle?: string;
   src?: React.MediaHTMLAttributes<HTMLAudioElement>["src"];
+  imageSrc?: ImageProps["src"];
   audioProps?: Omit<
     React.DetailedHTMLProps<
       React.AudioHTMLAttributes<HTMLAudioElement>,
@@ -52,12 +58,16 @@ type AudioPlayerProps = {
 export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
   const {
     src,
+    title,
+    subtitle,
+    imageSrc,
     defaultLoop = false,
     defaultMuted = false,
     defaultVolume = 0.25,
     audioProps = {
       preload: "metadata",
     },
+    className,
     ...rest
   } = props;
 
@@ -72,7 +82,6 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
   const [rangeTime, setRangeTime] = React.useState(0);
   const audioRef = React.useRef<HTMLAudioElement>(null);
   const volumeRef = React.useRef<HTMLInputElement>(null);
-  const volumeSliderRef = React.useRef<HTMLDivElement>(null);
   const progressRef = React.useRef<HTMLInputElement>(null);
 
   const play = () => {
@@ -179,7 +188,106 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
   }, [audioRef, volumeRef]);
 
   return (
-    <div {...rest}>
+    <div
+      {...rest}
+      className={clsx(["inline-flex card overflow-hidden", className])}
+    >
+      {imageSrc && (
+        <div className="relative flex-shrink-0 max-w-full w-28">
+          <Image
+            src={imageSrc}
+            className="object-cover h-full"
+            alt={title ? title : "audio cover"}
+            layout="fill"
+            placeholder="blur"
+            blurDataURL={placeholderBlurBase64}
+          />
+        </div>
+      )}
+      <div className="flex flex-col justify-center flex-grow gap-3 p-3">
+        {(title || subtitle) && (
+          <div className="w-56 group">
+            {title && (
+              <div className={styles.marquee}>
+                <span className="font-semibold">{title}</span>
+              </div>
+            )}
+            {subtitle && (
+              <div className={styles.marquee}>
+                <span className="text-xs text-background-600 dark:text-background-400">
+                  {subtitle}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+        <div className="flex items-center gap-3">
+          <IconButton
+            className="w-10 h-10"
+            onClick={playHandler}
+            disabled={!src}
+            aria-label={isPlaying ? ct("pause") : ct("play")}
+          >
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          </IconButton>
+          <IconButton
+            small
+            className="rounded-full"
+            onClick={() => setIsLooping((s) => !s)}
+            aria-label={isLooping ? ct("no repeat") : ct("repeat")}
+          >
+            <RefreshIcon
+              className={clsx([
+                {
+                  "text-background-400 group-hover:text-primary-400 dark:text-background-500 dark:group-hover:text-primary-600":
+                    !isLooping,
+                },
+                {
+                  "text-primary-500 group-hover:text-primary-600 dark:text-primary-400 dark:group-hover:text-primary-300":
+                    isLooping,
+                },
+              ])}
+            />
+          </IconButton>
+          <div //spacer
+            className="flex-shrink-0 w-px h-full bg-background-300 dark:bg-background-700"
+          />
+          <IconButton onClick={muteHandler}>
+            {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+          </IconButton>
+          <Slider
+            className="w-full"
+            min={volumeMin}
+            max={volumeMax}
+            step={0.01}
+            defaultValue={defaultVolume}
+            onChange={volumeChangeHandler}
+            onMouseDown={() => {
+              if (audioRef.current) setBufferedVolume(audioRef.current.volume);
+            }}
+            ref={volumeRef}
+          />
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <code className={styles.infoText}>{renderSeconds(rangeTime)}</code>
+          <Slider
+            className="w-full"
+            onChange={rangeChangeHandler}
+            onMouseDown={() => setIsMouseDown(true)}
+            onMouseUpCapture={() => setIsMouseDown(false)}
+            onMouseUp={() => {
+              seek(audioRef, progressRef.current?.valueAsNumber);
+            }}
+            min={0}
+            max={duration}
+            disabled={!src}
+            ref={progressRef}
+          />
+          <code className={styles.infoText}>{`-${renderSeconds(
+            duration - rangeTime,
+          )}`}</code>
+        </div>
+      </div>
       <audio
         {...audioProps} //TODO combine passed funcs
         src={src}
@@ -192,60 +300,6 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
         onDurationChange={updateDuration}
         ref={audioRef}
       />
-      <IconButton
-        onClick={playHandler}
-        //disabled={!src}
-        disabled
-        aria-label={isPlaying ? ct("pause") : ct("play")}
-      >
-        {isPlaying ? <PauseIcon /> : <PlayIcon />}
-      </IconButton>
-      <IconButton
-        onClick={() => setIsLooping((s) => !s)}
-        aria-label={isLooping ? ct("no repeat") : ct("repeat")}
-      >
-        <RefreshIcon
-          className={clsx([
-            { "text-background-400 dark:text-background-500": !isLooping },
-            { "text-primary-500 dark:text-primary-400": isLooping },
-          ])}
-        />
-      </IconButton>
-      <span>{renderSeconds(rangeTime)}</span>
-      <div>
-        <Slider
-          onChange={rangeChangeHandler}
-          onMouseDown={() => setIsMouseDown(true)}
-          onMouseUpCapture={() => setIsMouseDown(false)}
-          onMouseUp={() => {
-            seek(audioRef, progressRef.current?.valueAsNumber);
-          }}
-          min={0}
-          max={duration}
-          disabled={!src}
-          ref={progressRef}
-        />
-      </div>
-      {false && <span>{renderSeconds(duration)}</span>}
-      <span>{`-${renderSeconds(duration - rangeTime)}`}</span>
-      <div>
-        <IconButton onClick={muteHandler}>
-          {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-        </IconButton>
-        <div>
-          <Slider
-            min={volumeMin}
-            max={volumeMax}
-            step={0.01}
-            defaultValue={defaultVolume}
-            onChange={volumeChangeHandler}
-            onMouseDown={() => {
-              if (audioRef.current) setBufferedVolume(audioRef.current.volume);
-            }}
-            ref={volumeRef}
-          />
-        </div>
-      </div>
     </div>
   );
 };

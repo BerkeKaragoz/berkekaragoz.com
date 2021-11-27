@@ -50,6 +50,7 @@ module.exports = {
     textIndent: ["responsive"],
     extend: {
       backgroundColor: ["active"],
+      //textColor: ["active"],
     },
   },
   plugins: [

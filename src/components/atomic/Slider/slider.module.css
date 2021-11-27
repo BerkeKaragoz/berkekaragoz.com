@@ -24,6 +24,7 @@
   left: var(--slider-progress);
   transform: translate(-50%, -50%);
   @apply bg-background-50;
+  padding: var(--track-height);
   box-shadow: 0px 0px 3px theme("colors.background.600");
   opacity: 0;
 }

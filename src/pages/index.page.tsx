@@ -30,31 +30,32 @@ const Homepage: NextPage = () => {
   return (
     <PageContainer>
       <Head>
-        <title>E. Berke Karagöz</title>
-        <meta name="description" content="E. Berke Karagöz's website." />
+        <title>Berke Karagöz</title>
+        <meta name="description" content="Berke Karagöz's website." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
       <Main>
-        <section className="flex flex-row items-stretch min-h-full overflow-hidden max-h-screen-sm">
-          <div className="flex flex-col justify-center">
+        <section className="grid h-full grid-flow-col gap-8 overflow-hidden bg-yellow-900 max-h-screen-sm">
+          <div className="flex flex-col justify-center bg-red-800">
             <h1 className="text-6xl font-semibold">
               {"Hi, I'm"}
               <br />
               <strong className="font-bold select-all lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
-                E. Berke Karagöz
+                Berke Karagöz
               </strong>
               {"."}
             </h1>
           </div>
-          <div>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt
-              eligendi blanditiis asperiores nemo excepturi, et quasi nisi, vero
-              expedita quas repellendus doloribus voluptatem nesciunt unde modi?
-              Vitae repellendus asperiores modi!
-            </p>
-            <AudioPlayer src="./assets/sample-music.mp3" />
+          <div className="bg-gray-800">
+            <AudioPlayer
+              src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Rondo_Alla_Turka.ogg"
+              imageSrc="https://upload.wikimedia.org/wikipedia/commons/4/47/Croce-Mozart-Detail.jpg"
+              title="Rondo Alla Turka"
+              subtitle="Wolfgang Amadeus Mozart's Piano Sonata No. 11"
+              defaultVolume={0.35}
+              defaultLoop
+            />
           </div>
         </section>
       </Main>

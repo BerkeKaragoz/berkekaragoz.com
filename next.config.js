@@ -12,4 +12,7 @@ module.exports = {
     "page.tsx",
     "page.ts",
   ], //for custom page extensions
+  images: {
+    domains: ["upload.wikimedia.org"],
+  },
 };

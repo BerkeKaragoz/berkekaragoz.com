@@ -33,11 +33,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <header className="fixed top-0 w-full px-2 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
+      <header className="fixed top-0 w-full px-8 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
         <div className="flex items-center h-full max-w-screen-xl gap-2 mx-auto my-0">
           <div>
             <Link href="/" passHref>
-              <a className="font-medium unstyled-a">E. Berke Karagöz</a>
+              <a className="font-medium unstyled-a">Berke Karagöz</a>
             </Link>
           </div>
 

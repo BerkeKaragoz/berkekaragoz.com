@@ -71,7 +71,7 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
 
     /** Tailwind works better inline */
     return (
-      <div className={clsx([styles.root, "inline-block w-36", className])}>
+      <div className={clsx([styles.root, "inline-block", className])}>
         <div
           className={clsx([
             styles.sliderContainer,
@@ -100,7 +100,7 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           <div
             className={clsx(
               [styles.thumb],
-              "w-0 h-0 p-2 bg-transparent rounded-full",
+              "w-0 h-0 bg-transparent rounded-full",
               {
                 "group-hover:opacity-50": disabled,
               },
