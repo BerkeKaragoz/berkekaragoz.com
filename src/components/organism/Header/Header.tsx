@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <header className="fixed top-0 w-full px-8 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
+      <header className="fixed top-0 z-10 w-full px-8 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
         <div className="flex items-center h-full max-w-screen-xl gap-2 mx-auto my-0">
           <div>
             <Link href="/" passHref>
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
               <TranslateIcon />
             </Popover.Button>
 
-            <Popover.Panel className="absolute right-0 z-10 mt-1">
+            <Popover.Panel className="absolute right-0 z-40 mt-1">
               <RadioGroup
                 value={i18n.language}
                 onChange={handleSelectLang}
@@ -89,7 +89,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           </Popover>
         </div>
       </header>
-      <div className="flex-shrink-0 h-14" />
+      <div className="flex-shrink-0 h-14 dark:bg-background-900" />
     </>
   );
 };

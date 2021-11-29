@@ -1,7 +1,7 @@
 import IconButton from "@/components/atomic/IconButton/IconButton";
 import Slider from "@/components/atomic/Slider/Slider";
 import { COMMON_TNS } from "@/lib/i18n/consts";
-import { placeholderBlurBase64, truncate } from "@/lib/utils";
+import { placeholderBlurBase64 } from "@/lib/utils/consts";
 import {
   PauseIcon,
   PlayIcon,
@@ -233,6 +233,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
           <IconButton
             small
             className="rounded-full"
+            disabled={!src}
             onClick={() => setIsLooping((s) => !s)}
             aria-label={isLooping ? ct("no repeat") : ct("repeat")}
           >
@@ -240,11 +241,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
               className={clsx([
                 {
                   "text-background-400 group-hover:text-primary-400 dark:text-background-500 dark:group-hover:text-primary-600":
-                    !isLooping,
+                    !isLooping && !!src,
                 },
                 {
                   "text-primary-500 group-hover:text-primary-600 dark:text-primary-400 dark:group-hover:text-primary-300":
-                    isLooping,
+                    isLooping && !!src,
                 },
               ])}
             />
@@ -252,7 +253,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
           <div //spacer
             className="flex-shrink-0 w-px h-full bg-background-300 dark:bg-background-700"
           />
-          <IconButton onClick={muteHandler}>
+          <IconButton onClick={muteHandler} disabled={!src}>
             {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
           </IconButton>
           <Slider
@@ -265,6 +266,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
             onMouseDown={() => {
               if (audioRef.current) setBufferedVolume(audioRef.current.volume);
             }}
+            disabled={!src}
             ref={volumeRef}
           />
         </div>

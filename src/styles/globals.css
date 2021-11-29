@@ -4,7 +4,7 @@
 
 @import "./components/index.css";
 
-@layer utilities {
+@layer components {
   .link {
     @apply text-primary-600 hover:text-secondary-500 hover:underline;
   }

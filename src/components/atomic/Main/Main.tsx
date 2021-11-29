@@ -1,15 +1,17 @@
+import clsx from "clsx";
 import React from "react";
 
-type MainProps = {};
+type MainProps = React.HtmlHTMLAttributes<HTMLDivElement> & {};
 
 export const Main: React.FC<MainProps> = (props) => {
-  const { children } = props;
+  const { children, className, ...rest } = props;
 
   return (
-    <div className="box-border flex-grow px-8">
-      <main className="block h-full max-w-screen-xl min-h-full mx-auto">
-        {children}
-      </main>
+    <div
+      className={clsx(["box-border flex-grow overflow-x-hidden"], className)}
+      {...rest}
+    >
+      <main className="block h-full min-h-full">{children}</main>
     </div>
   );
 };
