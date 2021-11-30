@@ -1,3 +1,12 @@
+/**
+ * I don't usually make the pages with this many lines of code.
+ * (taking output into consideration of course)
+ *
+ * Since I am the only one maintaining it, I didn't split
+ * them into components yet. Yes, yet. It still bothers me,
+ * but it is practical this way.
+ */
+
 import { Header } from "@/components/organism/Header/Header";
 import Main from "@/components/atomic/Main/Main";
 import PageContainer from "@/components/atomic/PageContainer/PageContainer";
@@ -11,13 +20,21 @@ import Section from "@/components/atomic/Section/Section";
 import IconButton from "@/components/atomic/IconButton/IconButton";
 import { useTheme } from "next-themes";
 import React from "react";
-import { LightBulbIcon, PencilIcon } from "@heroicons/react/solid";
+import {
+  EyeIcon,
+  HeartIcon,
+  LightBulbIcon,
+  PencilIcon,
+} from "@heroicons/react/solid";
 import { ColorScheme } from "@/lib/types/common";
 import { BINANCE_API_HOST } from "@/lib/utils/consts";
 import Image from "next/image";
 import DrawableCanvas from "@/components/organism/DrawableCanvas/DrawableCanvas";
 import clsx from "clsx";
-import Switch from "@/components/atomic/Switch/Switch";
+import { Switch, Tab } from "@headlessui/react";
+import Slider from "@/components/atomic/Slider/Slider";
+import { nanoid } from "nanoid";
+import { generateRandomInt } from "@/lib/utils";
 
 const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCBUSD`;
 const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHBUSD`;
@@ -27,6 +44,12 @@ const colorGreen = "rgba(5, 150, 105)";
 const colorBlue = "rgba(37, 99, 235)";
 
 type CoinPriceData = { mins: number; price: string };
+
+const loremIpsumText = [
+  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat culpa libero consectetur, ex cupiditate voluptate? At, temporibus provident eveniet nihil non deleniti ratione animi qui ab dolorem, excepturi delectus.",
+  "Natus sapiente praesentium commodi et id a reiciendis distinctio ex quisquam eaque sequi cum eius rerum quae, repellendus corporis placeat, magnam alias. Delectus ducimus itaque natus assumenda quod blanditiis eum.",
+  "Cupiditate provident temporibus enim optio ex fuga fugit eaque, praesentium, minima nobis cum laborum est rem tenetur debitis vero vitae perferendis ad delectus! Blanditiis, quidem nemo nisi eaque dolores ea.",
+];
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -53,7 +76,9 @@ const Homepage: NextPage = () => {
   );
   const [strokeColor, setStrokeColor] =
     React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorRed);
+  const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false);
   const [clearCount, setClearCount] = React.useState(0);
+  const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(99));
   const [btcPrice, setBtcPrice] = React.useState<number>(NaN);
   const [ethPrice, setEthPrice] = React.useState<number>(NaN);
 
@@ -95,7 +120,7 @@ const Homepage: NextPage = () => {
       <Header />
       <Main>
         <div className="dark:bg-primary-900 dark:bg-opacity-20">
-          <Section className="flex h-full gap-8 overflow-x-visible max-h-screen-sm">
+          <Section className="flex h-full gap-8 overflow-x-visible max-h-screen-sm xl:max-h-screen-lg">
             <div className="flex flex-col items-start justify-center flex-grow-0 w-1/2 ">
               <h1 className="text-6xl font-semibold">
                 {"Hi, I'm"}
@@ -196,6 +221,7 @@ const Homepage: NextPage = () => {
                   <div className="flex gap-8 overflow-hidden rounded-lg">
                     <div className="relative card">
                       <DrawableCanvas
+                        className={clsx([{ "filter blur-sm": isBlurSwitchOn }])}
                         strokeStyle={strokeColor}
                         clear={clearCount}
                       />
@@ -250,24 +276,117 @@ const Homepage: NextPage = () => {
                       </button>
                     </div>
                   </div>
-                  <div>
-                    <Switch />
+                  <div className="flex items-center justify-between gap-2">
+                    <Switch.Group as="div" className="flex items-center gap-2">
+                      <Switch.Label className="text-primary-600 dark:text-primary-200">
+                        Enable Canvas Blur
+                      </Switch.Label>
+                      <Switch
+                        checked={isBlurSwitchOn}
+                        onChange={setIsBlurSwitchOn}
+                        className={clsx([
+                          "relative card inline-flex items-center h-6 rounded-full w-11",
+                          {
+                            "bg-primary-400 dark:bg-primary-600":
+                              isBlurSwitchOn,
+                          },
+                          {
+                            "bg-background-400 dark:bg-background-700":
+                              !isBlurSwitchOn,
+                          },
+                        ])}
+                      >
+                        <span
+                          className={clsx([
+                            "duration-100 inline-block w-4 h-4 transform bg-white dark:bg-primary-50 rounded-full",
+                            {
+                              "translate-x-1 dark:bg-primary-200":
+                                !isBlurSwitchOn,
+                            },
+                            {
+                              "translate-x-6 ": isBlurSwitchOn,
+                            },
+                          ])}
+                        />
+                      </Switch>
+                    </Switch.Group>
+                    <hr className="flex-grow border-primary-300 dark:border-primary-900" />
+                    <div className="w-10 h-10 p-2 overflow-hidden card">
+                      <EyeIcon
+                        className={clsx([
+                          "h-full mx-auto text-primary-600 dark:text-primary-200",
+                          { "filter blur-sm": isBlurSwitchOn },
+                        ])}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-3 py-2 card">
+                    <p className="text-primary-600 dark:text-primary-200">
+                      This website was made with:
+                    </p>
+                    <ul className="list-disc text-primary-900 dark:text-primary-100 ms-8">
+                      <li>TypeScript</li>
+                      <li>React</li>
+                      <li>Next.js</li>
+                      <li>Tailwind CSS</li>
+                      <li>
+                        <HeartIcon className="h-6 text-red-600" />
+                      </li>
+                      <li>And more...</li>
+                    </ul>
                   </div>
                 </div>
-                <div className="inline-flex flex-col max-w-md gap-8 align-top">
-                  <input type="range" />
-                  <AudioPlayer />
-                  <AudioPlayer />
-                  <AudioPlayer />
-                  <AudioPlayer
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Rondo_Alla_Turka.ogg"
-                    imageSrc="https://upload.wikimedia.org/wikipedia/commons/4/47/Croce-Mozart-Detail.jpg"
-                    title="Rondo Alla Turka"
-                    subtitle="Wolfgang Amadeus Mozart's Piano Sonata No. 11"
-                    defaultVolume={0.35}
-                    defaultLoop
-                  />
-                  <AudioPlayer />
+                <div className="inline-flex flex-col max-w-md gap-8 align-top w-80">
+                  <Slider />
+                  <div className="flex items-center h-10 p-2 overflow-hidden card">
+                    <p className="opacity-50">Interact with all of these!</p>
+                  </div>
+                  <Tab.Group>
+                    <Tab.List className="flex justify-between gap-8 p-2 bg-black rounded-lg bg-opacity-5 dark:bg-opacity-30">
+                      {[...Array(3)].map((v, i) => (
+                        <Tab
+                          key={`${nanoid(5)}-${i}`}
+                          className={"card-input p-2 flex-grow"}
+                        >
+                          {({ selected }) => (
+                            <span
+                              className={clsx([
+                                "inline-block border-b-4 p-1 rounded-sm font-semibold w-full",
+                                {
+                                  "border-primary-400": selected,
+                                },
+                                {
+                                  "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
+                                    !selected,
+                                },
+                              ])}
+                            >
+                              Tab {i + 1}
+                            </span>
+                          )}
+                        </Tab>
+                      ))}
+                    </Tab.List>
+                    <Tab.Panels className="p-3 card text-primary-800 dark:text-primary-200 dark:text-opacity-75">
+                      {[...Array(3)].map((v, i) => (
+                        <Tab.Panel as="p" key={`${nanoid(5)}-${i}`}>
+                          {i + 1} - {loremIpsumText[i]}
+                        </Tab.Panel>
+                      ))}
+                    </Tab.Panels>
+                  </Tab.Group>
+                  <div className="flex items-center justify-between gap-2">
+                    <code className="p-2 font-semibold card">
+                      {randomNumber.toString().padStart(2, "0")}
+                    </code>
+                    <hr className="flex-grow border-primary-300 dark:border-primary-900" />
+                    <button
+                      className="p-2 card-input"
+                      onClick={() => setRandomNumber(generateRandomInt(99))}
+                    >
+                      &larr; Generate Random Number
+                    </button>
+                  </div>
                   <AudioPlayer />
                 </div>
               </div>

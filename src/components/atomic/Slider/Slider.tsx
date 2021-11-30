@@ -43,6 +43,7 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
       children,
       className,
       onChange,
+      style,
       disabled = false,
       min,
       max,
@@ -71,7 +72,10 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
 
     /** Tailwind works better inline */
     return (
-      <div className={clsx([styles.root, "inline-block", className])}>
+      <div
+        className={clsx([styles.root, "inline-block", className])}
+        style={style}
+      >
         <div
           className={clsx([
             styles.sliderContainer,

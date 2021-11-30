@@ -191,6 +191,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
     <div
       {...rest}
       className={clsx(["inline-flex card overflow-hidden", className])}
+      style={{ minWidth: "14rem" }}
     >
       {imageSrc && (
         <div className="relative flex-shrink-0 max-w-full w-28">
