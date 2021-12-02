@@ -29,6 +29,17 @@ module.exports = {
       lg: "0 2px 10px rgba(0, 0, 0, 0.5)",
     },
     extend: {
+      height: {
+        "screen-1/2": "50vh",
+        "screen-3/5": "60vh",
+        "screen-7/10": "70vh",
+        "screen-4/5": "80vh",
+        "screen-sm": "640px",
+        "screen-md": "768px",
+        "screen-lg": "1024px",
+        "screen-xl": "1280px",
+        "screen-2xl": "1536px",
+      },
       screens: {
         xs: "360px",
         xsh: { raw: `(min-height: 360px)` },
