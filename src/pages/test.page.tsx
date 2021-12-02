@@ -8,7 +8,6 @@ import React from "react";
 const TestPage: NextPage = () => {
   return (
     <div>
-      <Header />
       <Main>
         <Section>
           <DrawableCanvas

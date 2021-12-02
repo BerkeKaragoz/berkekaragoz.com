@@ -9,7 +9,7 @@ export const Section: React.FC<SectionProps> = (props) => {
   return (
     <div className="px-8">
       <section
-        className={clsx(["max-w-screen-xl mx-auto"], className)}
+        className={clsx(["flex max-w-screen-xl mx-auto"], className)}
         {...rest}
       >
         {children}

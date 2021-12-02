@@ -6,7 +6,7 @@ export const PageContainer: React.FC<PageContainerProps> = (props) => {
   const { children } = props;
 
   return (
-    <div className="flex flex-col h-screen min-h-screen p-0 m-0">
+    <div className="box-border flex flex-col flex-grow h-full min-h-screen p-0 m-0 overflow-x-hidden">
       {children}
     </div>
   );
