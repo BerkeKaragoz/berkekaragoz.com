@@ -61,6 +61,7 @@ module.exports = {
     textIndent: ["responsive"],
     extend: {
       backgroundColor: ["active"],
+      ringWidth: ["hover", "active"],
       //textColor: ["active"],
     },
   },

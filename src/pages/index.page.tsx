@@ -7,40 +7,39 @@
  * but it is practical this way.
  */
 
-import { Header } from "@/components/organism/Header/Header";
+import IconButton from "@/components/atomic/IconButton/IconButton";
 import Main from "@/components/atomic/Main/Main";
 import PageContainer from "@/components/atomic/PageContainer/PageContainer";
-import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts";
-import { GetStaticProps, NextPage } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Head from "next/head";
-import { useTranslation } from "react-i18next";
-import AudioPlayer from "@/components/molecular/AudioPlayer/AudioPlayer";
 import Section from "@/components/atomic/Section/Section";
-import IconButton from "@/components/atomic/IconButton/IconButton";
-import { useTheme } from "next-themes";
-import React from "react";
+import Slider from "@/components/atomic/Slider/Slider";
+import AudioPlayer from "@/components/molecular/AudioPlayer/AudioPlayer";
+import DrawableCanvas from "@/components/organism/DrawableCanvas/DrawableCanvas";
+import Footer from "@/components/organism/Footer/Footer";
+import { Header } from "@/components/organism/Header/Header";
+import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts";
+import BitcoinIcon from "@/lib/icons/Bitcoin";
+import EthereumIcon from "@/lib/icons/Ethereum";
+import { ColorScheme } from "@/lib/types/common";
+import { generateRandomInt } from "@/lib/utils";
+import { BINANCE_API_HOST } from "@/lib/utils/consts";
+import { Switch, Tab } from "@headlessui/react";
 import {
   EyeIcon,
   HeartIcon,
   LightBulbIcon,
   PencilIcon,
 } from "@heroicons/react/solid";
-import { ColorScheme } from "@/lib/types/common";
-import { BINANCE_API_HOST } from "@/lib/utils/consts";
-import Image from "next/image";
-import DrawableCanvas from "@/components/organism/DrawableCanvas/DrawableCanvas";
 import clsx from "clsx";
-import { Switch, Tab } from "@headlessui/react";
-import Slider from "@/components/atomic/Slider/Slider";
 import { nanoid } from "nanoid";
-import { generateRandomInt } from "@/lib/utils";
-import styles from "./index.module.css";
-import LinkBox from "@/components/atomic/LinkBox/LinkBox";
-import LinkedInIcon from "@/lib/icons/linkedin";
-import EthereumIcon from "@/lib/icons/Ethereum";
-import BitcoinIcon from "@/lib/icons/Bitcoin";
-import GithubLightIcon from "@/lib/icons/GithubLight";
+import { GetStaticProps, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTheme } from "next-themes";
+import Head from "next/head";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import AboutMe from "./components/AboutMe";
+import Projects from "./components/Projects";
+import Socials from "./components/Socials";
 
 const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCBUSD`;
 const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHBUSD`;
@@ -126,7 +125,7 @@ const Homepage: NextPage = () => {
       <Header />
       <Main>
         <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
-          <Section className="flex justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg">
+          <Section className="justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg">
             <div className="flex flex-col items-start justify-center flex-grow-0 md:w-1/2">
               <h1 className="text-5xl font-semibold lg:text-6xl">
                 {"Hi, I'm"}
@@ -392,50 +391,21 @@ const Homepage: NextPage = () => {
             </div>
           </Section>
           <Section>
-            <div className="flex flex-wrap items-center justify-center w-full max-w-xl gap-4 p-8 mx-auto my-24 bg-opacity-50 sm:justify-between card dark:bg-background-900 bg-primary-100">
-              <LinkBox
-                href="https://www.linkedin.com/in/BerkeKaragoz"
-                className="flex-shrink-0 w-8 sm:w-12"
-              >
-                <LinkedInIcon />
-              </LinkBox>
-              <LinkBox
-                href="https://github.com/BerkeKaragoz"
-                className="flex-shrink-0 w-8 p-1 bg-gray-800 sm:w-12 card dark:bg-gray-900"
-              >
-                <GithubLightIcon />
-              </LinkBox>
-              <strong className="text-xl font-medium text-primary-900 dark:text-primary-200 md:text-3xl">
-                /BerkeKaragoz
-              </strong>
-            </div>
+            <Socials />
           </Section>
         </div>
         <Section>
-          <div className="inline-block mx-auto bg-yellow-500 bg-opacity-40">
-            <div className="inline-block">
-              <p className="py-32 max-w-prose">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Exercitationem repellat accusantium sint quam corrupti eum atque
-                et, beatae dicta sit, iste, tenetur tempora. Voluptatem quos ut
-                possimus vel optio maiores.
-              </p>
-            </div>
-            <div className="p-2 border-2 rounded-full image-wrapper card">
-              <Image
-                src="/assets/berke_1.jpg"
-                width={168}
-                height={168}
-                alt="E. Berke Karagöz"
-                className="object-cover rounded-full"
-              />
-            </div>
-          </div>
+          <Projects />
         </Section>
-        <Section>My work</Section>
-        <Section>Projects</Section>
+
+        <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+          <Section>
+            <AboutMe />
+          </Section>
+        </div>
+        <Section>Experience</Section>
       </Main>
-      <footer>Footer</footer>
+      <Footer />
     </PageContainer>
   );
 };

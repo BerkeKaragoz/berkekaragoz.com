@@ -8,6 +8,8 @@ import IconButton from "@/components/atomic/IconButton/IconButton";
 import { Popover, RadioGroup } from "@headlessui/react";
 import clsx from "clsx";
 import Link from "next/link";
+import Image from "next/image";
+import LinkBox from "@/components/atomic/LinkBox/LinkBox";
 
 type HeaderProps = {};
 
@@ -35,10 +37,20 @@ export const Header: React.FC<HeaderProps> = (props) => {
     <>
       <header className="fixed top-0 z-10 w-full px-8 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-80 bg-background-100 bg-opacity-80 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
         <div className="flex items-center h-full max-w-screen-xl gap-2 mx-auto my-0">
-          <div>
-            <Link href="/" passHref>
-              <a className="font-medium unstyled-a">Berke Karagöz</a>
-            </Link>
+          <div className="p-0.5 h-10">
+            <LinkBox href="/">
+              <Image
+                src={
+                  theme === "dark"
+                    ? "/assets/EBerkeKaragoz-paraph-light.png"
+                    : "/assets/EBerkeKaragoz-paraph-dark.png"
+                }
+                alt="Berke Karagöz"
+                height={36}
+                width={115}
+                className="object-contain"
+              />
+            </LinkBox>
           </div>
 
           <div
