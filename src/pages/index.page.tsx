@@ -29,11 +29,11 @@ import { useTheme } from "next-themes";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import AboutMe from "@/components/page/index/AboutMe";
-import Experience from "@/components/page/index/Experience";
-import Projects from "@/components/page/index/Projects";
-import ReachMe from "@/components/page/index/ReachMe";
-import Socials from "@/components/page/index/Socials";
+import AboutMe from "./components/AboutMe";
+import Experience from "./components/Experience";
+import Projects from "./components/Projects";
+import ReachMe from "./components/ReachMe";
+import Socials from "./components/Socials";
 
 const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCBUSD`;
 const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHBUSD`;
