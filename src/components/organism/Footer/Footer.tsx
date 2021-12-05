@@ -1,5 +1,5 @@
 import Section from "@/components/atomic/Section/Section";
-import LinkedInIcon from "@/lib/icons/linkedin";
+import LinkedInIcon from "@/lib/icons/LinkedIn";
 import GithubLightIcon from "@/lib/icons/GithubLight";
 import React from "react";
 import LinkBox from "@/components/atomic/LinkBox/LinkBox";

@@ -1,5 +1,5 @@
 import LinkBox from "@/components/atomic/LinkBox/LinkBox";
-import LinkedInIcon from "@/lib/icons/linkedin";
+import LinkedInIcon from "@/lib/icons/LinkedIn";
 import GithubLightIcon from "@/lib/icons/GithubLight";
 import React from "react";
 
