@@ -27,6 +27,14 @@
   .text-caption-color {
     @apply text-primary-600 dark:text-primary-200;
   }
+
+  .text-subtitle-color {
+    @apply text-background-700 dark:text-background-300;
+  }
+
+  .section-heading {
+    @apply mb-8 text-3xl font-semibold text-center text-caption-color;
+  }
 }
 
 body {

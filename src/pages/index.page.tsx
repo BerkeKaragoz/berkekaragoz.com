@@ -38,7 +38,9 @@ import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import AboutMe from "./components/AboutMe";
+import Experience from "./components/Experience";
 import Projects from "./components/Projects";
+import ReachMe from "./components/ReachMe";
 import Socials from "./components/Socials";
 
 const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCBUSD`;
@@ -403,7 +405,12 @@ const Homepage: NextPage = () => {
             <AboutMe />
           </Section>
         </div>
-        <Section>Experience</Section>
+        <Section>
+          <Experience />
+        </Section>
+        <Section>
+          <ReachMe />
+        </Section>
       </Main>
       <Footer />
     </PageContainer>

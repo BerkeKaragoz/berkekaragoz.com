@@ -12,15 +12,17 @@ const ProjectCard: React.FC<{
   const { src, href = src, title, subtitle, ratio = 1, ...rest } = props;
 
   return (
-    <LinkBox href={href} className="rounded-lg hover:ring-2" {...rest}>
-      <div className="p-2 overflow-hidden card-input image-wrapper">
-        <Image
-          src={src}
-          width={90 * ratio}
-          height={160 * ratio}
-          alt={title}
-          className="object-cover rounded-md"
-        />
+    <LinkBox href={href} className="p-1 rounded-lg hover:ring-2" {...rest}>
+      <div className="p-2 card-input image-wrapper">
+        <div className="h-40 overflow-hidden rounded-md md:h-full">
+          <Image
+            src={src}
+            width={90 * ratio}
+            height={160 * ratio}
+            alt={title}
+            className="object-cover rounded-md"
+          />
+        </div>
       </div>
       <div className="mx-auto text-sm w-min">
         <p className="font-semibold text-caption-color">{title}</p>
@@ -35,8 +37,8 @@ const Projects: React.FC<{}> = (props) => {
 
   return (
     <div className="w-full py-8 text-center">
-      <h1 className="text-2xl font-semibold text-caption-color">Projects</h1>
-      <div className="flex flex-wrap items-start justify-center gap-4 my-8">
+      <h2 className="text-3xl font-semibold text-caption-color">Projects</h2>
+      <div className="flex flex-wrap items-start justify-center gap-3 my-8">
         <ProjectCard
           src="/assets/intergallery.jpg"
           title="Intergallery"
@@ -57,7 +59,7 @@ const Projects: React.FC<{}> = (props) => {
         <ProjectCard
           src="/assets/stopwatch.png"
           title="Stopwatch"
-          subtitle="Timing Practice Tool"
+          subtitle="AFPS Timing Practice Tool"
         />
         <ProjectCard
           src="/assets/vr-training.jpg"
@@ -65,7 +67,7 @@ const Projects: React.FC<{}> = (props) => {
           subtitle="A PoC app for DATAMARKET"
         />
       </div>
-      <p>And more...</p>
+      <p className="opacity-80">And more...</p>
     </div>
   );
 };
