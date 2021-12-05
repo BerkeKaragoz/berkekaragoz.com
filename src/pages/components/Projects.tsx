@@ -36,11 +36,12 @@ const Projects: React.FC<{}> = (props) => {
   const { ...rest } = props;
 
   return (
-    <div className="w-full py-8 text-center">
+    <div className="w-full py-12 text-center">
       <h2 className="text-3xl font-semibold text-caption-color">Projects</h2>
       <div className="flex flex-wrap items-start justify-center gap-3 my-8">
         <ProjectCard
           src="/assets/intergallery.jpg"
+          href="https://github.com/BerkeKaragoz/Intergallery-Server"
           title="Intergallery"
           subtitle="A Media Platform (WiP)"
         />
@@ -52,12 +53,14 @@ const Projects: React.FC<{}> = (props) => {
         />
         <ProjectCard
           src="/assets/lobium.jpg"
+          href="https://lobium.com"
           title="Lobium"
           subtitle="Tournament Management Bundle"
           ratio={1.5}
         />
         <ProjectCard
           src="/assets/stopwatch.png"
+          href="https://github.com/BerkeKaragoz/stopwatch"
           title="Stopwatch"
           subtitle="AFPS Timing Practice Tool"
         />

@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           </IconButton>
 
           <Popover className="relative">
-            <Popover.Button as={IconButton}>
+            <Popover.Button as={IconButton} disabled>
               <TranslateIcon />
             </Popover.Button>
 

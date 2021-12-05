@@ -1,13 +1,5 @@
-/**
- * I don't usually make the pages with this many lines of code.
- * (taking output into consideration of course)
- *
- * Since I am the only one maintaining it, I didn't split
- * them into components yet. Yes, yet. It still bothers me,
- * but it is practical this way.
- */
-
 import IconButton from "@/components/atomic/IconButton/IconButton";
+import LinkBox from "@/components/atomic/LinkBox/LinkBox";
 import Main from "@/components/atomic/Main/Main";
 import PageContainer from "@/components/atomic/PageContainer/PageContainer";
 import Section from "@/components/atomic/Section/Section";
@@ -127,7 +119,10 @@ const Homepage: NextPage = () => {
       <Header />
       <Main>
         <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
-          <Section className="justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg">
+          <Section
+            id="hero"
+            className="justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg"
+          >
             <div className="flex flex-col items-start justify-center flex-grow-0 md:w-1/2">
               <h1 className="text-5xl font-semibold lg:text-6xl">
                 {"Hi, I'm"}
@@ -141,9 +136,12 @@ const Homepage: NextPage = () => {
                 A curious frontend engineer who had been gaining various
                 insights about web development.
               </p>
-              <button className="inline-block px-3 py-2 mt-4 ml-auto font-semibold md:ml-0 card-input">
+              <LinkBox
+                href="/#projects"
+                className="inline-block px-3 py-2 mt-4 ml-auto font-semibold md:ml-0 card-input"
+              >
                 See my projects &rarr;
-              </button>
+              </LinkBox>
             </div>
             <div className="hidden w-1/2 md:block">
               <div
@@ -392,23 +390,23 @@ const Homepage: NextPage = () => {
               </div>
             </div>
           </Section>
-          <Section>
+          <Section id="socials">
             <Socials />
           </Section>
         </div>
-        <Section>
+        <Section id="projects">
           <Projects />
         </Section>
 
         <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
-          <Section>
+          <Section id="about-me">
             <AboutMe />
           </Section>
         </div>
-        <Section>
+        <Section id="experience">
           <Experience />
         </Section>
-        <Section>
+        <Section id="contact">
           <ReachMe />
         </Section>
       </Main>
