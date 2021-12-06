@@ -16,7 +16,13 @@ const ImageCard: React.FC<{ src: string }> = (props) => {
     <div>
       <Link href={src} passHref>
         <a target="_blank" className="image-wrapper card">
-          <Image src={src} width="340" height="280" objectFit="contain" />
+          <Image
+            src={src}
+            width="340"
+            height="280"
+            objectFit="contain"
+            alt="Lobium Project Image"
+          />
         </a>
       </Link>
     </div>
@@ -46,7 +52,7 @@ const LobiumPage: NextPage = () => {
             <article className="p-3 mb-4 card max-w-prose">
               <h2 className="font-semibold text-caption-color">Description</h2>
               <p className="mt-2 indent-sm">
-                Lobium (Latin for 'lobby') provides tournaments across
+                Lobium (Latin for {"'lobby'"}) provides tournaments across
                 competitive games while improving tournament organization
                 technologies. It provides a set of tools for communication,
                 tournament components generation, broadcasting, data collection,
