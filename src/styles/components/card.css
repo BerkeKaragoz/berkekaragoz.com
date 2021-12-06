@@ -15,4 +15,8 @@
   .card-input[disabled] {
     @apply transition-none cursor-default border-background-300 text-background-400 bg-background-200 text-opacity-70 dark:border-background-600 dark:bg-background-700 dark:bg-opacity-80;
   }
+
+  .card-backdrop {
+    @apply bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20;
+  }
 }

@@ -53,7 +53,7 @@ const Projects: React.FC<{}> = (props) => {
         />
         <ProjectCard
           src="/assets/lobium.jpg"
-          href="https://lobium.com"
+          href="/projects/lobium"
           title="Lobium"
           subtitle="Tournament Management Bundle"
           ratio={1.5}

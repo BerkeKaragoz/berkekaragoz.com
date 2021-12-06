@@ -113,7 +113,10 @@ const Homepage: NextPage = () => {
     <PageContainer>
       <Head>
         <title>Berke Karagöz</title>
-        <meta name="description" content="Berke Karagöz's website." />
+        <meta
+          name="description"
+          content="A curious frontend engineer who had been gaining various insights about web development."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
