@@ -18,9 +18,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
   return (
     <footer className="mt-8">
       <hr className="border-primary-600 opacity-20" />
-      <Section className="justify-between gap-8 py-8">
+      <Section className="flex-col justify-between gap-8 py-8 text-center sm:text-left sm:flex-row">
         <div className="flex flex-col justify-between">
-          <h1 className="text-3xl font-semibold text-caption-color">
+          <h1 className="mb-4 text-3xl font-semibold text-caption-color">
             Berke Karagöz
           </h1>
           <div>
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </LinkBox>
           </div>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <hr className="h-full border-0 border-r border-dashed border-opacity-60 dark:border-opacity-20 border-primary-600 dark:border-primary-400" />
         </div>
         <nav>
@@ -55,7 +55,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
         <div>
           <div>
             <p className="mb-2 font-semibold">Platforms</p>
-            <ul className="flex gap-4">
+            <ul className="flex justify-center gap-4 sm:justify-start">
               <li>
                 <LinkBox
                   className="w-10 p-1 card"
