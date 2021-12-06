@@ -28,6 +28,14 @@
     @apply text-primary-600 dark:text-primary-200;
   }
 
+  .border-caption-color {
+    @apply border-primary-600 dark:border-primary-200;
+  }
+
+  .divider {
+    @apply border-primary-600 opacity-20;
+  }
+
   .text-subtitle-color {
     @apply text-background-700 dark:text-background-300;
   }
