@@ -331,6 +331,11 @@ const Homepage: NextPage = () => {
                       <li>Next.js</li>
                       <li>Tailwind CSS</li>
                       <li>
+                        <a href="https://next-ts-tailwindcss-i18n.berkekaragoz.com/">
+                          next-ts-tailwindcss-i18n.berkekaragoz.com
+                        </a>
+                      </li>
+                      <li>
                         <HeartIcon className="h-6 text-red-600" />
                       </li>
                       <li>And more{"\u2026"}</li>
