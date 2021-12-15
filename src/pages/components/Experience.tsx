@@ -195,7 +195,7 @@ const Experience: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
               dateStartTime="2018-11-01"
               startTime={`${t("index.experience.nov")} 2018`}
               dateEndTime=""
-              endTime={`Present (~${Math.floor(
+              endTime={`${t("index.experience.present")} (~${Math.floor(
                 getMonthsBetween(new Date("2018-11-01"), currentDate) / 12,
               )} ${t("index.experience.yr")} ${
                 getMonthsBetween(new Date("2018-11-01"), currentDate) % 12
