@@ -130,9 +130,9 @@ const Experience: React.FC<{}> = (props) => {
               role="Software Engineer Intern"
               name="HAVELSAN"
               nameUrl="https://havelsan.com.tr/"
-              dateStartTime="2020-02-01"
+              dateStartTime="2020-02-15"
               startTime={"Feb 2020"}
-              dateEndTime="2020-07-01"
+              dateEndTime="2020-06-15"
               endTime={`Jun 2020 (~5 mos)`}
               jobType="Full Time"
               location="Ankara, TR"
@@ -146,9 +146,9 @@ const Experience: React.FC<{}> = (props) => {
               role="VR Development Intern"
               name="DATAMARKET"
               nameUrl="https://www.datamarket.com.tr/?lang=en"
-              dateStartTime="2021-06-01"
+              dateStartTime="2021-06-15"
               startTime={"Jun 2019"}
-              dateEndTime="2021-10-01"
+              dateEndTime="2021-09-15"
               endTime={`Sep 2019 (~4 mos)`}
               jobType="Full Time"
               location="Istanbul, TR"
@@ -164,13 +164,13 @@ const Experience: React.FC<{}> = (props) => {
               role="Volunteer Staff Referee"
               name="ESL Play"
               nameUrl="https://play.eslgaming.com/"
-              dateStartTime="2018-11-01"
+              dateStartTime="2018-11-15"
               startTime={"Nov 2018"}
               dateEndTime=""
               endTime={`Present (~${Math.floor(
-                getMonthsBetween(new Date("2018-11-01"), currentDate) / 12,
+                getMonthsBetween(new Date("2018-11-15"), currentDate) / 12,
               )} yr ${
-                getMonthsBetween(new Date("2018-11-01"), currentDate) % 12
+                getMonthsBetween(new Date("2018-11-15"), currentDate) % 12
               } mos)`}
             >
               Being/been a volunteer senior referee at Europe staff team for
@@ -191,9 +191,9 @@ const Experience: React.FC<{}> = (props) => {
               role="University Ambassador"
               name="Riot Games"
               nameUrl="https://www.riotgames.com/"
-              dateStartTime="2020-05-01"
+              dateStartTime="2020-05-15"
               startTime={"May 2020"}
-              dateEndTime="2021-06-01"
+              dateEndTime="2021-05-15"
               endTime={`Jun 2021 (~1 yr 2 mos)`}
             >
               Organized VALORANT events and managed the community of Bilkent
@@ -203,9 +203,9 @@ const Experience: React.FC<{}> = (props) => {
               role="Mechanical Designer"
               name="Ancha Space Technologies"
               nameUrl="https://www.linkedin.com/company/anchaspace/"
-              dateStartTime="2021-06-01"
+              dateStartTime="2021-06-15"
               startTime={"Jun 2019"}
-              dateEndTime="2021-10-01"
+              dateEndTime="2021-09-15"
               endTime={`Sep 2019 (~1 yr 2 mos)`}
             >
               Designed wheels and the connection between the wheels and the

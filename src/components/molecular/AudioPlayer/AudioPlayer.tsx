@@ -49,6 +49,7 @@ type AudioPlayerProps = React.HTMLProps<HTMLDivElement> & {
     >,
     "loop" | "muted" | "src"
   >;
+  blurDataURL?: ImageProps["blurDataURL"];
   defaultLoop?: boolean;
   defaultMuted?: boolean;
   defaultVolume?: number;
@@ -61,6 +62,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
     title,
     subtitle,
     imageSrc,
+    blurDataURL = placeholderBlurBase64,
     defaultLoop = false,
     defaultMuted = false,
     defaultVolume = 0.25,
@@ -201,7 +203,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
             alt={title ? title : "audio cover"}
             layout="fill"
             placeholder="blur"
-            blurDataURL={placeholderBlurBase64}
+            blurDataURL={blurDataURL}
           />
         </div>
       )}
