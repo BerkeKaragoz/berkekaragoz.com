@@ -28,7 +28,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTheme } from "next-themes";
 import Head from "next/head";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import AboutMe from "./components/AboutMe";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
@@ -68,6 +68,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const Homepage: NextPage = () => {
   const { t } = useTranslation([PAGES_TNS], { keyPrefix: "index" });
   const { t: ct } = useTranslation([COMMON_TNS]);
+  const { t: gt } = useTranslation([GLOSSARY_TNS]);
   const { theme, setTheme: _setTheme } = useTheme();
 
   const [isDarkTheme, setIsDarkTheme] = React.useState<boolean | undefined>(
@@ -112,10 +113,10 @@ const Homepage: NextPage = () => {
   return (
     <PageContainer>
       <Head>
-        <title>Berke Karagöz</title>
+        <title>E. Berke Karagöz | Software</title>
         <meta
           name="description"
-          content="A curious frontend engineer who had been gaining various insights about web development."
+          content={`${t("heroTitle")} ${t("heroSubtitle")}`}
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -128,22 +129,33 @@ const Homepage: NextPage = () => {
           >
             <div className="flex flex-col items-start justify-center flex-grow-0 md:w-1/2">
               <h1 className="text-5xl font-semibold lg:text-6xl">
-                {"Hi, I'm"}
-                <br />
-                <strong className="font-bold select-all lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
-                  Berke Karagöz
-                </strong>
-                {"."}
+                <Trans
+                  t={t}
+                  i18nKey="hero.title"
+                  values={{ name: "Berke Karagöz" }}
+                >
+                  {"Hi, I'm"}
+                  <br />
+                  <strong className="font-bold select-all lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
+                    Berke Karagöz
+                  </strong>
+                  {"."}
+                </Trans>
               </h1>
               <p className="max-w-sm mt-2 font-semibold ms-1 text-background-700 dark:text-background-300">
-                A curious frontend engineer who had been gaining various
-                insights about web development.
+                <Trans t={t} i18nKey="hero.subtitle">
+                  A curious frontend engineer who had been gaining various
+                  insights about web development.
+                </Trans>
               </p>
               <LinkBox
                 href="/#projects"
                 className="inline-block px-3 py-2 mt-4 ml-auto font-semibold md:ml-0 card-input"
               >
-                See my projects &rarr;
+                <Trans t={t} i18nKey="hero.actionButton">
+                  See my projects
+                </Trans>{" "}
+                &rarr;
               </LinkBox>
             </div>
             <div className="hidden w-1/2 md:block">
@@ -281,7 +293,9 @@ const Homepage: NextPage = () => {
                   <div className="flex items-center justify-between gap-2">
                     <Switch.Group as="div" className="flex items-center gap-2">
                       <Switch.Label className="text-primary-600 dark:text-primary-200">
-                        Enable Canvas Blur
+                        <Trans t={t} i18nKey="hero.widget.switchLabel">
+                          Enable Canvas Blur
+                        </Trans>
                       </Switch.Label>
                       <Switch
                         checked={isBlurSwitchOn}
@@ -324,7 +338,9 @@ const Homepage: NextPage = () => {
                   </div>
                   <div className="w-full px-3 py-2 card">
                     <p className="text-primary-600 dark:text-primary-200">
-                      This website was made with:
+                      <Trans t={t} i18nKey="hero.widget.websiteTechTitle">
+                        This website was made with:
+                      </Trans>
                     </p>
                     <ul className="list-disc text-primary-900 dark:text-primary-100 ms-8">
                       <li>TypeScript</li>
@@ -339,14 +355,22 @@ const Homepage: NextPage = () => {
                       <li>
                         <HeartIcon className="h-6 text-red-600" />
                       </li>
-                      <li>And more{"\u2026"}</li>
+                      <li className="uppercase-first">
+                        {gt("and more")}
+                        {"\u2026"}
+                      </li>
                     </ul>
                   </div>
                 </div>
                 <div className="inline-flex flex-col max-w-md gap-8 align-top w-80">
                   <Slider />
-                  <div className="flex items-center h-10 p-2 overflow-hidden card">
-                    <p className="opacity-50">Interact with all of these!</p>
+                  <div className="flex p-2 card">
+                    <p className="opacity-50">
+                      <Trans t={t} i18nKey="hero.widget.interact">
+                        Interact with all of these or change the language from
+                        the top bar!
+                      </Trans>
+                    </p>
                   </div>
                   <Tab.Group>
                     <Tab.List className="flex justify-between gap-8 p-2 bg-black rounded-lg bg-opacity-5 dark:bg-opacity-30">
@@ -358,7 +382,7 @@ const Homepage: NextPage = () => {
                           {({ selected }) => (
                             <span
                               className={clsx([
-                                "inline-block border-b-4 p-1 rounded-sm font-semibold w-full",
+                                "inline-block border-b-4 p-1 rounded-sm font-semibold w-full uppercase-first",
                                 {
                                   "border-primary-400": selected,
                                 },
@@ -368,7 +392,7 @@ const Homepage: NextPage = () => {
                                 },
                               ])}
                             >
-                              Tab {i + 1}
+                              {`${gt("tab")} ${i + 1}`}
                             </span>
                           )}
                         </Tab>
@@ -391,7 +415,10 @@ const Homepage: NextPage = () => {
                       className="p-2 card-input"
                       onClick={() => setRandomNumber(generateRandomInt(99))}
                     >
-                      &larr; Generate Random Number
+                      &larr;{" "}
+                      <Trans t={t} i18nKey="hero.widget.generateRandomNumber">
+                        Generate Random Number
+                      </Trans>
                     </button>
                   </div>
                   <AudioPlayer />
