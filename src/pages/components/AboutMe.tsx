@@ -12,11 +12,11 @@ const assetBlurs = [
 ];
 
 const AboutMe: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
-  const { t, ...rest } = props;
+  const { t } = props;
   const [assetIndex, setAssetIndex] = React.useState(0);
 
   return (
-    <div className="mx-auto my-24" {...rest}>
+    <div className="mx-auto my-24">
       <h2 className="section-heading">
         <Trans t={t} i18nKey="index.aboutMe.title">
           About Me
