@@ -1,49 +1,60 @@
 {
   "index": {
-    "pageTitle": "Hi, I'm <br/> <1>{{name}}</1>.",
-    "pageSubtitle": "I made this boilerplate while developing <1>my personal website</1>.",
-    "nextjsDesc": "Amazing developer experience.",
-    "tsDesc": "Safety and tight integration with your editor.",
-    "tailwindcssDesc": "A rapid and utility-first CSS framework.",
-    "themeColors": "Theme Colors",
-    "i18nextDesc": "Internationalization framework for Next.js which uses <1>react-i18next</1> under the hood.",
-    "testingDesc": "Generic testing tools.",
-    "atomicDesignDesc": "Methodology for creating design systems.",
-    "errorPageTerm": "Error Page Template",
-    "errorPageDesc": "<1>404</1> and <3>500</3> error pages do exist as a sample.",
-    "heightBreakpointsTerm": "Height Breakpoints and Media Queries",
-    "importPathTerm": "Import Path Aliases",
-    "recommendedVSCodeTerm": "Recommended VSCode Extensions",
-    "cnaSamplesTerm": "CNA Samples",
-    "cnaSamplesDesc": "You can check out modified <1>Create Next App</1> welcome pages as small examples.",
-    "otherCheckSnippetsDesc": "Check the snippets under <1>.vscode</1>.",
-    "otherCareMotionDesc": "Consider handling motion and color scheme preferences.",
-    "otherTryToUseDesc": "Try to use text-direction sensitive properties.",
-    "otherUseEmmetDesc": "Use <1>Emmet</1>."
-  },
-  "cna": {
-    "index": {
-      "documentTitle": "CNA Welcome Pages",
-      "documentDesc": "Create Next App pages.",
-      "pageTitle": "<0>Create Next App</0> Welcome Pages",
-      "pageSubtitle": "I keep them for showing samples.",
-      "defaultDesc": "CNA page that comes with initial Next.js project.",
-      "customDesc": "CNA page that I wrote with <1>Tailwind CSS</1> as an example."
+    "title": "Home",
+    "hero": {
+      "title": "Hi, I'm <br/><2>{{name}}</2>.",
+      "subtitle": "A curious frontend engineer who had been gaining various insights about web development.",
+      "actionButton": "See my projects",
+      "widget": {
+        "switchLabel": "Enable Canvas Blur",
+        "websiteTechTitle": "This website was made with:",
+        "interact": "Interact with all of these or change the language from the top bar!",
+        "generateRandomNumber": "Generate Random Number"
+      }
     },
-    "default": {},
-    "custom": {
-      "documentTitle": "Custom CNA | Boilerplate",
-      "documentDesc": "Create Next App page with Tailwind CSS",
-      "pageTitle": "Welcome to <1>Next.js</1>!",
-      "pageSubtitle": "Get started by editing <1>pages/index.tsx</1> with <3>Tailwind CSS</3>, <5>next-i18next</5> and <7>TypeScript</7>.",
-      "docsTitle": "Documentation",
-      "docsDesc": "Find in-depth information about Next.js features and API.",
-      "learnTitle": "Learn",
-      "learnDesc": "Learn about Next.js in an interactive course with quizzes!",
-      "examplesTitle": "Examples",
-      "examplesDesc": "Discover and deploy boilerplate example Next.js projects.",
-      "deployTitle": "Deploy",
-      "deployDesc": "Instantly deploy your Next.js site to a public URL with Vercel."
+    "projects": {
+      "title": "Projects",
+      "intergallerySubtitle": "A Media Platform (WiP)",
+      "localeVerifierSubtitle": "For GNU/Linux systems",
+      "lobiumSubtitle": "Tournament Management Bundle",
+      "stopwatchSubtitle": "AFPS Timing Practice Tool",
+      "vrTrainingSubtitle": "A PoC app for DATAMARKET",
+      "seeMore": "And more..."
+    },
+    "aboutMe": {
+      "title": "About Me",
+      "article": "<0>Hi, my name is Berke. I was born in Istanbul. My interest in computer technology has been there since I was a kid. That led me to discover designing opportunities. Starting from gaming forums to designing graphics for various reasons. I have started to learn about software development just before I matriculated to Bilkent University <1></1>.</0><1>Since then, I have been learning about multiple fields of software development. Focusing on front-end development abled me to utilize my graphic design skills with programming.</1><2>As for the hobbies, competitive gaming is one of my biggest ones. I play the chess of FPS, Quake, actively. In addition to this, I had been playing Counter-Strike and more others. After, I have been working as a tournament manager.</2>"
+    },
+    "experience": {
+      "jul": "Jul",
+      "feb": "Feb",
+      "jun": "Jun",
+      "sep": "Sep",
+      "nov": "Nov",
+      "may": "May",
+      "dec": "Dec",
+      "title": "Experience",
+      "volunteer": "Volunteer",
+      "freelance": "Freelance",
+      "fullTime": "Full Time",
+      "present": "Present",
+      "mos": "mos",
+      "yr": "yr",
+      "eslGamingRole": "Contractor Admin",
+      "eslGamingDesc": "Managing tournaments and players in projects such as:<1><0>ESL PUBG Masters / Open</0><1>Sony Open Series Apex Legends</1><2>Sony Call of Duty: Cold War Battle for Beta / CHOWH1 Challenge</2><3>Special Events</3></1>",
+      "havelsanRole": "Software Engineer Intern",
+      "havelsanDesc": "<0>Developed policies and tools for Liman MYS (a configuration management and software provisioning tool) and GNU/Linux systems focused on Debian using C and Shell Scripting.</0><1>Developed <1>liman.havelsan.com.tr</1> with Hugo and Bulma frameworks to present Liman MYS.</1>",
+      "datamarketRole": "VR Development Intern",
+      "datamarketDesc": "Developed a dynamic training application (as PoC) for GearVR, for our digital channel marketing and product management unit with Unity using C#, ShaderLab, Android SDK and Oculus SDK. Trainings can be created via the admin panel on desktop and can be synchronized with all devices with support. Transactions were made with PHP and MySQL.",
+      "eslPlayRole": "Volunteer Staff Referee",
+      "eslPlayDesc": "Being/been a volunteer senior referee at Europe staff team for Counter-Strike and Quake section.<1><0>Took part in the organization of +10 leagues and +60 cups as an admin so far.</0><1>Play testing components or software integrations for upcoming tournaments occasionally.</1><2>Providing player support, solving problems via tickets.</2></1>",
+      "riotRole": "University Ambassador",
+      "riotDesc": "Organized VALORANT events and managed the community of Bilkent University.",
+      "anchaRole": "Mechanical Designer",
+      "anchaDesc": "<0>Designed wheels and the connection between the wheels and the motors to compete in European Rover Challenge. The components were designed to endure extreme conditions of Mars and space. The primary design program was Autodesk Inventor.</0><1>Ancha Space Technologies is an interdisciplinary organization that their headquarters are located on Istanbul Başakşehir Living Lab. The team competes in space technology related challenges.</1>"
+    },
+    "reachMe": {
+      "title": "Get In Touch"
     }
   }
 }

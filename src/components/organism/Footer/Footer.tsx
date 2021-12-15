@@ -8,12 +8,16 @@ import {
   PLATFORM_LINKEDIN_LINK,
 } from "@/lib/utils/consts";
 import { CodeIcon } from "@heroicons/react/solid";
-import Link from "next/link";
+import { Trans, useTranslation, withTranslation } from "react-i18next";
+import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts";
+import { ComponentPropsWithTranslation } from "@/lib/types/i18n";
+import LinkText from "@/components/atomic/LinkText/LinkText";
 
-type FooterProps = {};
+type FooterProps = ComponentPropsWithTranslation<{}>;
 
 export const Footer: React.FC<FooterProps> = (props) => {
-  //const { children } = props;
+  const { t } = props;
+  const { t: ct } = useTranslation([COMMON_TNS]);
 
   return (
     <footer className="mt-8">
@@ -36,25 +40,49 @@ export const Footer: React.FC<FooterProps> = (props) => {
           <hr className="h-full border-0 border-r border-dashed border-opacity-60 dark:border-opacity-20 border-primary-600 dark:border-primary-400" />
         </div>
         <nav>
-          <p className="mb-2 font-semibold">Page</p>
+          <p className="mb-2 font-semibold uppercase-first">
+            <Trans t={ct} i18nKey="page">
+              Page
+            </Trans>
+          </p>
           <ul>
             <li className="mb-2">
-              <Link href="/">Home</Link>
+              <LinkText href="/">
+                <Trans t={t} i18nKey="index.title">
+                  Home
+                </Trans>
+              </LinkText>
             </li>
             <li className="mb-2">
-              <Link href="/#projects">Projects</Link>
+              <LinkText href="/#projects">
+                <Trans t={t} i18nKey="index.projects.title">
+                  Projects
+                </Trans>
+              </LinkText>
             </li>
             <li className="mb-2">
-              <Link href="/#about-me">About Me</Link>
+              <LinkText href="/#about-me">
+                <Trans t={t} i18nKey="index.aboutMe.title">
+                  About Me
+                </Trans>
+              </LinkText>
             </li>
             <li className="mb-2">
-              <Link href="/#experience">Experience</Link>
+              <LinkText href="/#experience">
+                <Trans t={t} i18nKey="index.experience.title">
+                  Experience
+                </Trans>
+              </LinkText>
             </li>
           </ul>
         </nav>
         <div>
           <div>
-            <p className="mb-2 font-semibold">Platforms</p>
+            <p className="mb-2 font-semibold uppercase-first">
+              <Trans t={ct} i18nKey="platforms">
+                Platforms
+              </Trans>
+            </p>
             <ul className="flex justify-center gap-4 sm:justify-start">
               <li>
                 <LinkBox
@@ -75,7 +103,11 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </ul>
           </div>
           <div className="mt-8">
-            <p className="mb-1 font-semibold">Contact</p>
+            <p className="mb-1 font-semibold uppercase-first">
+              <Trans t={ct} i18nKey="contact">
+                Contact
+              </Trans>
+            </p>
             <a href="mailto:mail@berkekaragoz.com">mail@berkekaragoz.com</a>
           </div>
         </div>
@@ -87,4 +119,4 @@ export const Footer: React.FC<FooterProps> = (props) => {
   );
 };
 
-export default Footer;
+export default withTranslation(PAGES_TNS)(Footer);

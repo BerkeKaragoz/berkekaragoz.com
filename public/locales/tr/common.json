@@ -8,5 +8,8 @@
   "play": "oynat",
   "pause": "duraklat",
   "repeat": "tekrarla",
-  "no repeat": "tekrarlama"
+  "no repeat": "tekrarlama",
+  "page": "sayfa",
+  "platforms": "platformlar",
+  "contact": "iletişim"
 }

@@ -3,5 +3,7 @@
   "other": "other",
   "by_someone": "by <1>{{name}}</1>",
   "language": "language",
-  "theme": "theme"
+  "theme": "theme",
+  "and more": "and more",
+  "tab": "tab"
 }

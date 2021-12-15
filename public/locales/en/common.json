@@ -8,5 +8,8 @@
   "play": "play",
   "pause": "pause",
   "repeat": "repeat",
-  "no repeat": "no repeat"
+  "no repeat": "no repeat",
+  "page": "page",
+  "platforms": "platforms",
+  "contact": "contact"
 }
