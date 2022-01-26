@@ -11,5 +11,10 @@
   "no repeat": "tekrarlama",
   "page": "sayfa",
   "platforms": "platformlar",
-  "contact": "iletişim"
+  "contact": "iletişim",
+  "translate": "çeviri",
+  "mute": "sustur",
+  "red": "kırmızı",
+  "blue": "mavi",
+  "green": "yeşil"
 }

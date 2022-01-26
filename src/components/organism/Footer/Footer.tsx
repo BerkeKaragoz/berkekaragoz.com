@@ -31,6 +31,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             <LinkBox
               href="https://github.com/BerkeKaragoz/berkekaragoz.com"
               className="w-10 p-1 card-input"
+              aria-label="source"
             >
               <CodeIcon />
             </LinkBox>
@@ -88,6 +89,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 <LinkBox
                   className="w-10 p-1 card"
                   href={PLATFORM_LINKEDIN_LINK}
+                  aria-label="LinkedIn"
                 >
                   <LinkedInIcon />
                 </LinkBox>
@@ -96,6 +98,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 <LinkBox
                   href={PLATFORM_GITHUB_LINK}
                   className="w-10 p-1 bg-gray-800 dark:bg-gray-900 card"
+                  aria-label="GitHub"
                 >
                   <GithubLightIcon />
                 </LinkBox>

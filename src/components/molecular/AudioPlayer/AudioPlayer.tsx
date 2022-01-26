@@ -256,7 +256,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
           <div //spacer
             className="flex-shrink-0 w-px h-full bg-background-300 dark:bg-background-700"
           />
-          <IconButton onClick={muteHandler} disabled={!src}>
+          <IconButton
+            onClick={muteHandler}
+            disabled={!src}
+            aria-label={ct("mute")}
+          >
             {isMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
           </IconButton>
           <Slider
