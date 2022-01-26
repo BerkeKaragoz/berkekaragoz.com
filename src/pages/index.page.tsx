@@ -93,7 +93,7 @@ const Homepage: NextPage = () => {
         setBtcPrice(parseFloat(data.price));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     fetch(ETH_PRICE_API)
@@ -102,7 +102,7 @@ const Homepage: NextPage = () => {
         setEthPrice(parseFloat(data.price));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -253,6 +253,7 @@ const Homepage: NextPage = () => {
                           },
                         ])}
                         onClick={() => setStrokeColor(colorRed)}
+                        aria-label={ct("red")}
                       >
                         <div className="w-full h-full bg-red-600 rounded-full" />
                       </button>
@@ -265,6 +266,7 @@ const Homepage: NextPage = () => {
                           },
                         ])}
                         onClick={() => setStrokeColor(colorGreen)}
+                        aria-label={ct("green")}
                       >
                         <div className="w-full h-full bg-green-600 rounded-full" />
                       </button>
@@ -277,6 +279,7 @@ const Homepage: NextPage = () => {
                           },
                         ])}
                         onClick={() => setStrokeColor(colorBlue)}
+                        aria-label={ct("blue")}
                       >
                         <div className="w-full h-full bg-blue-600 rounded-full" />
                       </button>

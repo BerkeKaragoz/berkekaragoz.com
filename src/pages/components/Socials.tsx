@@ -14,12 +14,14 @@ const Socials: React.FC<{}> = (props) => {
       <LinkBox
         href="https://www.linkedin.com/in/BerkeKaragoz"
         className="flex-shrink-0 w-10 sm:w-12"
+        aria-label="LinkedIn"
       >
         <LinkedInIcon />
       </LinkBox>
       <LinkBox
         href="https://github.com/BerkeKaragoz"
         className="flex-shrink-0 w-10 p-1 bg-gray-800 sm:w-12 card dark:bg-gray-900"
+        aria-label="GitHub"
       >
         <GithubLightIcon />
       </LinkBox>

@@ -11,5 +11,10 @@
   "no repeat": "no repeat",
   "page": "page",
   "platforms": "platforms",
-  "contact": "contact"
+  "contact": "contact",
+  "translate": "translate",
+  "mute": "mute",
+  "red": "kırmızı",
+  "blue": "mavi",
+  "green": "yeşil"
 }
