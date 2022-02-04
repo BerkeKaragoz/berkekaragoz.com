@@ -37,7 +37,7 @@ const AboutMe: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
             blurDataURL={assetBlurs[assetIndex]}
           />
         </button>
-        <article className="p-4 mt-8 xs:text-justify lg:mt-0 lg:mr-8 max-w-prose card dark:bg-background-900">
+        <article className="p-4 mt-8 lg:mt-0 lg:mr-8 max-w-prose card dark:bg-background-900">
           <Trans t={t} i18nKey="index.aboutMe.article">
             <p className="indent-xs">
               {

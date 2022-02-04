@@ -4,7 +4,7 @@ import React from "react";
 import { Trans, withTranslation } from "react-i18next";
 
 const ReachMe: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
-  const { t, ...rest } = props;
+  const { t, tReady: tready, ...rest } = props;
 
   return (
     <div

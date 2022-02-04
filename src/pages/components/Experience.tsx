@@ -57,7 +57,7 @@ const ExpPanel: React.FC<{
   } = props;
 
   return (
-    <Tab.Panel as="p" {...rest}>
+    <Tab.Panel {...rest}>
       <div className="mb-2">
         <div className="text-xl">
           <strong>{role}</strong>
@@ -82,7 +82,7 @@ const ExpPanel: React.FC<{
 };
 
 const Experience: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
-  const { t, ...rest } = props;
+  const { t, tReady: tready, ...rest } = props;
   const currentDate = new Date();
 
   return (
