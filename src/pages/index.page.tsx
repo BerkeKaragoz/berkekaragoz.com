@@ -35,8 +35,8 @@ import Projects from "./components/Projects";
 import ReachMe from "./components/ReachMe";
 import Socials from "./components/Socials";
 
-const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCBUSD`;
-const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHBUSD`;
+const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCUSDT`;
+const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHUSDT`;
 
 const colorRed = "rgba(220, 38, 38)";
 const colorGreen = "rgba(5, 150, 105)";
@@ -44,10 +44,10 @@ const colorBlue = "rgba(37, 99, 235)";
 
 type CoinPriceData = { mins: number; price: string };
 
-const loremIpsumText = [
+const tabText = [
+  "Cupiditate provident temporibus enim optio ex fuga fugit eaque, praesentium, minima nobis cum laborum est rem tenetur debitis vero vitae perferendis ad delectus! Blanditiis, quidem nemo nisi eaque dolores ea.",
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat culpa libero consectetur, ex cupiditate voluptate? At, temporibus provident eveniet nihil non deleniti ratione animi qui ab dolorem, excepturi delectus.",
   "Natus sapiente praesentium commodi et id a reiciendis distinctio ex quisquam eaque sequi cum eius rerum quae, repellendus corporis placeat, magnam alias. Delectus ducimus itaque natus assumenda quod blanditiis eum.",
-  "Cupiditate provident temporibus enim optio ex fuga fugit eaque, praesentium, minima nobis cum laborum est rem tenetur debitis vero vitae perferendis ad delectus! Blanditiis, quidem nemo nisi eaque dolores ea.",
 ];
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
@@ -113,7 +113,7 @@ const Homepage: NextPage = () => {
   return (
     <PageContainer>
       <Head>
-        <title>E. Berke Karagöz | Software</title>
+        <title>E. Berke Karagöz | Web Developer</title>
         <meta
           name="description"
           content="Hi, I'm Berke Karagöz. A curious frontend engineer who had been gaining various insights about web development."
@@ -210,7 +210,7 @@ const Homepage: NextPage = () => {
                         <BitcoinIcon width="20px" height="20px" />
                       </div>
                       <code className="text-sm text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1">
-                        {"BTC/BUSD"}
+                        {"BTC/USDT"}
                       </code>
                       <code className="font-medium ms-2">
                         {isNaN(btcPrice) ? "\u2026" : `${btcPrice.toFixed(0)}~`}
@@ -225,7 +225,7 @@ const Homepage: NextPage = () => {
                         />
                       </div>
                       <code className="text-sm text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1">
-                        {"ETH/BUSD"}
+                        {"ETH/USDT"}
                       </code>
                       <code className="font-medium ms-2">
                         {isNaN(ethPrice) ? "\u2026" : `${ethPrice.toFixed(0)}~`}
@@ -359,8 +359,10 @@ const Homepage: NextPage = () => {
                         <HeartIcon className="h-6 text-red-600" />
                       </li>
                       <li className="uppercase-first">
-                        {gt("and more")}
-                        {"\u2026"}
+                        <a href="https://github.com/BerkeKaragoz/berkekaragoz.com/blob/main/package.json">
+                          {gt("and more")}
+                          {"\u2026"}
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -404,7 +406,7 @@ const Homepage: NextPage = () => {
                     <Tab.Panels className="p-3 card text-primary-800 dark:text-primary-200 dark:text-opacity-75">
                       {[...Array(3)].map((v, i) => (
                         <Tab.Panel as="p" key={`${nanoid(5)}-${i}`}>
-                          {i + 1} - {loremIpsumText[i]}
+                          {i + 1} - {tabText[i]}
                         </Tab.Panel>
                       ))}
                     </Tab.Panels>

@@ -1,10 +1,14 @@
 import React from "react";
 import Image, { ImageProps } from "next/image";
 import LinkBox from "@/components/atomic/LinkBox/LinkBox";
-import { placeholderBlurBase64 } from "@/lib/utils/consts";
+import {
+  placeholderBlurBase64,
+  PLATFORM_GITHUB_LINK,
+} from "@/lib/utils/consts";
 import { PAGES_TNS } from "@/lib/i18n/consts";
 import { Trans, withTranslation } from "react-i18next";
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n";
+import LinkText from "@/components/atomic/LinkText/LinkText";
 
 const ProjectCard: React.FC<{
   src: string;
@@ -95,10 +99,12 @@ const Projects: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gIoSUNDX1BST0ZJTEUAAQEAAAIYAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAAHRyWFlaAAABZAAAABRnWFlaAAABeAAAABRiWFlaAAABjAAAABRyVFJDAAABoAAAAChnVFJDAAABoAAAAChiVFJDAAABoAAAACh3dHB0AAAByAAAABRjcHJ0AAAB3AAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAFgAAAAcAHMAUgBHAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAAAAAAAAGKZAAC3hQAAGNpYWVogAAAAAAAAJKAAAA+EAAC2z3BhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABYWVogAAAAAAAA9tYAAQAAAADTLW1sdWMAAAAAAAAAAQAAAAxlblVTAAAAIAAAABwARwBvAG8AZwBsAGUAIABJAG4AYwAuACAAMgAwADEANv/bAEMABgQFBgUEBgYFBgcHBggKEAoKCQkKFA4PDBAXFBgYFxQWFhodJR8aGyMcFhYgLCAjJicpKikZHy0wLSgwJSgpKP/bAEMBBwcHCggKEwoKEygaFhooKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKP/AABEIAAgABQMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//EABsQAAIDAAMAAAAAAAAAAAAAAAECAAURBBOR/8QAFQEBAQAAAAAAAAAAAAAAAAAABAX/xAAWEQEBAQAAAAAAAAAAAAAAAAABAAL/2gAMAwEAAhEDEQA/ALalIW1Xqq3rU4gPFAwemIiIdNOMBf/Z"
         />
       </div>
-      <p className="opacity-80">
-        <Trans t={t} i18nKey="index.projects.seeMore">
-          And more...
-        </Trans>
+      <p>
+        <a href={`${PLATFORM_GITHUB_LINK}?tab=repositories`}>
+          <Trans t={t} i18nKey="index.projects.seeMore">
+            And more...
+          </Trans>
+        </a>
       </p>
     </div>
   );
