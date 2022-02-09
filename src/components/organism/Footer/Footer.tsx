@@ -37,9 +37,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </LinkBox>
           </div>
         </div>
-        <div className="hidden sm:block">
-          <hr className="h-full border-0 border-r border-dashed border-opacity-60 dark:border-opacity-20 border-primary-600 dark:border-primary-400" />
-        </div>
         <nav>
           <p className="mb-2 font-semibold uppercase-first">
             <Trans t={ct} i18nKey="page">
@@ -77,6 +74,25 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </li>
           </ul>
         </nav>
+        <div className="block">
+          <p className="mb-2 font-semibold uppercase-first">
+            <Trans t={ct} i18nKey="other">
+              Other
+            </Trans>
+          </p>
+          <ul>
+            <li className="mb-2">
+              <LinkText href="https://box.berkekaragoz.com">
+                Box.berkekaragoz.com
+              </LinkText>
+            </li>
+            <li className="mb-2">
+              <LinkText href="https://kognitif.berkekaragoz.com">
+                Kognitif
+              </LinkText>
+            </li>
+          </ul>
+        </div>
         <div>
           <div>
             <p className="mb-2 font-semibold uppercase-first">

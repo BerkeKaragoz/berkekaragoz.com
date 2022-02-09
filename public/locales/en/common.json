@@ -14,7 +14,8 @@
   "contact": "contact",
   "translate": "translate",
   "mute": "mute",
-  "red": "kırmızı",
-  "blue": "mavi",
-  "green": "yeşil"
+  "red": "red",
+  "blue": "blue",
+  "green": "green",
+  "other": "other"
 }
