@@ -14,23 +14,21 @@ import EthereumIcon from "@/lib/icons/Ethereum";
 import { ColorScheme } from "@/lib/types/common";
 import { generateRandomInt } from "@/lib/utils";
 import { BINANCE_API_HOST } from "@/lib/utils/consts";
-import { Popover, RadioGroup, Switch, Tab } from "@headlessui/react";
+import { Popover, Switch, Tab } from "@headlessui/react";
 import {
   DotsVerticalIcon,
   EyeIcon,
   HeartIcon,
   LightBulbIcon,
   PencilIcon,
-  TranslateIcon,
+  ServerIcon,
 } from "@heroicons/react/solid";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
 import { GetStaticProps, NextPage } from "next";
-import { i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTheme } from "next-themes";
 import Head from "next/head";
-import router from "next/router";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import AboutMe from "./components/AboutMe";
@@ -166,9 +164,10 @@ const Homepage: NextPage = () => {
                   <Popover.Panel className="absolute z-40 p-2 mt-2 card max-w-prose">
                     <LinkBox
                       href="https://box.berkekaragoz.com"
-                      className="p-2 me-4 card-input border-primary-400 dark:border-primary-600 border-opacity-20 dark:border-opacity-20"
+                      className="flex items-center gap-2 p-2 card-input border-primary-400 dark:border-primary-600 border-opacity-20 dark:border-opacity-20"
                     >
                       <h2 className="font-semibold">Box.berkekaragoz.com</h2>
+                      <ServerIcon className="w-4 h-4" />
                     </LinkBox>
                     <p className="mt-1 text-sm ms-1 opacity-80">
                       <Trans t={t} i18nKey="hero.boxServerDesc">
