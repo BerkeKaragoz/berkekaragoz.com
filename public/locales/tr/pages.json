@@ -5,6 +5,7 @@
       "title": "Merhaba, ben <br/><2>{{name}}</2>.",
       "subtitle": "Web teknolojileri hakkında çeşitli bilgiler edinen meraklı bir önyüz geliştiricisiyim.",
       "actionButton": "Projelerimi görün",
+      "boxServerDesc": "Genel amaçlı NGINX, Ubuntu 20.04 serverim. Bir toolbox olarak kullanıyorum.",
       "widget": {
         "switchLabel": "Kanvas Buğusunu Aktifleştir",
         "websiteTechTitle": "Bu website aşağıdaki teknolojiler ile yapıldı:",

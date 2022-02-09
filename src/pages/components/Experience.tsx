@@ -12,7 +12,7 @@ const ExpTab: React.FC<{}> = (props) => {
   return (
     <Tab className={"card-input p-2 flex-grow"} {...rest}>
       {({ selected }) => (
-        <h3
+        <h2
           className={clsx([
             "inline-block border-b-4 sm:border-b-0 sm:border-r-4 p-1 sm:mr-2 rounded-sm font-semibold w-full",
             {
@@ -25,7 +25,7 @@ const ExpTab: React.FC<{}> = (props) => {
           ])}
         >
           {children}
-        </h3>
+        </h2>
       )}
     </Tab>
   );

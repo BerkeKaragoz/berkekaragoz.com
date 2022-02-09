@@ -14,19 +14,23 @@ import EthereumIcon from "@/lib/icons/Ethereum";
 import { ColorScheme } from "@/lib/types/common";
 import { generateRandomInt } from "@/lib/utils";
 import { BINANCE_API_HOST } from "@/lib/utils/consts";
-import { Switch, Tab } from "@headlessui/react";
+import { Popover, RadioGroup, Switch, Tab } from "@headlessui/react";
 import {
+  DotsVerticalIcon,
   EyeIcon,
   HeartIcon,
   LightBulbIcon,
   PencilIcon,
+  TranslateIcon,
 } from "@heroicons/react/solid";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
 import { GetStaticProps, NextPage } from "next";
+import { i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTheme } from "next-themes";
 import Head from "next/head";
+import router from "next/router";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import AboutMe from "./components/AboutMe";
@@ -127,6 +131,7 @@ const Homepage: NextPage = () => {
             id="hero"
             className="justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg"
           >
+            {/* HERO Intro Start */}
             <div className="flex flex-col items-start justify-center flex-grow-0 md:w-1/2">
               <h1 className="text-5xl font-semibold lg:text-6xl">
                 <Trans
@@ -148,22 +153,52 @@ const Homepage: NextPage = () => {
                   insights about web development.
                 </Trans>
               </p>
-              <LinkBox
-                href="/#projects"
-                className="inline-block px-3 py-2 mt-4 ml-auto font-semibold md:ml-0 card-input"
-              >
-                <Trans t={t} i18nKey="hero.actionButton">
-                  See my projects
-                </Trans>{" "}
-                &rarr;
-              </LinkBox>
+              <div className="flex items-stretch gap-2 mt-2 ml-auto md:ml-0">
+                <Popover className="relative">
+                  <Popover.Button
+                    as={IconButton}
+                    className="w-10 h-full p-2"
+                    aria-label={t("translate")}
+                  >
+                    <DotsVerticalIcon />
+                  </Popover.Button>
+
+                  <Popover.Panel className="absolute z-40 p-2 mt-2 card max-w-prose">
+                    <LinkBox
+                      href="https://box.berkekaragoz.com"
+                      className="p-2 me-4 card-input border-primary-400 dark:border-primary-600 border-opacity-20 dark:border-opacity-20"
+                    >
+                      <h2 className="font-semibold">Box.berkekaragoz.com</h2>
+                    </LinkBox>
+                    <p className="mt-1 text-sm ms-1 opacity-80">
+                      <Trans t={t} i18nKey="hero.boxServerDesc">
+                        My general purpose NGINX, Ubuntu 20.04 server. I use it
+                        as a toolbox.
+                      </Trans>
+                    </p>
+                  </Popover.Panel>
+                </Popover>
+                <LinkBox
+                  href="/#projects"
+                  className="inline-block px-3 py-2 font-semibold card-input"
+                >
+                  <Trans t={t} i18nKey="hero.actionButton">
+                    See my projects
+                  </Trans>{" "}
+                  &rarr;
+                </LinkBox>
+              </div>
             </div>
+            {/* HERO Intro End */}
+            {/* HERO Widget Start (Right side of the page) */}
             <div className="hidden w-1/2 md:block">
+              {/* Hero Widget Left Start  */}
               <div
                 className="h-full p-8 overflow-hidden overflow-y-auto bg-opacity-50 rounded-b-xl bg-primary-100 dark:bg-background-900"
                 style={{ minWidth: "2200px" }}
               >
                 <div className="inline-flex flex-col max-w-md gap-8 pe-8">
+                  {/* Light Bulb */}
                   <div className="flex gap-8 justify-evenly">
                     <IconButton
                       className="flex-grow h-10"
@@ -195,6 +230,7 @@ const Homepage: NextPage = () => {
                       </svg>
                     </IconButton>
                   </div>
+                  {/* Audio Player */}
                   <AudioPlayer
                     src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Rondo_Alla_Turka.ogg"
                     imageSrc="https://upload.wikimedia.org/wikipedia/commons/4/47/Croce-Mozart-Detail.jpg"
@@ -204,6 +240,7 @@ const Homepage: NextPage = () => {
                     defaultVolume={0.35}
                     defaultLoop
                   />
+                  {/* Crpyto Section */}
                   <div className="flex justify-between gap-8">
                     <div className="flex items-center w-full p-2 overflow-hidden card">
                       <div className="flex items-center flex-shrink-0">
@@ -232,6 +269,7 @@ const Homepage: NextPage = () => {
                       </code>
                     </div>
                   </div>
+                  {/* Canvas Section */}
                   <div className="flex gap-8 overflow-hidden rounded-lg">
                     <div className="relative card">
                       <DrawableCanvas
@@ -293,6 +331,7 @@ const Homepage: NextPage = () => {
                       </button>
                     </div>
                   </div>
+                  {/* Blur Section */}
                   <div className="flex items-center justify-between gap-2">
                     <Switch.Group as="div" className="flex items-center gap-2">
                       <Switch.Label className="text-primary-600 dark:text-primary-200">
@@ -339,6 +378,7 @@ const Homepage: NextPage = () => {
                       />
                     </div>
                   </div>
+                  {/* Website Made with Section */}
                   <div className="w-full px-3 py-2 card">
                     <p className="text-primary-600 dark:text-primary-200">
                       <Trans t={t} i18nKey="hero.widget.websiteTechTitle">
@@ -367,6 +407,8 @@ const Homepage: NextPage = () => {
                     </ul>
                   </div>
                 </div>
+                {/* Hero Widget Left End  */}
+                {/* Hero Widget Right Start  */}
                 <div className="inline-flex flex-col max-w-md gap-8 align-top w-80">
                   <Slider />
                   <div className="flex p-2 card">
@@ -428,8 +470,10 @@ const Homepage: NextPage = () => {
                   </div>
                   <AudioPlayer />
                 </div>
+                {/* Hero Widget Right End  */}
               </div>
             </div>
+            {/* HERO Widget End */}
           </Section>
           <Section id="socials">
             <Socials />
