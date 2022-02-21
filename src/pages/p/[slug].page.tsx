@@ -15,7 +15,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
-import { AppMDXComponents } from "@/lib/utils/mdx";
+import { AppMDXComponents } from "@/lib/utils/MDX";
 import LinkText from "@/components/atomic/LinkText/LinkText";
 
 interface MDXPost {
