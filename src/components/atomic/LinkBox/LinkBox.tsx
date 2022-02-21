@@ -8,9 +8,10 @@ const LinkBoxAnchor = React.forwardRef<
   {
     onClick?: LinkBoxOnClick;
     href?: string;
+    as?: React.ElementType;
   } & React.HTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-  const { onClick, href, children, ...rest } = props;
+  const { onClick, as: Component = "button", href, children, ...rest } = props;
 
   return (
     <a
@@ -20,7 +21,7 @@ const LinkBoxAnchor = React.forwardRef<
       ref={ref}
       style={{ display: "contents" }}
     >
-      <button {...rest}>{children}</button>
+      <Component {...rest}>{children}</Component>
     </a>
   );
 });
@@ -31,11 +32,13 @@ const LinkBox: React.FC<
   LinkProps &
     React.HTMLAttributes<HTMLButtonElement> & {
       onClick?: LinkBoxOnClick;
+      component?: React.ElementType;
     }
 > = (props) => {
   const {
     href,
     as,
+    component,
     replace,
     scroll,
     passHref, //unused, always true
@@ -58,7 +61,9 @@ const LinkBox: React.FC<
       locale={locale}
       passHref
     >
-      <LinkBoxAnchor {...rest}>{children}</LinkBoxAnchor>
+      <LinkBoxAnchor as={component} {...rest}>
+        {children}
+      </LinkBoxAnchor>
     </Link>
   );
 };

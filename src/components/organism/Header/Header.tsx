@@ -3,7 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "next-themes";
 import React from "react";
 import { useRouter } from "next/router";
-import { MoonIcon, SunIcon, TranslateIcon } from "@heroicons/react/solid";
+import {
+  MoonIcon,
+  NewspaperIcon,
+  SunIcon,
+  TranslateIcon,
+} from "@heroicons/react/solid";
 import IconButton from "@/components/atomic/IconButton/IconButton";
 import { Popover, RadioGroup } from "@headlessui/react";
 import clsx from "clsx";
@@ -22,7 +27,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   const handleSelectLang = (locale: string) => {
     i18n.changeLanguage(locale);
-    router.push(router.route, undefined, { locale });
+    router.push(router.asPath, undefined, { locale });
   };
 
   const switchTheme = () => {
@@ -56,6 +61,20 @@ export const Header: React.FC<HeaderProps> = (props) => {
           <div
             className="flex-grow" //spacer
           />
+
+          <LinkBox
+            href="/posts"
+            className="flex items-center flex-shrink-0 gap-2 p-1 sm:px-2 card-input"
+            aria-label="posts"
+          >
+            <span className="hidden sm:block">Posts</span>
+            <NewspaperIcon
+              style={{
+                height: "22px",
+                width: "22px",
+              }}
+            />
+          </LinkBox>
 
           <IconButton
             onClick={switchTheme}

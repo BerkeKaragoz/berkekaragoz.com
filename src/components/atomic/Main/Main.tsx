@@ -1,4 +1,3 @@
-import Header from "@/components/organism/Header/Header";
 import clsx from "clsx";
 import React from "react";
 
@@ -8,7 +7,10 @@ export const Main: React.FC<MainProps> = (props) => {
   const { children, className, ...rest } = props;
 
   return (
-    <main className={clsx(["block h-full min-h-full"], className)} {...rest}>
+    <main
+      className={clsx(["block h-full min-h-full flex-grow"], className)}
+      {...rest}
+    >
       {children}
     </main>
   );
