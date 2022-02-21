@@ -47,12 +47,10 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
           </p>
           <p className="text-right opacity-80">
             {meta.tags.map((tag, i) => (
-              <>
-                <LinkText key={tag} href={`/posts/${tag}`}>
-                  {`#${tag}`}
-                </LinkText>
+              <span key={tag}>
+                <LinkText href={`/posts/${tag}`}>{`#${tag}`}</LinkText>
                 {i !== meta.tags.length - 1 && `, `}
-              </>
+              </span>
             ))}
           </p>
         </Section>

@@ -65,9 +65,9 @@ export const Header: React.FC<HeaderProps> = (props) => {
           <LinkBox
             href="/posts"
             className="flex items-center flex-shrink-0 gap-2 p-1 sm:px-2 card-input"
-            aria-label="posts"
+            aria-label="blog"
           >
-            <span className="hidden sm:block">Posts</span>
+            <span className="hidden sm:block">Blog</span>
             <NewspaperIcon
               style={{
                 height: "22px",

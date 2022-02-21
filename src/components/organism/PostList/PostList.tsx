@@ -9,7 +9,7 @@ export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
     <ul className="grid grid-cols-1 gap-8 mt-4 md:grid-cols-2">
       {postMetas.map((post, i) => (
         <li
-          key={`li-${post.slug}-${i}`}
+          key={`${post.slug}`}
           className="flex flex-col justify-between p-2 card"
         >
           <div>
@@ -28,12 +28,10 @@ export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
           <p className="my-1 text-subtitle-color max-w-prose">{post.excerpt}</p>
           <p>
             {post.tags.map((tag, i) => (
-              <>
-                <LinkText key={tag} href={`/posts/${tag}`}>
-                  {`#${tag}`}
-                </LinkText>
+              <span key={`${tag}-${post.slug}`}>
+                <LinkText href={`/posts/${tag}`}>{`#${tag}`}</LinkText>
                 {i !== post.tags.length - 1 && `, `}
-              </>
+              </span>
             ))}
           </p>
         </li>
