@@ -23,7 +23,7 @@ export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (
         <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
         <Section block className="py-16">
           <h1 className="mt-0 h1">Posts</h1>
-          <h2 className="mt-0 h2">With tag: {tag}</h2>
+          <h2 className="mt-0 h2">With tag: #{tag}</h2>
           <PostList postMetas={postMetas} />
         </Section>
         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
