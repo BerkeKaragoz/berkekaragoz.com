@@ -15,6 +15,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import LinkBox from "@/components/atomic/LinkBox/LinkBox";
+import Tooltip from "@/components/atomic/Tooltip/Tooltip";
 
 type HeaderProps = {};
 
@@ -62,30 +63,43 @@ export const Header: React.FC<HeaderProps> = (props) => {
             className="flex-grow" //spacer
           />
 
-          <LinkBox
-            href="/posts"
-            className="flex items-center flex-shrink-0 gap-2 p-1 sm:px-2 card-input"
-            aria-label="blog"
-          >
-            <span className="hidden sm:block">Blog</span>
-            <NewspaperIcon
-              style={{
-                height: "22px",
-                width: "22px",
-              }}
-            />
-          </LinkBox>
+          <Tooltip capitalize text="Blog" className="block sm:hidden">
+            <LinkBox
+              href="/posts"
+              className="flex items-center flex-shrink-0 gap-2 p-1 sm:px-2 card-input"
+              aria-label="blog"
+            >
+              <span className="hidden sm:block">Blog</span>
+              <NewspaperIcon
+                style={{
+                  height: "22px",
+                  width: "22px",
+                }}
+              />
+            </LinkBox>
+          </Tooltip>
 
-          <IconButton
-            onClick={switchTheme}
-            aria-label={theme === "dark" ? t("light theme") : t("dark theme")}
+          <Tooltip
+            capitalize
+            text={theme === "dark" ? t("light theme") : t("dark theme")}
           >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-          </IconButton>
+            <IconButton
+              onClick={switchTheme}
+              aria-label={theme === "dark" ? t("light theme") : t("dark theme")}
+            >
+              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            </IconButton>
+          </Tooltip>
 
           <Popover className="relative">
-            <Popover.Button as={IconButton} aria-label={t("translate")}>
-              <TranslateIcon />
+            <Popover.Button
+              as={IconButton}
+              aria-label={t("translate")}
+              onClick={() => console.log("asds")}
+            >
+              <Tooltip capitalize text={t("translate")} className="mt-2.5">
+                <TranslateIcon />
+              </Tooltip>
             </Popover.Button>
 
             <Popover.Panel className="absolute right-0 z-40 mt-1">

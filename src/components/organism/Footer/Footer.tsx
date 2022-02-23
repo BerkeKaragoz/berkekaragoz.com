@@ -12,6 +12,7 @@ import { Trans, useTranslation, withTranslation } from "react-i18next";
 import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts";
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n";
 import LinkText from "@/components/atomic/LinkText/LinkText";
+import Tooltip from "@/components/atomic/Tooltip/Tooltip";
 
 type FooterProps = ComponentPropsWithTranslation<{}>;
 
@@ -30,10 +31,16 @@ export const Footer: React.FC<FooterProps> = (props) => {
           <div>
             <LinkBox
               href="https://github.com/BerkeKaragoz/berkekaragoz.com"
-              className="w-10 p-1 card-input"
+              className="w-10 p-1 bg-red-500 card-input"
               aria-label="source"
             >
-              <CodeIcon />
+              <Tooltip
+                capitalize
+                text={ct("source code")}
+                className="top-0 -translate-y-full -mt-2.5"
+              >
+                <CodeIcon />
+              </Tooltip>
             </LinkBox>
           </div>
         </div>
