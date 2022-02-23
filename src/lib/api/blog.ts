@@ -3,6 +3,10 @@ import fs from "fs";
 import { sync } from "glob";
 import matter from "gray-matter";
 
+/**
+ * I might put this as an actual API later on
+ */
+
 const POSTS_PATH = path.join(process.cwd(), "posts");
 
 export const getSlugs = (): string[] => {
