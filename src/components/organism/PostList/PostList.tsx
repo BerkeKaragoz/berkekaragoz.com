@@ -1,5 +1,6 @@
 import LinkText from "@/components/atomic/LinkText/LinkText";
 import { PostMeta } from "@/lib/api/blog";
+import { estimateReadingMinutes } from "@/lib/utils";
 import React from "react";
 
 export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
@@ -20,7 +21,10 @@ export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
               <span className="text-subtitle-color">
                 {new Date(post.date).toLocaleDateString()}
               </span>
-              <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-40">
+              <span className="inline-block ml-1 opacity-50 text-subtitle-color">
+                {`• ${estimateReadingMinutes(post.wordCount)} min read`}
+              </span>
+              <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
                 {`/p/${post.slug}`}
               </span>
             </div>

@@ -34,3 +34,8 @@ export const getMonthsBetween = (
     (yearsDifference * 12 + monthsDifference + monthCorrection)
   );
 };
+
+export const getWordCount = (text: string) => text.trim().split(/\s+/).length;
+
+export const estimateReadingMinutes = (wordCount: number, wpm = 225) =>
+  Math.ceil(wordCount / wpm);

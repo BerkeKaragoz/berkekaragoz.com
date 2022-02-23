@@ -17,6 +17,7 @@ import rehypeSlug from "rehype-slug";
 import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import { AppMDXComponents } from "@/lib/utils/MDX";
 import LinkText from "@/components/atomic/LinkText/LinkText";
+import { estimateReadingMinutes } from "@/lib/utils";
 
 interface MDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -26,6 +27,7 @@ interface MDXPost {
 export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
   const { post } = props;
   const { source, meta } = post;
+
   const postDate = new Date(meta.date);
 
   return (
@@ -38,8 +40,9 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
         <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
         <Section as="article" block prose className="py-8 sm:py-16 sm:text-lg">
           <h1 className="my-0 h1">{meta.title}</h1>
-          <p className="mb-6 text-right opacity-60">
-            {`on ${postDate.toLocaleDateString()}`}
+          <p className="mb-6 text-right opacity-60 text-subtitle-color">
+            {`on ${postDate.toLocaleDateString()} `}
+            {`• ${estimateReadingMinutes(meta.wordCount)} min read`}
           </p>
           <MDXRemote {...source} components={AppMDXComponents} />
           <p className="mt-8 text-right opacity-60">
