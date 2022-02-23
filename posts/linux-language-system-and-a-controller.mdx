@@ -21,13 +21,13 @@ There are **3 commands** and **2 files** to know about:
 
 #### Commands
 
-1. `locale`: It stores the locale values of the different parts of the system.
-2. `locale -a`: Installs the language packages which already exist on the system.
+1. `locale`: It shows the locale values of the different parts of the system.
+2. `locale -a`: Lists the language packages which already exist on the system.
 3. `sudo locale-gen`: Installs the packages inside **`/etc/locale.gen`** which aren't already installed.
 
 #### Files
 
-1. `/etc/default/locale`: the file which references to the **`locale`** command. It stores the values of the locales categorized by POSIX and GNU C library. When needed, according to these values, it installs the locale packages if they aren't already installed. The **`LANG`** value, determines the main locale of the system.
+1. `/etc/default/locale`: the file which gets referred by the **`locale`** command. It stores the values of the locales categorized by POSIX and GNU C library. if the locale packages aren't already installed, it installs them when needed according to these values. The **`LANG`** value, determines the main locale of the system.
 
    The first four lines are as follows:
 
@@ -39,7 +39,7 @@ LC_NUMERIC="tr_TR.UTF-8"
 ...
 ```
 
-2. `/etc/locale.gen`: It has the values of the needed locale packages to be installed. When the command **`sudo locale-gen`** is called, it read the values that aren't commented (`#`) out and installs them. By default, it takes the locale list from `/usr/share/i18n/SUPPORTED` and holds the ones which are not installed as commented.
+2. `/etc/locale.gen`: It stores the codes of the locale packages marked as to be installed. When the command **`sudo locale-gen`** is called, it read the values that aren't commented (`#`) out and installs them. By default, it takes the locale list from `/usr/share/i18n/SUPPORTED` and comments out the ones which aren't installed.
 
    The content of the file looks like below:
 
@@ -54,7 +54,7 @@ tr_TR.UTF-8 UTF-8
 
 #### Summary
 
-While the system is starting, it reads the language of the system parts from `locale` file. Then it applies the language from the installed locales. The language of the system parts could be changed by changing the values inside of that file and restarting it. The installed language packages can be checked with the `locale -a` command. If you want to use a locale package that is not installed, you should add the locale value to the `locale.gen` file. Then, run the `sudo locale-gen` command so that the package gets installed.
+While the system is starting, it reads the language of the system parts from `locale` file. Then it applies the language from the installed locales. The language of the system parts could be changed by changing the values inside of that file and restarting it. The available language packages can be checked with the `locale -a` command. If you want to use a locale package that is not available, you should add the locale value to the `locale.gen` file. Then, run the `sudo locale-gen` command so that the package gets installed.
 
 ## Locale Controller
 
