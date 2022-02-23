@@ -31,7 +31,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           <div>
             <LinkBox
               href="https://github.com/BerkeKaragoz/berkekaragoz.com"
-              className="w-10 p-1 bg-red-500 card-input"
+              className="w-10 p-1 card-input"
               aria-label="source"
             >
               <Tooltip
