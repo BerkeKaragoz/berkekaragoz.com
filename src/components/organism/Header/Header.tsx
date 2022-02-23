@@ -1,28 +1,27 @@
-import { COMMON_TNS, GLOSSARY_TNS } from "@/lib/i18n/consts";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "next-themes";
-import React from "react";
-import { useRouter } from "next/router";
+import IconButton from "@/components/atomic/IconButton/IconButton";
+import LinkBox from "@/components/atomic/LinkBox/LinkBox";
+import Tooltip from "@/components/atomic/Tooltip/Tooltip";
+import { COMMON_TNS } from "@/lib/i18n/consts";
+import { Popover, RadioGroup } from "@headlessui/react";
 import {
   MoonIcon,
   NewspaperIcon,
   SunIcon,
   TranslateIcon,
 } from "@heroicons/react/solid";
-import IconButton from "@/components/atomic/IconButton/IconButton";
-import { Popover, RadioGroup } from "@headlessui/react";
 import clsx from "clsx";
-import Link from "next/link";
+import { useTheme } from "next-themes";
 import Image from "next/image";
-import LinkBox from "@/components/atomic/LinkBox/LinkBox";
-import Tooltip from "@/components/atomic/Tooltip/Tooltip";
+import { useRouter } from "next/router";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 type HeaderProps = {};
 
 export const Header: React.FC<HeaderProps> = (props) => {
   //const { children } = props;
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
+  const { theme = "dark", setTheme } = useTheme();
   const { t, i18n } = useTranslation([COMMON_TNS]);
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -92,11 +91,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           </Tooltip>
 
           <Popover className="relative">
-            <Popover.Button
-              as={IconButton}
-              aria-label={t("translate")}
-              onClick={() => console.log("asds")}
-            >
+            <Popover.Button as={IconButton} aria-label={t("translate")}>
               <Tooltip capitalize text={t("translate")} className="mt-2.5">
                 <TranslateIcon />
               </Tooltip>
