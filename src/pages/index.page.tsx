@@ -178,11 +178,11 @@ const Homepage: NextPage = () => {
                   </Popover.Panel>
                 </Popover>
                 <LinkBox
-                  href="/#projects"
+                  href="/posts"
                   className="inline-block px-3 py-2 font-semibold card-input"
                 >
                   <Trans t={t} i18nKey="hero.actionButton">
-                    See my projects
+                    Go to my blog
                   </Trans>{" "}
                   &rarr;
                 </LinkBox>
