@@ -5,13 +5,18 @@ import Footer from "@/components/organism/Footer/Footer";
 import Header from "@/components/organism/Header/Header";
 import PostList from "@/components/organism/PostList/PostList";
 import { getAllPosts, PostMeta } from "@/lib/api/blog";
+import { PAGES_TNS, GLOSSARY_TNS, COMMON_TNS } from "@/lib/i18n/consts";
+import { DEFAULT_LOCALE } from "@/lib/utils/consts";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
+import { Trans, useTranslation } from "react-i18next";
 
 export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (
   props,
 ) => {
   const { postMetas, tag } = props;
+  const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts.[tag]" });
 
   return (
     <PageContainer>
@@ -22,8 +27,17 @@ export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (
       <Main>
         <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
         <Section block className="py-16">
-          <h1 className="mt-0 h1">Posts</h1>
-          <h2 className="mt-0 h2">With tag: #{tag}</h2>
+          <h1 className="mt-0 h1">
+            <Trans t={t} i18nKey="heading">
+              Posts
+            </Trans>
+          </h1>
+          <h2 className="mt-0 uppercase-first h2">
+            <Trans t={t} i18nKey="with tag">
+              With tag
+            </Trans>
+            {`: #${tag}`}
+          </h2>
           <PostList postMetas={postMetas} />
         </Section>
         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
@@ -33,8 +47,8 @@ export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (
   );
 };
 
-export const getStaticProps: GetStaticProps = async (props) => {
-  const { params } = props;
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { params, locale = DEFAULT_LOCALE } = ctx;
   const { tag } = params as { tag: string };
 
   const postMetas = getAllPosts()
@@ -43,16 +57,30 @@ export const getStaticProps: GetStaticProps = async (props) => {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, [
+        PAGES_TNS,
+        GLOSSARY_TNS,
+        COMMON_TNS,
+      ])),
       postMetas,
       tag,
     },
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async ({
+  locales = [DEFAULT_LOCALE],
+}) => {
   const posts = getAllPosts();
   const tags = new Set(posts.map((post) => post.meta.tags).flat());
-  const paths = Array.from(tags).map((tag) => ({ params: { tag } }));
+  const paths = Array.from(tags)
+    .map((tag) =>
+      locales.map((locale) => ({
+        params: { tag },
+        locale,
+      })),
+    )
+    .flat();
 
   return {
     paths,

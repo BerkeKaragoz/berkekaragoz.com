@@ -18,7 +18,7 @@ export const Section: React.FC<SectionProps> = (props) => {
   } = props;
 
   return (
-    <div className="px-8">
+    <div className="px-5 sm:px-8">
       <Component
         className={clsx(
           [

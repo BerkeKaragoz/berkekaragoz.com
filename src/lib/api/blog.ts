@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import { sync } from "glob";
 import matter from "gray-matter";
+import { getWordCount } from "../utils";
 
 /**
  * I might put this as an actual API later on
@@ -26,6 +27,7 @@ export interface PostMeta {
   title: string;
   tags: string[];
   date: string;
+  wordCount: number;
 }
 
 export interface Post {
@@ -47,6 +49,7 @@ export const getPostFromSlug = (slug: string): Post => {
       title: data.title ?? slug,
       tags: data.tags ? data.tags.sort() : [],
       date: (data.date ?? new Date()).toString(),
+      wordCount: getWordCount(content),
     },
   };
 };

@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   return (
     <>
-      <header className="fixed top-0 z-10 w-full px-8 border-b border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-70 bg-background-100 bg-opacity-70 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
+      <header className="fixed top-0 z-10 w-full px-5 border-b sm:px-8 border-primary-200 h-14 border-opacity-80 dark:border-primary-900 dark:border-opacity-70 bg-background-100 bg-opacity-70 dark:bg-background-900 dark:bg-opacity-80 backdrop-filter backdrop-blur-lg">
         <div className="flex items-center h-full max-w-screen-xl gap-2 mx-auto my-0">
           <div className="p-0.5 h-10">
             <LinkBox href="/">
@@ -112,7 +112,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                       ])
                     }
                   >
-                    {locale}
+                    {locale.slice(0, locale.indexOf("-"))}
                   </RadioGroup.Option>
                 ))}
               </RadioGroup>

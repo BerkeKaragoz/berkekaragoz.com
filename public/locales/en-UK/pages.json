@@ -57,5 +57,14 @@
     "reachMe": {
       "title": "Get In Touch"
     }
+  },
+  "posts": {
+    "index": {
+      "heading": "Posts"
+    },
+    "[tag]": {
+      "heading": "Posts",
+      "with tag": "with tag"
+    }
   }
 }

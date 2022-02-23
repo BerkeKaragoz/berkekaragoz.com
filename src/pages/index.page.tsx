@@ -13,7 +13,7 @@ import BitcoinIcon from "@/lib/icons/Bitcoin";
 import EthereumIcon from "@/lib/icons/Ethereum";
 import { ColorScheme } from "@/lib/types/common";
 import { generateRandomInt } from "@/lib/utils";
-import { BINANCE_API_HOST } from "@/lib/utils/consts";
+import { BINANCE_API_HOST, DEFAULT_LOCALE } from "@/lib/utils/consts";
 import { Popover, Switch, Tab } from "@headlessui/react";
 import {
   DotsVerticalIcon,
@@ -53,11 +53,11 @@ const tabText = [
 ];
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { locale } = ctx;
+  const { locale = DEFAULT_LOCALE } = ctx;
 
   return {
     props: {
-      ...(await serverSideTranslations(locale || "en", [
+      ...(await serverSideTranslations(locale, [
         PAGES_TNS,
         GLOSSARY_TNS,
         COMMON_TNS,
