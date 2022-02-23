@@ -11,11 +11,14 @@ import { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import React from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 //TODO pass locale to date parsing
 //TODO empty state
 export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
   const { postMetas } = props;
+
+  const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts.index" });
 
   return (
     <PageContainer>
@@ -26,7 +29,11 @@ export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
       <Main>
         <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
         <Section as="article" className="py-16" block>
-          <h1 className="mt-0 h1">Posts</h1>
+          <h1 className="mt-0 h1">
+            <Trans t={t} i18nKey="heading">
+              Posts
+            </Trans>
+          </h1>
           <PostList postMetas={postMetas} />
         </Section>
         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />

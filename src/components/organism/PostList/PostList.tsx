@@ -1,10 +1,21 @@
 import LinkText from "@/components/atomic/LinkText/LinkText";
 import { PostMeta } from "@/lib/api/blog";
+import { COMMON_TNS } from "@/lib/i18n/consts";
+import { ComponentPropsWithActiveTranslation } from "@/lib/types/i18n";
 import { estimateReadingMinutes } from "@/lib/utils";
+import { DEFAULT_LOCALE } from "@/lib/utils/consts";
 import React from "react";
+import { useTranslation, withTranslation } from "react-i18next";
 
-export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
-  const { postMetas } = props;
+type PostListProps = ComponentPropsWithActiveTranslation<{
+  postMetas: PostMeta[];
+}>;
+
+export const PostList: React.FC<PostListProps> = (props) => {
+  const { postMetas, i18n } = props;
+  const locale = i18n.language ?? DEFAULT_LOCALE;
+
+  const { t: ct } = useTranslation([COMMON_TNS]);
 
   return (
     <ul className="grid grid-cols-1 gap-8 mt-4 md:grid-cols-2">
@@ -19,10 +30,12 @@ export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
             </LinkText>
             <div className="inline-block">
               <span className="text-subtitle-color">
-                {new Date(post.date).toLocaleDateString()}
+                {new Date(post.date).toLocaleDateString(locale)}
               </span>
               <span className="inline-block ml-1 opacity-50 text-subtitle-color">
-                {`• ${estimateReadingMinutes(post.wordCount)} min read`}
+                {`• ${estimateReadingMinutes(post.wordCount)} ${ct(
+                  "min read",
+                )}`}
               </span>
               <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
                 {`/p/${post.slug}`}
@@ -44,4 +57,4 @@ export const PostList: React.FC<{ postMetas: PostMeta[] }> = (props) => {
   );
 };
 
-export default PostList;
+export default withTranslation(COMMON_TNS)(PostList);

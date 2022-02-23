@@ -19,6 +19,7 @@ import { AppMDXComponents } from "@/lib/utils/MDX";
 import LinkText from "@/components/atomic/LinkText/LinkText";
 import { estimateReadingMinutes } from "@/lib/utils";
 import { DEFAULT_LOCALE } from "@/lib/utils/consts";
+import { useTranslation } from "react-i18next";
 
 interface MDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -27,6 +28,10 @@ interface MDXPost {
 
 export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
   const { post } = props;
+  const { i18n } = useTranslation([PAGES_TNS], { keyPrefix: "p.[slug]" });
+  const locale = i18n.language ?? DEFAULT_LOCALE;
+
+  const { t: ct } = useTranslation([COMMON_TNS]);
   const { source, meta } = post;
 
   const postDate = new Date(meta.date);
@@ -42,12 +47,12 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
         <Section as="article" block prose className="py-8 sm:py-16 sm:text-lg">
           <h1 className="my-0 h1">{meta.title}</h1>
           <p className="mb-6 text-right opacity-60 text-subtitle-color">
-            {`on ${postDate.toLocaleDateString()} `}
-            {`• ${estimateReadingMinutes(meta.wordCount)} min read`}
+            {`${postDate.toLocaleDateString(locale)} `}
+            {`• ${estimateReadingMinutes(meta.wordCount)} ${ct("min read")}`}
           </p>
           <MDXRemote {...source} components={AppMDXComponents} />
           <p className="mt-8 text-right opacity-60">
-            {`"${meta.title}" on ${postDate.toLocaleString()}`}
+            {`"${meta.title}", ${postDate.toLocaleString(locale)}`}
           </p>
           <p className="text-right opacity-80">
             {meta.tags.map((tag, i) => (

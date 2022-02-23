@@ -61,6 +61,10 @@
   "posts": {
     "index": {
       "heading": "Gönderiler"
+    },
+    "[tag]": {
+      "heading": "Gönderiler",
+      "with tag": "sadece"
     }
   }
 }
