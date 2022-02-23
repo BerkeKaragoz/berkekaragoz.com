@@ -4,7 +4,7 @@
     "hero": {
       "title": "Hi, I'm <br/><2>{{name}}</2>.",
       "subtitle": "A curious frontend engineer who had been gaining various insights about web development.",
-      "actionButton": "See my projects",
+      "actionButton": "Go to my blog",
       "boxServerDesc": "My general purpose NGINX, Ubuntu 20.04 server. I use it as a toolbox.",
       "widget": {
         "switchLabel": "Enable Canvas Blur",

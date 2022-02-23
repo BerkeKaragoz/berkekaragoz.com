@@ -18,7 +18,7 @@ const ReachMe: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
       </h2>
       <a
         href="mailto:mail@berkekaragoz.com"
-        className="p-2 text-xl font-semibold rounded-lg sm:text-4xl unstyled-a hover:ring-2"
+        className="p-2 text-3xl font-semibold rounded-lg sm:text-5xl unstyled-a hover:ring-2"
       >
         mail@berkekaragoz.com
       </a>

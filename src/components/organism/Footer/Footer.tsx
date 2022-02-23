@@ -39,18 +39,13 @@ export const Footer: React.FC<FooterProps> = (props) => {
         </div>
         <nav>
           <p className="mb-2 font-semibold uppercase-first">
-            <Trans t={ct} i18nKey="page">
-              Page
-            </Trans>
+            <LinkText href="/" className="unstyled-a">
+              <Trans t={t} i18nKey="index.title">
+                Home
+              </Trans>
+            </LinkText>
           </p>
           <ul>
-            <li className="mb-2">
-              <LinkText href="/">
-                <Trans t={t} i18nKey="index.title">
-                  Home
-                </Trans>
-              </LinkText>
-            </li>
             <li className="mb-2">
               <LinkText href="/#projects">
                 <Trans t={t} i18nKey="index.projects.title">
@@ -82,13 +77,16 @@ export const Footer: React.FC<FooterProps> = (props) => {
           </p>
           <ul>
             <li className="mb-2">
-              <LinkText href="https://box.berkekaragoz.com">
-                Box.berkekaragoz.com
-              </LinkText>
+              <LinkText href="/posts">Blog</LinkText>
             </li>
             <li className="mb-2">
               <LinkText href="https://kognitif.berkekaragoz.com">
                 Kognitif
+              </LinkText>
+            </li>
+            <li className="mb-2">
+              <LinkText href="https://box.berkekaragoz.com">
+                Box.berkekaragoz.com
               </LinkText>
             </li>
           </ul>
