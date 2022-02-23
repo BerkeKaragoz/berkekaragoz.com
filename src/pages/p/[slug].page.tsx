@@ -18,6 +18,7 @@ import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import { AppMDXComponents } from "@/lib/utils/MDX";
 import LinkText from "@/components/atomic/LinkText/LinkText";
 import { estimateReadingMinutes } from "@/lib/utils";
+import { DEFAULT_LOCALE } from "@/lib/utils/consts";
 
 interface MDXPost {
   source: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -65,7 +66,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { locale = "en", params } = ctx;
+  const { locale = DEFAULT_LOCALE, params } = ctx;
   const { slug } = params as { slug: string };
   const { content: stringContent, meta } = getPostFromSlug(slug);
   const mdxSource = await serialize(stringContent, {
@@ -81,7 +82,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale || "en", [
+      ...(await serverSideTranslations(locale, [
         PAGES_TNS,
         GLOSSARY_TNS,
         COMMON_TNS,
@@ -92,12 +93,14 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+export const getStaticPaths: GetStaticPaths = async ({
+  locales = [DEFAULT_LOCALE],
+}) => {
   const slugs = getSlugs();
 
   const paths = slugs
     .map((slug) =>
-      (locales || ["en"]).map((locale) => ({
+      locales.map((locale) => ({
         params: { slug },
         locale,
       })),

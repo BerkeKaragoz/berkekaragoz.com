@@ -112,7 +112,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                       ])
                     }
                   >
-                    {locale}
+                    {locale.slice(0, locale.indexOf("-"))}
                   </RadioGroup.Option>
                 ))}
               </RadioGroup>

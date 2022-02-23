@@ -57,5 +57,10 @@
     "reachMe": {
       "title": "İletişime Geçin"
     }
+  },
+  "posts": {
+    "index": {
+      "heading": "Gönderiler"
+    }
   }
 }

@@ -6,6 +6,7 @@ import Header from "@/components/organism/Header/Header";
 import PostList from "@/components/organism/PostList/PostList";
 import { getAllPosts, PostMeta } from "@/lib/api/blog";
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts";
+import { DEFAULT_LOCALE } from "@/lib/utils/consts";
 import { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
@@ -36,12 +37,12 @@ export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { locale } = ctx;
+  const { locale = DEFAULT_LOCALE } = ctx;
   const postMetas = getAllPosts().map((post) => post.meta);
 
   return {
     props: {
-      ...(await serverSideTranslations(locale || "en", [
+      ...(await serverSideTranslations(locale, [
         PAGES_TNS,
         GLOSSARY_TNS,
         COMMON_TNS,
