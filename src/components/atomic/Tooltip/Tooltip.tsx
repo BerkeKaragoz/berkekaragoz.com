@@ -32,7 +32,8 @@ export const Tooltip: React.FC<{
             <Popover.Panel
               static
               className={clsx([
-                "absolute right-1/2 transform translate-x-1/2 text-center p-1 mt-1 text-sm z-41 text-subtitle-color card",
+                //TODO temply disabled on small screens
+                "hidden sm:block absolute right-1/2 transform translate-x-1/2 text-center p-1 mt-1 text-sm z-41 text-subtitle-color card",
                 className,
                 { capitalize: capitalize },
               ])}
