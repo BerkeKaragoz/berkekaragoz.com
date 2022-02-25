@@ -19,6 +19,6 @@ module.exports = {
     "p.ts",
   ], //for custom page extensions
   images: {
-    domains: ["upload.wikimedia.org"],
+    domains: ["upload.wikimedia.org", "user-images.githubusercontent.com"],
   },
 };
