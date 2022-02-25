@@ -57,7 +57,9 @@ export const getPostFromSlug = (slug: string): Post => {
 export const getAllPosts = () => {
   const posts = getSlugs().map((slug) => getPostFromSlug(slug));
 
-  const sorted = posts.sort((a, b) => (a.meta.date > b.meta.date ? 1 : -1));
+  const sorted = posts.sort((a, b) =>
+    new Date(a.meta.date) < new Date(b.meta.date) ? 1 : -1,
+  );
 
   return sorted;
 };
