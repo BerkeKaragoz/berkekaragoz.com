@@ -19,4 +19,5 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
   pre: (props) => (
     <pre className="p-1 mb-2 overflow-hidden rounded-md card" {...props} />
   ),
+  code: (props) => <code className="code" {...props} />,
 };

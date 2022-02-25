@@ -16,15 +16,15 @@
   }
 
   .h1 {
-    @apply mt-4 mb-8 text-4xl sm:text-6xl heading;
+    @apply mt-8 mb-8 text-4xl sm:text-6xl heading;
   }
 
   .h2 {
-    @apply mt-4 mb-6 text-2xl sm:text-3xl heading;
+    @apply mt-6 mb-6 text-2xl sm:text-3xl heading;
   }
 
   .h3 {
-    @apply mt-2 mb-4 text-lg sm:text-xl heading;
+    @apply mt-4 mb-4 text-lg sm:text-xl heading;
   }
 
   .h4 {
@@ -47,12 +47,21 @@
   .ol .ul {
     list-style-type: circle;
     list-style-position: inside;
-    margin-left: 15px;
+    @apply ml-4;
   }
   .ol .ol,
   .ul .ol {
     list-style-type: lower-latin;
     list-style-position: inside;
-    margin-left: 15px;
+    @apply ml-4;
+  }
+
+  .ol:not(li .ol, li .ul),
+  .ul:not(li .ol, li .ul) {
+    @apply mb-2 ml-1;
+  }
+
+  .code {
+    @apply select-all text-primary-600 dark:text-primary-300;
   }
 }
