@@ -7,7 +7,7 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
       <Image alt={props.alt} {...props} />
     </div>
   ),
-  p: (props) => <p className="mb-2" {...props} />,
+  p: (props) => <p className="mb-8" {...props} />,
   h1: (props) => <h1 className="h1" {...props} />,
   h2: (props) => <h2 className="h2" {...props} />,
   h3: (props) => <h3 className="h3" {...props} />,
