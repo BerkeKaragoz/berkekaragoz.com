@@ -1,0 +1,161 @@
+---
+title: Make and Publish Your ESLint Config with PNPM in a Monorepo
+tags:
+  - javascript
+  - npm
+  - code-standards
+  - web-development
+  - guide
+date: 28 Apr 22 9:50 UTC+3
+excerpt: How to make an ESLint config in a monorepo structure and publish it with pnpm.
+---
+
+In this article, we will create an ESLint config using a [monorepo](https://monorepo.tools/) structure. Use the packages inside our repository with [workspaces](https://pnpm.io/workspaces) of [pnpm](https://pnpm.io/) as dependencies. And finally, publish those packages to [npm](https://www.npmjs.com/) repository.
+
+Repository: [github.com/BerkeKaragoz/eslint-config](https://github.com/BerkeKaragoz/eslint-config)
+
+<Image
+  priority
+  src="/assets/posts/make-and-publish-eslint-monorepo-config-with-pnpm/cover.jpg"
+  alt="eslint-config-berkekaragoz NPM page"
+  width={1256}
+  height={922}
+  quality={90}
+  placeholder="blur"
+  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+Pf/338ACfUD+5LbVnEAAAAASUVORK5CYII="
+/>
+
+## ESLint
+
+The way that you use presets in ESLint is by extending the packages in your config file.
+
+If I want to use [`eslint-config-berkekaragoz`](https://www.npmjs.com/package/eslint-config-berkekaragoz) and add my preferred settings on top of that, I would have to do [this](https://eslint.org/docs/2.0.0/developer-guide/shareable-configs#using-a-shareable-config):
+
+```yaml
+# .eslintrc.yml
+extends:
+  - berkekaragoz
+```
+
+##### But where does the actual name come from?
+
+Short answer, NPM package name.
+
+There are certain [naming recommendations for ESLint](https://eslint.org/docs/developer-guide/shareable-configs#using-a-shareable-config) configs. Either start with `eslint-config-` or `@SCOPE/eslint-config`.
+
+So in the example above, you can either extend with `berkekaragoz` or `eslint-config-berkekaragoz` strings.
+
+These will resolve to the config exported from `index.js`. If you want to export multiple configs, lets say `react`, you would export the settings from `react.js`. That will be usable by extending the `berkekaragoz/react`.
+
+### Making Shareable ESLint config
+
+There are 3 types of configuration types in ESLint:
+
+- JSON
+- YAML
+- JavaScript Object
+
+To make your shareable config, you have to export it as a JavaScript object.
+
+A simple one would look like this:
+
+```js
+// index.js
+module.exports = {
+  rules: { eqeqeq: "error" }, // do not allow '=='
+};
+```
+
+You can see [the list of ESLint rules here](https://eslint.org/docs/rules/).
+
+## Our Monorepo
+
+You can export all of your config in one package. But since we want to export multiple packages, we are making a [monorepo](https://monorepo.tools/) structure. This way the versions of the configs are clearer. And, this is a good sample to learn publishing. The project is simple, but you still have to do the same publishing steps such as a complex project.
+
+I make the monorepo package name as a [scoped module]("@berkekaragoz/eslint-config"): `@berkekaragoz/eslint-config`.
+
+This structure is going to be:
+
+```
+packages/ # all have index.js and package.json + additional exports
+    all/ # could be just consisting from 'extends' statements
+    formatting/
+    suggestions/
+    react/
+    typescript/
+package.json
+```
+
+All of those packages name except `all` is directly suffixed to `eslint-config-berkekaragoz-`.
+
+The directory named `all`'s package name is: `eslint-config-berkekaragoz`.
+
+Assuming the ESLint configs has been made, it is time to configure `package.json`'s.
+
+### Workspaces
+
+We have 5 packages in our sample. Well, actually 6 including our monorepo, but thats not going to be published.
+
+Now, in the `@berkekaragoz/eslint-config`'s package.json, we are going to set up the [workspaces](https://pnpm.io/workspaces).
+
+But why? For example, we want to use `formatting` package inside `all` package, so it is a dependency. Our packages are in the same repository, but we are not going to export all of our monorepo 5 times. That means, we have to use NPM dependencies.
+
+We could specify the file paths to the `package.json`'s to use those dependencies. But there would be more work when publishing since relative paths shouldn't be used.
+
+This is where workspaces come handy:
+
+```json
+{
+  "dependencies": {
+    "eslint-config-berkekaragoz-formatting": "workspace:*"
+  }
+}
+```
+
+This is a [pnpm](https://pnpm.io/) feature. After you create a workspace, it uses the package inside the monorepo. And when you publish the package, it automatically [replaces the versions](https://pnpm.io/workspaces#publishing-workspace-packages) with npm repository versions.
+
+So lets setup the workspace by configuring the monorepo (`@berkekaragoz/eslint-config`) `package.json`:
+
+```json
+{
+  "workspaces": ["packages/*"]
+}
+```
+
+And use `pnpm i`. If you never used pnpm, you will notice that it installs very fast. It [leverages symlinks](https://pnpm.io/motivation) to avoid duplication.
+
+## Publishing
+
+Publishing is very simple at this point. You have to be registered to [npmjs.com](https://www.npmjs.com/), or the repository you are going to publish to.
+
+Run `pnpm publish` in the directory of your package to publish it. Or you can use `pnpm -r publish` in the root directory of the monorepo.
+
+My package: [npmjs.com/package/eslint-config-berkekaragoz](https://www.npmjs.com/package/eslint-config-berkekaragoz)
+
+### Dealing with Problems
+
+When I was publishing my own packages, I ran into some problems with workspace. The publish command, did not replace `workspace:*` versions with the proper ones while publishing. This was on version `7.0.0-rc.8`.
+
+You can examine packages by using the `pnpm view` command, same as npm. So did I.
+
+Expected behavior:
+`pnpm view eslint-config-berkekaragoz@0.1.8`:
+![image](https://user-images.githubusercontent.com/34271483/165362253-0ad9df10-2bc2-422f-bede-7b4bf45e2ab7.png)
+
+Actual behavior:
+`pnpm view eslint-config-berkekaragoz@0.1.7`:
+![image](https://user-images.githubusercontent.com/34271483/165362361-f803bbcc-f497-49dd-81dc-896a40dc99c5.png)
+
+I joined pnpm's Discord server: [r.pnpm.io/chat](https://r.pnpm.io/chat). Turns out there already was an issue related to that and they have patched this problem in less than 24 hours.
+
+#### Testing
+
+Before publishing, especially if it affects production grade software, you should test the package out. You should use the pack command to get a tarball, and use that as a dependency first. Then you can publish that tarball.
+
+Funny thing is, I actually did that. I packed with `pnpm` and published with `npm` (because I knew about the problem). But I left the tarball where it is generated, inside the package. When I published it specifiying the path of the tarball, it made a new tarball and published it. Also not replacing the `workspace:*`.
+
+You can run into these problems, but you should know the ways to deal with them.
+
+### End
+
+Thanks for reading. This has became longer than I imagined. I would love to hear your feedback. You can even leave it as [an issue in the monorepo](https://github.com/BerkeKaragoz/eslint-config/issues/new?assignees=&labels=feedback&template=feedback.md&title=) that we used as a sample.
