@@ -3,7 +3,7 @@ import LinkedInIcon from "@/lib/icons/LinkedIn"
 import GithubLightIcon from "@/lib/icons/GithubLight"
 import React from "react"
 
-const Socials: React.FC<{}> = (props) => {
+const Socials: React.FC = (props) => {
    const { ...rest } = props
 
    return (

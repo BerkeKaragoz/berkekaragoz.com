@@ -11,7 +11,7 @@ import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import LinkText from "@/components/atomic/LinkText/LinkText"
 import Tooltip from "@/components/atomic/Tooltip/Tooltip"
 
-type FooterProps = ComponentPropsWithTranslation<{}>
+type FooterProps = ComponentPropsWithTranslation<Record<string, unknown>>
 
 export const Footer: React.FC<FooterProps> = (props) => {
    const { t } = props

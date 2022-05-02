@@ -53,7 +53,8 @@ const DrawableCanvas: React.FC<DrawableCanvasProps> = (props) => {
       if (!context) return
       context.lineCap = "round"
       context.lineWidth = 2
-      // @ts-ignore
+
+      // @ts-expect-error by default forwardedRef.current is readonly. Let's ignore it
       contextRef.current = context
 
       window.addEventListener("mouseup", drawEnd)

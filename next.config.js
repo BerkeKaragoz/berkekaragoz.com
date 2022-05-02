@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
 const { i18n } = require("./next-i18next.config")
 
@@ -17,7 +18,7 @@ module.exports = {
       "p.js",
       "p.tsx",
       "p.ts",
-   ], //for custom page extensions
+   ], // for custom page extensions
    images: {
       domains: ["upload.wikimedia.org", "user-images.githubusercontent.com"],
    },

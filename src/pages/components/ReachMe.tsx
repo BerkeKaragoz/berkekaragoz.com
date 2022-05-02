@@ -3,7 +3,9 @@ import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
 
-const ReachMe: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
+const ReachMe: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = (
+   props
+) => {
    const { t, tReady: tready, ...rest } = props
 
    return (

@@ -23,14 +23,13 @@ function useShareForwardedRef<T>(forwardedRef: React.Ref<T>) {
          forwardedRef(innerRef.current)
          return
       }
-      // @ts-ignore
-      // by default forwardedRef.current is readonly. Let's ignore it
+      // @ts-expect-error by default forwardedRef.current is readonly. Let's ignore it
       forwardedRef.current = innerRef.current
    })
 
    return innerRef
 }
-type SliderProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> & {}
+type SliderProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
 
 const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
    (props, forwardedRef) => {
