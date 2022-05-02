@@ -1,10 +1,10 @@
 ---
 title: Making a Web Extension in Minutes
 tags:
-  - javascript
-  - web-extension
-  - web-development
-  - guide
+   - javascript
+   - web-extension
+   - web-development
+   - guide
 date: 13 Apr 22 16:44 UTC+3
 excerpt: Learn how to develop a web extension by making a simple media saver extension.
 ---
@@ -13,14 +13,14 @@ excerpt: Learn how to develop a web extension by making a simple media saver ext
 
 An extension generally has 4 types of scripts:
 
-- Background
-  - The worker script, runs on its own context
-- Popup
-  - That button on the top right
-- Options
-  - Configuration page of the extension where you open it up by right clicking the popup button.
-- Content Scripts
-  - These scripts get injected to the pages that you want. Usually those are the scripts when you imagine of extensions.
+-  Background
+   -  The worker script, runs on its own context
+-  Popup
+   -  That button on the top right
+-  Options
+   -  Configuration page of the extension where you open it up by right clicking the popup button.
+-  Content Scripts
+   -  These scripts get injected to the pages that you want. Usually those are the scripts when you imagine of extensions.
 
 ## Media Saver Extension
 
@@ -31,14 +31,14 @@ Repository: [github.com/BerkeKaragoz/Media-Saver-WebExt](https://github.com/Berk
 Before continuing, you can skim over the [Getting Started sample of Chrome Docs](https://developer.chrome.com/docs/extensions/mv3/getstarted/).
 
 <Image
-  priority
-  src="/assets/posts/making-a-web-extension-in-minutes/add-extension.jpg"
-  alt="Media Saver Extension"
-  width={697}
-  height={396}
-  quality={90}
-  placeholder="blur"
-  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAEAAcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8p9Wmkj8IWN8sskd1KdjSJhGI9yuCc45yeaKKK25V2D2ku5//2Q=="
+   priority
+   src="/assets/posts/making-a-web-extension-in-minutes/add-extension.jpg"
+   alt="Media Saver Extension"
+   width={697}
+   height={396}
+   quality={90}
+   placeholder="blur"
+   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAEAAcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8p9Wmkj8IWN8sskd1KdjSJhGI9yuCc45yeaKKK25V2D2ku5//2Q=="
 />
 
 Make sure to refresh the extension from here everytime you make an update and want to see it.
@@ -47,10 +47,10 @@ Make sure to refresh the extension from here everytime you make an update and wa
 
 Making a web extension starts with creating a `manifest` file. The manifest file is the entry point for your extension. It is a JSON file that contains information about:
 
-- Extension information (name, description, version and etc.)
-- Permissions
-- Script entry points (background, popup, options and content scripts)
-- Icons
+-  Extension information (name, description, version and etc.)
+-  Permissions
+-  Script entry points (background, popup, options and content scripts)
+-  Icons
 
 The current manifest file version is 3. And version 2 is getting deprecated.
 
@@ -95,8 +95,8 @@ Now we add what we want the extension to do when it is installed:
 
 ```js
 chrome.runtime.onInstalled.addListener(() => {
-  // Bla bla...
-});
+   // Bla bla...
+})
 ```
 
 `chrome` is the namescape for the browser and it's [API](https://developer.chrome.com/docs/extensions/reference/)'s, and we are using the [`runtime` API](https://developer.chrome.com/docs/extensions/reference/runtime/).
@@ -106,10 +106,10 @@ chrome.runtime.onInstalled.addListener(() => {
 Now we want to add a button to the menu that comes up when you right click on a page.
 
 <Image
-  src="/assets/posts/making-a-web-extension-in-minutes/contextMenu.jpg"
-  alt="Context Menu of the Extension"
-  width={541}
-  height={568}
+   src="/assets/posts/making-a-web-extension-in-minutes/contextMenu.jpg"
+   alt="Context Menu of the Extension"
+   width={541}
+   height={568}
 />
 
 First we will have to create the menu.
@@ -118,10 +118,10 @@ First we will have to create the menu.
 // background.js
 //chrome.runtime.onInstalled.addListener(() => {
 chrome.contextMenus.create({
-  title: "Save",
-  id: "save",
-  contexts: ["image", "video", "link", "audio", "selection", "page"], // ex: if you right click on an image, the button will show up
-});
+   title: "Save",
+   id: "save",
+   contexts: ["image", "video", "link", "audio", "selection", "page"], // ex: if you right click on an image, the button will show up
+})
 //});
 ```
 
@@ -139,10 +139,10 @@ Now, the way the context menus work, isn't like appending a button to a list. We
 
 ```json
 {
-  "editable": false,
-  "frameId": 0,
-  "menuItemId": "save",
-  "pageUrl": "https://berkekaragoz.com/"
+   "editable": false,
+   "frameId": 0,
+   "menuItemId": "save",
+   "pageUrl": "https://berkekaragoz.com/"
 }
 ```
 
@@ -157,20 +157,20 @@ Now we add our `onclick` handler. To note that we don't add it inside the `onIns
 ```js
 // background.js
 chrome.contextMenus.onClicked.addListener((event) => {
-  switch (event.menuItemId) {
-    case "save":
-      //saveMedia(event); // the function that we want to run
-      break;
-    default:
-      console.error("Unknown menuItemId: ", event);
-      chrome.notifications.create("unknown_menuItemId", {
-        type: "basic",
-        iconUrl: "/images/icon-48.png",
-        title: "Failed",
-        message: JSON.stringify(event),
-      });
-  }
-});
+   switch (event.menuItemId) {
+      case "save":
+         //saveMedia(event); // the function that we want to run
+         break
+      default:
+         console.error("Unknown menuItemId: ", event)
+         chrome.notifications.create("unknown_menuItemId", {
+            type: "basic",
+            iconUrl: "/images/icon-48.png",
+            title: "Failed",
+            message: JSON.stringify(event),
+         })
+   }
+})
 ```
 
 Now note that we just created a notifiaction if the `menuItemId` doesn't match our records. This also requires permission `notifications`. And this is a desktop notification.
@@ -182,39 +182,39 @@ Lets actually make the function that parses saves whatever we want.
 ```js
 //background.js
 const saveMedia = (event) => {
-  const {
-    mediaType = "",
-    // these change depending on where the menu was opened (context)
-    pageUrl,
-    srcUrl,
-    linkUrl,
-  } = event;
+   const {
+      mediaType = "",
+      // these change depending on where the menu was opened (context)
+      pageUrl,
+      srcUrl,
+      linkUrl,
+   } = event
 
-  const media = {
-    url: null,
-    mediaType,
-    date: new Date().toISOString(),
-  };
+   const media = {
+      url: null,
+      mediaType,
+      date: new Date().toISOString(),
+   }
 
-  if (srcUrl) {
-    media.url = srcUrl;
-  } else if (linkUrl) {
-    media.url = linkUrl;
-    media.mediaType = "link";
-  } else if (pageUrl) {
-    media.url = pageUrl;
-    media.mediaType = "page";
-  }
+   if (srcUrl) {
+      media.url = srcUrl
+   } else if (linkUrl) {
+      media.url = linkUrl
+      media.mediaType = "link"
+   } else if (pageUrl) {
+      media.url = pageUrl
+      media.mediaType = "page"
+   }
 
-  // we gave the key, and the callback function the fetch our data from storage
-  chrome.storage.sync.get("savedMedia", ({ savedMedia }) => {
-    const appendedMedia = Array.isArray(savedMedia) // because it may be empty etc.
-      ? [...savedMedia, media]
-      : [media];
+   // we gave the key, and the callback function the fetch our data from storage
+   chrome.storage.sync.get("savedMedia", ({ savedMedia }) => {
+      const appendedMedia = Array.isArray(savedMedia) // because it may be empty etc.
+         ? [...savedMedia, media]
+         : [media]
 
-    chrome.storage.sync.set({ savedMedia: appendedMedia }); // save the appended data
-  });
-};
+      chrome.storage.sync.set({ savedMedia: appendedMedia }) // save the appended data
+   })
+}
 ```
 
 Since we are using the `storage` API, we also need to add `storage` to permissions on `manifest.json`.
@@ -258,10 +258,10 @@ As I said, these scripts get injected to the open pages in the browser. Becarefu
 For this extension, we want to show a toast when we save a media to show what we saved. This will run in the context of each page.
 
 <Image
-  src="/assets/posts/making-a-web-extension-in-minutes/save-link.jpg"
-  alt="Extension Toast"
-  width={444}
-  height={327}
+   src="/assets/posts/making-a-web-extension-in-minutes/save-link.jpg"
+   alt="Extension Toast"
+   width={444}
+   height={327}
 />
 
 Lets create the toast component:
@@ -305,8 +305,8 @@ We will send a [simple one-time request](https://developer.chrome.com/docs/exten
 // chrome.storage.sync.get("savedMedia", ({ savedMedia }) => {
 //  ...
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-  chrome.tabs.sendMessage(tabs[0].id, media, () => {}); //tabId, data, callback
-});
+   chrome.tabs.sendMessage(tabs[0].id, media, () => {}) //tabId, data, callback
+})
 // });
 //}
 ```
@@ -320,20 +320,20 @@ And we add `onMessage` event handler in `toast.js`:
 // toast.js
 //...
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const { mediaType, url, date } = request;
-  if (!mediaType) return;
+   const { mediaType, url, date } = request
+   if (!mediaType) return
 
-  toastTitleEl.textContent = `${capitalizeFirstLetter(mediaType)} saved!`;
-  toastMessageEl.innerHTML = `<a href="${url}" target="_blank" referrer="no-referrer">${url}</a>`;
+   toastTitleEl.textContent = `${capitalizeFirstLetter(mediaType)} saved!`
+   toastMessageEl.innerHTML = `<a href="${url}" target="_blank" referrer="no-referrer">${url}</a>`
 
-  toastEl.classList.add("show");
+   toastEl.classList.add("show")
 
-  setTimeout(() => {
-    toastEl.classList.remove("show");
-  }, 3000);
+   setTimeout(() => {
+      toastEl.classList.remove("show")
+   }, 3000)
 
-  sendResponse();
-});
+   sendResponse()
+})
 ```
 
 Rest of the toast component code is [here](https://github.com/BerkeKaragoz/Media-Saver-WebExt/tree/main/src/content_scripts/toast).

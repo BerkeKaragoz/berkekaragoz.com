@@ -3,12 +3,12 @@ title: Setup webpack for TypeScript and SASS Manually
 date: 25 Feb 22 13:11 UTC+3
 excerpt: How webpack works? Bundling HTML, CSS, JS and assets. Configuring webpack for TypeScript and SASS.
 tags:
-  - typescript
-  - sass
-  - webpack
-  - react
-  - web-development
-  - guide
+   - typescript
+   - sass
+   - webpack
+   - react
+   - web-development
+   - guide
 ---
 
 ## Introduction
@@ -17,33 +17,33 @@ By the end of this guide, you will have a project that you can customize its inn
 
 What could this bring to you?
 
-- You won't have to eject to customize your bundling
-- You can make your features such as making the routing similar to Next.js
-- Broader debugging opportunities
+-  You won't have to eject to customize your bundling
+-  You can make your features such as making the routing similar to Next.js
+-  Broader debugging opportunities
 
 &nbsp;
 
 Here is what we are going to do:
 
-- [Configure webpack for the minimum project](#preparing-the-initial-project)
-- [Put HTML, CSS and JS Together](#html-css-and-js-together)
-  - [Bundle Assets](#assets)
-- [Prepare webpack for Development](#configuring-webpack-for-development)
-- [Setup TypeScript](#setup-typescript)
-  - [Configure React](#configuring-react)
-- [Configure SASS](#configuring-sass)
-- [What to do next?](#final)
+-  [Configure webpack for the minimum project](#preparing-the-initial-project)
+-  [Put HTML, CSS and JS Together](#html-css-and-js-together)
+   -  [Bundle Assets](#assets)
+-  [Prepare webpack for Development](#configuring-webpack-for-development)
+-  [Setup TypeScript](#setup-typescript)
+   -  [Configure React](#configuring-react)
+-  [Configure SASS](#configuring-sass)
+-  [What to do next?](#final)
 
 &nbsp;
 
 <Image
-  priority
-  src="/assets/posts/webpack-post-cover.jpg"
-  alt="Cover of Setup TypeScript and SASS Manually with webpack"
-  width={730}
-  height={241}
-  placeholder="blur"
-  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAACAAQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8ovFUEbasSUXJQZOOtFFFaHHR+BH/2Q=="
+   priority
+   src="/assets/posts/webpack-post-cover.jpg"
+   alt="Cover of Setup TypeScript and SASS Manually with webpack"
+   width={730}
+   height={241}
+   placeholder="blur"
+   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAACAAQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8ovFUEbasSUXJQZOOtFFFaHHR+BH/2Q=="
 />
 
 Final project repository on GitHub: [BerkeKaragoz/berkekaragoz-webpack-post](https://github.com/BerkeKaragoz/berkekaragoz-webpack-post)
@@ -89,8 +89,8 @@ _You can fill them as you wish, here are the contents of what I did._
 
 ```css
 html {
-  background-color: #333;
-  color: aliceblue;
+   background-color: #333;
+   color: aliceblue;
 }
 ```
 
@@ -99,20 +99,20 @@ html {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+   </head>
+   <body></body>
 </html>
 ```
 
 `index.js`:
 
 ```js
-console.log("I didn't watch Star Wars.");
+console.log("I didn't watch Star Wars.")
 ```
 
 `sample.jpg`: [A link to my recent photo](https://raw.githubusercontent.com/BerkeKaragoz/berkekaragoz-webpack-post/master/public/sample.jpg)
@@ -125,40 +125,40 @@ Install webpack and its CLI as a dev dependency:
 Create the `webpack.config.js` under the root of the project folder. And don't forget to read the comments.
 
 ```js
-const path = require("path");
+const path = require("path")
 
-ENTRY_PATH = path.resolve(__dirname, "src/index");
-DIST_PATH = path.resolve(__dirname, "dist");
+ENTRY_PATH = path.resolve(__dirname, "src/index")
+DIST_PATH = path.resolve(__dirname, "dist")
 
 module.exports = {
-  mode: "development", // or production
-  entry: {
-    // remember that we deleted the main in package.json
-    // this is where the project starts
-    main: ENTRY_PATH,
-  },
-  output: {
-    // this is where the bundled packages go
-    path: DIST_PATH,
-    // [name] is the name of the file and
-    // [contenthash] is the hash of the bundle
-    filename: "[name].[contenthash].js",
-    clean: true, // remove existing previous bundles
-  },
-  //later
-  module: {},
-  plugins: [],
-};
+   mode: "development", // or production
+   entry: {
+      // remember that we deleted the main in package.json
+      // this is where the project starts
+      main: ENTRY_PATH,
+   },
+   output: {
+      // this is where the bundled packages go
+      path: DIST_PATH,
+      // [name] is the name of the file and
+      // [contenthash] is the hash of the bundle
+      filename: "[name].[contenthash].js",
+      clean: true, // remove existing previous bundles
+   },
+   //later
+   module: {},
+   plugins: [],
+}
 ```
 
 Add the `build` command to the `package.json` under `scripts`:
 
 ```json
 {
-  "scripts": {
-    "test": "...",
-    "build": "webpack"
-  }
+   "scripts": {
+      "test": "...",
+      "build": "webpack"
+   }
 }
 ```
 
@@ -218,7 +218,7 @@ module: {
 Import the CSS file to `index.js`:
 
 ```js
-import "./index.css";
+import "./index.css"
 //console.log("I didn't watch Star Wars.");
 ```
 
@@ -271,10 +271,10 @@ Add the script to run the server to the `package.json`:
 
 ```json
 {
-  "scripts": {
-    "dev": "webpack serve --open",
-    "build": "..."
-  }
+   "scripts": {
+      "dev": "webpack serve --open",
+      "build": "..."
+   }
 }
 ```
 
@@ -348,11 +348,11 @@ Configure `ts-loader` in `webpack.config.js`:
 Change `src/index.js` to `src/index.ts` and test it out:
 
 ```ts
-import "./index.css";
+import "./index.css"
 
-let myVar: number;
-myVar = 1;
-console.log("myVar is", myVar);
+let myVar: number
+myVar = 1
+console.log("myVar is", myVar)
 ```
 
 You should see the output.
@@ -368,38 +368,38 @@ Install React: `npm i react react-dom @types/react @types/react-dom`
 Firstly, let's create our component at `src/App.tsx`:
 
 ```tsx
-import React from "react";
+import React from "react"
 //import sampleImg from "./sample.jpg";
-import "./index.scss";
+import "./index.scss"
 
 export const App: React.FC = () => {
-  return (
-    <div>
-      <h1>BerkeKaragoz webpack Post</h1>
-    </div>
-  );
-};
+   return (
+      <div>
+         <h1>BerkeKaragoz webpack Post</h1>
+      </div>
+   )
+}
 
-export default App;
+export default App
 ```
 
 Now we have to render it somehow. But React requires a div to start on. So we modify our `src/index.html` file:
 
 ```html
 <body>
-  <!-- div#__react -->
-  <div id="__react"></div>
+   <!-- div#__react -->
+   <div id="__react"></div>
 </body>
 ```
 
 We will select that `div` with its id and mount the `App.tsx` to it in `index.ts`:
 
 ```ts
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
 
-ReactDOM.render(React.createElement(App), document.getElementById("__react"));
+ReactDOM.render(React.createElement(App), document.getElementById("__react"))
 ```
 
 Notice that you cannot call the App with JSX notation. Because `index` file has `.ts` extension instead of `.tsx`. You can configure that on your own if you want to. But for this article, I will continue.
@@ -411,13 +411,13 @@ When you run your app, you will see the heading in the document with the proper 
 Now while you can access the resources under `public/` folder, you will get an error if you try to import your asset to your code directly. That happens because we have to declare them as modules for TypeScript at the root as `index.d.ts`:
 
 ```ts
-declare module "*.jpg";
-declare module "*.jpeg";
-declare module "*.png";
-declare module "*.svg";
-declare module "*.ico";
-declare module "*.webp";
-declare module "*.gif";
+declare module "*.jpg"
+declare module "*.jpeg"
+declare module "*.png"
+declare module "*.svg"
+declare module "*.ico"
+declare module "*.webp"
+declare module "*.gif"
 ```
 
 Remember that we had included this file in `tsconfig.json` before. That's how it gets into our project.
@@ -454,8 +454,8 @@ And since they are also seen as resources, we have to declare them as modules to
 
 ```ts
 //...
-declare module "*.scss";
-declare module "*.sass";
+declare module "*.scss"
+declare module "*.sass"
 ```
 
 We can test it out with a normal file, but let's use CS modules. Lets create `App.module.scss`:
@@ -464,9 +464,9 @@ We can test it out with a normal file, but let's use CS modules. Lets create `Ap
 $maxWidth: 512px;
 
 .image {
-  max-width: $maxWidth;
-  height: $maxWidth * 0.5;
-  object-fit: cover;
+   max-width: $maxWidth;
+   height: $maxWidth * 0.5;
+   object-fit: cover;
 }
 ```
 
@@ -482,10 +482,10 @@ import style from "./App.module.scss";
 You will see that the images will be resized.
 
 <Image
-  src="https://user-images.githubusercontent.com/34271483/155733073-81504c85-fb18-4712-8c54-999b155b74df.png"
-  alt="The project output screenshot"
-  width={709}
-  height={413}
+   src="https://user-images.githubusercontent.com/34271483/155733073-81504c85-fb18-4712-8c54-999b155b74df.png"
+   alt="The project output screenshot"
+   width={709}
+   height={413}
 />
 
 ## Final

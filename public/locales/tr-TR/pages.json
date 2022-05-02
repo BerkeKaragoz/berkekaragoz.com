@@ -1,70 +1,70 @@
 {
-  "index": {
-    "title": "Anasayfa",
-    "hero": {
-      "title": "Merhaba, ben <br/><2>{{name}}</2>.",
-      "subtitle": "Web teknolojileri hakkında çeşitli bilgiler edinen meraklı bir önyüz geliştiricisiyim.",
-      "actionButton": "Bloğuma gidin",
-      "boxServerDesc": "Genel amaçlı NGINX, Ubuntu 20.04 serverim. Bir toolbox olarak kullanıyorum.",
-      "widget": {
-        "switchLabel": "Kanvas Buğusunu Aktifleştir",
-        "websiteTechTitle": "Bu website aşağıdaki teknolojiler ile yapıldı:",
-        "interact": "Buradakilerle etkileşim kurun veya üstteki bardan dili değiştirin!",
-        "generateRandomNumber": "Rastgele Sayı Üret"
+   "index": {
+      "title": "Anasayfa",
+      "hero": {
+         "title": "Merhaba, ben <br/><2>{{name}}</2>.",
+         "subtitle": "Web teknolojileri hakkında çeşitli bilgiler edinen meraklı bir önyüz geliştiricisiyim.",
+         "actionButton": "Bloğuma gidin",
+         "boxServerDesc": "Genel amaçlı NGINX, Ubuntu 20.04 serverim. Bir toolbox olarak kullanıyorum.",
+         "widget": {
+            "switchLabel": "Kanvas Buğusunu Aktifleştir",
+            "websiteTechTitle": "Bu website aşağıdaki teknolojiler ile yapıldı:",
+            "interact": "Buradakilerle etkileşim kurun veya üstteki bardan dili değiştirin!",
+            "generateRandomNumber": "Rastgele Sayı Üret"
+         }
+      },
+      "projects": {
+         "title": "Projeler",
+         "intergallerySubtitle": "Bir Medya Platformu (Yapım Aşamasında)",
+         "localeVerifierSubtitle": "GNU/Linux sistemleri için",
+         "lobiumSubtitle": "Turnuva Yönetim Paketi",
+         "kognitifSubtitle": "Kognitif Antreman Aracı (PWA)",
+         "vrTrainingSubtitle": "DATAMARKET için PoC uygulaması",
+         "seeMore": "Ve daha fazlası..."
+      },
+      "aboutMe": {
+         "title": "Hakkımda",
+         "article": "<0>Merhaba ben Berke. İstanbul'da doğdum. Çocukluğumdan beri bilgisayarlarla ilgiliyim. Bunun sayesinde tasarım üzerinde bir kaç fırsat yakaladım. Oyun forumlarından başlayarak grafikler tasarlamaya başladım. Bilkent Üniversitesi'ne <1></1> kayıt olmadan önce yazılım geliştirme ile ilgili bilgiler edinmeye başladım.</0><1>O zamandan beri yazılımın birden fazla alanında bilgiler ediniyorum. Önyüz geliştirmeye odaklanmam sayesinde hem programlama hem de tasarım üzerine yeteneklerimi bir arada kullanabilir oldum.</1><2>Hobilerime gelirsek, rekabetçi oyunlar en büyükleri arasında. FPS'in satrançı olarak bilinen Quake'i aktif olarak oynuyorum. Buna ek olarak Counter-Strike gibi oyunlarla geçmişim oldu. Buralardan edindiğim tecrübeler ile şu anda turnuva yöneticisi olarak çalışıyorum.</2>"
+      },
+      "experience": {
+         "jul": "Tem",
+         "feb": "Şub",
+         "jun": "Haz",
+         "sep": "Eyl",
+         "nov": "Kas",
+         "may": "May",
+         "dec": "Ara",
+         "title": "Deneyim",
+         "volunteer": "Gönüllü",
+         "freelance": "Bağımsız",
+         "fullTime": "Tam Zamanlı",
+         "present": "Halen",
+         "mos": "ay",
+         "yr": "yıl",
+         "eslGamingRole": "Yüklenici Admin",
+         "eslGamingDesc": "Aşağıdaki gibi projelerde oyuncuları ve turnuvaları yönetiyorum:<1><0>ESL PUBG Masters / Open</0><1>Sony Open Series Apex Legends</1><2>Sony Call of Duty: Cold War Battle for Beta / CHOWH1 Challenge</2><3>Özel Etkinlikler</3></1>",
+         "havelsanRole": "Stajyer Yazılım Mühendisi",
+         "havelsanDesc": "<0>Liman Merkezi Yönetim Sistemi (MYS) ve GNU/Linux sistemleri için C ve Shell Scripting kullanarak politikalar, parçalar ve araçlar geliştirdim.</0><1>Liman MYS'yi tanıtmak için Hugo ve Bulma framework'lerini kullanarak <1>liman.havelsan.com.tr</1> sitesini geliştirdim.</1>",
+         "datamarketRole": "Stajyer VR Geliştiricisi",
+         "datamarketDesc": "PoC olarak Unity, C#, ShaderLab, Android SDK ve Oculus SDK kullanarak ürün yönetimi ve dijital pazarlama ekibi için GearVR'da çalışan bir dinamik eğitim uygulaması geliştirdim. Eğitimler bilgisayarda admin panelinden yaratılabilir ve diğer cihazlar ile senkronize edilebilir. Aralarındaki iletişim ise PHP ve MySQL ile yapıldı.",
+         "eslPlayRole": "Gönüllü Yetkili Hakem",
+         "eslPlayDesc": "Avrupa ekibinde Counter-Strike ve Quake bölümlerinde kıdemli hakemlik yaptım.<1><0>+10 lig ve +60 kupa turnuvasının organizasyonunda yönetici olarak yer aldım.</0><1>Gelecek turnuvalar için zaman zaman yazılım entegrasyonlarını kullanarak test ettim.</1><2>Oyunculara destek sağlayıp, biletler aracılığı ile problemleri çözdüm.</2></1>",
+         "riotRole": "Kampüs Elçisi",
+         "riotDesc": "VALORANT etkinlikleri düzenledim ve Bilkent Üniversitesi topluluk yöneticiliği yaptım.",
+         "anchaRole": "Mekanik Tasarımcı",
+         "anchaDesc": "<0>European Rover Challenge'da rekabet etmek üzere tekerlekler ve tekerlek ile motorlar arası bağlantıları tasarladım. Tüm parçalar Mars ve uzayın ekstrem koşullarına dayanmak için tasarlandı. Ana tasarım programımız Autodesk Inventor'dı.</0><1>Ancha Space Technologies disiplinlerarası bir organizasyon olup, merkezi Istanbul Başakşehir Living Lab'tadır. Takım uzay teknolojileri ile alakalı yarışmalarda rekabet etmektedir.</1>"
+      },
+      "reachMe": {
+         "title": "İletişime Geçin"
       }
-    },
-    "projects": {
-      "title": "Projeler",
-      "intergallerySubtitle": "Bir Medya Platformu (Yapım Aşamasında)",
-      "localeVerifierSubtitle": "GNU/Linux sistemleri için",
-      "lobiumSubtitle": "Turnuva Yönetim Paketi",
-      "kognitifSubtitle": "Kognitif Antreman Aracı (PWA)",
-      "vrTrainingSubtitle": "DATAMARKET için PoC uygulaması",
-      "seeMore": "Ve daha fazlası..."
-    },
-    "aboutMe": {
-      "title": "Hakkımda",
-      "article": "<0>Merhaba ben Berke. İstanbul'da doğdum. Çocukluğumdan beri bilgisayarlarla ilgiliyim. Bunun sayesinde tasarım üzerinde bir kaç fırsat yakaladım. Oyun forumlarından başlayarak grafikler tasarlamaya başladım. Bilkent Üniversitesi'ne <1></1> kayıt olmadan önce yazılım geliştirme ile ilgili bilgiler edinmeye başladım.</0><1>O zamandan beri yazılımın birden fazla alanında bilgiler ediniyorum. Önyüz geliştirmeye odaklanmam sayesinde hem programlama hem de tasarım üzerine yeteneklerimi bir arada kullanabilir oldum.</1><2>Hobilerime gelirsek, rekabetçi oyunlar en büyükleri arasında. FPS'in satrançı olarak bilinen Quake'i aktif olarak oynuyorum. Buna ek olarak Counter-Strike gibi oyunlarla geçmişim oldu. Buralardan edindiğim tecrübeler ile şu anda turnuva yöneticisi olarak çalışıyorum.</2>"
-    },
-    "experience": {
-      "jul": "Tem",
-      "feb": "Şub",
-      "jun": "Haz",
-      "sep": "Eyl",
-      "nov": "Kas",
-      "may": "May",
-      "dec": "Ara",
-      "title": "Deneyim",
-      "volunteer": "Gönüllü",
-      "freelance": "Bağımsız",
-      "fullTime": "Tam Zamanlı",
-      "present": "Halen",
-      "mos": "ay",
-      "yr": "yıl",
-      "eslGamingRole": "Yüklenici Admin",
-      "eslGamingDesc": "Aşağıdaki gibi projelerde oyuncuları ve turnuvaları yönetiyorum:<1><0>ESL PUBG Masters / Open</0><1>Sony Open Series Apex Legends</1><2>Sony Call of Duty: Cold War Battle for Beta / CHOWH1 Challenge</2><3>Özel Etkinlikler</3></1>",
-      "havelsanRole": "Stajyer Yazılım Mühendisi",
-      "havelsanDesc": "<0>Liman Merkezi Yönetim Sistemi (MYS) ve GNU/Linux sistemleri için C ve Shell Scripting kullanarak politikalar, parçalar ve araçlar geliştirdim.</0><1>Liman MYS'yi tanıtmak için Hugo ve Bulma framework'lerini kullanarak <1>liman.havelsan.com.tr</1> sitesini geliştirdim.</1>",
-      "datamarketRole": "Stajyer VR Geliştiricisi",
-      "datamarketDesc": "PoC olarak Unity, C#, ShaderLab, Android SDK ve Oculus SDK kullanarak ürün yönetimi ve dijital pazarlama ekibi için GearVR'da çalışan bir dinamik eğitim uygulaması geliştirdim. Eğitimler bilgisayarda admin panelinden yaratılabilir ve diğer cihazlar ile senkronize edilebilir. Aralarındaki iletişim ise PHP ve MySQL ile yapıldı.",
-      "eslPlayRole": "Gönüllü Yetkili Hakem",
-      "eslPlayDesc": "Avrupa ekibinde Counter-Strike ve Quake bölümlerinde kıdemli hakemlik yaptım.<1><0>+10 lig ve +60 kupa turnuvasının organizasyonunda yönetici olarak yer aldım.</0><1>Gelecek turnuvalar için zaman zaman yazılım entegrasyonlarını kullanarak test ettim.</1><2>Oyunculara destek sağlayıp, biletler aracılığı ile problemleri çözdüm.</2></1>",
-      "riotRole": "Kampüs Elçisi",
-      "riotDesc": "VALORANT etkinlikleri düzenledim ve Bilkent Üniversitesi topluluk yöneticiliği yaptım.",
-      "anchaRole": "Mekanik Tasarımcı",
-      "anchaDesc": "<0>European Rover Challenge'da rekabet etmek üzere tekerlekler ve tekerlek ile motorlar arası bağlantıları tasarladım. Tüm parçalar Mars ve uzayın ekstrem koşullarına dayanmak için tasarlandı. Ana tasarım programımız Autodesk Inventor'dı.</0><1>Ancha Space Technologies disiplinlerarası bir organizasyon olup, merkezi Istanbul Başakşehir Living Lab'tadır. Takım uzay teknolojileri ile alakalı yarışmalarda rekabet etmektedir.</1>"
-    },
-    "reachMe": {
-      "title": "İletişime Geçin"
-    }
-  },
-  "posts": {
-    "index": {
-      "heading": "Gönderiler"
-    },
-    "[tag]": {
-      "heading": "Gönderiler",
-      "with tag": "sadece"
-    }
-  }
+   },
+   "posts": {
+      "index": {
+         "heading": "Gönderiler"
+      },
+      "[tag]": {
+         "heading": "Gönderiler",
+         "with tag": "sadece"
+      }
+   }
 }

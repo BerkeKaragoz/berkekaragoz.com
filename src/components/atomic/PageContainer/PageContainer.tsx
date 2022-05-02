@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 
-type PageContainerProps = {};
+type PageContainerProps = {}
 
 export const PageContainer: React.FC<PageContainerProps> = (props) => {
-  const { children } = props;
+   const { children } = props
 
-  return (
-    <div className="box-border flex flex-col flex-grow h-full min-h-screen p-0 m-0 overflow-x-hidden">
-      {children}
-    </div>
-  );
-};
+   return (
+      <div className="box-border flex flex-col flex-grow h-full min-h-screen p-0 m-0 overflow-x-hidden">
+         {children}
+      </div>
+   )
+}
 
-export default PageContainer;
+export default PageContainer

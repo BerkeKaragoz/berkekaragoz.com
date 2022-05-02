@@ -1,22 +1,22 @@
 @layer components {
-  .card {
-    @apply border rounded-lg border-opacity-80 border-primary-200 dark:border-primary-900 bg-background-100 dark:bg-background-800;
-  }
+   .card {
+      @apply border rounded-lg border-opacity-80 border-primary-200 dark:border-primary-900 bg-background-100 dark:bg-background-800;
+   }
 
-  .card-input {
-    @apply card;
-    @apply inline-block transition-colors border-primary-300 hover:bg-opacity-80 active:bg-accent-200 dark:border-primary-700 dark:active:bg-accent-900;
-  }
+   .card-input {
+      @apply card;
+      @apply inline-block transition-colors border-primary-300 hover:bg-opacity-80 active:bg-accent-200 dark:border-primary-700 dark:active:bg-accent-900;
+   }
 
-  .card-input:not([disabled]) {
-    @apply text-primary-500 dark:text-primary-200 hover:text-primary-600 dark:hover:text-primary-100;
-  }
+   .card-input:not([disabled]) {
+      @apply text-primary-500 dark:text-primary-200 hover:text-primary-600 dark:hover:text-primary-100;
+   }
 
-  .card-input[disabled] {
-    @apply transition-none cursor-default border-background-300 text-background-400 bg-background-200 text-opacity-70 dark:border-background-600 dark:bg-background-700 dark:bg-opacity-80;
-  }
+   .card-input[disabled] {
+      @apply transition-none cursor-default border-background-300 text-background-400 bg-background-200 text-opacity-70 dark:border-background-600 dark:bg-background-700 dark:bg-opacity-80;
+   }
 
-  .card-backdrop {
-    @apply bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20;
-  }
+   .card-backdrop {
+      @apply bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20;
+   }
 }

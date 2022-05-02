@@ -1,34 +1,34 @@
 @-moz-document url-prefix() {
-  .infoText {
-    margin-bottom: 1px;
-  }
+   .infoText {
+      margin-bottom: 1px;
+   }
 }
 
 .marquee {
-  white-space: nowrap;
-  overflow: hidden;
+   white-space: nowrap;
+   overflow: hidden;
 }
 
 .marquee span {
-  display: inline-block;
-  min-width: 100%;
-  animation: animatete 10s alternate linear infinite;
+   display: inline-block;
+   min-width: 100%;
+   animation: animatete 10s alternate linear infinite;
 }
 
 .marquee:hover span {
-  animation-play-state: paused;
+   animation-play-state: paused;
 }
 
 @keyframes animatete {
-  20% {
-    transform: translate(0, 0);
-  }
+   20% {
+      transform: translate(0, 0);
+   }
 
-  90% {
-    transform: translate(calc(-100% + 14rem), 0);
-  }
+   90% {
+      transform: translate(calc(-100% + 14rem), 0);
+   }
 
-  to {
-    transform: translate(calc(-100% + 14rem), 0);
-  }
+   to {
+      transform: translate(calc(-100% + 14rem), 0);
+   }
 }

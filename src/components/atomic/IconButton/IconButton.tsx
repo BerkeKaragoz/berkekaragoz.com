@@ -1,33 +1,33 @@
-import clsx from "clsx";
-import React from "react";
-import styles from "./icon-button.module.css";
+import clsx from "clsx"
+import React from "react"
+import styles from "./icon-button.module.css"
 
 type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  small?: boolean;
-};
+   small?: boolean
+}
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  (props, ref) => {
-    const { children, className, small, ...rest } = props;
+   (props, ref) => {
+      const { children, className, small, ...rest } = props
 
-    return (
-      <button
-        {...rest}
-        className={clsx([
-          styles.button,
-          "card-input group flex-shrink-0",
-          { "w-8 h-8 p-1": !small },
-          { "w-5 h-5 p-0.5 border-opacity-50": small },
-          className,
-        ])}
-        ref={ref}
-      >
-        {children}
-      </button>
-    );
-  },
-);
+      return (
+         <button
+            {...rest}
+            className={clsx([
+               styles.button,
+               "card-input group flex-shrink-0",
+               { "w-8 h-8 p-1": !small },
+               { "w-5 h-5 p-0.5 border-opacity-50": small },
+               className,
+            ])}
+            ref={ref}
+         >
+            {children}
+         </button>
+      )
+   }
+)
 
-IconButton.displayName = "App-IconButton";
+IconButton.displayName = "App-IconButton"
 
-export default IconButton;
+export default IconButton

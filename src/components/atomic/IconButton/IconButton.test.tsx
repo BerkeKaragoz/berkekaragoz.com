@@ -1,33 +1,33 @@
-import { fireEvent, screen } from "@testing-library/dom";
-import { render } from "@testing-library/react";
-import IconButton from "./IconButton";
+import { fireEvent, screen } from "@testing-library/dom"
+import { render } from "@testing-library/react"
+import IconButton from "./IconButton"
 
 describe("Icon Button", () => {
-  it("can click", () => {
-    const fnMock = jest.fn();
+   it("can click", () => {
+      const fnMock = jest.fn()
 
-    render(<IconButton onClick={fnMock}></IconButton>);
+      render(<IconButton onClick={fnMock}></IconButton>)
 
-    const el = screen.getByRole("button");
+      const el = screen.getByRole("button")
 
-    expect(el).toBeInTheDocument();
+      expect(el).toBeInTheDocument()
 
-    expect(fnMock).toBeCalledTimes(0);
+      expect(fnMock).toBeCalledTimes(0)
 
-    fireEvent.click(el);
+      fireEvent.click(el)
 
-    expect(fnMock).toBeCalledTimes(1);
-  });
+      expect(fnMock).toBeCalledTimes(1)
+   })
 
-  it("can be disabled", () => {
-    const fnMock = jest.fn();
+   it("can be disabled", () => {
+      const fnMock = jest.fn()
 
-    render(<IconButton onClick={fnMock} disabled></IconButton>);
+      render(<IconButton onClick={fnMock} disabled></IconButton>)
 
-    const el = screen.getByRole("button");
+      const el = screen.getByRole("button")
 
-    fireEvent.click(el);
+      fireEvent.click(el)
 
-    expect(fnMock).toBeCalledTimes(0);
-  });
-});
+      expect(fnMock).toBeCalledTimes(0)
+   })
+})

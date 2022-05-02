@@ -1,70 +1,70 @@
 {
-  "index": {
-    "title": "Home",
-    "hero": {
-      "title": "Hi, I'm <br/><2>{{name}}</2>.",
-      "subtitle": "A curious frontend engineer who had been gaining various insights about web development.",
-      "actionButton": "Go to my blog",
-      "boxServerDesc": "My general purpose NGINX, Ubuntu 20.04 server. I use it as a toolbox.",
-      "widget": {
-        "switchLabel": "Enable Canvas Blur",
-        "websiteTechTitle": "This website was made with:",
-        "interact": "Interact with all of these or change the language from the top bar!",
-        "generateRandomNumber": "Generate Random Number"
+   "index": {
+      "title": "Home",
+      "hero": {
+         "title": "Hi, I'm <br/><2>{{name}}</2>.",
+         "subtitle": "A curious frontend engineer who had been gaining various insights about web development.",
+         "actionButton": "Go to my blog",
+         "boxServerDesc": "My general purpose NGINX, Ubuntu 20.04 server. I use it as a toolbox.",
+         "widget": {
+            "switchLabel": "Enable Canvas Blur",
+            "websiteTechTitle": "This website was made with:",
+            "interact": "Interact with all of these or change the language from the top bar!",
+            "generateRandomNumber": "Generate Random Number"
+         }
+      },
+      "projects": {
+         "title": "Projects",
+         "intergallerySubtitle": "A Media Platform (WiP)",
+         "localeVerifierSubtitle": "For GNU/Linux systems",
+         "lobiumSubtitle": "Tournament Management Bundle",
+         "kognitifSubtitle": "Cognitive Training Tool (PWA)",
+         "vrTrainingSubtitle": "A PoC app for DATAMARKET",
+         "seeMore": "And more..."
+      },
+      "aboutMe": {
+         "title": "About Me",
+         "article": "<0>Hi, my name is Berke. I was born in Istanbul. My interest in computer technology has been there since I was a kid. That led me to discover designing opportunities. Starting from gaming forums to designing graphics for various reasons. I have started to learn about software development just before I matriculated to Bilkent University <1></1>.</0><1>Since then, I have been learning about multiple fields of software development. Focusing on front-end development abled me to utilize my graphic design skills with programming.</1><2>As for the hobbies, competitive gaming is one of my biggest ones. I play the chess of FPS, Quake, actively. In addition to this, I had been playing Counter-Strike and more others. After, I have been working as a tournament manager.</2>"
+      },
+      "experience": {
+         "jul": "Jul",
+         "feb": "Feb",
+         "jun": "Jun",
+         "sep": "Sep",
+         "nov": "Nov",
+         "may": "May",
+         "dec": "Dec",
+         "title": "Experience",
+         "volunteer": "Volunteer",
+         "freelance": "Freelance",
+         "fullTime": "Full Time",
+         "present": "Present",
+         "mos": "mos",
+         "yr": "yr",
+         "eslGamingRole": "Contractor Admin",
+         "eslGamingDesc": "Managing tournaments and players in projects such as:<1><0>ESL PUBG Masters / Open</0><1>Sony Open Series Apex Legends</1><2>Sony Call of Duty: Cold War Battle for Beta / CHOWH1 Challenge</2><3>Special Events</3></1>",
+         "havelsanRole": "Software Engineer Intern",
+         "havelsanDesc": "<0>Developed policies and tools for Liman MYS (a configuration management and software provisioning tool) and GNU/Linux systems focused on Debian using C and Shell Scripting.</0><1>Developed <1>liman.havelsan.com.tr</1> with Hugo and Bulma frameworks to present Liman MYS.</1>",
+         "datamarketRole": "VR Development Intern",
+         "datamarketDesc": "Developed a dynamic training application (as PoC) for GearVR, for our digital channel marketing and product management unit with Unity using C#, ShaderLab, Android SDK and Oculus SDK. Trainings can be created via the admin panel on desktop and can be synchronized with all devices with support. Transactions were made with PHP and MySQL.",
+         "eslPlayRole": "Volunteer Staff Referee",
+         "eslPlayDesc": "Being/been a volunteer senior referee at Europe staff team for Counter-Strike and Quake section.<1><0>Took part in the organization of +10 leagues and +60 cups as an admin so far.</0><1>Play testing components or software integrations for upcoming tournaments occasionally.</1><2>Providing player support, solving problems via tickets.</2></1>",
+         "riotRole": "University Ambassador",
+         "riotDesc": "Organized VALORANT events and managed the community of Bilkent University.",
+         "anchaRole": "Mechanical Designer",
+         "anchaDesc": "<0>Designed wheels and the connection between the wheels and the motors to compete in European Rover Challenge. The components were designed to endure extreme conditions of Mars and space. The primary design program was Autodesk Inventor.</0><1>Ancha Space Technologies is an interdisciplinary organization that their headquarters are located on Istanbul Başakşehir Living Lab. The team competes in space technology related challenges.</1>"
+      },
+      "reachMe": {
+         "title": "Get In Touch"
       }
-    },
-    "projects": {
-      "title": "Projects",
-      "intergallerySubtitle": "A Media Platform (WiP)",
-      "localeVerifierSubtitle": "For GNU/Linux systems",
-      "lobiumSubtitle": "Tournament Management Bundle",
-      "kognitifSubtitle": "Cognitive Training Tool (PWA)",
-      "vrTrainingSubtitle": "A PoC app for DATAMARKET",
-      "seeMore": "And more..."
-    },
-    "aboutMe": {
-      "title": "About Me",
-      "article": "<0>Hi, my name is Berke. I was born in Istanbul. My interest in computer technology has been there since I was a kid. That led me to discover designing opportunities. Starting from gaming forums to designing graphics for various reasons. I have started to learn about software development just before I matriculated to Bilkent University <1></1>.</0><1>Since then, I have been learning about multiple fields of software development. Focusing on front-end development abled me to utilize my graphic design skills with programming.</1><2>As for the hobbies, competitive gaming is one of my biggest ones. I play the chess of FPS, Quake, actively. In addition to this, I had been playing Counter-Strike and more others. After, I have been working as a tournament manager.</2>"
-    },
-    "experience": {
-      "jul": "Jul",
-      "feb": "Feb",
-      "jun": "Jun",
-      "sep": "Sep",
-      "nov": "Nov",
-      "may": "May",
-      "dec": "Dec",
-      "title": "Experience",
-      "volunteer": "Volunteer",
-      "freelance": "Freelance",
-      "fullTime": "Full Time",
-      "present": "Present",
-      "mos": "mos",
-      "yr": "yr",
-      "eslGamingRole": "Contractor Admin",
-      "eslGamingDesc": "Managing tournaments and players in projects such as:<1><0>ESL PUBG Masters / Open</0><1>Sony Open Series Apex Legends</1><2>Sony Call of Duty: Cold War Battle for Beta / CHOWH1 Challenge</2><3>Special Events</3></1>",
-      "havelsanRole": "Software Engineer Intern",
-      "havelsanDesc": "<0>Developed policies and tools for Liman MYS (a configuration management and software provisioning tool) and GNU/Linux systems focused on Debian using C and Shell Scripting.</0><1>Developed <1>liman.havelsan.com.tr</1> with Hugo and Bulma frameworks to present Liman MYS.</1>",
-      "datamarketRole": "VR Development Intern",
-      "datamarketDesc": "Developed a dynamic training application (as PoC) for GearVR, for our digital channel marketing and product management unit with Unity using C#, ShaderLab, Android SDK and Oculus SDK. Trainings can be created via the admin panel on desktop and can be synchronized with all devices with support. Transactions were made with PHP and MySQL.",
-      "eslPlayRole": "Volunteer Staff Referee",
-      "eslPlayDesc": "Being/been a volunteer senior referee at Europe staff team for Counter-Strike and Quake section.<1><0>Took part in the organization of +10 leagues and +60 cups as an admin so far.</0><1>Play testing components or software integrations for upcoming tournaments occasionally.</1><2>Providing player support, solving problems via tickets.</2></1>",
-      "riotRole": "University Ambassador",
-      "riotDesc": "Organized VALORANT events and managed the community of Bilkent University.",
-      "anchaRole": "Mechanical Designer",
-      "anchaDesc": "<0>Designed wheels and the connection between the wheels and the motors to compete in European Rover Challenge. The components were designed to endure extreme conditions of Mars and space. The primary design program was Autodesk Inventor.</0><1>Ancha Space Technologies is an interdisciplinary organization that their headquarters are located on Istanbul Başakşehir Living Lab. The team competes in space technology related challenges.</1>"
-    },
-    "reachMe": {
-      "title": "Get In Touch"
-    }
-  },
-  "posts": {
-    "index": {
-      "heading": "Posts"
-    },
-    "[tag]": {
-      "heading": "Posts",
-      "with tag": "with tag"
-    }
-  }
+   },
+   "posts": {
+      "index": {
+         "heading": "Posts"
+      },
+      "[tag]": {
+         "heading": "Posts",
+         "with tag": "with tag"
+      }
+   }
 }
