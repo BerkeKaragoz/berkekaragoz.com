@@ -22,4 +22,5 @@ module.exports = {
    images: {
       domains: ["upload.wikimedia.org", "user-images.githubusercontent.com"],
    },
+   ignoreBuildErrors: true, // for react-i18next bug (actually next-i18next)
 }
