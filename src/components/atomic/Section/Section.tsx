@@ -8,32 +8,27 @@ type SectionProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
 }
 
 export const Section: React.FC<SectionProps> = (props) => {
-   const {
-      block,
-      prose,
-      as: Component = "section",
-      children,
-      className,
-      ...rest
-   } = props
+   const { block, prose, as = "section", children, className, ...rest } = props
 
    return (
       <div className="px-5 sm:px-8">
-         <Component
-            className={clsx(
-               [
-                  "mx-auto",
-                  { flex: !block },
-                  { block: block },
-                  { "max-w-screen-xl": !prose },
-                  { "max-w-prose": prose },
-               ],
-               className
-            )}
-            {...rest}
-         >
-            {children}
-         </Component>
+         {React.createElement(
+            as,
+            {
+               className: clsx(
+                  [
+                     "mx-auto",
+                     { flex: !block },
+                     { block: block },
+                     { "max-w-screen-xl": !prose },
+                     { "max-w-prose": prose },
+                  ],
+                  className
+               ),
+               ...rest,
+            },
+            children
+         )}
       </div>
    )
 }
