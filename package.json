@@ -13,6 +13,7 @@
     "lint": "next lint",
     "commit": "git-cz"
   },
+  "prettier": "eslint-config-berkekaragoz-formatting/prettier",
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
@@ -41,8 +42,9 @@
     "autoprefixer": "^10.4.0",
     "babel-jest": "^27.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "7.32.0",
-    "eslint-config-next": "12.0.3",
+    "eslint": "8.14.0",
+    "eslint-config-berkekaragoz": "^0.4.2",
+    "eslint-config-next": "12.1.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
     "next-sitemap": "^2.5.1",

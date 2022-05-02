@@ -1,0 +1,6 @@
+extends:
+   - next/core-web-vitals
+   - berkekaragoz/suggestions
+   - berkekaragoz/typescript
+rules:
+   sort-imports: off
