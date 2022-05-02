@@ -30,8 +30,8 @@ jobs:
            with:
               node-version: ${{ matrix.node-version }}
 
-         - run: npm ci
+         - run: pnpm ci
 
          # Runs a single command using the runners shell
          - name: Run tests
-           run: npm run test:once
+           run: pnpm run test:once
