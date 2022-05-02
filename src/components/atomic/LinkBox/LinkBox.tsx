@@ -11,7 +11,7 @@ const LinkBoxAnchor = React.forwardRef<
       as?: React.ElementType
    } & React.HTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-   const { onClick, as: Component = "button", href, children, ...rest } = props
+   const { onClick, as = "button", href, children, ...rest } = props
 
    return (
       <a
@@ -21,7 +21,7 @@ const LinkBoxAnchor = React.forwardRef<
          ref={ref}
          style={{ display: "contents" }}
       >
-         <Component {...rest}>{children}</Component>
+         {React.createElement(as, { ...rest }, children)}
       </a>
    )
 })
