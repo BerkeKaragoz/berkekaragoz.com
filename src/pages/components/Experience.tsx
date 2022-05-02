@@ -6,7 +6,7 @@ import clsx from "clsx"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
 
-const ExpTab: React.FC<{}> = (props) => {
+const ExpTab: React.FC<Record<string, unknown>> = (props) => {
    const { children, ...rest } = props
 
    return (
@@ -81,7 +81,9 @@ const ExpPanel: React.FC<{
    )
 }
 
-const Experience: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
+const Experience: React.FC<
+   ComponentPropsWithTranslation<Record<string, unknown>>
+> = (props) => {
    const { t, tReady: tready, ...rest } = props
    const currentDate = new Date()
 

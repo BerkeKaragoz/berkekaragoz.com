@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import React from "react"
 
-type MainProps = React.HtmlHTMLAttributes<HTMLDivElement> & {}
+type MainProps = React.HtmlHTMLAttributes<HTMLDivElement>
 
 export const Main: React.FC<MainProps> = (props) => {
    const { children, className, ...rest } = props

@@ -1,11 +1,10 @@
-import React from "react"
-import Image, { ImageProps } from "next/image"
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
-import { placeholderBlurBase64, PLATFORM_GITHUB_LINK } from "@/lib/utils/consts"
 import { PAGES_TNS } from "@/lib/i18n/consts"
-import { Trans, withTranslation } from "react-i18next"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
-import LinkText from "@/components/atomic/LinkText/LinkText"
+import { placeholderBlurBase64, PLATFORM_GITHUB_LINK } from "@/lib/utils/consts"
+import Image, { ImageProps } from "next/image"
+import React from "react"
+import { Trans, withTranslation } from "react-i18next"
 
 const ProjectCard: React.FC<{
    src: string
@@ -48,8 +47,10 @@ const ProjectCard: React.FC<{
    )
 }
 
-const Projects: React.FC<ComponentPropsWithTranslation<{}>> = (props) => {
-   const { t, ...rest } = props
+const Projects: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = (
+   props
+) => {
+   const { t } = props
 
    return (
       <div className="w-full py-12 text-center">

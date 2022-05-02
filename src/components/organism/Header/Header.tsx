@@ -16,9 +16,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-type HeaderProps = {}
-
-export const Header: React.FC<HeaderProps> = (props) => {
+export const Header: React.FC = (props) => {
    // const { children } = props;
    const router = useRouter()
    const { theme = "dark", setTheme } = useTheme()
