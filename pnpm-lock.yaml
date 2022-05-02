@@ -23,7 +23,7 @@ specifiers:
   jest: ^27.5.1
   nanoid: ^3.3.3
   next: ^12.1.5
-  next-i18next: ^9.2.0
+  next-i18next: ^11.0.0
   next-mdx-remote: ^4.0.3
   next-sitemap: ^2.5.20
   next-themes: ^0.1.1
@@ -31,6 +31,7 @@ specifiers:
   prettier: ^2.6.2
   react: 17.0.2
   react-dom: 17.0.2
+  react-i18next: ^11.16.7
   react-test-renderer: ^17.0.2
   rehype-accessible-emojis: ^0.3.2
   rehype-autolink-headings: ^6.1.1
@@ -50,7 +51,7 @@ dependencies:
   gray-matter: 4.0.3
   nanoid: 3.3.3
   next: 12.1.5_6nyponiwjib2clhkbtejle6l5y
-  next-i18next: 9.2.0_o4i27axobvqklq47h4i5u4k3jq
+  next-i18next: 11.0.0_o4i27axobvqklq47h4i5u4k3jq
   next-mdx-remote: 4.0.3_sfoxds7t5ydpegc3knd667wn6m
   next-themes: 0.1.1_o4i27axobvqklq47h4i5u4k3jq
   react: 17.0.2
@@ -77,6 +78,7 @@ devDependencies:
   next-sitemap: 2.5.20_next@12.1.5
   postcss: 8.4.12
   prettier: 2.6.2
+  react-i18next: 11.16.7_sfoxds7t5ydpegc3knd667wn6m
   react-test-renderer: 17.0.2_react@17.0.2
   rehype-accessible-emojis: 0.3.2
   tailwindcss: 2.2.19_yajbjwzoatdamav244yrmoj5ne
@@ -2030,8 +2032,8 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js/3.22.3:
-    resolution: {integrity: sha512-1t+2a/d2lppW1gkLXx3pKPVGbBdxXAkqztvWb1EJ8oF8O2gIGiytzflNiFEehYwVK/t2ryUsGBoOFFvNx95mbg==}
+  /core-js/3.22.4:
+    resolution: {integrity: sha512-1uLykR+iOfYja+6Jn/57743gc9n73EWiOnSJJ4ba3B4fOEYDBv25MagmEZBxTp5cWq4b/KPx/l77zgsp28ju4w==}
     requiresBuild: true
     dev: false
 
@@ -3335,7 +3337,6 @@ packages:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
     dependencies:
       void-elements: 3.1.0
-    dev: false
 
   /html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
@@ -4903,8 +4904,8 @@ packages:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
     dev: true
 
-  /next-i18next/9.2.0_o4i27axobvqklq47h4i5u4k3jq:
-    resolution: {integrity: sha512-cWhrgxYz9IZZQ81Vc4NgogaKSANN827qHRkyVuoscOerJBHNMr7t3vO1szj/M1qnyE7yIV0NHczCS4VyqWbQAg==}
+  /next-i18next/11.0.0_o4i27axobvqklq47h4i5u4k3jq:
+    resolution: {integrity: sha512-phxbQiZGSJTTBE2FI4+BnqFZl88AI2V+6MrEQnT9aPFAXq/fATQ/F0pOUM3J7kU4nEeCfn3hjISq+ygGHlEz0g==}
     engines: {node: '>=12'}
     peerDependencies:
       next: '>= 10.0.0'
@@ -4912,7 +4913,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       '@types/hoist-non-react-statics': 3.3.1
-      core-js: 3.22.3
+      core-js: 3.22.4
       hoist-non-react-statics: 3.3.2
       i18next: 21.6.16
       i18next-fs-backend: 1.1.4
@@ -5441,6 +5442,26 @@ packages:
       react: 17.0.2
       scheduler: 0.20.2
     dev: false
+
+  /react-i18next/11.16.7_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-7yotILJLnKfvUfrl/nt9eK9vFpVFjZPLWAwBzWL6XppSZZEvlmlKk0GBGDCAPfLfs8oND7WAbry8wGzdoiW5Nw==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.17.9
+      html-escaper: 2.0.2
+      html-parse-stringify: 3.0.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: true
 
   /react-i18next/11.16.7_zwecmpihis27vgqyxlvaybk5pu:
     resolution: {integrity: sha512-7yotILJLnKfvUfrl/nt9eK9vFpVFjZPLWAwBzWL6XppSZZEvlmlKk0GBGDCAPfLfs8oND7WAbry8wGzdoiW5Nw==}
@@ -6445,7 +6466,6 @@ packages:
   /void-elements/3.1.0:
     resolution: {integrity: sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}
