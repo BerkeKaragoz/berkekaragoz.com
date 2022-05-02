@@ -1,11 +1,11 @@
 ---
 title: Make and Publish Your ESLint Config with pnpm in a Monorepo
 tags:
-  - javascript
-  - npm
-  - code-standards
-  - web-development
-  - guide
+   - javascript
+   - npm
+   - code-standards
+   - web-development
+   - guide
 date: 28 Apr 22 9:50 UTC+3
 excerpt: How to make an ESLint config in a monorepo structure and publish it with pnpm.
 ---
@@ -15,14 +15,14 @@ In this article, we will create an ESLint config using a [monorepo](https://mono
 Repository: [github.com/BerkeKaragoz/eslint-config](https://github.com/BerkeKaragoz/eslint-config)
 
 <Image
-  priority
-  src="/assets/posts/make-and-publish-eslint-monorepo-config-with-pnpm/cover.jpg"
-  alt="eslint-config-berkekaragoz NPM page"
-  width={1256}
-  height={922}
-  quality={90}
-  placeholder="blur"
-  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+Pf/338ACfUD+5LbVnEAAAAASUVORK5CYII="
+   priority
+   src="/assets/posts/make-and-publish-eslint-monorepo-config-with-pnpm/cover.jpg"
+   alt="eslint-config-berkekaragoz NPM page"
+   width={1256}
+   height={922}
+   quality={90}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+Pf/338ACfUD+5LbVnEAAAAASUVORK5CYII="
 />
 
 ## ESLint
@@ -34,7 +34,7 @@ If I want to use [`eslint-config-berkekaragoz`](https://www.npmjs.com/package/es
 ```yaml
 # .eslintrc.yml
 extends:
-  - berkekaragoz
+   - berkekaragoz
 ```
 
 ##### But where does the actual name come from?
@@ -51,9 +51,9 @@ These will resolve to the config exported from `index.js`. If you want to export
 
 There are 3 types of configuration types in ESLint:
 
-- JSON
-- YAML
-- JavaScript Object
+-  JSON
+-  YAML
+-  JavaScript Object
 
 To make your shareable config, you have to export it as a JavaScript object.
 
@@ -62,8 +62,8 @@ A simple one would look like this:
 ```js
 // index.js
 module.exports = {
-  rules: { eqeqeq: "error" }, // do not allow '=='
-};
+   rules: { eqeqeq: "error" }, // do not allow '=='
+}
 ```
 
 You can see [the list of ESLint rules here](https://eslint.org/docs/rules/).
@@ -106,9 +106,9 @@ This is where workspaces come handy:
 
 ```json
 {
-  "dependencies": {
-    "eslint-config-berkekaragoz-formatting": "workspace:*"
-  }
+   "dependencies": {
+      "eslint-config-berkekaragoz-formatting": "workspace:*"
+   }
 }
 ```
 
@@ -118,7 +118,7 @@ So lets setup the workspace by configuring the monorepo (`@berkekaragoz/eslint-c
 
 ```json
 {
-  "workspaces": ["packages/*"]
+   "workspaces": ["packages/*"]
 }
 ```
 
