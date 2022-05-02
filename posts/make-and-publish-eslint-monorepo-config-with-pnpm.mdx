@@ -10,7 +10,7 @@ date: 28 Apr 22 9:50 UTC+3
 excerpt: How to make an ESLint config in a monorepo structure and publish it with pnpm.
 ---
 
-In this article, we will create an ESLint config using a [monorepo](https://monorepo.tools/) structure. Use the packages inside our repository with [workspaces](https://pnpm.io/workspaces) of [pnpm](https://pnpm.io/) as dependencies. And finally, publish those packages to [npm](https://www.npmjs.com/) repository.
+In this article, we will create an ESLint config using a [monorepo](https://monorepo.tools/) structure. Then, use the packages inside our repository with [workspaces](https://pnpm.io/workspaces) of [pnpm](https://pnpm.io/) as dependencies. And finally, publish those packages to [npm](https://www.npmjs.com/) repository.
 
 Repository: [github.com/BerkeKaragoz/eslint-config](https://github.com/BerkeKaragoz/eslint-config)
 
@@ -29,7 +29,7 @@ Repository: [github.com/BerkeKaragoz/eslint-config](https://github.com/BerkeKara
 
 The way that you use presets in ESLint is by extending the packages in your config file.
 
-If I want to use [`eslint-config-berkekaragoz`](https://www.npmjs.com/package/eslint-config-berkekaragoz) and add my preferred settings on top of that, I would have to do [this](https://eslint.org/docs/2.0.0/developer-guide/shareable-configs#using-a-shareable-config):
+If you want to use [`eslint-config-berkekaragoz`](https://www.npmjs.com/package/eslint-config-berkekaragoz) and add my preferred settings on top of that, I would have to do [this](https://eslint.org/docs/2.0.0/developer-guide/shareable-configs#using-a-shareable-config):
 
 ```yaml
 # .eslintrc.yml
@@ -55,7 +55,7 @@ There are 3 types of configuration types in ESLint:
 -  YAML
 -  JavaScript Object
 
-To make your shareable config, you have to export it as a JavaScript object.
+To make your shareable config, you should export it as a JavaScript object.
 
 A simple one would look like this:
 
@@ -91,6 +91,16 @@ All of those packages name except `all` is directly suffixed to `eslint-config-b
 The directory named `all`'s package name is: `eslint-config-berkekaragoz`.
 
 Assuming the ESLint configs has been made, it is time to configure `package.json`'s.
+
+<Image
+   src="/assets/posts/make-and-publish-eslint-monorepo-config-with-pnpm/eslint-rules-meme.jpg"
+   alt="eslint rules meme"
+   width={1200}
+   height={1187}
+   quality={80}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+Pf/338ACfUD+5LbVnEAAAAASUVORK5CYII="
+/>
 
 ### Workspaces
 
@@ -158,4 +168,4 @@ You can run into these problems, but you should know the ways to deal with them.
 
 ### End
 
-Thanks for reading. This has became longer than I imagined. I would love to hear your feedback. You can even leave it as [an issue in the monorepo](https://github.com/BerkeKaragoz/eslint-config/issues/new?assignees=&labels=feedback&template=feedback.md&title=) that we used as a sample.
+Thanks for reading. This one thought me more that I imagined, hope it was the same for you. I would love to hear your feedback. You can even leave it as [an issue in the monorepo](https://github.com/BerkeKaragoz/eslint-config/issues/new?assignees=&labels=feedback&template=feedback.md&title=) that we used as a sample.
