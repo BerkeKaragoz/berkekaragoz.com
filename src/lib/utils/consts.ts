@@ -7,3 +7,17 @@ export const PLATFORM_GITHUB_LINK = "https://github.com/BerkeKaragoz"
 export const PLATFORM_LINKEDIN_LINK = "https://www.linkedin.com/in/BerkeKaragoz"
 
 export const DEFAULT_LOCALE = process.env["DEFAULT_LOCALE"] || "en-UK"
+
+// index page
+export const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCUSDT`
+export const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHUSDT`
+
+export const colorRed = "rgba(220, 38, 38)"
+export const colorGreen = "rgba(5, 150, 105)"
+export const colorBlue = "rgba(37, 99, 235)"
+
+export const tabText = [
+   "Cupiditate provident temporibus enim optio ex fuga fugit eaque, praesentium, minima nobis cum laborum est rem tenetur debitis vero vitae perferendis ad delectus! Blanditiis, quidem nemo nisi eaque dolores ea.",
+   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat culpa libero consectetur, ex cupiditate voluptate? At, temporibus provident eveniet nihil non deleniti ratione animi qui ab dolorem, excepturi delectus.",
+   "Natus sapiente praesentium commodi et id a reiciendis distinctio ex quisquam eaque sequi cum eius rerum quae, repellendus corporis placeat, magnam alias. Delectus ducimus itaque natus assumenda quod blanditiis eum.",
+]
