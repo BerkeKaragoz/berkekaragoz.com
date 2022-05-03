@@ -1,0 +1,18 @@
+@layer components {
+   .app-button {
+      @apply card-input flex-shrink-0;
+   }
+
+   .app-button > * {
+      max-height: 100%;
+      margin: auto;
+   }
+
+   .app-button-small {
+      @apply w-5 h-5 p-0.5 border-opacity-50;
+   }
+
+   .app-button-not-small {
+      @apply w-8 h-8 p-1;
+   }
+}

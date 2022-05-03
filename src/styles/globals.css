@@ -1,9 +1,9 @@
+@import "./components/index.css";
+@import "./explicit-base.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "./components/index.css";
-@import "./explicit-base.css";
 
 @layer components {
    .link {

@@ -21,7 +21,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = (props) => {
             <title>{`${code || "Unknown"} Error`}</title>
          </Head>
          <div className="flex-shrink-0">
-            <div className="absolute transform -translate-y-12 xsh:-translate-x-12 xsh:-translate-y-28">
+            <div className="absolute -translate-y-12 xsh:-translate-x-12 xsh:-translate-y-28">
                <code
                   data-testid="error-code"
                   className={

@@ -1,10 +1,11 @@
-//const defaultTheme = require("tailwindcss/defaultTheme");
+/* eslint-disable @typescript-eslint/no-var-requires */
+// const defaultTheme = require("tailwindcss/defaultTheme");
 const plugin = require("tailwindcss/plugin")
 const colors = require("tailwindcss/colors")
 
 module.exports = {
-   //mode: "jit",
-   purge: [
+   // mode: "jit",
+   content: [
       "./src/pages/**/*.{js,ts,jsx,tsx}",
       "./src/components/**/*.{js,ts,jsx,tsx}",
    ],
@@ -49,20 +50,12 @@ module.exports = {
             xlh: { raw: `(min-height: 1920px)` },
          },
          colors: {
+            current: colors.sky,
             primary: colors.sky,
             secondary: colors.amber,
             accent: colors.indigo,
-            background: colors.blueGray,
+            background: colors.slate,
          },
-      },
-   },
-   variants: {
-      animation: ["responsive", "motion-safe", "motion-reduce"],
-      textIndent: ["responsive"],
-      extend: {
-         backgroundColor: ["active"],
-         ringWidth: ["hover", "active"],
-         //textColor: ["active"],
       },
    },
    plugins: [
@@ -73,7 +66,7 @@ module.exports = {
          hyphens: true, // whether to generate hyphenation utilities
          kerning: true, // whether to generate kerning utilities
          textUnset: true, // whether to generate utilities to unset text properties
-         //componentPrefix: "c-", // the prefix to use for text style classes
+         // componentPrefix: "c-", // the prefix to use for text style classes
       }),
       require("tailwindcss-rtl"),
       // Add custom plugins as such:
