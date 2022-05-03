@@ -162,7 +162,7 @@ const HeroWidget: React.FC<ComponentPropsWithTranslation<Record<string, never>>>
                <div className="flex gap-8 overflow-hidden rounded-lg">
                   <div className="relative card">
                      <DrawableCanvas
-                        className={clsx([{ "filter blur-sm": isBlurSwitchOn }])}
+                        className={clsx([{ "blur-sm": isBlurSwitchOn }])}
                         strokeStyle={strokeColor}
                         clear={clearCount}
                      />
@@ -244,7 +244,7 @@ const HeroWidget: React.FC<ComponentPropsWithTranslation<Record<string, never>>>
                      >
                         <span
                            className={clsx([
-                              "duration-100 inline-block w-4 h-4 transform bg-white dark:bg-primary-50 rounded-full",
+                              "duration-100 inline-block w-4 h-4 bg-white dark:bg-primary-50 rounded-full",
                               {
                                  "translate-x-1 dark:bg-primary-200":
                                     !isBlurSwitchOn,
@@ -261,7 +261,7 @@ const HeroWidget: React.FC<ComponentPropsWithTranslation<Record<string, never>>>
                      <EyeIcon
                         className={clsx([
                            "h-full mx-auto text-primary-600 dark:text-primary-200",
-                           { "filter blur-sm": isBlurSwitchOn },
+                           { "blur-sm": isBlurSwitchOn },
                         ])}
                      />
                   </div>
