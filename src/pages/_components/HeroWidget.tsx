@@ -1,7 +1,9 @@
 import IconButton from "@/components/atomic/IconButton/IconButton"
 import Slider from "@/components/atomic/Slider/Slider"
 import AudioPlayer from "@/components/molecular/AudioPlayer/AudioPlayer"
+import PostCard from "@/components/molecular/PostCard/PostCard"
 import DrawableCanvas from "@/components/organism/DrawableCanvas/DrawableCanvas"
+import { PostMeta } from "@/lib/api/blog"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import BitcoinIcon from "@/lib/icons/Bitcoin"
 import EthereumIcon from "@/lib/icons/Ethereum"
@@ -32,10 +34,10 @@ import { Trans, withTranslation } from "react-i18next"
 
 type CoinPriceData = { mins: number; price: string }
 
-const HeroWidget: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = (
-   props
-) => {
-   const { t } = props
+type Props = ComponentPropsWithTranslation<{ latestPostMetas?: PostMeta[] }>
+
+const HeroWidget: React.FC<Props> = (props) => {
+   const { t, latestPostMetas } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
    const { theme, setTheme: _setTheme } = useTheme()
@@ -307,40 +309,44 @@ const HeroWidget: React.FC<ComponentPropsWithTranslation<Record<string, never>>>
                      </Trans>
                   </p>
                </div>
-               <Tab.Group>
-                  <Tab.List className="flex justify-between gap-8 p-2 bg-black rounded-lg bg-opacity-5 dark:bg-opacity-30">
-                     {[...Array(3)].map((v, i) => (
-                        <Tab
-                           key={`${nanoid(5)}-${i}`}
-                           className={"card-input p-2 flex-grow"}
-                        >
-                           {({ selected }) => (
-                              <span
-                                 className={clsx([
-                                    "inline-block border-b-4 p-1 rounded-sm font-semibold w-full uppercase-first",
-                                    {
-                                       "border-primary-400": selected,
-                                    },
-                                    {
-                                       "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
-                                          !selected,
-                                    },
-                                 ])}
-                              >
-                                 {`${gt("tab")} ${i + 1}`}
-                              </span>
-                           )}
-                        </Tab>
-                     ))}
-                  </Tab.List>
-                  <Tab.Panels className="p-3 card text-primary-800 dark:text-primary-200 dark:text-opacity-75">
-                     {[...Array(3)].map((v, i) => (
-                        <Tab.Panel as="p" key={`${nanoid(5)}-${i}`}>
-                           {i + 1} - {tabText[i]}
-                        </Tab.Panel>
-                     ))}
-                  </Tab.Panels>
-               </Tab.Group>
+               {latestPostMetas && (
+                  <Tab.Group>
+                     <Tab.List className="flex justify-between gap-8 p-2 bg-black rounded-lg bg-opacity-5 dark:bg-opacity-30">
+                        {latestPostMetas.map((v, i) => (
+                           <Tab
+                              key={`${nanoid(5)}-${i}`}
+                              className={"card-input p-2 flex-grow"}
+                           >
+                              {({ selected }) => (
+                                 <span
+                                    className={clsx([
+                                       "inline-block border-b-4 p-1 rounded-sm font-semibold w-full capitalize",
+                                       {
+                                          "border-primary-400": selected,
+                                       },
+                                       {
+                                          "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
+                                             !selected,
+                                       },
+                                    ])}
+                                 >
+                                    {i === 0
+                                       ? `${gt("latest")}`
+                                       : `${gt("post")} ${i + 1}`}
+                                 </span>
+                              )}
+                           </Tab>
+                        ))}
+                     </Tab.List>
+                     <Tab.Panels>
+                        {latestPostMetas.map((m, i) => (
+                           <Tab.Panel key={`${m.slug}-${i}`}>
+                              <PostCard postMeta={m} disableSlug />
+                           </Tab.Panel>
+                        ))}
+                     </Tab.Panels>
+                  </Tab.Group>
+               )}
                <div className="flex items-center justify-between gap-2">
                   <code className="p-2 font-semibold card">
                      {randomNumber.toString().padStart(2, "0")}

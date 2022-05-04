@@ -9,10 +9,11 @@ import { useTranslation, withTranslation } from "react-i18next"
 
 type PostCardProps = ComponentPropsWithActiveTranslation<{
    postMeta: PostMeta
+   disableSlug?: boolean
 }>
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
-   const { postMeta, i18n } = props
+   const { postMeta, disableSlug = false, i18n } = props
    const locale = i18n.language ?? DEFAULT_LOCALE
 
    const { t: ct } = useTranslation([COMMON_TNS])
@@ -32,9 +33,11 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                      "min read"
                   )}`}
                </span>
-               <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
-                  {`/p/${postMeta.slug}`}
-               </span>
+               {!disableSlug && (
+                  <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
+                     {`/p/${postMeta.slug}`}
+                  </span>
+               )}
             </div>
          </div>
          <p className="my-1 text-subtitle-color max-w-prose">{postMeta.excerpt}</p>
