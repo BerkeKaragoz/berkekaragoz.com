@@ -1,3 +1,4 @@
+import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
@@ -10,11 +11,22 @@ import { DEFAULT_LOCALE } from "@/lib/utils/consts"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
+import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 
-export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (props) => {
-   const { postMetas, tag } = props
-   const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts.[tag]" })
+export const TagPage: NextPage<{
+   postMetas: PostMeta[]
+   tag: string
+   postTags: PostMeta["tags"]
+}> = (props) => {
+   const { postMetas, postTags, tag } = props
+   const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts" })
+
+   const [isShowTags, setIsShowTags] = React.useState(false)
+
+   const handleShowTags = () => {
+      setIsShowTags((s) => !s)
+   }
 
    return (
       <PageContainer>
@@ -26,16 +38,54 @@ export const TagPage: NextPage<{ postMetas: PostMeta[]; tag: string }> = (props)
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
             <Section block className="py-16">
                <h1 className="mt-0 h1">
-                  <Trans t={t} i18nKey="heading">
+                  <Trans t={t} i18nKey="[tag].heading">
                      Posts
                   </Trans>
                </h1>
-               <h2 className="mt-0 uppercase-first h2">
-                  <Trans t={t} i18nKey="with tag">
+               <h2 className="mt-0 uppercase-first h3">
+                  <Trans t={t} i18nKey="[tag].with tag">
                      With tag
                   </Trans>
                   {`: #${tag}`}
                </h2>
+               <p>
+                  <Trans
+                     t={t}
+                     i18nKey="[tag].description"
+                     values={{
+                        postCount: postMetas.length.toLocaleString(),
+                        tagCount: postTags.length.toLocaleString(),
+                     }}
+                  >
+                     There are <b>{postMetas.length.toLocaleString()}</b>
+                     {" published posts and "}
+                     <b>{postTags.length.toLocaleString()}</b> unique tags in this
+                     search.
+                  </Trans>
+               </p>
+               <p>
+                  <button className="link capitalize" onClick={handleShowTags}>
+                     {isShowTags ? (
+                        <Trans t={t} i18nKey="hide tags">
+                           Hide Tags
+                        </Trans>
+                     ) : (
+                        <Trans t={t} i18nKey="show tags">
+                           Show Tags
+                        </Trans>
+                     )}
+                  </button>
+               </p>
+               {isShowTags && (
+                  <p className="mt-2">
+                     {postTags.map((tag, i) => (
+                        <span key={`${tag}-${i}`}>
+                           <LinkText href={`/posts/${tag}`}>{`#${tag}`}</LinkText>
+                           {i !== postTags.length - 1 && `, `}
+                        </span>
+                     ))}
+                  </p>
+               )}
                <PostList postMetas={postMetas} />
             </Section>
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
@@ -53,6 +103,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       .filter((post) => post.meta.tags.includes(tag))
       .map((post) => post.meta)
 
+   const postTagsSet = new Set(postMetas.map((m) => m.tags).flat())
+
+   const postTags = Array.from(postTagsSet).sort((a, b) => a.localeCompare(b))
+
    return {
       props: {
          ...(await serverSideTranslations(locale, [
@@ -61,6 +115,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             COMMON_TNS,
          ])),
          postMetas,
+         postTags,
          tag,
       },
    }

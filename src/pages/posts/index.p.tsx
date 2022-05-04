@@ -1,3 +1,4 @@
+import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
@@ -15,10 +16,19 @@ import { Trans, useTranslation } from "react-i18next"
 
 // TODO pass locale to date parsing
 // TODO empty state
-export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
-   const { postMetas } = props
+export const PostsPage: NextPage<{
+   postMetas: PostMeta[]
+   postTags: PostMeta["tags"]
+}> = (props) => {
+   const { postMetas, postTags } = props
 
-   const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts.index" })
+   const { t } = useTranslation([PAGES_TNS], { keyPrefix: "posts" })
+
+   const [isShowTags, setIsShowTags] = React.useState(false)
+
+   const handleShowTags = () => {
+      setIsShowTags((s) => !s)
+   }
 
    return (
       <PageContainer>
@@ -30,10 +40,47 @@ export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
             <Section as="article" className="py-16" block>
                <h1 className="mt-0 h1">
-                  <Trans t={t} i18nKey="heading">
+                  <Trans t={t} i18nKey="index.heading">
                      Posts
                   </Trans>
                </h1>
+               <p>
+                  <Trans
+                     t={t}
+                     i18nKey="index.description"
+                     values={{
+                        postCount: postMetas.length.toLocaleString(),
+                        tagCount: postTags.length.toLocaleString(),
+                     }}
+                  >
+                     There are <b>{postMetas.length.toLocaleString()}</b>
+                     {" published posts and "}
+                     <b>{postTags.length.toLocaleString()}</b> unique tags.
+                  </Trans>
+               </p>
+               <p>
+                  <button className="link capitalize" onClick={handleShowTags}>
+                     {isShowTags ? (
+                        <Trans t={t} i18nKey="hide tags">
+                           Hide Tags
+                        </Trans>
+                     ) : (
+                        <Trans t={t} i18nKey="show tags">
+                           Show Tags
+                        </Trans>
+                     )}
+                  </button>
+               </p>
+               {isShowTags && (
+                  <p className="mt-2">
+                     {postTags.map((tag, i) => (
+                        <span key={`${tag}-${i}`}>
+                           <LinkText href={`/posts/${tag}`}>{`#${tag}`}</LinkText>
+                           {i !== postTags.length - 1 && `, `}
+                        </span>
+                     ))}
+                  </p>
+               )}
                <PostList postMetas={postMetas} />
             </Section>
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
@@ -46,6 +93,9 @@ export const PostsPage: NextPage<{ postMetas: PostMeta[] }> = (props) => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
    const { locale = DEFAULT_LOCALE } = ctx
    const postMetas = getAllPosts().map((post) => post.meta)
+   const postTagsSet = new Set(postMetas.map((m) => m.tags).flat())
+
+   const postTags = Array.from(postTagsSet).sort((a, b) => a.localeCompare(b))
 
    return {
       props: {
@@ -56,6 +106,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
          ])),
          // Will be passed to the page component as props
          postMetas,
+         postTags,
       },
    }
 }
