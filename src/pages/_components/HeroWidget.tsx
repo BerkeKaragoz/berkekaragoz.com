@@ -8,31 +8,55 @@ import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import BitcoinIcon from "@/lib/icons/Bitcoin"
 import EthereumIcon from "@/lib/icons/Ethereum"
 import { ColorScheme } from "@/lib/types/common"
+import { CoinPriceData, IAddConfettiConfig } from "@/lib/types/external-api"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { generateRandomInt } from "@/lib/utils"
 import {
-   colorRed,
-   colorGreen,
-   colorBlue,
-   tabText,
    BTC_PRICE_API,
+   colorBlue,
+   colorGreen,
+   colorRed,
    ETH_PRICE_API,
 } from "@/lib/utils/consts"
 import { Switch, Tab } from "@headlessui/react"
 import {
-   LightBulbIcon,
-   PencilIcon,
    EyeIcon,
    HeartIcon,
+   LightBulbIcon,
+   PencilIcon,
 } from "@heroicons/react/solid"
 import clsx from "clsx"
+import JSConfetti from "js-confetti"
 import { nanoid } from "nanoid"
 import { useTranslation } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
 
-type CoinPriceData = { mins: number; price: string }
+const plainConfettiConfig: IAddConfettiConfig[] = [
+   {},
+   {
+      confettiColors: ["#F1F4DF", "#10EAF0", "#38BDF8", "#0C4A6E"],
+      confettiRadius: 12,
+      confettiNumber: 100,
+   },
+   {
+      confettiColors: ["#E60965", "#F94892", "#FFA1C9", "#FBE5E5"],
+      confettiRadius: 14,
+      confettiNumber: 100,
+   },
+   {
+      confettiColors: ["#AB46D2", "#FF6FB5", "#55D8C1", "#FCF69C"],
+      confettiRadius: 6,
+      confettiNumber: 300,
+   },
+]
+
+const emojiConfettiConfig: IAddConfettiConfig[] = [
+   {
+      emojis: ["🎊", "🎉", "💥", "✨"],
+   },
+]
 
 type Props = ComponentPropsWithTranslation<{ latestPostMetas?: PostMeta[] }>
 
@@ -49,15 +73,30 @@ const HeroWidget: React.FC<Props> = (props) => {
       React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorRed)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
-   const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(99))
+   const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(100))
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
+
+   const jsConfettiRef = React.useRef<JSConfetti>()
 
    const setTheme = (theme: ColorScheme) => {
       if (isDarkTheme !== undefined) _setTheme(theme)
    }
 
+   const handleConfettiClick = React.useCallback(
+      (isEmoji?: boolean) => {
+         if (!jsConfettiRef.current) return
+
+         const config = isEmoji ? emojiConfettiConfig : plainConfettiConfig
+
+         jsConfettiRef.current.addConfetti(config[generateRandomInt(config.length)])
+      },
+      [jsConfettiRef]
+   )
+
    React.useEffect(() => {
+      jsConfettiRef.current = new JSConfetti()
+
       fetch(BTC_PRICE_API)
          .then((req) => req.json())
          .then((data: CoinPriceData) => {
@@ -308,6 +347,24 @@ const HeroWidget: React.FC<Props> = (props) => {
                         top bar!
                      </Trans>
                   </p>
+               </div>
+               <div className="flex gap-8 justify-evenly">
+                  <button
+                     className="card-input p-2 w-full capitalize"
+                     onClick={() => handleConfettiClick(false)}
+                  >
+                     <Trans t={ct} i18nKey="click me">
+                        Click Me
+                     </Trans>
+                     !
+                  </button>
+                  <button
+                     className="card-input p-2 w-full"
+                     onClick={() => handleConfettiClick(true)}
+                     aria-label="Emoji Confetti"
+                  >
+                     🎉
+                  </button>
                </div>
                {latestPostMetas && (
                   <Tab.Group>
