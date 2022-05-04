@@ -61,11 +61,15 @@
    },
    "posts": {
       "index": {
-         "heading": "Gönderiler"
+         "heading": "Gönderiler",
+         "description": "<3>{{tagCount}}</3> ayrı tag ve <1>{{postCount}}</1> paylaşılmış gönderi bulunuyor."
       },
       "[tag]": {
          "heading": "Gönderiler",
-         "with tag": "sadece"
-      }
+         "with tag": "sadece",
+         "description": "Bu aramada <3>{{tagCount}}</3> ayrı tag ve <1>{{postCount}}</1> paylaşılmış gönderi bulunuyor."
+      },
+      "show tags": "tagleri göster",
+      "hide tags": "tagleri gizle"
    }
 }

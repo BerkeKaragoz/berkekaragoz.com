@@ -61,11 +61,15 @@
    },
    "posts": {
       "index": {
-         "heading": "Posts"
+         "heading": "Posts",
+         "description": "There are <1>{{postCount}}</1> published posts and <3>{{tagCount}}</3> unique tags."
       },
       "[tag]": {
          "heading": "Posts",
-         "with tag": "with tag"
-      }
+         "with tag": "with tag",
+         "description": "There are <1>{{postCount}}</1> published posts and <3>{{tagCount}}</3> unique tags in this search."
+      },
+      "show tags": "show tags",
+      "hide tags": "hide tags"
    }
 }
