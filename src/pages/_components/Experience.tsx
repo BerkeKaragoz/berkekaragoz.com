@@ -84,7 +84,8 @@ const ExpPanel: React.FC<{
 const Experience: React.FC<
    ComponentPropsWithTranslation<Record<string, unknown>>
 > = (props) => {
-   const { t, ...rest } = props
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   const { t, tReady: tready, ...rest } = props
    const currentDate = new Date()
 
    return (
@@ -197,12 +198,10 @@ const Experience: React.FC<
                      nameUrl="https://play.eslgaming.com/"
                      dateStartTime="2018-11-01"
                      startTime={`${t("index.experience.nov")} 2018`}
-                     dateEndTime=""
-                     endTime={`${t("index.experience.present")} (~${Math.floor(
-                        getMonthsBetween(new Date("2018-11-01"), currentDate) / 12
-                     )} ${t("index.experience.yr")} ${
-                        getMonthsBetween(new Date("2018-11-01"), currentDate) % 12
-                     } ${t("index.experience.mos")})`}
+                     dateEndTime="2022-04-15"
+                     endTime={`${t("index.experience.mar")} 2022 (~3 ${t(
+                        "index.experience.yr"
+                     )} 5 ${t("index.experience.mos")})`}
                   >
                      <Trans t={t} i18nKey="index.experience.eslPlayDesc">
                         Being/been a volunteer senior referee at Europe staff team
