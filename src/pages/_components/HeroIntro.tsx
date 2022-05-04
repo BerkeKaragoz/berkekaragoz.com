@@ -15,7 +15,11 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
    return (
       <div className="flex flex-col items-start justify-center flex-grow-0 md:w-1/2">
          <h1 className="text-5xl font-semibold lg:text-6xl">
-            <Trans t={t} i18nKey="hero.title" values={{ name: "Berke Karagöz" }}>
+            <Trans
+               t={t}
+               i18nKey="index.hero.title"
+               values={{ name: "Berke Karagöz" }}
+            >
                {"Hi, I'm"}
                <br />
                <strong className="font-bold select-all lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
@@ -25,7 +29,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
             </Trans>
          </h1>
          <p className="max-w-sm mt-2 font-semibold ms-1 text-background-700 dark:text-background-300">
-            <Trans t={t} i18nKey="hero.subtitle">
+            <Trans t={t} i18nKey="index.hero.subtitle">
                A curious frontend engineer who had been gaining various insights
                about web development.
             </Trans>
@@ -49,7 +53,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                      <ServerIcon className="w-4 h-4" />
                   </LinkBox>
                   <p className="mt-1 text-sm ms-1 opacity-80">
-                     <Trans t={t} i18nKey="hero.boxServerDesc">
+                     <Trans t={t} i18nKey="index.hero.boxServerDesc">
                         My general purpose NGINX, Ubuntu 20.04 server. I use it as a
                         toolbox.
                      </Trans>
@@ -60,7 +64,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                href="/posts"
                className="inline-block px-3 py-2 font-semibold card-input"
             >
-               <Trans t={t} i18nKey="hero.actionButton">
+               <Trans t={t} i18nKey="index.hero.actionButton">
                   Go to my blog
                </Trans>{" "}
                &rarr;

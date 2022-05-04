@@ -265,7 +265,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                <div className="flex items-center justify-between gap-2">
                   <Switch.Group as="div" className="flex items-center gap-2">
                      <Switch.Label className="text-primary-600 dark:text-primary-200">
-                        <Trans t={t} i18nKey="hero.widget.switchLabel">
+                        <Trans t={t} i18nKey="index.hero.widget.switchLabel">
                            Enable Canvas Blur
                         </Trans>
                      </Switch.Label>
@@ -310,7 +310,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                {/* Website Made with Section */}
                <div className="w-full px-3 py-2 card">
                   <p className="text-primary-600 dark:text-primary-200">
-                     <Trans t={t} i18nKey="hero.widget.websiteTechTitle">
+                     <Trans t={t} i18nKey="index.hero.widget.websiteTechTitle">
                         This website was made with:
                      </Trans>
                   </p>
@@ -342,7 +342,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                <Slider />
                <div className="flex p-2 card">
                   <p className="opacity-50">
-                     <Trans t={t} i18nKey="hero.widget.interact">
+                     <Trans t={t} i18nKey="index.hero.widget.interact">
                         Interact with all of these or change the language from the
                         top bar!
                      </Trans>
@@ -414,7 +414,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      onClick={() => setRandomNumber(generateRandomInt(99))}
                   >
                      &larr;{" "}
-                     <Trans t={t} i18nKey="hero.widget.generateRandomNumber">
+                     <Trans t={t} i18nKey="index.hero.widget.generateRandomNumber">
                         Generate Random Number
                      </Trans>
                   </button>

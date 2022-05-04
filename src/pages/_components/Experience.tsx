@@ -84,7 +84,7 @@ const ExpPanel: React.FC<{
 const Experience: React.FC<
    ComponentPropsWithTranslation<Record<string, unknown>>
 > = (props) => {
-   const { t, tReady: tready, ...rest } = props
+   const { t, ...rest } = props
    const currentDate = new Date()
 
    return (
