@@ -121,13 +121,13 @@ const HeroWidget: React.FC<Props> = (props) => {
    }, [theme])
 
    return (
-      <div className="hidden w-1/2 md:block">
+      <div className="hidden xs:block md:w-1/2">
          {/* Hero Widget Left Start  */}
          <div
-            className="h-full p-8 overflow-hidden overflow-y-auto bg-opacity-50 rounded-b-xl bg-primary-100 dark:bg-background-900"
-            style={{ minWidth: "2200px" }}
+            className="flex h-full min-w-full p-4 overflow-y-auto bg-opacity-50 md:w-max column md:p-8 rounded-t-xl md:rounded-t-none rounded-b-xl bg-primary-100 dark:bg-background-900"
+            // style={{ minWidth: "2200px" }}
          >
-            <div className="inline-flex flex-col max-w-md gap-8 pe-8">
+            <div className="inline-flex flex-col max-w-md gap-8 shrink-0 pe-8">
                {/* Light Bulb */}
                <div className="flex gap-8 justify-evenly">
                   <IconButton
@@ -200,7 +200,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </div>
                </div>
                {/* Canvas Section */}
-               <div className="flex gap-8 overflow-hidden rounded-lg">
+               <div className="hidden gap-8 overflow-hidden rounded-lg md:flex">
                   <div className="relative card">
                      <DrawableCanvas
                         className={clsx([{ "blur-sm": isBlurSwitchOn }])}
@@ -262,7 +262,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </div>
                </div>
                {/* Blur Section */}
-               <div className="flex items-center justify-between gap-2">
+               <div className="items-center justify-between hidden gap-2 md:flex">
                   <Switch.Group as="div" className="flex items-center gap-2">
                      <Switch.Label className="text-primary-600 dark:text-primary-200">
                         <Trans t={t} i18nKey="index.hero.widget.switchLabel">
@@ -335,10 +335,28 @@ const HeroWidget: React.FC<Props> = (props) => {
                      </li>
                   </ul>
                </div>
+               <div className="flex gap-8 md:hidden justify-evenly">
+                  <button
+                     className="w-full p-2 capitalize card-input"
+                     onClick={() => handleConfettiClick(false)}
+                  >
+                     <Trans t={ct} i18nKey="click me">
+                        Click Me
+                     </Trans>
+                     !
+                  </button>
+                  <button
+                     className="w-full p-2 card-input"
+                     onClick={() => handleConfettiClick(true)}
+                     aria-label="Emoji Confetti"
+                  >
+                     🎉
+                  </button>
+               </div>
             </div>
             {/* Hero Widget Left End  */}
             {/* Hero Widget Right Start  */}
-            <div className="inline-flex flex-col max-w-md gap-8 align-top w-80">
+            <div className="inline-flex flex-col gap-8 align-top shrink-0 w-80">
                <Slider />
                <div className="flex p-2 card">
                   <p className="opacity-50">
@@ -348,9 +366,9 @@ const HeroWidget: React.FC<Props> = (props) => {
                      </Trans>
                   </p>
                </div>
-               <div className="flex gap-8 justify-evenly">
+               <div className="hidden gap-8 md:flex justify-evenly">
                   <button
-                     className="card-input p-2 w-full capitalize"
+                     className="w-full p-2 capitalize card-input"
                      onClick={() => handleConfettiClick(false)}
                   >
                      <Trans t={ct} i18nKey="click me">
@@ -359,7 +377,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      !
                   </button>
                   <button
-                     className="card-input p-2 w-full"
+                     className="w-full p-2 card-input"
                      onClick={() => handleConfettiClick(true)}
                      aria-label="Emoji Confetti"
                   >
