@@ -15,7 +15,7 @@ export const PostList: React.FC<PostListProps> = (props) => {
    return (
       <ul className="grid grid-cols-1 gap-8 mt-4 md:grid-cols-2">
          {postMetas.map((post) => (
-            <PostCard key={`${post.slug}`} postMeta={post} />
+            <PostCard key={`${post.slug}`} as="li" postMeta={post} />
          ))}
       </ul>
    )

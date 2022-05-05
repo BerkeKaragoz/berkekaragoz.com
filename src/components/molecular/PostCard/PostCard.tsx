@@ -10,16 +10,17 @@ import { useTranslation, withTranslation } from "react-i18next"
 type PostCardProps = ComponentPropsWithActiveTranslation<{
    postMeta: PostMeta
    disableSlug?: boolean
+   as?: React.ElementType
 }>
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
-   const { postMeta, disableSlug = false, i18n } = props
+   const { postMeta, as: Component = "div", disableSlug = false, i18n } = props
    const locale = i18n.language ?? DEFAULT_LOCALE
 
    const { t: ct } = useTranslation([COMMON_TNS])
 
    return (
-      <li className="flex flex-col justify-between p-2 card">
+      <Component className="flex flex-col justify-between p-2 card">
          <div>
             <LinkText href={`/p/${postMeta.slug}`} className="me-2 h3">
                {postMeta.title}
@@ -28,7 +29,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                <span className="text-subtitle-color">
                   {new Date(postMeta.date).toLocaleDateString(locale)}
                </span>
-               <span className="inline-block ml-1 opacity-50 text-subtitle-color">
+               <span className="inline-block ml-1 opacity-60 text-subtitle-color">
                   {`• ${estimateReadingMinutes(postMeta.wordCount)} ${ct(
                      "min read"
                   )}`}
@@ -49,7 +50,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                </span>
             ))}
          </p>
-      </li>
+      </Component>
    )
 }
 

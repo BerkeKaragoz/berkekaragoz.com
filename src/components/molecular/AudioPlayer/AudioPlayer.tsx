@@ -246,10 +246,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                   className="w-full"
                   min={volumeMin}
                   max={volumeMax}
+                  aria-label={`${title} Volume`}
                   step={0.01}
                   defaultValue={defaultVolume}
                   onChange={volumeChangeHandler}
-                  onMouseDown={() => {
+                  onPointerDown={() => {
                      if (audioRef.current) setBufferedVolume(audioRef.current.volume)
                   }}
                   disabled={!src}
@@ -260,10 +261,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                <code className={styles.infoText}>{renderSeconds(rangeTime)}</code>
                <Slider
                   className="w-full"
+                  aria-label={`Seek ${title}`}
                   onChange={rangeChangeHandler}
-                  onMouseDown={() => setIsMouseDown(true)}
-                  onMouseUpCapture={() => setIsMouseDown(false)}
-                  onMouseUp={() => {
+                  onPointerDown={() => setIsMouseDown(true)}
+                  onPointerUpCapture={() => setIsMouseDown(false)}
+                  onPointerUp={() => {
                      seek(audioRef, progressRef.current?.valueAsNumber)
                   }}
                   min={0}
