@@ -58,10 +58,11 @@ const Homepage: NextPage<{ latestPostMetas: PostMeta[] }> = (props) => {
             <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
                <Section
                   id="hero"
-                  className="justify-center gap-6 overflow-x-visible h-screen-7/10 lg:gap-8 md:h-full lg:justify-between md:max-h-screen-sm xl:max-h-screen-lg"
+                  className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row lg:gap-8"
                >
                   {/* Left side of the Hero */}
                   <HeroIntro />
+
                   {/* Right */}
                   <HeroWidget latestPostMetas={latestPostMetas} />
                </Section>
