@@ -58,7 +58,7 @@ const Homepage: NextPage<{ latestPostMetas: PostMeta[] }> = (props) => {
             <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
                <Section
                   id="hero"
-                  className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row lg:gap-8"
+                  className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row md:max-h-screen-sm xl:max-h-screen-lg lg:gap-8"
                >
                   {/* Left side of the Hero */}
                   <HeroIntro />
