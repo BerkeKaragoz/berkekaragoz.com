@@ -357,7 +357,7 @@ const HeroWidget: React.FC<Props> = (props) => {
             {/* Hero Widget Left End  */}
             {/* Hero Widget Right Start  */}
             <div className="inline-flex flex-col gap-8 align-top shrink-0 w-80">
-               <Slider />
+               <Slider aria-label="Empty Slider" />
                <div className="flex p-2 card">
                   <p className="opacity-50">
                      <Trans t={t} i18nKey="index.hero.widget.interact">
