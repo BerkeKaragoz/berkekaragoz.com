@@ -1,0 +1,11 @@
+@layer components {
+   .hero-widget {
+      @apply flex items-start h-full min-w-full p-4 overflow-y-auto bg-opacity-50 justify-items-start md:w-max md:p-8 rounded-t-xl md:rounded-t-none rounded-b-xl bg-primary-100 dark:bg-background-900;
+   }
+
+   @media screen(md) {
+      .hero-widget {
+         min-width: 2200px;
+      }
+   }
+}
