@@ -47,7 +47,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                      <DotsVerticalIcon />
                   </Popover.Button>
 
-                  <Popover.Panel className="absolute z-40 p-2 mt-2 -right-full md:right-auto card max-w-prose">
+                  <Popover.Panel className="absolute z-40 p-2 mt-2 -translate-x-1/2 left-1/2 md:translate-x-0 md:left-0 md:right-auto card max-w-prose">
                      <LinkBox
                         href="https://box.berkekaragoz.com"
                         className="flex items-center gap-2 p-2 card-input border-primary-400 dark:border-primary-600 border-opacity-20 dark:border-opacity-20"

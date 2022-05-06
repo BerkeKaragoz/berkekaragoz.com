@@ -173,7 +173,7 @@ const HeroWidget: React.FC<Props> = (props) => {
    return (
       <div className="hidden xs:block md:w-1/2">
          {/* Hero Widget Left Start  */}
-         <div className="flex h-full min-w-full p-4 overflow-y-auto bg-opacity-50 md:overflow-y-scroll md:block md:w-max column md:p-8 rounded-t-xl md:rounded-t-none rounded-b-xl bg-primary-100 dark:bg-background-900">
+         <div className="hero-widget">
             <div className="inline-flex flex-col max-w-md gap-8 shrink-0 pe-8">
                {/* Light Bulb */}
                <div className="flex gap-8 justify-evenly">
