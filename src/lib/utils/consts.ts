@@ -21,3 +21,7 @@ export const tabText = [
    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat culpa libero consectetur, ex cupiditate voluptate? At, temporibus provident eveniet nihil non deleniti ratione animi qui ab dolorem, excepturi delectus.",
    "Natus sapiente praesentium commodi et id a reiciendis distinctio ex quisquam eaque sequi cum eius rerum quae, repellendus corporis placeat, magnam alias. Delectus ducimus itaque natus assumenda quod blanditiis eum.",
 ]
+
+//
+
+export const MINUTES_IN_MS = 60000

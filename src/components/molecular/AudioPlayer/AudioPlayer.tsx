@@ -283,6 +283,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
             src={src}
             loop={isLooping}
             muted={isMuted}
+            preload="metadata"
             onEnded={onEndedSubscriber}
             onPlay={onPlaySubscriber}
             onPause={onPauseSubscriber}
