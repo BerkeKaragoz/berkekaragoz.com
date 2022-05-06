@@ -40,6 +40,15 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
       <PageContainer>
          <Head>
             <title>{meta.title} | E. Berke Karagöz</title>
+            <meta
+               name="description"
+               content={
+                  meta.excerpt ??
+                  `Read the post "${
+                     meta.title
+                  }" written on ${postDate.toLocaleDateString(locale)}.`
+               }
+            />
          </Head>
          <Header />
          <Main>

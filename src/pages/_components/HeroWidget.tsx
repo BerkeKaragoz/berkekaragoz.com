@@ -8,7 +8,11 @@ import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import BitcoinIcon from "@/lib/icons/Bitcoin"
 import EthereumIcon from "@/lib/icons/Ethereum"
 import { ColorScheme } from "@/lib/types/common"
-import { CoinPriceData, IAddConfettiConfig } from "@/lib/types/external-api"
+import {
+   CoinPriceData,
+   CoinPriceDataStorage,
+   IAddConfettiConfig,
+} from "@/lib/types/external-api"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { generateRandomInt } from "@/lib/utils"
 import {
@@ -17,6 +21,7 @@ import {
    colorGreen,
    colorRed,
    ETH_PRICE_API,
+   MINUTES_IN_MS,
 } from "@/lib/utils/consts"
 import { Switch, Tab } from "@headlessui/react"
 import {
@@ -95,25 +100,70 @@ const HeroWidget: React.FC<Props> = (props) => {
    )
 
    React.useEffect(() => {
+      let isBtcCached = false
+      let isEthCached = false
+
       jsConfettiRef.current = new JSConfetti()
 
-      fetch(BTC_PRICE_API)
-         .then((req) => req.json())
-         .then((data: CoinPriceData) => {
-            setBtcPrice(parseFloat(data.price))
-         })
-         .catch((err) => {
-            console.error(err)
-         })
+      if (typeof window !== "undefined") {
+         const cacheBtcData: CoinPriceDataStorage = JSON.parse(
+            localStorage.getItem("BTCUSDT") ?? "{}"
+         )
+         const cacheEthData: CoinPriceDataStorage = JSON.parse(
+            localStorage.getItem("ETHUSDT") ?? "{}"
+         )
+         cacheBtcData.timestamp = new Date(cacheBtcData.timestamp)
+         cacheEthData.timestamp = new Date(cacheEthData.timestamp)
 
-      fetch(ETH_PRICE_API)
-         .then((req) => req.json())
-         .then((data: CoinPriceData) => {
-            setEthPrice(parseFloat(data.price))
-         })
-         .catch((err) => {
-            console.error(err)
-         })
+         const currentDate = new Date()
+
+         const cacheTime = 15 * MINUTES_IN_MS
+
+         if (cacheBtcData.timestamp.getTime() + cacheTime > currentDate.getTime()) {
+            isBtcCached = true
+            setBtcPrice(parseFloat(cacheBtcData.price))
+         }
+         if (cacheEthData.timestamp.getTime() + cacheTime > currentDate.getTime()) {
+            isEthCached = true
+            setEthPrice(parseFloat(cacheEthData.price))
+         }
+      }
+
+      if (!isBtcCached)
+         fetch(BTC_PRICE_API)
+            .then((req) => req.json())
+            .then((data: CoinPriceData) => {
+               setBtcPrice(parseFloat(data.price))
+               localStorage.setItem(
+                  "BTCUSDT",
+                  JSON.stringify({
+                     timestamp: new Date().toISOString(),
+                     price: data.price,
+                     mins: data.mins,
+                  })
+               )
+            })
+            .catch((err) => {
+               console.error(err)
+            })
+
+      if (!isEthCached)
+         fetch(ETH_PRICE_API)
+            .then((req) => req.json())
+            .then((data: CoinPriceData) => {
+               setEthPrice(parseFloat(data.price))
+               localStorage.setItem(
+                  "ETHUSDT",
+                  JSON.stringify({
+                     timestamp: new Date().toISOString(),
+                     price: data.price,
+                     mins: data.mins,
+                  })
+               )
+            })
+            .catch((err) => {
+               console.error(err)
+            })
    }, [])
 
    React.useEffect(() => {
