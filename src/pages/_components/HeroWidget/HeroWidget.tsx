@@ -83,7 +83,8 @@ const HeroWidget: React.FC<Props> = (props) => {
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
-   const jsConfettiRef = React.useRef<JSConfetti>(null)
+   const jsConfettiRef = React.useRef<JSConfetti>()
+   const sliderParagraphRef = React.useRef<HTMLParagraphElement>(null)
    const cipherRef = React.useRef<HTMLInputElement>(null)
    const cipherShiftRef = React.useRef<HTMLInputElement>(null)
    const decipherRef = React.useRef<HTMLInputElement>(null)
@@ -461,10 +462,21 @@ const HeroWidget: React.FC<Props> = (props) => {
             {/* Hero Widget Left End  */}
             {/* Hero Widget Right Start  */}
             <div className="inline-flex flex-col gap-8 align-top shrink-0 w-80">
-               <Slider aria-label="Empty Slider" />
+               <Slider
+                  aria-label="Paragraph Opacity Slider"
+                  min={0}
+                  max={100}
+                  onChange={(e) => {
+                     if (!sliderParagraphRef.current) return
+
+                     const { valueAsNumber } = e.target
+
+                     sliderParagraphRef.current.style.opacity = `${valueAsNumber}%`
+                  }}
+               />
 
                <div className="flex p-2 card">
-                  <p className="opacity-50">
+                  <p ref={sliderParagraphRef} style={{ opacity: "50%" }}>
                      <Trans t={t} i18nKey="index.hero.widget.interact">
                         Interact with all of these or change the language from the
                         top bar!
