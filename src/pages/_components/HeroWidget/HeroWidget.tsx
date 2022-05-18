@@ -37,6 +37,7 @@ import { useTranslation } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
+import { caesarsCipher, caesarsDecipher } from "caesars-cipher/browser"
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
@@ -82,7 +83,10 @@ const HeroWidget: React.FC<Props> = (props) => {
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
-   const jsConfettiRef = React.useRef<JSConfetti>()
+   const jsConfettiRef = React.useRef<JSConfetti>(null)
+   const cipherRef = React.useRef<HTMLInputElement>(null)
+   const cipherShiftRef = React.useRef<HTMLInputElement>(null)
+   const decipherRef = React.useRef<HTMLInputElement>(null)
 
    const setTheme = (theme: ColorScheme) => {
       if (isDarkTheme !== undefined) _setTheme(theme)
@@ -354,6 +358,59 @@ const HeroWidget: React.FC<Props> = (props) => {
                      />
                   </div>
                </div>
+               {/* Caesars Cipher Section */}
+               <div className="flex items-center justify-between">
+                  <input
+                     type="text"
+                     className="p-2 w-28 card-input"
+                     ref={cipherRef}
+                     defaultValue="Cipher"
+                     onChange={(e) => {
+                        if (!decipherRef.current) return
+                        if (!cipherShiftRef.current) return
+                        const { value } = e.target
+
+                        decipherRef.current.value = caesarsCipher(
+                           value,
+                           cipherShiftRef.current.valueAsNumber
+                        )
+                     }}
+                  />
+                  {"-"}
+                  <input
+                     type="number"
+                     defaultValue={1}
+                     ref={cipherShiftRef}
+                     className="w-16 p-2 text-center card-input"
+                     onChange={(e) => {
+                        if (!cipherRef.current) return
+                        if (!decipherRef.current) return
+                        const { valueAsNumber } = e.target
+
+                        decipherRef.current.value = caesarsCipher(
+                           cipherRef.current.value,
+                           valueAsNumber
+                        )
+                     }}
+                  />
+                  {"-"}
+                  <input
+                     type="text"
+                     ref={decipherRef}
+                     className="p-2 w-28 card-input"
+                     defaultValue="Djqifs"
+                     onChange={(e) => {
+                        if (!cipherRef.current) return
+                        if (!cipherShiftRef.current) return
+                        const { value } = e.target
+
+                        cipherRef.current.value = caesarsDecipher(
+                           value,
+                           cipherShiftRef.current.valueAsNumber
+                        )
+                     }}
+                  />
+               </div>
                {/* Website Made with Section */}
                <div className="w-full px-3 py-2 card">
                   <p className="text-primary-600 dark:text-primary-200">
@@ -405,6 +462,7 @@ const HeroWidget: React.FC<Props> = (props) => {
             {/* Hero Widget Right Start  */}
             <div className="inline-flex flex-col gap-8 align-top shrink-0 w-80">
                <Slider aria-label="Empty Slider" />
+
                <div className="flex p-2 card">
                   <p className="opacity-50">
                      <Trans t={t} i18nKey="index.hero.widget.interact">
