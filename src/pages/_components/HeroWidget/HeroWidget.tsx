@@ -37,7 +37,7 @@ import { useTranslation } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
-import { caesarsCipher, caesarsDecipher } from "caesars-cipher/browser"
+import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
