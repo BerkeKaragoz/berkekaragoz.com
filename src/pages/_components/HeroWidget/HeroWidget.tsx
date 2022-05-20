@@ -360,9 +360,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </div>
                </div>
                {/* Caesars Cipher Section */}
-               <div className="flex items-center justify-between">
+               <div className="flex items-center justify-between gap-2">
                   <input
                      type="text"
+                     aria-label="Caesar's cipher"
                      className="p-2 w-28 card-input"
                      ref={cipherRef}
                      defaultValue="Cipher"
@@ -377,9 +378,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         )
                      }}
                   />
-                  {"-"}
+                  <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <input
                      type="number"
+                     aria-label="Caesar's cipher shift amount"
                      defaultValue={1}
                      ref={cipherShiftRef}
                      className="w-16 p-2 text-center card-input"
@@ -394,9 +396,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         )
                      }}
                   />
-                  {"-"}
+                  <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <input
                      type="text"
+                     aria-label="Caesar's decipher"
                      ref={decipherRef}
                      className="p-2 w-28 card-input"
                      defaultValue="Djqifs"
