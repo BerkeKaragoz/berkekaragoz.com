@@ -15,12 +15,13 @@
       },
       "projects": {
          "title": "Projects",
-         "intergallerySubtitle": "A Media Platform (WiP)",
+         "intergallerySubtitle": "A Media Storage and Management Platform",
          "localeVerifierSubtitle": "For GNU/Linux systems",
+         "resourceUsageTrackerSubtitle": "CPU, RAM, Disk, Network...",
          "lobiumSubtitle": "Tournament Management Bundle",
          "kognitifSubtitle": "Cognitive Training Tool (PWA)",
          "vrTrainingSubtitle": "A PoC app for DATAMARKET",
-         "seeMore": "And more..."
+         "seeMore": "And +50 more repositories..."
       },
       "aboutMe": {
          "title": "About Me",

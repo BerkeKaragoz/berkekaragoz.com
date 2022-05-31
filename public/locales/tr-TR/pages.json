@@ -15,12 +15,13 @@
       },
       "projects": {
          "title": "Projeler",
-         "intergallerySubtitle": "Bir Medya Platformu (Yapım Aşamasında)",
+         "intergallerySubtitle": "Medya Depolama ve Yönetim Platformu",
          "localeVerifierSubtitle": "GNU/Linux sistemleri için",
+         "resourceUsageTrackerSubtitle": "CPU, RAM, Disk, Ağ...",
          "lobiumSubtitle": "Turnuva Yönetim Paketi",
          "kognitifSubtitle": "Kognitif Antreman Aracı (PWA)",
          "vrTrainingSubtitle": "DATAMARKET için PoC uygulaması",
-         "seeMore": "Ve daha fazlası..."
+         "seeMore": "Ve +50 tane repository..."
       },
       "aboutMe": {
          "title": "Hakkımda",
