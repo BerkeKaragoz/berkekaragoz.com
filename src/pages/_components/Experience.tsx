@@ -121,10 +121,7 @@ const Experience: React.FC<
                      dateStartTime="2021-07-03"
                      startTime={`${t("index.experience.jul")} 2021`}
                      dateEndTime=""
-                     endTime={`${t("index.experience.present")} (~${getMonthsBetween(
-                        new Date("2021-07-03"),
-                        currentDate
-                     )} ${t("index.experience.mos")})`}
+                     endTime={`${t("index.experience.present")}`}
                      jobType={t("index.experience.freelance")}
                      location="Katowice, PL (Hybrid)"
                   >
