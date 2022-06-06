@@ -98,7 +98,7 @@ const Projects: React.FC<ComponentPropsWithTranslation<Record<string, never>>> =
             />
          </div>
          <p>
-            <a href={`${PLATFORM_GITHUB_LINK}?tab=repositories`}>
+            <a href={`${PLATFORM_GITHUB_LINK}?tab=repositories&q=&type=source`}>
                <Trans t={t} i18nKey="index.projects.seeMore">
                   And more repositories...
                </Trans>
