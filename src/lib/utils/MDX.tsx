@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export const AppMDXComponents: MDXRemoteProps["components"] = {
    Image: (props) => (
-      <div className="mx-auto text-center">
+      <div className="mx-auto mb-4 text-center">
          <Image alt={props.alt} {...props} />
       </div>
    ),
@@ -13,11 +13,19 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
    h3: (props) => <h3 className="h3" {...props} />,
    h4: (props) => <h4 className="h4" {...props} />,
    h5: (props) => <h5 className="h5" {...props} />,
-   ul: (props) => <ul className="ul" {...props} />,
-   ol: (props) => <ol className="ol" {...props} />,
+   ul: (props) => (
+      <div className="mb-8">
+         <ul className="ul" {...props} />
+      </div>
+   ),
+   ol: (props) => (
+      <div className="mb-8">
+         <ol className="ol" {...props} />
+      </div>
+   ),
    li: (props) => <li className="li" {...props} />,
    pre: (props) => (
-      <pre className="p-1 mb-2 overflow-hidden rounded-md card" {...props} />
+      <pre className="p-1 mb-8 overflow-hidden rounded-md card" {...props} />
    ),
    code: (props) => <code className="code" {...props} />,
 }
