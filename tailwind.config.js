@@ -49,6 +49,9 @@ module.exports = {
             lgh: { raw: `(min-height: 1280px)` },
             xlh: { raw: `(min-height: 1920px)` },
          },
+         maxWidth: {
+            prose: "70ch",
+         },
          colors: {
             current: colors.sky,
             primary: colors.sky,
