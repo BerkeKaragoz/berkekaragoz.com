@@ -1,0 +1,164 @@
+---
+title: Setting Up Protected Routes with Firebase and React
+tags:
+   - javascript
+   - react
+   - firebase
+   - web-development
+   - guide
+date: 25 Jun 22 11:30 UTC+3
+excerpt: How to prevent unauthorized users access unwanted pages in your application.
+---
+
+While we were working on some projects we had a discussion about handling routes in [Firebase](https://firebase.google.com/). So you will read about my approach in this post. Maybe you will get a new perspective or validate your own approach.
+
+## Determining The User Role for Authorization
+
+In Firebase, users are connected to the [Authentication module](https://firebase.google.com/docs/auth). That means authentication data is not in the application database. Therefore if you want to use the database for the users, you would have to manually handle users relationship with their data.
+
+However, there is a concept called [Custom Claims](https://firebase.google.com/docs/auth/admin/custom-claims) which is a part of [The Firebase Admin SDK](https://firebase.google.com/docs/reference/admin). Skipping the part where we setup user claims with the Admin SDK since this post is focused on the routing in the web UI.
+
+<Image
+   priority
+   src="/assets/posts/protected-routes-with-firebase-and-react/FireRoofWork_JohnOdegard.jpg"
+   alt="Firebase reference with fire roof work (Picture by John Odegard)"
+   width={600}
+   height={350}
+   quality={93}
+   placeholder="blur"
+   blurDataURL="data:image/webp;base64,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"
+/>
+
+### Providing The User Roles to Your Application
+
+Our project already had a provider setup. But to summarize it, please take a look at this code block:
+
+```jsx
+// AuthProvider returns:
+;<AuthContext.Provider
+   value={{ user, isAuthenticated: !!user, ...someOtherProps }}
+   children={children}
+/>
+// Export a hook to use it
+export const useAuth = () => useContext(AuthContext)
+```
+
+[Firebase Client library](https://firebase.google.com/docs/firestore/client/libraries) has a method called [`onAuthStateChanged`](https://firebase.google.com/docs/auth/web/manage-users#get_the_currently_signed-in_user). First we get the user with it. Then we have to get the user claims. With the response from `onAuthStateChanged`, we call [`getIdTokenResult`](https://firebase.google.com/docs/reference/js/v8/firebase.User#getidtokenresult) through it. This provides us with there properties:
+
+-  authTime
+-  claims
+-  expirationTime
+-  issuedAtTime
+-  signInProvider
+-  signInSecondFactor
+-  token
+
+What we needed is claims and we got it. So we will assign the needed fields to our `user` value. We only needed `admin` so I did `user.isAdmin = idTokenResult.claims.admin`. Here is the code:
+
+```js
+// Should be initialized once with the provider,
+// You can use this in a useEffect
+firebase.auth().onAuthStateChanged((user) => {
+   if (user && onLogin) {
+      user.getIdTokenResult().then((idTokenResult) => {
+         user.isAdmin = idTokenResult.claims.admin
+         // Or mock it
+         // user.isAdmin = true; // TODO with Admin SDK
+         onLogin(user)
+         setUser(user)
+      })
+   } else setUser(user)
+})
+```
+
+With this, we have can access wheter the user has the admin role by:
+
+```js
+const { user } = useAuth()
+console.log(user.isAdmin)
+```
+
+## Setting Up The Route Component
+
+Our goal is to create something like below:
+
+```jsx
+// For all logged in users
+<ProtectedRoute path="/profile" component={UserProfile} />
+// For admins only
+<ProtectedRoute isAdminRoute path="/admin" component={Admin} />
+```
+
+I had only added the user claim check to our higher-order component for authentication check. And it was done very similar to [Auth0](https://auth0.com/)'s [component](https://github.com/auth0/auth0-react/blob/master/src/with-authentication-required.tsx) in their library.
+
+<Image
+   src="/assets/posts/protected-routes-with-firebase-and-react/We_are_following_you.jpg"
+   alt="We are following you meme"
+   width={720}
+   height={708}
+   quality={85}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+Pf/338ACfUD+5LbVnEAAAAASUVORK5CYII="
+/>
+
+We start by writing the HoC, but I am going to redact some pieces to make it simpler:
+
+```jsx
+function withAuthenticationRequired(Component, options) {
+   return function WithAuthenticationRequired(props) {
+      // This will be passed from ProtectedRoute
+      const { isAdminRoute = false } = props
+      // Use our hook to get the user info
+      const { isAuthenticated, user } = useAuth()
+      const {
+         returnTo = defaultReturnTo, // a function that returns a url path
+         onRedirecting = defaultOnRedirecting, // returns a component that displays when redirecting
+      } = options
+
+      useEffect(() => {
+         let isAuthorized = false
+
+         if (isLoaded) {
+            /* If authenticated,
+             * Is the route admin only?
+             * If route is admin only, is the user */
+            isAuthorized = isAdminRoute ? !!user?.admin : isAuthenticated
+
+            const opts = {
+               appState: {
+                  returnTo: typeof returnTo === "function" ? returnTo() : returnTo,
+               },
+            }
+
+            if (!isAuthenticated) history.push("/login", opts)
+            else if (!isAuthorized) history.push("/", opts) // because already logged in
+         }
+      }, [history, isAuthenticated, loginOptions, returnTo])
+
+      return isAuthenticated ? <Component {...props} /> : onRedirecting()
+   }
+}
+```
+
+The `ProtectedRoute` component, quite simple after what we wrote:
+
+```jsx
+const ProtectedRoute = ({ component, ...args }) => {
+   // Wrap the component we get with the HoC we just wrote
+   const WrappedComponent = withAuthenticationRequired(component, {
+      onRedirecting: () => "Resuming the session…",
+   })
+
+   return (
+      <Route
+         render={(routeProps) => <WrappedComponent {...routeProps} {...args} />}
+      />
+   )
+}
+```
+
+And this matches our goal!
+
+## End
+
+I have mentioned some conventions about Firebase, a React provider, a higher-order component and a route component. Hope this helps you. We did this implementation as a part of a Developer Acceleration Program (the actual name is vague at the moment :D) by [Scott Coates](https://www.scott-coates.com/) thanks to him and everyone in it. Here is the [GitHub organization](https://github.com/Scott-Coates-Org/) connected to it.
