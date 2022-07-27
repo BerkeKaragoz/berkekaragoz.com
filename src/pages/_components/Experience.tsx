@@ -100,6 +100,9 @@ const Experience: React.FC<
          </h1>
          <Tab.Group as="div" className="justify-center block sm:flex sm:flex-row">
             <Tab.List className="flex flex-shrink-0 gap-4 p-2 mb-1 overflow-x-auto bg-black rounded-lg sm:mr-2 whitespace-nowrap sm:mb-0 sm:flex-col bg-opacity-5 dark:bg-opacity-20">
+               <ExpTab>
+                  <i>Self</i>
+               </ExpTab>
                <ExpTab>ESL Gaming</ExpTab>
                <ExpTab>HAVELSAN</ExpTab>
                <ExpTab>DATAMARKET</ExpTab>
@@ -115,6 +118,29 @@ const Experience: React.FC<
             <Tab.Panels className="w-full p-2 text-left bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20 max-w-prose">
                <div className="p-3 card">
                   <ExpPanel
+                     role={t("index.experience.selfRole")}
+                     name="berkekaragoz.com"
+                     nameUrl="/"
+                     dateStartTime="2022-06-03"
+                     startTime={`${t("index.experience.jun")} 2022`}
+                     dateEndTime=""
+                     endTime={`${t("index.experience.present")}`}
+                     jobType={t("index.experience.freelance")}
+                  >
+                     <Trans t={t} i18nKey="index.experience.selfDesc">
+                        <ul className="list-disc ms-6">
+                           <li>
+                              Providing software development services such as
+                              consultation or implementation.
+                           </li>
+                           <li>
+                              Helping developers plan to build, maintain, expand, and
+                              scale their applications or sites.
+                           </li>
+                        </ul>
+                     </Trans>
+                  </ExpPanel>
+                  <ExpPanel
                      role={t("index.experience.eslGamingRole")}
                      name="ESL Gaming"
                      nameUrl="https://www.eslgaming.com/"
@@ -126,13 +152,15 @@ const Experience: React.FC<
                      location="Katowice, PL (Hybrid)"
                   >
                      <Trans t={t} i18nKey="index.experience.eslGamingDesc">
-                        {"Managing tournaments and players in projects such as:"}
+                        {
+                           "Managed more than 100 tournaments and leagues along with the players in projects for ESL in total. A few examples:"
+                        }
                         <ul className="list-disc ms-6">
-                           <li>ESL PUBG Masters / Open</li>
-                           <li>Sony Open Series Apex Legends</li>
+                           <li>ESL PUBG (Masters/Open)</li>
+                           <li>Sony (Open Series/Master Circuit) Apex Legends</li>
                            <li>
-                              Sony Call of Duty: Cold War Battle for Beta / CHOWH1
-                              Challenge
+                              Sony Call of Duty: Cold War (Battle for Beta/CHOWH1
+                              Challenge)
                            </li>
                            <li>Special Events</li>
                         </ul>
