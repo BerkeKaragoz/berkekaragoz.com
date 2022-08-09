@@ -1,0 +1,145 @@
+---
+title: gulp gulp gulp in 3 minutes
+tags:
+   - gulp
+   - javascript
+   - web-development
+   - guide
+date: 09 Aug 22 16:00 UTC+3
+excerpt: Learn automating your web development tasks and go beyond.
+---
+
+gulp is a task automation toolkit consisting of [8 modules](https://gulpjs.com/docs/en/api/concepts#modules).
+
+-  [undertaker](https://www.npmjs.com/package/undertaker) - the task registration system
+-  [vinyl](https://www.npmjs.com/package/vinyl) - the virtual file objects
+-  [vinyl-fs](https://www.npmjs.com/package/vinyl-fs) - a vinyl adapter to your local file system
+-  [glob-watcher](https://www.npmjs.com/package/glob-watcher) - the file watcher
+-  [bach](https://www.npmjs.com/package/bach) - task orchestration using series() and parallel()
+-  [last-run](https://www.npmjs.com/package/last-run) - tracks the last run time of a task
+-  [vinyl-sourcemap](https://www.npmjs.com/package/vinyl-sourcemap) - built-in sourcemap support
+-  [gulp-cli](https://www.npmjs.com/package/gulp-cli) - the command line interface for interacting with gulp
+
+You can handle tasks like building, transpiling, cleaning, minifying, live reload; or whatever task you can think of.
+
+<Image
+   priority
+   src="/assets/posts/gulp-gulp-gulp-in-3-minutes/gulp-gulp-gulp-gulp.png"
+   alt="Gulp banner"
+   width={960}
+   height={560}
+   quality={93}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg=="
+/>
+
+## Setting up gulp
+
+1. Install gulp: `npm i -D gulp`
+2. Create a gulpfile named `gulpfile.js` (or `gulpfile.js/index.js`) in the project directory.
+3. Create and export your tasks.
+
+```js
+const { series } = require('gulp');
+
+// The `clean` function is not exported so it can be considered a private task.
+function clean(cb) {
+  // body omitted
+  cb();
+}
+
+// The `build` function is exported so it is public and can be run with the `gulp` command.
+function build(cb) //...
+
+exports.build = build;
+exports.default = series(clean, build);
+```
+
+And you can also organize tasks like below:
+
+```js
+exports.build = series(
+   clean,
+   parallel(cssTranspile, series(jsTranspile, jsBundle)),
+   parallel(cssMinify, jsMinify),
+   publish
+)
+```
+
+## Asynchronous tasks
+
+Lets start with a simple task example.
+
+### A stream task
+
+I will only give this type of task as an example. Because this is the most bound to the gulp's system.
+
+```js
+// gulpfile.js
+const { src, dest } = require("gulp")
+
+function streamTask() {
+   return src("*.js").pipe(dest("output"))
+}
+
+exports.default = streamTask
+```
+
+This task copies all files which match the `*.js` glob pattern to the `output` folder. You can refresh your memory about the glob pattern from [gulp's documentation](https://gulpjs.com/docs/en/getting-started/explaining-globs).
+
+The `src` and `dest` functions are forwarded from the [`vinyl-fs`](https://github.com/gulpjs/vinyl-fs) package. It uses [Node.js ReadWriteStream](https://nodejs.org/api/stream.html) (which extends ReadableStream, WritableStream) to handle its pipelines.
+
+### All types
+
+The other types of tasks are pretty straight forward. You can return all the types below:
+
+-  Stream: `src(...)` or a transformer that returns a `ReadWriteStream`
+-  Promise: `Promise.resolve('the value is ignored')` or async/await
+-  Event Emitter: `emitter.emit('Emit has to happen')`
+-  Child Process: `exec('date')`
+-  Observable: `Observable.of(1, 2, 3)`
+-  Error-first Callback: `fs.access('gulpfile.js', cb)`
+
+<Image
+   src="/assets/posts/gulp-gulp-gulp-in-3-minutes/i-was-told.jpg"
+   alt="Code splitting meme"
+   width={590}
+   height={462}
+   quality={85}
+   placeholder="blur"
+   blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs="
+/>
+
+## Feel
+
+gulp can be used as a bundler, or with a bundler. To compare with other tools, gulp feels more intuitive since you are closer to writing usual JavaScript functions. You are more in control of what is happening. You can even use rollup or esbuild functions inside the tasks, or even as tasks.
+
+If you are using webpack you are mostly configuring it. With gulp, you are writing a logical pipeline. But you can also use plugins like other tools. And they are very common.
+
+## Plugins
+
+To avoid implementing the same logic, you use plugins (if you want to). You just pipe the plugins to the series of tasks you create. Plugins can be found [on their search page](https://gulpjs.com/plugins/).
+
+You can check the [gulp-boilerplate](https://github.com/cferdinandi/gulp-boilerplate/blob/master/gulpfile.js) [Chris Ferdinandi](https://github.com/cferdinandi) created. See how and how many plugins he used for the boilerplate.
+
+## Notes
+
+If you see the [`task`](https://gulpjs.com/docs/en/api/task) function gets used somewhere, that pattern is not recommended anymore. The recommended way is to export the tasks. So don't get confused if you see one.
+
+If you want to see more resources about gulp check out the [awesome-gulp](https://alferov.github.io/awesome-gulp/) list.
+
+## Conclusion
+
+Thank you for reading. Hope you can do creative pipelines with it.
+
+<div className="flex justify-center">
+   <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/XatesnI2dcg?start=1"
+      title="YouTube video player"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+   />
+</div>
