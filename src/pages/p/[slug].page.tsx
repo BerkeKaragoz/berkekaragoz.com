@@ -28,6 +28,7 @@ interface MDXPost {
 
 export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
    const { post } = props
+
    const { i18n } = useTranslation([PAGES_TNS], { keyPrefix: "p.[slug]" })
    const locale = i18n.language ?? DEFAULT_LOCALE
 
@@ -49,6 +50,18 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
                   }" written on ${postDate.toLocaleDateString(locale)}.`
                }
             />
+            <meta content={meta.tags.toString()} name="keywords" />
+            <meta content="Berke Karagoz" name="Author" />
+            <meta content="mail@berkekaragoz.com" name="Email" />
+            <link rel="canonical" href={`/p/${meta.slug}`} />
+            <meta content="general" name="rating" />
+            <meta content="all" name="audience" />
+            <meta content="global" name="distribution" />
+            <meta name="robots" content="all" />
+            <meta content="index, follow" name="robots" />
+            <meta content="index, follow" name="GOOGLEBOT" />
+            <meta content="index, follow" name="yahooBOT" />
+            <meta content="index, follow" name="yandexBOT" />
          </Head>
          <Header />
          <Main>

@@ -59,7 +59,7 @@ export const PostsPage: NextPage<{
                   </Trans>
                </p>
                <p>
-                  <button className="link capitalize" onClick={handleShowTags}>
+                  <button className="capitalize link" onClick={handleShowTags}>
                      {isShowTags ? (
                         <Trans t={t} i18nKey="hide tags">
                            Hide Tags
