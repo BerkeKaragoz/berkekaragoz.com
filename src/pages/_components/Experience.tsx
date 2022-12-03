@@ -101,7 +101,7 @@ const Experience: React.FC<
          <Tab.Group as="div" className="justify-center block sm:flex sm:flex-row">
             <Tab.List className="flex flex-shrink-0 gap-4 p-2 mb-1 overflow-x-auto bg-black rounded-lg sm:mr-2 whitespace-nowrap sm:mb-0 sm:flex-col bg-opacity-5 dark:bg-opacity-20">
                <ExpTab>
-                  <i>Self</i>
+                  ESL FACEIT Group
                </ExpTab>
                <ExpTab>ESL Gaming</ExpTab>
                <ExpTab>HAVELSAN</ExpTab>
@@ -118,24 +118,22 @@ const Experience: React.FC<
             <Tab.Panels className="w-full p-2 text-left bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20 max-w-prose">
                <div className="p-3 card">
                   <ExpPanel
-                     role={t("index.experience.selfRole")}
-                     name="berkekaragoz.com"
-                     nameUrl="/"
-                     dateStartTime="2022-06-03"
-                     startTime={`${t("index.experience.jun")} 2022`}
+                     role={t("index.experience.efgRole")}
+                     name="ESL FACEIT Group"
+                     nameUrl="https://eslfaceitgroup.com"
+                     dateStartTime="2022-09-19"
+                     startTime={`${t("index.experience.sep")} 2022`}
                      dateEndTime=""
                      endTime={`${t("index.experience.present")}`}
-                     jobType={t("index.experience.freelance")}
+                     jobType={t("index.experience.fulltime")}
                   >
-                     <Trans t={t} i18nKey="index.experience.selfDesc">
+                     <Trans t={t} i18nKey="index.experience.efgDesc">
                         <ul className="list-disc ms-6">
                            <li>
-                              Providing software development services such as
-                              consultation or implementation.
+                              Developing the ESL Tournament Admin client in Tournament Core team.
                            </li>
                            <li>
-                              Helping developers plan to build, maintain, expand, and
-                              scale their applications or sites.
+                              Implement solutions, review the codes pushed to the client, build tools for developers and leverage my experience as an ex-tournament admin.
                            </li>
                         </ul>
                      </Trans>
@@ -146,8 +144,12 @@ const Experience: React.FC<
                      nameUrl="https://www.eslgaming.com/"
                      dateStartTime="2021-07-03"
                      startTime={`${t("index.experience.jul")} 2021`}
-                     dateEndTime=""
-                     endTime={`${t("index.experience.present")}`}
+                     dateEndTime="2022-09-17"
+                     endTime={`${t("index.experience.sep")} 2022 (~1 ${t(
+                        "index.experience.yr"
+                     )} 3 ${t(
+                        "index.experience.mos"
+                     )})`}
                      jobType={t("index.experience.freelance")}
                      location="Katowice, PL (Hybrid)"
                   >
@@ -176,7 +178,7 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.jun")} 2020 (~5 ${t(
                         "index.experience.mos"
                      )})`}
-                     jobType={t("index.experience.fullTime")}
+                     jobType={t("index.experience.fulltime")}
                      location="Ankara, TR"
                   >
                      <Trans t={t} i18nKey="index.experience.havelsanDesc">
@@ -205,7 +207,7 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.sep")} 2019 (~4 ${t(
                         "index.experience.mos"
                      )})`}
-                     jobType={t("index.experience.fullTime")}
+                     jobType={t("index.experience.fulltime")}
                      location="Istanbul, TR"
                   >
                      <Trans t={t} i18nKey="index.experience.datamarketDesc">
@@ -224,9 +226,9 @@ const Experience: React.FC<
                      dateStartTime="2018-11-01"
                      startTime={`${t("index.experience.nov")} 2018`}
                      dateEndTime="2022-04-15"
-                     endTime={`${t("index.experience.mar")} 2022 (~3 ${t(
+                     endTime={`${t("index.experience.may")} 2022 (~3 ${t(
                         "index.experience.yr"
-                     )} 5 ${t("index.experience.mos")})`}
+                     )} 7 ${t("index.experience.mos")})`}
                   >
                      <Trans t={t} i18nKey="index.experience.eslPlayDesc">
                         Being/been a volunteer senior referee at Europe staff team
