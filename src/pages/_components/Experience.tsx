@@ -1,8 +1,9 @@
+import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import { PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
-import { getMonthsBetween } from "@/lib/utils"
 import { Tab } from "@headlessui/react"
 import clsx from "clsx"
+import Image from "next/image"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
 
@@ -41,6 +42,7 @@ const ExpPanel: React.FC<{
    endTime: string
    jobType?: string
    location?: string
+   imageSrcs?: string[]
 }> = (props) => {
    const {
       children,
@@ -53,30 +55,56 @@ const ExpPanel: React.FC<{
       endTime,
       jobType,
       location,
+      imageSrcs = [],
       ...rest
    } = props
 
    return (
       <Tab.Panel {...rest}>
-         <div className="mb-2">
-            <div className="text-xl">
-               <strong>{role}</strong>
-               {" @ "}
-               <a href={nameUrl}>
-                  <strong>{name}</strong>
-               </a>
+         <div className="card p-3">
+            <div className="mb-2">
+               <div className="text-xl">
+                  <strong>{role}</strong>
+                  {" @ "}
+                  <a href={nameUrl}>
+                     <strong>{name}</strong>
+                  </a>
+               </div>
+               <div className="text-subtitle-color">
+                  <time dateTime={dateStartTime}>{startTime}</time>
+                  {" - "}
+                  <time dateTime={dateEndTime}>{endTime}</time>
+                  {(jobType || location) && <br />}
+                  <em>{jobType}</em>
+                  {location && " • "}
+                  <address className="inline-block">{location}</address>
+               </div>
             </div>
-            <div className="text-subtitle-color">
-               <time dateTime={dateStartTime}>{startTime}</time>
-               {" - "}
-               <time dateTime={dateEndTime}>{endTime}</time>
-               {(jobType || location) && <br />}
-               <em>{jobType}</em>
-               {location && " • "}
-               <address className="inline-block">{location}</address>
-            </div>
+            <div>{children}</div>
          </div>
-         <div>{children}</div>
+         {imageSrcs.length !== 0 && (
+            <div className="grid grid-cols-3 gap-2 mt-2">
+               {imageSrcs.map((src, i) => (
+                  <a
+                     href={src}
+                     key={src}
+                     className="card p-1 text-center hover:ring-1"
+                     style={{ fontSize: 0 }}
+                     target="_blank"
+                     rel="noreferrer"
+                  >
+                     <Image
+                        className="rounded object-cover"
+                        src={src}
+                        alt={`${name} picture ${i + 1}`}
+                        quality={80}
+                        height={128}
+                        width={192}
+                     />
+                  </a>
+               ))}
+            </div>
+         )}
       </Tab.Panel>
    )
 }
@@ -86,7 +114,7 @@ const Experience: React.FC<
 > = (props) => {
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    const { t, tReady: tready, ...rest } = props
-   const currentDate = new Date()
+   // const currentDate = new Date()
 
    return (
       <div
@@ -117,7 +145,7 @@ const Experience: React.FC<
                <ExpTab>Ancha Space T.</ExpTab>
             </Tab.List>
             <Tab.Panels className="w-full p-2 text-left bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20 max-w-prose">
-               <div className="p-3 card">
+               <div>
                   <ExpPanel
                      role={t("index.experience.efgRole")}
                      name="ESL FACEIT Group"
@@ -152,6 +180,10 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.sep")} 2022 (~4 ${t(
                         "index.experience.mos"
                      )})`}
+                     imageSrcs={[
+                        "/assets/cashmere-ui.png",
+                        "/assets/berkekaragoz.com-lighthouse.jpg",
+                     ]}
                   >
                      <Trans t={t} i18nKey="index.experience.selfDesc">
                         <ul className="list-disc ms-6">
@@ -206,6 +238,7 @@ const Experience: React.FC<
                      )})`}
                      jobType={t("index.experience.fulltime")}
                      location="Ankara, TR"
+                     imageSrcs={["/assets/havelsan-first-day.jpg"]}
                   >
                      <Trans t={t} i18nKey="index.experience.havelsanDesc">
                         <p>
@@ -235,6 +268,7 @@ const Experience: React.FC<
                      )})`}
                      jobType={t("index.experience.fulltime")}
                      location="Istanbul, TR"
+                     imageSrcs={["/assets/datamarket-last-day.jpg"]}
                   >
                      <Trans t={t} i18nKey="index.experience.datamarketDesc">
                         Developed a dynamic training application (as PoC) for GearVR,
@@ -284,6 +318,7 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.jun")} 2021 (~1 ${t(
                         "index.experience.yr"
                      )} 2 ${t("index.experience.mos")})`}
+                     imageSrcs={["/assets/riot-kampus-elcisi.jpg"]}
                   >
                      <Trans t={t} i18nKey="index.experience.riotDesc">
                         Organized VALORANT events and managed the community of
@@ -300,6 +335,10 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.sep")} 2019 (~1 ${t(
                         "index.experience.yr"
                      )} 2 ${t("index.experience.mos")})`}
+                     imageSrcs={[
+                        "/assets/ancha-summary.png",
+                        "/assets/ARover_Wheel_ColoredParts.png",
+                     ]}
                   >
                      <Trans t={t} i18nKey="index.experience.anchaDesc">
                         <p>
