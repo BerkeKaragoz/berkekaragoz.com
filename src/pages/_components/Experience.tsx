@@ -100,8 +100,9 @@ const Experience: React.FC<
          </h1>
          <Tab.Group as="div" className="justify-center block sm:flex sm:flex-row">
             <Tab.List className="flex flex-shrink-0 gap-4 p-2 mb-1 overflow-x-auto bg-black rounded-lg sm:mr-2 whitespace-nowrap sm:mb-0 sm:flex-col bg-opacity-5 dark:bg-opacity-20">
+               <ExpTab>ESL FACEIT Group</ExpTab>
                <ExpTab>
-                  ESL FACEIT Group
+                  <i>Self</i>
                </ExpTab>
                <ExpTab>ESL Gaming</ExpTab>
                <ExpTab>HAVELSAN</ExpTab>
@@ -130,10 +131,37 @@ const Experience: React.FC<
                      <Trans t={t} i18nKey="index.experience.efgDesc">
                         <ul className="list-disc ms-6">
                            <li>
-                              Developing the ESL Tournament Admin client in Tournament Core team.
+                              Developing the ESL Tournament Admin client in
+                              Tournament Core team.
                            </li>
                            <li>
-                              Implement solutions, review the codes pushed to the client, build tools for developers and leverage my experience as an ex-tournament admin.
+                              Implement solutions, review the codes pushed to the
+                              client, build tools for developers and leverage my
+                              experience as an ex-tournament admin.
+                           </li>
+                        </ul>
+                     </Trans>
+                  </ExpPanel>
+                  <ExpPanel
+                     role={t("index.experience.selfRole")}
+                     name="berkekaragoz.com"
+                     nameUrl="/"
+                     dateStartTime="2022-06-03"
+                     startTime={`${t("index.experience.jun")} 2022`}
+                     dateEndTime="2022-09-19"
+                     endTime={`${t("index.experience.sep")} 2022 (~4 ${t(
+                        "index.experience.mos"
+                     )})`}
+                  >
+                     <Trans t={t} i18nKey="index.experience.selfDesc">
+                        <ul className="list-disc ms-6">
+                           <li>
+                              Providing software development services such as
+                              consultation or implementation.
+                           </li>
+                           <li>
+                              Helping developers plan to build, maintain, expand, and
+                              scale their applications or sites.
                            </li>
                         </ul>
                      </Trans>
@@ -147,9 +175,7 @@ const Experience: React.FC<
                      dateEndTime="2022-09-17"
                      endTime={`${t("index.experience.sep")} 2022 (~1 ${t(
                         "index.experience.yr"
-                     )} 3 ${t(
-                        "index.experience.mos"
-                     )})`}
+                     )} 3 ${t("index.experience.mos")})`}
                      jobType={t("index.experience.freelance")}
                      location="Katowice, PL (Hybrid)"
                   >
