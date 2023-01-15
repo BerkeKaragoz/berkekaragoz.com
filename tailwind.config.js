@@ -11,6 +11,16 @@ module.exports = {
    ],
    darkMode: "class", // or 'media' or 'class', also darkMode increases bundle size noticeably
    theme: {
+      fontFamily: {
+         sans: [
+            "Saira",
+            "Open Sans",
+            "ui-sans-serif",
+            "system-ui",
+            "-apple-system",
+            "BlinkMacSystemFont",
+         ],
+      },
       maxHeight: {
          "screen-sm": "640px",
          "screen-md": "768px",

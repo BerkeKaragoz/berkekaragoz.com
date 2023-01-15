@@ -34,6 +34,11 @@
    }
 }
 
+html {
+   text-rendering: optimizeLegibility;
+   font-smooth: auto;
+}
+
 body {
    color: black;
    background-color: theme("colors.background.50");

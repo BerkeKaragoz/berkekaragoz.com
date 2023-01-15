@@ -49,7 +49,6 @@ const Homepage: NextPage<{ latestPostMetas: PostMeta[] }> = (props) => {
                name="description"
                content="Hi, I'm Berke Karagöz. A curious frontend engineer who had been gaining various insights about web development."
             />
-            <link rel="icon" href="/favicon.ico" />
          </Head>
 
          <Header />
