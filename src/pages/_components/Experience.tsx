@@ -99,7 +99,7 @@ const ExpPanel: React.FC<{
                         alt={`${name} picture ${i + 1}`}
                         quality={80}
                         height={128}
-                        width={192}
+                        width={232}
                      />
                   </a>
                ))}
