@@ -44,6 +44,13 @@ body {
    background-color: theme("colors.background.50");
 }
 
+code,
+kbd,
+samp,
+pre {
+   @apply font-monospace;
+}
+
 a[href]:not([hidden]):not(.unstyled-a) {
    @apply link;
 }
@@ -51,4 +58,9 @@ a[href]:not([hidden]):not(.unstyled-a) {
 .dark body {
    color: aliceblue;
    background-color: theme("colors.background.900");
+}
+
+/* rehype-higlight code blocks */
+.hljs {
+   @apply card-backdrop;
 }

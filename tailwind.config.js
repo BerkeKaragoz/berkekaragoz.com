@@ -14,12 +14,14 @@ module.exports = {
       fontFamily: {
          sans: [
             "Saira",
-            "Open Sans",
+            "'Open Sans'",
             "ui-sans-serif",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
+            "sans-serif",
          ],
+         monospace: ["'Source Code Pro'", "monospace"],
       },
       maxHeight: {
          "screen-sm": "640px",
