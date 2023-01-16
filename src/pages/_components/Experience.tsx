@@ -1,5 +1,6 @@
 import { PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
+import { placeholderWhitePixelBlurBase64 } from "@/lib/utils/consts"
 import { Tab } from "@headlessui/react"
 import clsx from "clsx"
 import Image from "next/image"
@@ -99,6 +100,8 @@ const ExpPanel: React.FC<{
                         quality={80}
                         height={128}
                         width={232}
+                        placeholder="blur"
+                        blurDataURL={placeholderWhitePixelBlurBase64}
                      />
                   </a>
                ))}
