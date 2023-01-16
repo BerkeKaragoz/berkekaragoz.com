@@ -1,6 +1,6 @@
 import Section from "@/components/atomic/Section/Section"
 import LinkedInIcon from "@/lib/icons/LinkedIn"
-import GithubLightIcon from "@/lib/icons/GithubLight"
+import GithubIcon from "@/lib/icons/Github"
 import React from "react"
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import { PLATFORM_GITHUB_LINK, PLATFORM_LINKEDIN_LINK } from "@/lib/utils/consts"
@@ -105,7 +105,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                   <ul className="flex justify-center gap-4 sm:justify-start">
                      <li>
                         <LinkBox
-                           className="w-10 p-1 card"
+                           className="w-8"
                            href={PLATFORM_LINKEDIN_LINK}
                            aria-label="LinkedIn"
                         >
@@ -115,10 +115,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <li>
                         <LinkBox
                            href={PLATFORM_GITHUB_LINK}
-                           className="w-10 p-1 bg-gray-800 dark:bg-gray-900 card"
+                           className="w-8"
                            aria-label="GitHub"
                         >
-                           <GithubLightIcon />
+                           <GithubIcon />
                         </LinkBox>
                      </li>
                   </ul>

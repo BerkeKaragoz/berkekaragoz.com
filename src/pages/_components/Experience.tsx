@@ -1,4 +1,3 @@
-import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import { PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { Tab } from "@headlessui/react"

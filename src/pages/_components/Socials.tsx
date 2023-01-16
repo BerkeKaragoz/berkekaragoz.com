@@ -1,6 +1,6 @@
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import LinkedInIcon from "@/lib/icons/LinkedIn"
-import GithubLightIcon from "@/lib/icons/GithubLight"
+import GithubIcon from "@/lib/icons/Github"
 import React from "react"
 
 const Socials: React.FC = (props) => {
@@ -20,10 +20,10 @@ const Socials: React.FC = (props) => {
          </LinkBox>
          <LinkBox
             href="https://github.com/BerkeKaragoz"
-            className="flex-shrink-0 w-10 p-1 bg-gray-800 sm:w-12 card dark:bg-gray-900"
+            className="flex-shrink-0 w-10 p-0 sm:w-12 "
             aria-label="GitHub"
          >
-            <GithubLightIcon />
+            <GithubIcon />
          </LinkBox>
          <strong className="text-xl font-medium text-primary-900 dark:text-primary-200 md:text-2xl xl:text-3xl">
             /BerkeKaragoz
