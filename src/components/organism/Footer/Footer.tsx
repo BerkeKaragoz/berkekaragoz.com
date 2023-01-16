@@ -108,7 +108,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                   <ul className="flex justify-center gap-4 sm:justify-start">
                      <li>
                         <LinkBox
-                           className="w-8"
+                           className="w-8 rounded-sm hover:ring-1 active:bg-accent-100 active:dark:bg-accent-900"
                            href={PLATFORM_LINKEDIN_LINK}
                            aria-label="LinkedIn"
                         >
@@ -118,7 +118,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <li>
                         <LinkBox
                            href={PLATFORM_GITHUB_LINK}
-                           className="w-8"
+                           className="w-8 rounded-sm hover:ring-1 active:bg-accent-100 active:dark:bg-accent-900"
                            aria-label="GitHub"
                         >
                            <GithubIcon />
