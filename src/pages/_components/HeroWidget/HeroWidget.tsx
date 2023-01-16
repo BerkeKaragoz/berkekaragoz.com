@@ -264,6 +264,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                         className={clsx([{ "blur-sm": isBlurSwitchOn }])}
                         strokeStyle={strokeColor}
                         clear={clearCount}
+                        initDrawSmile
                      />
                      <div className="absolute w-5 h-5 pointer-events-none right-2 top-2 opacity-60">
                         <PencilIcon />
