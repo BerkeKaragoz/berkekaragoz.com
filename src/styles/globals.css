@@ -22,7 +22,43 @@
    }
 
    .bg-plus-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23555' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      /* prettier-ignore */
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23555' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+         linear-gradient(
+            135deg,
+             theme("colors.primary.300")22,
+            theme("colors.accent.300")32
+         );
+   }
+
+   .dark .bg-plus-pattern {
+      /* prettier-ignore */
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23555' fill-opacity='0.075'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+         linear-gradient(
+            135deg,
+             theme("colors.primary.700")20,
+            theme("colors.accent.800")33
+         );
+   }
+
+   .text-gradient-primary {
+      background: -webkit-linear-gradient(
+         290deg,
+         theme("colors.primary.500"),
+         theme("colors.primary.600")
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+   }
+
+   .dark .text-gradient-primary {
+      background: -webkit-linear-gradient(
+         290deg,
+         theme("colors.primary.400"),
+         theme("colors.primary.500")
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
    }
 
    .bg-radial-gradient-100 {
@@ -36,11 +72,11 @@
    }
 
    .dark .bg-radial-gradient-100 {
-      background: radial-gradient(#ffffff02, #00000020);
+      background: radial-gradient(#aaaaaa05, #00000005);
    }
 
    .dark .bg-radial-gradient-300 {
-      background: radial-gradient(#ffffff03, #00000040);
+      background: radial-gradient(#aaaaaa14, #00000012);
    }
 
    .bg-linear-gradient-100 {
@@ -54,11 +90,11 @@
    }
 
    .dark .bg-linear-gradient-100 {
-      background: linear-gradient(90deg, #00000015, #ffffff02, #00000015);
+      background: linear-gradient(90deg, #00000007, #aaaaaa06, #00000007);
    }
 
    .dark .bg-linear-gradient-300 {
-      background: linear-gradient(90deg, #00000032, #ffffff05, #00000032);
+      background: linear-gradient(90deg, #00000010, #aaaaaa12, #00000010);
    }
 
    .border-caption-color {

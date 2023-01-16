@@ -24,7 +24,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                   >
                      {"Hi, I'm"}
                      <br />
-                     <strong className="font-bold select-all lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
+                     <strong className="font-bold select-all text-gradient-primary lg:whitespace-nowrap text-primary-600 dark:text-primary-400">
                         Berke Karagöz
                      </strong>
                      {"."}
