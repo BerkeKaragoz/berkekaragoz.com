@@ -177,8 +177,8 @@ const HeroWidget: React.FC<Props> = (props) => {
 
    return (
       <div className="hidden xs:block md:w-1/2">
-         {/* Hero Widget Left Start  */}
          <div className="hero-widget">
+            {/* Hero Widget Left Start  */}
             <div className="inline-flex flex-col max-w-md gap-8 shrink-0 pe-8">
                {/* Light Bulb */}
                <div className="flex gap-8 justify-evenly">
@@ -578,6 +578,30 @@ const HeroWidget: React.FC<Props> = (props) => {
                <AudioPlayer />
             </div>
             {/* Hero Widget Right End  */}
+            {/* Hero Widget Filler Start  */}
+            <div
+               className="hidden md:inline-flex flex-col gap-8 align-top shrink-0 w-80 ps-8 opacity-70"
+               style={{
+                  WebkitMaskImage:
+                     "-webkit-gradient(linear, 0% 0%, 100% 0%, from(rgb(0, 0, 0)), to(rgba(0, 0, 0, 0)))",
+               }}
+            >
+               <div className="card h-16" />
+               <div className="flex gap-8 h-12">
+                  <div className="card w-full" />
+                  <div className="card w-full" />
+               </div>
+               <div className="card h-28" />
+               <div className="card h-12" />
+               <div className="flex gap-8 h-12">
+                  <div className="card w-full" />
+                  <div className="card w-full" />
+                  <div className="card w-full" />
+               </div>
+               <div className="card h-60" />
+               <div className="card h-12" />
+            </div>
+            {/* Hero Widget Filler End  */}
          </div>
       </div>
    )
