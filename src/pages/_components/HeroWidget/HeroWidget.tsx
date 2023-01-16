@@ -76,7 +76,7 @@ const HeroWidget: React.FC<Props> = (props) => {
       undefined
    )
    const [strokeColor, setStrokeColor] =
-      React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorRed)
+      React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorBlue)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
    const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(100))
@@ -227,11 +227,14 @@ const HeroWidget: React.FC<Props> = (props) => {
                   <div className="flex items-center w-full p-2 overflow-hidden card">
                      <div className="flex items-center flex-shrink-0">
                         <BitcoinIcon width="20px" height="20px" />
+                        <code className="text-xs text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1.5">
+                           {"BTC/USDT"}
+                        </code>
                      </div>
-                     <code className="text-sm text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1">
-                        {"BTC/USDT"}
-                     </code>
-                     <code className="font-medium ms-2">
+                     <code
+                        className="font-medium ms-2"
+                        style={{ borderBottom: "1px solid #fff0" }} // visual vertical alignment
+                     >
                         {isNaN(btcPrice) ? "\u2026" : `${btcPrice.toFixed(0)}~`}
                      </code>
                   </div>
@@ -242,17 +245,20 @@ const HeroWidget: React.FC<Props> = (props) => {
                            width="20px"
                            height="20px"
                         />
+                        <code className="text-xs text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1.5">
+                           {"ETH/USDT"}
+                        </code>
                      </div>
-                     <code className="text-sm text-black text-opacity-60 dark:text-opacity-60 dark:text-white ms-1">
-                        {"ETH/USDT"}
-                     </code>
-                     <code className="font-medium ms-2">
+                     <code
+                        className="font-medium ms-2"
+                        style={{ borderBottom: "1px solid #fff0" }} // visual vertical alignment
+                     >
                         {isNaN(ethPrice) ? "\u2026" : `${ethPrice.toFixed(0)}~`}
                      </code>
                   </div>
                </div>
                {/* Canvas Section */}
-               <div className="hidden gap-8 overflow-hidden rounded-lg md:flex">
+               <div className="hidden gap-6 overflow-hidden rounded-lg md:flex">
                   <div className="relative card">
                      <DrawableCanvas
                         className={clsx([{ "blur-sm": isBlurSwitchOn }])}
@@ -275,7 +281,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         onClick={() => setStrokeColor(colorRed)}
                         aria-label={ct("red")}
                      >
-                        <div className="w-full h-full bg-red-600 rounded-full" />
+                        <div
+                           className="w-full h-full rounded-full"
+                           style={{ backgroundColor: colorRed }}
+                        />
                      </button>
                      <button
                         className={clsx([
@@ -288,7 +297,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         onClick={() => setStrokeColor(colorGreen)}
                         aria-label={ct("green")}
                      >
-                        <div className="w-full h-full bg-green-600 rounded-full" />
+                        <div
+                           className="w-full h-full rounded-full"
+                           style={{ backgroundColor: colorGreen }}
+                        />
                      </button>
                      <button
                         className={clsx([
@@ -301,7 +313,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         onClick={() => setStrokeColor(colorBlue)}
                         aria-label={ct("blue")}
                      >
-                        <div className="w-full h-full bg-blue-600 rounded-full" />
+                        <div
+                           className="w-full h-full rounded-full"
+                           style={{ backgroundColor: colorBlue }}
+                        />
                      </button>
                      <button
                         className="flex items-center justify-center h-full card-input"
@@ -330,7 +345,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                               "bg-primary-400 dark:bg-primary-600": isBlurSwitchOn,
                            },
                            {
-                              "bg-background-400 dark:bg-background-700":
+                              "bg-background-400 dark:bg-background-800":
                                  !isBlurSwitchOn,
                            },
                         ])}
@@ -364,7 +379,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                   <input
                      type="text"
                      aria-label="Caesar's cipher"
-                     className="p-2 w-28 card-input"
+                     className="p-2 w-28 card-input font-monospace"
                      ref={cipherRef}
                      defaultValue="Cipher"
                      onChange={(e) => {
@@ -384,7 +399,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      aria-label="Caesar's cipher shift amount"
                      defaultValue={1}
                      ref={cipherShiftRef}
-                     className="w-16 p-2 text-center card-input"
+                     className="w-16 p-2 text-center card-input font-monospace"
                      onChange={(e) => {
                         if (!cipherRef.current) return
                         if (!decipherRef.current) return
@@ -401,7 +416,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      type="text"
                      aria-label="Caesar's decipher"
                      ref={decipherRef}
-                     className="p-2 w-28 card-input"
+                     className="p-2 w-28 card-input font-monospace"
                      defaultValue="Djqifs"
                      onChange={(e) => {
                         if (!cipherRef.current) return
@@ -505,42 +520,44 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </button>
                </div>
                {latestPostMetas && (
-                  <Tab.Group>
-                     <Tab.List className="flex justify-between gap-8 p-2 bg-black rounded-lg bg-opacity-5 dark:bg-opacity-30">
-                        {latestPostMetas.map((v, i) => (
-                           <Tab
-                              key={`${nanoid(5)}-${i}`}
-                              className={"card-input p-2 flex-grow"}
-                           >
-                              {({ selected }) => (
-                                 <span
-                                    className={clsx([
-                                       "inline-block border-b-4 p-1 rounded-sm font-semibold w-full capitalize",
-                                       {
-                                          "border-primary-400": selected,
-                                       },
-                                       {
-                                          "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
-                                             !selected,
-                                       },
-                                    ])}
-                                 >
-                                    {i === 0
-                                       ? `${gt("latest")}`
-                                       : `${gt("post")} ${i + 1}`}
-                                 </span>
-                              )}
-                           </Tab>
-                        ))}
-                     </Tab.List>
-                     <Tab.Panels>
-                        {latestPostMetas.map((m, i) => (
-                           <Tab.Panel key={`${m.slug}-${i}`}>
-                              <PostCard postMeta={m} disableSlug />
-                           </Tab.Panel>
-                        ))}
-                     </Tab.Panels>
-                  </Tab.Group>
+                  <div className="flex flex-col gap-4 bg-primary-200 bg-opacity-25 dark:bg-background-800 rounded-lg dark:bg-opacity-30 p-2">
+                     <Tab.Group>
+                        <Tab.List className="flex justify-between gap-4 rounded-lg bg-opacity-5 dark:bg-opacity-30">
+                           {latestPostMetas.map((v, i) => (
+                              <Tab
+                                 key={`${nanoid(5)}-${i}`}
+                                 className={"card-input p-2 flex-grow"}
+                              >
+                                 {({ selected }) => (
+                                    <span
+                                       className={clsx([
+                                          "inline-block border-b-4 p-1 rounded-sm font-semibold w-full capitalize",
+                                          {
+                                             "border-primary-400": selected,
+                                          },
+                                          {
+                                             "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
+                                                !selected,
+                                          },
+                                       ])}
+                                    >
+                                       {i === 0
+                                          ? `${gt("latest")}`
+                                          : `${gt("post")} ${i + 1}`}
+                                    </span>
+                                 )}
+                              </Tab>
+                           ))}
+                        </Tab.List>
+                        <Tab.Panels>
+                           {latestPostMetas.map((m, i) => (
+                              <Tab.Panel key={`${m.slug}-${i}`}>
+                                 <PostCard postMeta={m} disableSlug />
+                              </Tab.Panel>
+                           ))}
+                        </Tab.Panels>
+                     </Tab.Group>
+                  </div>
                )}
                <div className="flex items-center justify-between gap-2">
                   <code className="p-2 font-semibold card">

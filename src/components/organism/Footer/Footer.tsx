@@ -18,8 +18,11 @@ export const Footer: React.FC<FooterProps> = (props) => {
    const { t: ct } = useTranslation([COMMON_TNS])
 
    return (
-      <footer className="mt-8">
-         <hr className="border-primary-600 opacity-20" />
+      <footer
+         className="shadow-inner bg-linear-gradient-100"
+         style={{ boxShadow: "0 -3px 14px 0 #00000025" }}
+      >
+         <hr className="border-primary-500 dark:border-primary-900 opacity-20" />
          <Section className="flex-col justify-between gap-8 py-8 text-center sm:text-left sm:flex-row">
             <div className="flex flex-col justify-between">
                <h1 className="mb-4 text-3xl font-semibold text-caption-color">

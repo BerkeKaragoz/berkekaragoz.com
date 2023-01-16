@@ -71,9 +71,11 @@ const Homepage: NextPage<{ latestPostMetas: PostMeta[] }> = (props) => {
                </Section>
             </div>
 
-            <Section id="projects">
-               <Projects />
-            </Section>
+            <div className="bg-radial-gradient-100">
+               <Section id="projects">
+                  <Projects />
+               </Section>
+            </div>
 
             <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
                <Section id="about-me">
@@ -81,13 +83,15 @@ const Homepage: NextPage<{ latestPostMetas: PostMeta[] }> = (props) => {
                </Section>
             </div>
 
-            <Section id="experience">
-               <Experience />
-            </Section>
+            <div className="pb-8 bg-linear-gradient-100">
+               <Section id="experience">
+                  <Experience />
+               </Section>
 
-            <Section id="contact">
-               <ReachMe />
-            </Section>
+               <Section id="contact">
+                  <ReachMe />
+               </Section>
+            </div>
          </Main>
 
          <Footer />

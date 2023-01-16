@@ -1,22 +1,22 @@
 @layer components {
    .card {
-      @apply border rounded-lg border-opacity-80 border-primary-200 dark:border-primary-900 bg-background-100 dark:bg-background-800;
+      @apply border rounded-lg bg-radial-gradient-100 border-opacity-30 dark:border-opacity-25 border-background-400 dark:border-background-700 bg-background-100 dark:bg-background-800 shadow dark:shadow-md;
    }
 
    .card-input {
       @apply card;
-      @apply inline-block transition-colors border-primary-300 hover:bg-opacity-80 active:bg-accent-200 dark:border-primary-700 dark:active:bg-accent-900;
+      @apply inline-block transition-colors bg-background-100 dark:bg-background-800 hover:bg-opacity-80 bg-radial-gradient-100;
    }
 
    .card-input:not([disabled]) {
-      @apply text-primary-500 dark:text-primary-200 hover:text-primary-600 dark:hover:text-primary-100;
+      @apply text-primary-500 dark:text-primary-200 hover:text-primary-600 hover:shadow-md dark:hover:shadow-lg dark:hover:text-primary-100 hover:bg-radial-gradient-300 hover:bg-background-100 hover:dark:bg-background-800 active:bg-accent-200 dark:active:bg-accent-900;
    }
 
    .card-input[disabled] {
-      @apply transition-none cursor-default border-background-300 text-background-400 bg-background-200 text-opacity-70 dark:border-background-600 dark:bg-background-700 dark:bg-opacity-80;
+      @apply transition-none cursor-default shadow bg-none bg-opacity-80 border-background-200 text-background-300 bg-background-100 text-opacity-70 dark:border-background-700 dark:bg-background-700 dark:bg-opacity-80;
    }
 
    .card-backdrop {
-      @apply bg-black rounded-lg bg-opacity-5 dark:bg-opacity-20;
+      @apply bg-black dark:bg-black bg-linear-gradient-100 rounded-lg bg-opacity-5 dark:bg-opacity-20;
    }
 }

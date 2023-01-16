@@ -30,7 +30,7 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                      {"."}
                   </Trans>
                </h1>
-               <p className="max-w-sm mt-2 font-semibold ms-1 text-background-700 dark:text-background-300">
+               <p className="max-w-sm mt-3 mb-2 ms-1 text-background-700 dark:text-background-400">
                   <Trans t={t} i18nKey="index.hero.subtitle">
                      A curious frontend engineer who had been gaining various
                      insights about web development.

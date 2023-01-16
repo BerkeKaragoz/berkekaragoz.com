@@ -13,8 +13,8 @@ export const BTC_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=BTCUSDT`
 export const ETH_PRICE_API = `${BINANCE_API_HOST}/avgPrice?symbol=ETHUSDT`
 
 export const colorRed = "rgba(220, 38, 38)"
-export const colorGreen = "rgba(5, 150, 105)"
-export const colorBlue = "rgba(37, 99, 235)"
+export const colorGreen = "rgba(5, 180, 75)"
+export const colorBlue = "rgba(37, 125, 235)"
 
 export const tabText = [
    "Cupiditate provident temporibus enim optio ex fuga fugit eaque, praesentium, minima nobis cum laborum est rem tenetur debitis vero vitae perferendis ad delectus! Blanditiis, quidem nemo nisi eaque dolores ea.",

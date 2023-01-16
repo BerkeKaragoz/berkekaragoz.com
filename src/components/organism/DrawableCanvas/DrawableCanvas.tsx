@@ -1,7 +1,7 @@
 import React from "react"
 
 // mb later
-const canvasWidth = 256
+const canvasWidth = 272
 const canvasHeight = 96
 
 type DrawableCanvasProps = React.HTMLAttributes<HTMLCanvasElement> & {
