@@ -83,7 +83,7 @@ const ExpPanel: React.FC<{
             <div>{children}</div>
          </div>
          {imageSrcs.length !== 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                {imageSrcs.map((src, i) => (
                   <a
                      href={src}
@@ -184,6 +184,7 @@ const Experience: React.FC<
                      )})`}
                      imageSrcs={[
                         "/assets/cashmere-ui.png",
+                        "/assets/intergallery-code-files.png",
                         "/assets/berkekaragoz.com-lighthouse.jpg",
                      ]}
                   >
@@ -320,7 +321,10 @@ const Experience: React.FC<
                      endTime={`${t("index.experience.jun")} 2021 (~1 ${t(
                         "index.experience.yr"
                      )} 2 ${t("index.experience.mos")})`}
-                     imageSrcs={["/assets/riot-kampus-elcisi.jpg"]}
+                     imageSrcs={[
+                        "/assets/riot-kampus-elcisi.jpg",
+                        "/assets/BERKE_KARAGOZ-riot-kampus-elcisi-2.jpg",
+                     ]}
                   >
                      <Trans t={t} i18nKey="index.experience.riotDesc">
                         Organized VALORANT events and managed the community of
@@ -340,6 +344,7 @@ const Experience: React.FC<
                      imageSrcs={[
                         "/assets/ancha-summary.png",
                         "/assets/ARover_Wheel_ColoredParts.png",
+                        "/assets/AnchaSpace-RoverWheel-Inside.jpg",
                      ]}
                   >
                      <Trans t={t} i18nKey="index.experience.anchaDesc">
