@@ -1,8 +1,9 @@
 import path from "path"
-import fs from "fs"
+import { readFileSync } from "fs"
 import { sync } from "glob"
 import matter from "gray-matter"
 import { getWordCount } from "../utils"
+import { getPostMeta } from "./blog-client"
 
 /**
  * I might put this as an actual API later on
@@ -38,20 +39,13 @@ export interface Post {
 
 export const getPostFromSlug = (slug: string): Post => {
    const postPath = path.join(POSTS_PATH, `${slug}.mdx`)
-   const source = fs.readFileSync(postPath)
+   const source = readFileSync(postPath)
 
-   const { content, data } = matter(source)
+   const matterFile = matter(source)
 
    return {
-      content,
-      meta: {
-         slug,
-         excerpt: data.excerpt,
-         title: data.title ?? slug,
-         tags: data.tags ? data.tags.sort() : [],
-         date: (data.date ?? new Date()).toString(),
-         wordCount: getWordCount(content),
-      },
+      content: matterFile.content,
+      meta: getPostMeta(matterFile.content, matterFile.data, slug),
    }
 }
 

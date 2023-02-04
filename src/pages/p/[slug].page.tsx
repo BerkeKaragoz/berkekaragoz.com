@@ -68,6 +68,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
             <div className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min">
                <Section as="article" block prose className="py-8 md:py-4 sm:text-lg">
+                  <div style={{ width: "100vw", height: 0 }} />
                   <h1 className="mt-0 mb-1 md:mt-2 h1 text-gradient-primary">
                      {meta.title}
                   </h1>

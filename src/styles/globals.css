@@ -104,6 +104,10 @@
    .divider {
       @apply border-primary-600 opacity-20;
    }
+
+   .w-prose {
+      width: theme("maxWidth.prose");
+   }
 }
 
 html {
