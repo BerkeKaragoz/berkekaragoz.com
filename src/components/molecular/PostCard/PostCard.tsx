@@ -11,16 +11,23 @@ type PostCardProps = ComponentPropsWithActiveTranslation<{
    postMeta: PostMeta
    disableSlug?: boolean
    as?: React.ElementType
+   className?: string
 }>
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
-   const { postMeta, as: Component = "div", disableSlug = false, i18n } = props
+   const {
+      postMeta,
+      as: Component = "div",
+      disableSlug = false,
+      i18n,
+      className,
+   } = props
    const locale = i18n.language ?? DEFAULT_LOCALE
 
    const { t: ct } = useTranslation([COMMON_TNS])
 
    return (
-      <Component className="flex flex-col justify-between p-2 card">
+      <Component className={"flex flex-col justify-between p-2 card " + className}>
          <div>
             <LinkText href={`/p/${postMeta.slug}`} className="me-2 h3">
                {postMeta.title}

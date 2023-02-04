@@ -8,9 +8,11 @@ import PostList from "@/components/organism/PostList/PostList"
 import { getAllPosts, PostMeta } from "@/lib/api/blog"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { DEFAULT_LOCALE } from "@/lib/utils/consts"
+import { BeakerIcon } from "@heroicons/react/outline"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
+import Link from "next/link"
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 
@@ -39,11 +41,20 @@ export const PostsPage: NextPage<{
          <Main>
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
             <Section as="article" className="py-16" block>
-               <h1 className="mt-0 h1">
-                  <Trans t={t} i18nKey="index.heading">
-                     Posts
-                  </Trans>
-               </h1>
+               <div className="flex justify-between mb-6">
+                  <h1 className="my-0 h1">
+                     <Trans t={t} i18nKey="index.heading">
+                        Posts
+                     </Trans>
+                  </h1>
+                  <LinkText
+                     href="/posts/preview"
+                     className="self-end text-sm sm:text-base"
+                  >
+                     Preview
+                     <BeakerIcon className="inline-block h-4 w-4 sm:h-5 sm:w-5 ml-0.5" />
+                  </LinkText>
+               </div>
                <p>
                   <Trans
                      t={t}

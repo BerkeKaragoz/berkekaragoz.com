@@ -23,6 +23,8 @@ import { useTranslation } from "react-i18next"
 import React from "react"
 import matter from "gray-matter"
 import { getPostMeta } from "@/lib/api/blog-client"
+import { BeakerIcon } from "@heroicons/react/outline"
+import PostCard from "@/components/molecular/PostCard/PostCard"
 
 interface MDXPost {
    source: MDXRemoteSerializeResult<Record<string, unknown>>
@@ -127,6 +129,11 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
                      }}
                   >
                      Preview
+                     <BeakerIcon
+                        height={22}
+                        width={22}
+                        className="inline-block ml-0.5"
+                     />
                   </button>
                </div>
             </Section>
@@ -162,6 +169,17 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
                   </p>
                </Section>
             </div>
+
+            <div className="h-12 bg-plus-pattern dark:bg-background-900" />
+
+            <div className="mx-auto rounded-none p-2 sm:p-4 sm:w-min">
+               <PostCard
+                  key={`${post.meta.slug}`}
+                  postMeta={post.meta}
+                  className="min-w-max w-full"
+               />
+            </div>
+
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
          </Main>
          <Footer />
