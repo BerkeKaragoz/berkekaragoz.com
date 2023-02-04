@@ -137,7 +137,9 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
                   </button>
                </div>
             </Section>
-            <div className="h-12 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+
+            <div className="h-12 bg-plus-pattern dark:bg-background-900" />
+
             <div className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min">
                <Section
                   as="article"
