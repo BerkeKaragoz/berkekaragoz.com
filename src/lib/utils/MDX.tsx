@@ -16,6 +16,16 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
    ul: (props) => <ul className="ul" {...props} />,
    ol: (props) => <ol className="ol" {...props} />,
    li: (props) => <li className="li" {...props} />,
+   table: (props) => (
+      <div style={{ overflow: "auto" }}>
+         <table className="table" {...props} />
+      </div>
+   ),
+   tr: (props) => <tr className="tr" {...props} />,
+   th: (props) => <th className="th" {...props} />,
+   td: (props) => <td className="td" {...props} />,
+   thead: (props) => <thead className="thead" {...props} />,
+   tbody: (props) => <tbody className="tbody" {...props} />,
    pre: (props) => (
       <pre className="p-1 mb-8 overflow-hidden rounded-md card" {...props} />
    ),

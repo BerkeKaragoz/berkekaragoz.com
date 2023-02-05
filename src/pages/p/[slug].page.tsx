@@ -1,24 +1,20 @@
-import { getPostFromSlug, getSlugs, PostMeta } from "@/lib/api/blog"
+import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
+import { getPostFromSlug, getSlugs, PostMeta } from "@/lib/api/blog"
+import { serializeWithAppOptions } from "@/lib/api/blog-client"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
+import { estimateReadingMinutes } from "@/lib/utils"
+import { DEFAULT_LOCALE } from "@/lib/utils/consts"
+import { AppMDXComponents } from "@/lib/utils/MDX"
 import "highlight.js/styles/atom-one-dark.css"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote"
-import { serialize } from "next-mdx-remote/serialize"
 import Head from "next/head"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import rehypeHighlight from "rehype-highlight"
-import rehypeSlug from "rehype-slug"
-import { rehypeAccessibleEmojis } from "rehype-accessible-emojis"
-import { AppMDXComponents } from "@/lib/utils/MDX"
-import LinkText from "@/components/atomic/LinkText/LinkText"
-import { estimateReadingMinutes } from "@/lib/utils"
-import { DEFAULT_LOCALE } from "@/lib/utils/consts"
 import { useTranslation } from "react-i18next"
 
 interface MDXPost {
@@ -103,16 +99,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
    const { locale = DEFAULT_LOCALE, params } = ctx
    const { slug } = params as { slug: string }
    const { content: stringContent, meta } = getPostFromSlug(slug)
-   const mdxSource = await serialize(stringContent, {
-      mdxOptions: {
-         rehypePlugins: [
-            rehypeSlug,
-            [rehypeAutolinkHeadings, { behavior: "wrap" }],
-            rehypeHighlight,
-            rehypeAccessibleEmojis,
-         ],
-      },
-   })
+   const mdxSource = await serializeWithAppOptions(stringContent)
 
    return {
       props: {

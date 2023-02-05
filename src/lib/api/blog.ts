@@ -2,7 +2,6 @@ import path from "path"
 import { readFileSync } from "fs"
 import { sync } from "glob"
 import matter from "gray-matter"
-import { getWordCount } from "../utils"
 import { getPostMeta } from "./blog-client"
 
 /**

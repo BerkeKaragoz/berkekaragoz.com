@@ -75,3 +75,67 @@
 .code {
    @apply select-all text-primary-600 dark:text-primary-300;
 }
+
+.table {
+   @apply card border-separate w-full border-none;
+   border-spacing: 0px;
+}
+
+.table .th:first-child {
+   @apply rounded-tl-md;
+}
+
+.table .th:last-child {
+   @apply rounded-tr-md;
+   border-right-width: 1px;
+}
+
+.thead {
+   border-bottom-width: 1px;
+   background-color: rgba(240, 248, 255, 0.1);
+}
+
+.tbody {
+   @apply text-base;
+}
+
+.th {
+   border-style: solid;
+   border-color: #cce8;
+   border-bottom-width: 1px;
+   border-left-width: 1px;
+   border-top-width: 1px;
+}
+
+.td {
+   @apply p-1;
+   border-bottom-width: 1px;
+   border-left-width: 1px;
+   border-color: #cce8;
+}
+
+.td:last-child {
+   border-right-width: 1px;
+}
+
+.tbody .tr:last-child {
+   border-bottom-width: 0;
+}
+
+.tbody .tr:last-child .td:first-child {
+   @apply rounded-bl-md;
+}
+
+.tbody .tr:last-child .td:last-child {
+   @apply rounded-br-md;
+}
+
+.dark .tbody .tr:nth-child(2n) {
+   /* prettier-ignore */
+   background-color: theme("colors.background.900")55;
+}
+
+.tbody .tr:nth-child(2n) {
+   /* prettier-ignore */
+   background-color: theme("colors.background.200")55;
+}

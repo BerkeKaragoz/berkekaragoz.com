@@ -1,47 +1,30 @@
-import { PostMeta } from "@/lib/api/blog"
+import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PostCard from "@/components/molecular/PostCard/PostCard"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
+import { PostMeta } from "@/lib/api/blog"
+import { getPostMeta, serializeWithAppOptions } from "@/lib/api/blog-client"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
+import { estimateReadingMinutes } from "@/lib/utils"
+import { DEFAULT_LOCALE } from "@/lib/utils/consts"
+import { AppMDXComponents } from "@/lib/utils/MDX"
+import { BeakerIcon } from "@heroicons/react/outline"
+import matter from "gray-matter"
 import "highlight.js/styles/atom-one-dark.css"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote"
-import { serialize } from "next-mdx-remote/serialize"
 import Head from "next/head"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import rehypeHighlight from "rehype-highlight"
-import rehypeSlug from "rehype-slug"
-import { rehypeAccessibleEmojis } from "rehype-accessible-emojis"
-import { AppMDXComponents } from "@/lib/utils/MDX"
-import LinkText from "@/components/atomic/LinkText/LinkText"
-import { estimateReadingMinutes } from "@/lib/utils"
-import { DEFAULT_LOCALE } from "@/lib/utils/consts"
-import { useTranslation } from "react-i18next"
 import React from "react"
-import matter from "gray-matter"
-import { getPostMeta } from "@/lib/api/blog-client"
-import { BeakerIcon } from "@heroicons/react/outline"
-import PostCard from "@/components/molecular/PostCard/PostCard"
+import { useTranslation } from "react-i18next"
 
 interface MDXPost {
    source: MDXRemoteSerializeResult<Record<string, unknown>>
    meta: PostMeta
 }
-
-const _serialize = (stringContent: string) =>
-   serialize(stringContent, {
-      mdxOptions: {
-         rehypePlugins: [
-            rehypeSlug,
-            [rehypeAutolinkHeadings, { behavior: "wrap" }],
-            rehypeHighlight,
-            rehypeAccessibleEmojis,
-         ],
-      },
-   })
 
 const defaultStringContent = `---
 title: Post title
@@ -53,7 +36,9 @@ date: 04 Feb 23 19:55 UTC+3
 excerpt: How do testing frameworks work?
 ---
 
-You better not write the blog post here. Write somewhere else and paste here...`
+You better not write the blog post here. Write somewhere else and paste here...
+
+`
 
 export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
    const { defaultPost } = props
@@ -79,7 +64,7 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
          "preview-post-slug"
       )
 
-      _serialize(matterFile.content).then((source) => {
+      serializeWithAppOptions(matterFile.content).then((source) => {
          console.log(source.compiledSource)
 
          setPost({
@@ -113,8 +98,13 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
                   placeholder="Paste MDX here..."
                   defaultValue={defaultStringContent}
                   className="w-full block h-96 my-4 p-2 card"
-                  onPaste={(e) => {
-                     preparePreview(e.clipboardData.getData("Text"))
+                  onPaste={() => {
+                     setTimeout(() => {
+                        if (!textareaRef.current) return
+                        const stringContent = textareaRef.current.value
+
+                        preparePreview(stringContent)
+                     })
                   }}
                   ref={textareaRef}
                />
@@ -192,7 +182,7 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
    const { locale = DEFAULT_LOCALE } = ctx
    const matterFile = matter(defaultStringContent)
-   const source = await _serialize(matterFile.content)
+   const source = await serializeWithAppOptions(matterFile.content)
    const meta = getPostMeta(matterFile.content, matterFile.data, "preview-post-slug")
 
    return {
