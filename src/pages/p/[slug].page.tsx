@@ -8,12 +8,12 @@ import { getPostFromSlug, getSlugs, PostMeta } from "@/lib/api/blog"
 import { serializeWithAppOptions } from "@/lib/api/blog-client"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { estimateReadingMinutes } from "@/lib/utils"
-import { DEFAULT_LOCALE } from "@/lib/utils/consts"
-import { AppMDXComponents } from "@/lib/utils/MDX"
+import { DEFAULT_LOCALE, HOST_URL } from "@/lib/utils/consts"
+import { RenderMDX } from "@/lib/utils/MDX"
 import "highlight.js/styles/atom-one-dark.css"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote"
+import { MDXRemoteSerializeResult } from "next-mdx-remote"
 import Head from "next/head"
 import { useTranslation } from "react-i18next"
 
@@ -32,32 +32,61 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
    const { source, meta } = post
 
    const postDate = new Date(meta.date)
+   const description =
+      meta.excerpt ??
+      `Read the post "${meta.title}" written on ${postDate.toLocaleDateString(
+         locale
+      )}.`
+   const canonicalUrl = `/p/${meta.slug}`
 
    return (
       <PageContainer>
          <Head>
             <title>{meta.title} | E. Berke Karagöz</title>
-            <meta
-               name="description"
-               content={
-                  meta.excerpt ??
-                  `Read the post "${
-                     meta.title
-                  }" written on ${postDate.toLocaleDateString(locale)}.`
-               }
-            />
+            <meta name="description" content={description} />
             <meta content={meta.tags.toString()} name="keywords" />
             <meta content="Berke Karagoz" name="Author" />
             <meta content="mail@berkekaragoz.com" name="Email" />
-            <link rel="canonical" href={`/p/${meta.slug}`} />
+            <link rel="canonical" href={canonicalUrl} />
             <meta content="general" name="rating" />
             <meta content="all" name="audience" />
             <meta content="global" name="distribution" />
+            <meta name="target" content="all" />
+            <meta name="coverage" content="Worldwide" />
+            <meta name="category" content="Technology" />
+
+            {/* <!-- Robots--> */}
             <meta name="robots" content="all" />
             <meta content="index, follow" name="robots" />
             <meta content="index, follow" name="GOOGLEBOT" />
             <meta content="index, follow" name="yahooBOT" />
             <meta content="index, follow" name="yandexBOT" />
+
+            {/* <!-- Open Graph meta tags for social media sharing --> */}
+            <meta property="og:title" content={meta.title} />
+            <meta property="og:site_name" content="Berke Karagoz" />
+            <meta property="og:description" content={description} />
+            {meta.coverSrc && <meta property="og:image" content={meta.coverSrc} />}
+            <meta property="og:url" content={`${HOST_URL}/${canonicalUrl}`} />
+            <meta property="og:type" content="article" />
+            <meta name="og:email" content="mail@berkekaragoz.com" />
+
+            {/* <!-- Twitter Card meta tags for Twitter sharing --> */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@EBerkeKaragoz" />
+            <meta name="twitter:creator" content="@EBerkeKaragoz" />
+            <meta name="twitter:title" content={meta.title} />
+            <meta name="twitter:description" content={description} />
+            {meta.coverSrc && <meta name="twitter:image" content={meta.coverSrc} />}
+
+            {/* <!-- Article meta tags --> */}
+            <meta
+               property="article:published_time"
+               content={postDate.toISOString()}
+            />
+            <meta property="article:author" content={`${HOST_URL}/posts`} />
+            <meta property="article:section" content="Technology" />
+            <meta property="article:tag" content="blogging" />
          </Head>
          <Header />
          <Main>
@@ -74,7 +103,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
                         "min read"
                      )}`}
                   </p>
-                  <MDXRemote {...source} components={AppMDXComponents} />
+                  <RenderMDX {...source} />
                   <p className="mt-8 text-right opacity-60">
                      {`"${meta.title}", ${postDate.toLocaleString(locale)}`}
                   </p>
