@@ -64,10 +64,14 @@ const emojiConfettiConfig: IAddConfettiConfig[] = [
    },
 ]
 
-type Props = ComponentPropsWithTranslation<{ latestPostMetas?: PostMeta[] }>
+type Props = ComponentPropsWithTranslation<{
+   latestPostMetas?: PostMeta[]
+   initBtc?: number
+   initEth?: number
+}>
 
 const HeroWidget: React.FC<Props> = (props) => {
-   const { t, latestPostMetas } = props
+   const { t, latestPostMetas, initBtc, initEth } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
    const { theme, setTheme: _setTheme } = useTheme()
@@ -235,7 +239,15 @@ const HeroWidget: React.FC<Props> = (props) => {
                         className="font-medium ms-2"
                         style={{ borderBottom: "1px solid #fff0" }} // visual vertical alignment
                      >
-                        {isNaN(btcPrice) ? "\u2026" : `${btcPrice.toFixed(0)}~`}
+                        {isNaN(btcPrice) ? (
+                           <span className="opacity-60">
+                              {initBtc === undefined
+                                 ? "\u2026"
+                                 : `${initBtc.toFixed(0)}~`}
+                           </span>
+                        ) : (
+                           `${btcPrice.toFixed(0)}~`
+                        )}
                      </code>
                   </div>
                   <div className="flex items-center w-full p-2 overflow-hidden card">
@@ -253,7 +265,15 @@ const HeroWidget: React.FC<Props> = (props) => {
                         className="font-medium ms-2"
                         style={{ borderBottom: "1px solid #fff0" }} // visual vertical alignment
                      >
-                        {isNaN(ethPrice) ? "\u2026" : `${ethPrice.toFixed(0)}~`}
+                        {isNaN(ethPrice) ? (
+                           <span className="opacity-60">
+                              {initEth === undefined
+                                 ? "\u2026"
+                                 : `${initEth.toFixed(0)}~`}
+                           </span>
+                        ) : (
+                           `${ethPrice.toFixed(0)}~`
+                        )}
                      </code>
                   </div>
                </div>
