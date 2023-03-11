@@ -10,25 +10,33 @@ import { getPostMeta } from "./blog-client"
 
 const POSTS_PATH = path.join(process.cwd(), "posts")
 
+let slugs: string[] | null = null
+let posts: Post[] | null = null
+
 export const getSlugs = (): string[] => {
+   if (slugs !== null) return slugs
+
    const paths = sync(`${POSTS_PATH}/*.mdx`)
 
-   return paths.map((path) => {
+   slugs = paths.map((path) => {
       const parts = path.split("/")
       const fileName = parts[parts.length - 1]
       // const [slug, _ext] = fileName.split(".")
       const [slug] = fileName.split(".")
       return slug
    })
+
+   return slugs
 }
 
 export interface PostMeta {
-   excerpt?: string
+   excerpt: string | null
    slug: string
    title: string
    tags: string[]
    date: string
    wordCount: number
+   coverSrc: string | null
 }
 
 export interface Post {
@@ -49,11 +57,15 @@ export const getPostFromSlug = (slug: string): Post => {
 }
 
 export const getAllPosts = () => {
-   const posts = getSlugs().map((slug) => getPostFromSlug(slug))
+   if (posts !== null) return posts
 
-   const sorted = posts.sort((a, b) =>
+   const unsortedPosts = getSlugs().map((slug) => getPostFromSlug(slug))
+
+   const sorted = unsortedPosts.sort((a, b) =>
       new Date(a.meta.date) < new Date(b.meta.date) ? 1 : -1
    )
 
-   return sorted
+   posts = sorted
+
+   return posts
 }

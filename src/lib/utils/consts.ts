@@ -27,3 +27,6 @@ export const tabText = [
 //
 
 export const MINUTES_IN_MS = 60000
+
+export const HOST_URL =
+   process.env["NEXT_PUBLIC_HOST_URL"] || "https://berkekaragoz.com"

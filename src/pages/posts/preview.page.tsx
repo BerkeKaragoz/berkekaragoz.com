@@ -9,14 +9,14 @@ import { PostMeta } from "@/lib/api/blog"
 import { getPostMeta, serializeWithAppOptions } from "@/lib/api/blog-client"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { estimateReadingMinutes } from "@/lib/utils"
-import { DEFAULT_LOCALE } from "@/lib/utils/consts"
-import { AppMDXComponents } from "@/lib/utils/MDX"
+import { DEFAULT_LOCALE, HOST_URL } from "@/lib/utils/consts"
+import { RenderMDX } from "@/lib/utils/MDX"
 import { BeakerIcon } from "@heroicons/react/outline"
 import matter from "gray-matter"
 import "highlight.js/styles/atom-one-dark.css"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote"
+import { MDXRemoteSerializeResult } from "next-mdx-remote"
 import Head from "next/head"
 import React from "react"
 import { useTranslation } from "react-i18next"
@@ -72,6 +72,10 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
             meta,
          })
       })
+   }, [])
+
+   React.useEffect(() => {
+      console.log("HOST", HOST_URL)
    }, [])
 
    return (
@@ -147,7 +151,7 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
                         "min read"
                      )}`}
                   </p>
-                  <MDXRemote {...post.source} components={AppMDXComponents} />
+                  <RenderMDX {...post.source} />
                   <p className="mt-8 text-right opacity-60">
                      {`"${post.meta.title}", ${postDate.toLocaleString(locale)}`}
                   </p>

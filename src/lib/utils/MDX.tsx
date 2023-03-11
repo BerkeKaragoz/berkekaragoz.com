@@ -1,4 +1,4 @@
-import { MDXRemoteProps } from "next-mdx-remote"
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote"
 import Image from "next/image"
 
 export const AppMDXComponents: MDXRemoteProps["components"] = {
@@ -33,3 +33,7 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
    hr: (props) => <hr className="mb-8" {...props} />,
    blockquote: (props) => <blockquote className="blockquote" {...props} />,
 }
+
+export const RenderMDX = (props: MDXRemoteProps) => (
+   <MDXRemote components={AppMDXComponents} {...props} />
+)

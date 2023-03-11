@@ -12,7 +12,6 @@ import { BeakerIcon } from "@heroicons/react/outline"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import Link from "next/link"
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
 

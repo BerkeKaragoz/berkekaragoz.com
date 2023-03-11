@@ -573,7 +573,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                         <Tab.Panels>
                            {latestPostMetas.map((m, i) => (
                               <Tab.Panel key={`${m.slug}-${i}`}>
-                                 <PostCard postMeta={m} disableSlug />
+                                 <PostCard postMeta={m} disableSlug forceCoverTop />
                               </Tab.Panel>
                            ))}
                         </Tab.Panels>
