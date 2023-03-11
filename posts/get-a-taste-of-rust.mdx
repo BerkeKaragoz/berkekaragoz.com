@@ -1,0 +1,242 @@
+---
+title: Get a taste of Rust, it's like iron!
+tags:
+   - rust
+   - cheatsheet
+   - language
+date: 12 Mar 23 15:55 UTC+3
+excerpt: Get familiar with Rust's concepts and syntax by skimming over the contents. Don't feel lost later.
+---
+
+[Rust](https://www.rust-lang.org/) is a fast, safe, and concurrent systems programming language that can be used for aaanything. And, it would probably be up amongst the best choices can be made.
+
+Here is why Rust excites me:
+
+-  Memory safety without garbage collection and manual memory management!
+-  High-level ergonomics and low-level control (and it is FAST!)
+-  Cross-platform compatibility
+-  Excellent package/module management
+-  It's [popular](https://insights.stackoverflow.com/survey/2021/#technology-most-loved-dreaded-and-wanted) and has proven itself
+
+> This post is going to give you a context of the world of Rust rather than teaching you directly. So, this is just a summary so that you don't get overwhelmed and/or get lost while reading [the Rust book](https://doc.rust-lang.org/book/).
+
+Here is a general comparison to other languages:
+
+|                | Memory safety | Low-level control | High-level ergonomics | Extra code required for compatibility | Package management | [Speed](https://www.techempower.com/benchmarks/#section=data-r21&hw=ph&test=fortune&l=13yo8j-1j) (relative & shallow) | [Popularity](https://survey.stackoverflow.co/2022/) |
+| -------------- | ------------- | ----------------- | --------------------- | ------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| **Rust**       | ✅            | ✅                | ✅                    | Low                                   | Excellent          | Fast                                                                                                                  | Proven                                              |
+| **C**          | ❌            | ✅                | ❌                    | High                                  | Poor               | Fast                                                                                                                  | Established                                         |
+| **C++**        | ❌            | ✅                | －                    | Medium                                | Poor               | Fast                                                                                                                  | Established                                         |
+| **Java**       | ✅ (gc)       | ❌                | ✅                    | Low                                   | Good               | Moderate                                                                                                              | Established                                         |
+| **JavaScript** | ✅ (gc)       | ❌                | ✅                    | Low                                   | Excellent          | Slow                                                                                                                  | Established                                         |
+| **Go**         | ✅ (gc)       | ❌                | ✅                    | Low                                   | Excellent          | Fast                                                                                                                  | Proven                                              |
+
+## Concepts
+
+[**Ownership and Borrowing**](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html): Think of it like a playground, where you have different kids playing with different toys. Ownership means who gets to play with the toy first and for how long. Borrowing means if someone else gets to play with the toy for a little bit without taking it away from the original player.
+
+[**Lifetimes**](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html): Like the timer for how long the toy can be played with. They make sure that the toy is always returned to the original player before the timer runs out.
+
+These ensure you write memory-safe code.
+
+[**Concurrency**](https://doc.rust-lang.org/book/ch16-00-concurrency.html): Rust has built-in tools for writing high-performance, multi-tasking programs.
+
+**[Structs](https://doc.rust-lang.org/book/ch05-00-structs.html) and [ impl's](https://doc.rust-lang.org/book/ch05-03-method-syntax.html)**: Structs -> custom data types, and impl's are used to define methods for those data types. Like classes, but not quite! You won't have instances of impl's but structs.
+
+[**Match**](https://doc.rust-lang.org/book/ch06-02-match.html): Pattern matching feature like `switch` but a bit better. You'll face with `Result` and `Option` frequently. That's where you are going to use `match`, directly on indirectly.
+
+[**Unsafe code**](https://doc.rust-lang.org/book/ch19-00-unsafe-rust.html): Rust provides the ability to write `unsafe` code when necessary. This enables Rust to be interoperable with low-level languages. Yes, you can call a C function. Plus, other benefits...
+
+[**Generics**](https://doc.rust-lang.org/book/ch10-00-generics.html): Parameterized types that allow you to write code that can work with multiple data types. TypeScript viibes!
+
+[**Modules and packages**](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html): Modules are used to organize code into separate and reusable components. And, Rust has a built-in package manager (and build system) called [cargo](https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html) like [npm](https://npmjs.com)!
+
+[**Error handling**](https://doc.rust-lang.org/book/ch09-00-error-handling.html): Rust provides the `Result` type, and quite a lot, which makes it easy to handle errors in a way that is both type-safe and composable. It forces you to handle the possible errors. Try to remember all the problems you had because possible errors were ignored...
+
+<Image
+   priority
+   src="/assets/posts/get-a-taste-of-rust/cover.webp"
+   alt="DALL·E 2023-03-11 16.18.30 - a person (sticking tongue out) about to lick a medium sized rusty crab made of iron."
+   width={838}
+   height={586}
+   quality={100}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAVSURBVBhXY6ivr/9/bh4DEPx/eBAALY4GiuCp2EkAAAAASUVORK5CYII="
+/>
+
+<div
+   style={{
+      fontSize: "0.8rem",
+      lineHeight: 1,
+      marginTop: "-1rem",
+      marginBottom: "-1rem",
+      opacity: 0.8,
+   }}
+>
+   Yes... Generated by DALL·E. [A person (sticking tongue out) about to lick a medium
+   sized rusty crab made of iron.]
+</div>
+
+> Tasting rust MIGHT be dangerous and harmful to health, and it is not recommended. Or you know, I'm just a text, can't stop you 🙄.
+
+## Syntax
+
+-  [`let`](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#declaring-and-using-variables): Declare variable.
+-  [`if`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#if-expressions): Control flow in a program based on conditions.
+-  [`while`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#while-loops): Repeat a block of code while a condition is true.
+-  [`for`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#for-loops): Loop over collections or a range of values.
+
+```rust
+let mut counter = 0; // mut means mutable variable
+while counter < 5 {
+    if number % 2 == 0 {
+        println!("The counter {} is even.", counter);
+    } else {
+        println!("The counter {} is odd.", counter);
+    }
+    counter += 1;
+}
+
+for number in 0..5 {
+    println!("The number is {}", number);
+}
+```
+
+-  [`match`](https://doc.rust-lang.org/book/ch06-02-match.html): Perform pattern matching and control flow based on the value of an expression.
+-  [`loop`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#looping-with-loop): Repeat a block of code indefinitely.
+-  [`break`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#looping-through-a-collection-with-while): Break out of a loop.
+-  [`continue`](https://doc.rust-lang.org/book/ch03-05-control-flow.html#skipping-iterations-of-a-loop-with-continue): Skip to the next iteration of a loop.
+
+```rust
+let mut counter = 0;
+loop {
+    match counter {
+        1 => println!("One"),
+        3 | 4 | 5 => println!("Three, Four or Five"),
+        6 => break,
+        _ => println!("Something else"),
+    }
+    counter += 1;
+}
+```
+
+-  [`fn`](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html): Define a function.
+-  [`struct`](https://doc.rust-lang.org/book/ch05-00-structs.html): Define a struct, a custom data type that can contain multiple fields.
+-  [`impl`](https://doc.rust-lang.org/book/ch05-03-method-syntax.html#defining-methods-on-structs): Define implementation blocks for types, traits, or other items. Matches by the name.
+-  [`trait`](https://doc.rust-lang.org/book/ch10-02-traits.html): Define traits, which are abstractions that define common behaviors for types.
+-  [`type`](https://doc.rust-lang.org/book/ch19-04-advanced-types.html#type-aliases): Define type aliases or new types.
+-  [`enum`](https://doc.rust-lang.org/book/ch06-00-enums.html): Define an enumerated type, a type that has a finite set of named values.
+
+```rust
+trait Greet {
+    fn greet(&self) -> String;
+}
+
+struct Person {
+    name: String,
+}
+
+impl Greet for Person {
+    fn greet(&self) -> String {
+        format!("Hello, my name is {}", self.name)
+    }
+}
+
+enum Result<T, E> { // <-- Generics!
+    Ok(T),
+    Err(E),
+}
+
+type R<T> = Result<T, String>;
+
+fn main() {
+    let p = Person { name: "John".to_owned() }; // <-- instantiate structs
+    println!("{}", p.greet());
+
+    let r: R<i32> = R::Ok(10);
+    match r {
+        R::Ok(value) => println!("Success: {}", value),
+        R::Err(error) => println!("Error: {}", error),
+    }
+}
+```
+
+-  [`mod`](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html#defining-modules-to-control-scope-and-privacy): Define a module, a named namespace that can contain functions, structs, and other items.
+-  [`use`](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html#using-pub-to-re-export-namespaces): Bring names into scope and import them into the current namespace.
+-  [`pub`](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html#module-privacy-and-the-use-keyword): Make an item public, allowing it to be accessible from outside the module.
+-  [`extern`](https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#using-extern-functions-to-call-external-code): Declare an external Rust library to be linked to a project and for foreign function interfaces (FFI).
+
+```rust
+mod greeting {
+    pub fn say_hello() {
+        println!("Hello from the greeting module");
+    }
+}
+
+extern crate ext_library; // crate also refers to the current project
+mod my_module; // links my_module.rs
+
+use my_module::hello; // use hello from my_module
+use greeting::say_hello as foo; // as: alias
+
+fn main() {
+    foo();
+    my_module();
+    ext_library::bar();
+}
+```
+
+## The module system
+
+[Modules](https://doc.rust-lang.org/rust-by-example/mod.html) are Rust's way of organizing and grouping related code.
+
+Files are seen as modules. `src/my_file.rs` becomes `my_file` module. And, `src/my_directory/mod.rs` becomes `my_directory` module. `mod.rs` is a special filename like `index.js`.
+
+But the compiler doesn't directly look for them. You declare the module with `mod`, later the compiler looks for them.
+
+These are not exactly like `import`'s in JavaScript. If you create new files under a module (like `my_directory/my_submod.rs`), they will be submodules.
+
+Crates are like smaller projects: `Package > Crate > Module`
+
+## 3, 2, 1... Start!
+
+1. [Install Rust](https://www.rust-lang.org/tools/install)
+2. Configure your IDE: [VSCode](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer), [IntelliJ IDEA](https://plugins.jetbrains.com/plugin/8182-rust), [vim](https://github.com/rust-lang/rust.vim), or... try out the [Online IDE](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021)
+3. Run `cargo new`!
+
+Before you go, these 10 functions also could help you:
+
+-  [`println!`](https://doc.rust-lang.org/std/macro.println.html): output to the console.
+-  [`format!`](https://doc.rust-lang.org/std/macro.format.html): format string values.
+-  [`unwrap`](https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap): get the value of an `Ok` variant or panic if it is an `Err`.
+-  [`expect`](https://doc.rust-lang.org/std/result/enum.Result.html#method.expect): similar to `unwrap`, but it allows you to specify a custom error message.
+-  [`vec!`](https://doc.rust-lang.org/std/macro.vec.html): a macro for creating a `Vec` (vector) with pre-populated data.
+-  [`map`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map): a method for transforming elements in a collection.
+-  [`filter`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter): a method for filtering elements in a collection.
+-  [`sort_by`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort_by): a method for sorting elements in a collection.
+-  [`for_each`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.for_each): a method for executing an action on each element in a collection.
+-  [`len`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.len): a method for getting the length of a collection.
+
+Good luck!
+
+---
+
+<div style={{ textAlign: "end" }}>
+
+<p style={{ opacity: 0.6, textAlign: "end" }}>
+   _I wrote this post before [the earthquake](https://youtu.be/IpvKwDunPUo?t=114) on
+   6th of February in Turkey actually. Didn't feel like finalizing for a while._
+</p>
+
+<span
+   style={{
+      textShadow:
+         "1px 1px 0 #444, -1px -1px 0 #444, 1px -1px 0 #444, -1px 1px 0 #444",
+      color: "black",
+      fontSize: "3.5em",
+   }}
+>
+   𐰋
+</span>
+
+</div>
