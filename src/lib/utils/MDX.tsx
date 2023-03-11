@@ -17,7 +17,7 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
    ol: (props) => <ol className="ol" {...props} />,
    li: (props) => <li className="li" {...props} />,
    table: (props) => (
-      <div style={{ overflow: "auto" }}>
+      <div className="overflow-auto mb-8">
          <table className="table" {...props} />
       </div>
    ),
@@ -30,4 +30,6 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
       <pre className="p-1 mb-8 overflow-hidden rounded-md card" {...props} />
    ),
    code: (props) => <code className="code" {...props} />,
+   hr: (props) => <hr className="mb-8" {...props} />,
+   blockquote: (props) => <blockquote className="blockquote" {...props} />,
 }

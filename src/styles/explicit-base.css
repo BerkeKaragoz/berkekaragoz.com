@@ -73,7 +73,20 @@
 }
 
 .code {
-   @apply select-all text-primary-600 dark:text-primary-300;
+   @apply select-all text-secondary-800 dark:text-secondary-100;
+}
+
+a[href] > .code {
+   color: inherit;
+   text-decoration: underline dotted;
+
+   /* prettier-ignore */
+   text-decoration-color: theme("colors.primary.600")77; /* change the underline opacity */
+}
+
+.dark a[href] > .code {
+   /* prettier-ignore */
+   text-decoration-color: theme("colors.primary.400")77; /* change the underline opacity */
 }
 
 .table {
@@ -138,4 +151,19 @@
 .tbody .tr:nth-child(2n) {
    /* prettier-ignore */
    background-color: theme("colors.background.200")55;
+}
+
+.blockquote {
+   @apply mb-4 p-1.5 ps-3 bg-accent-900 bg-opacity-25 rounded-lg text-secondary-300 text-opacity-80 text-base;
+}
+
+.blockquote > p::before {
+   content: ">";
+   color: initial;
+   opacity: 0.2;
+   @apply inline me-2;
+}
+
+.blockquote > p {
+   margin: initial;
 }
