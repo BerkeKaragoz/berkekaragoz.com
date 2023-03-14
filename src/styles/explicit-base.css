@@ -7,7 +7,15 @@
 }
 
 .heading {
-   @apply font-semibold text-caption-color;
+   @apply font-semibold text-caption-color border-b-2 border-opacity-10 border-background-400 border-dotted pb-px;
+}
+
+.heading > a[href]:not([hidden]):not(.unstyled-a) {
+   @apply text-primary-600;
+}
+
+.dark .heading > a[href]:not([hidden]):not(.unstyled-a) {
+   @apply text-primary-400;
 }
 
 .section-heading {
@@ -45,7 +53,7 @@
 }
 
 .li::marker {
-   @apply font-semibold text-primary-600 dark:text-primary-300;
+   @apply font-semibold text-accent-600 dark:text-accent-400;
 }
 
 .ul .ul,
@@ -66,6 +74,10 @@
 .ul:not(li .ol, li .ul) {
    @apply mb-2 ml-1;
 }
+p + .ol:not(li .ol, li .ul),
+p + .ul:not(li .ol, li .ul) {
+   @apply -mt-5;
+}
 
 .ol:not(.ol .ol) > .li:last-of-type,
 .ul:not(.ul .ul) > .li:last-of-type {
@@ -73,7 +85,7 @@
 }
 
 .code {
-   @apply select-all text-secondary-800 dark:text-secondary-100;
+   @apply select-all text-accent-800 dark:text-secondary-100;
 }
 
 a[href] > .code {
@@ -154,7 +166,7 @@ a[href] > .code {
 }
 
 .blockquote {
-   @apply mb-4 p-1.5 ps-3 bg-accent-900 bg-opacity-25 rounded-lg text-secondary-300 text-opacity-80 text-base;
+   @apply mb-4 p-1.5 ps-3 dark:bg-accent-900 bg-secondary-900 bg-opacity-10 dark:bg-opacity-25 rounded-lg text-accent-600 dark:text-secondary-300 text-opacity-80 dark:text-opacity-80 text-base;
 }
 
 .blockquote > p::before {
