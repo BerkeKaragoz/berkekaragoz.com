@@ -66,12 +66,12 @@ const emojiConfettiConfig: IAddConfettiConfig[] = [
 
 type Props = ComponentPropsWithTranslation<{
    latestPostMetas?: PostMeta[]
-   initBtc?: number
-   initEth?: number
+   initBtc?: number | null
+   initEth?: number | null
 }>
 
 const HeroWidget: React.FC<Props> = (props) => {
-   const { t, latestPostMetas, initBtc, initEth } = props
+   const { t, latestPostMetas, initBtc = null, initEth = null } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
    const { theme, setTheme: _setTheme } = useTheme()
@@ -241,7 +241,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      >
                         {isNaN(btcPrice) ? (
                            <span className="opacity-60">
-                              {initBtc === undefined
+                              {initBtc === null
                                  ? "\u2026"
                                  : `${initBtc.toFixed(0)}~`}
                            </span>
@@ -267,7 +267,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      >
                         {isNaN(ethPrice) ? (
                            <span className="opacity-60">
-                              {initEth === undefined
+                              {initEth === null
                                  ? "\u2026"
                                  : `${initEth.toFixed(0)}~`}
                            </span>

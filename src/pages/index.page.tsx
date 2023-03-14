@@ -26,7 +26,7 @@ const fetchCoinData = (apiUrl: string) =>
       .catch((err) => {
          console.error(err)
 
-         return undefined
+         return null
       })
 
 export const getStaticProps = async (ctx: Parameters<GetStaticProps>[0]) => {
