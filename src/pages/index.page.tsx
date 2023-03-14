@@ -64,15 +64,6 @@ export const getStaticProps = async (ctx: Parameters<GetStaticProps>[0]) => {
    }
 }
 
-// TODO vercel can't handle this type
-type Awaited<T> = T extends null | undefined
-   ? T
-   : T extends object & { then(onfulfilled: infer F, ...args: infer _): any }
-   ? F extends (value: infer V, ...args: infer _) => any
-      ? Awaited<V>
-      : never
-   : T
-
 const Homepage: NextPage<
    { latestPostMetas: PostMeta[] } & Awaited<
       ReturnType<typeof getStaticProps>
