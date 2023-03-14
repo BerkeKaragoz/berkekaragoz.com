@@ -241,7 +241,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      >
                         {isNaN(btcPrice) ? (
                            <span className="opacity-60">
-                              {initBtc === null
+                              {initBtc === null || isNaN(initBtc)
                                  ? "\u2026"
                                  : `${initBtc.toFixed(0)}~`}
                            </span>
@@ -267,7 +267,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      >
                         {isNaN(ethPrice) ? (
                            <span className="opacity-60">
-                              {initEth === null
+                              {initEth === null || isNaN(initEth)
                                  ? "\u2026"
                                  : `${initEth.toFixed(0)}~`}
                            </span>
