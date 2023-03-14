@@ -66,7 +66,9 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
             <meta property="og:title" content={meta.title} />
             <meta property="og:site_name" content="Berke Karagoz" />
             <meta property="og:description" content={description} />
-            {meta.coverSrc && <meta property="og:image" content={meta.coverSrc} />}
+            {meta.coverSrc && (
+               <meta property="og:image" content={`${HOST_URL}${meta.coverSrc}`} />
+            )}
             <meta property="og:url" content={`${HOST_URL}/${canonicalUrl}`} />
             <meta property="og:type" content="article" />
             <meta name="og:email" content="mail@berkekaragoz.com" />
@@ -77,7 +79,9 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
             <meta name="twitter:creator" content="@EBerkeKaragoz" />
             <meta name="twitter:title" content={meta.title} />
             <meta name="twitter:description" content={description} />
-            {meta.coverSrc && <meta name="twitter:image" content={meta.coverSrc} />}
+            {meta.coverSrc && (
+               <meta name="twitter:image" content={`${HOST_URL}${meta.coverSrc}`} />
+            )}
 
             {/* <!-- Article meta tags --> */}
             <meta
