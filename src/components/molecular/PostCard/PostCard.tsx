@@ -1,3 +1,4 @@
+import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import LinkText from "@/components/atomic/LinkText/LinkText"
 import { PostMeta } from "@/lib/api/blog"
 import { COMMON_TNS } from "@/lib/i18n/consts"
@@ -30,6 +31,8 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
 
    const { t: ct } = useTranslation([COMMON_TNS])
 
+   const postLink = `/p/${postMeta.slug}`
+
    return (
       <Component
          className={
@@ -42,9 +45,11 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
          }
       >
          {postMeta.coverSrc && (
-            <div
+            <LinkBox
+               href={postLink}
                className={
-                  "relative flex-shrink-0 max-w-full w-auto h-24 " +
+                  "relative flex-shrink-0 max-w-full w-auto h-24 hover:opacity-80 active:opacity-100" +
+                  " " +
                   clsx({
                      "xs:h-auto xs:w-24": !forceCoverTop,
                   })
@@ -59,12 +64,12 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                   quality={40}
                   blurDataURL={placeholderBlurBase64}
                />
-            </div>
+            </LinkBox>
          )}
 
          <div className="flex flex-col justify-between p-2">
             <div>
-               <LinkText href={`/p/${postMeta.slug}`} className="me-2 h3">
+               <LinkText href={postLink} className="me-2 h3">
                   {postMeta.title}
                </LinkText>
                <div className="inline-block">
