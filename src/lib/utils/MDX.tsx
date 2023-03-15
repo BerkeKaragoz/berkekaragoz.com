@@ -17,7 +17,7 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
    ol: (props) => <ol className="ol" {...props} />,
    li: (props) => <li className="li" {...props} />,
    table: (props) => (
-      <div className="overflow-auto mb-8">
+      <div className="mb-8" style={{ overflow: "auto" }}>
          <table className="table" {...props} />
       </div>
    ),
