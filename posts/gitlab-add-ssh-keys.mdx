@@ -1,0 +1,154 @@
+---
+title: GitLab generate and add SSH keys
+tags:
+   - git
+   - ssh
+   - linux
+   - guide
+date: 15 August 23 1:30 UTC+0
+excerpt: Learn how to add your SSH keys to GitLab for secure and convenient authentication on Windows, macOS, and Linux systems.
+---
+
+Are keep coming back to remember what commands to use when you need to setup your GitLab?
+Whether you're using Windows, macOS, or Linux, I've got you covered.
+
+-  [Windows](#windows)
+-  [macOS](#macos)
+-  [Linux](#linux)
+
+<Image
+   priority
+   src="/assets/posts/gitlab-add-ssh-keys/cover.webp"
+   alt="Seashell shaped lock getting unlocked"
+   width={512}
+   height={512}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAVSURBVBhXY6ivr/9/bh4DEPx/eBAALY4GiuCp2EkAAAAASUVORK5CYII="
+/>
+
+## Windows
+
+Open Git Bash and follow.
+
+1. **Generate SSH Keys:**
+   If you don't already have SSH keys, you can generate them using Git Bash.
+
+   ```bash
+   cd ~/.ssh
+   ssh-keygen -t rsa -b 4096 -C "example@berkekaragoz.com"
+   ```
+
+2. **Start SSH Agent:**
+   Run the following command in Git Bash to start the SSH agent:
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+
+3. **Add SSH Key to Agent:**
+   Add your SSH private key to the SSH agent:
+
+   ```bash
+   ssh-add ~/.ssh/name_of_the_key
+   ```
+
+4. **Copy Public Key:**
+   Copy your SSH public key to the clipboard:
+
+   ```bash
+   clip < ~/.ssh/name_of_the_key.pub
+   ```
+
+5. **Add Public Key to GitLab:**
+   Log in to your GitLab account. Go to "Settings" > "SSH Keys." Add the copied key and save it.
+
+6. **Test Connection:**
+   In Git Bash, run:
+
+   ```bash
+   ssh -T git@gitlab.com
+   ```
+
+## macOS
+
+1. **Generate SSH Keys:**
+   If you don't have SSH keys, generate them by running:
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 -C "example@berkekaragoz.com"
+   ```
+
+2. **Start SSH Agent:**
+   Start the SSH agent:
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+
+3. **Add SSH Key to Agent:**
+   Add your SSH private key to the SSH agent:
+
+   ```bash
+   ssh-add -K ~/.ssh/name_of_the_key
+   ```
+
+4. **Copy Public Key:**
+   Copy your SSH public key to the clipboard:
+
+   ```bash
+   pbcopy < ~/.ssh/name_of_the_key.pub
+   ```
+
+5. **Add Public Key to GitLab:**
+   Log in to your GitLab account. Go to "Settings" > "SSH Keys." Add the copied key and save it.
+
+6. **Test Connection:**
+   In the terminal, run:
+
+   ```bash
+   ssh -T git@gitlab.com
+   ```
+
+## Linux
+
+1. **Generate SSH Keys:**
+   If you don't have SSH keys, generate them using:
+
+   ```bash
+   ssh-keygen -t rsa -b 4096 -C "example@berkekaragoz.com"
+   ```
+
+2. **Start SSH Agent:**
+   Start the SSH agent:
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+
+3. **Add SSH Key to Agent:**
+   Add your SSH private key to the SSH agent:
+
+   ```bash
+   ssh-add ~/.ssh/name_of_the_key
+   ```
+
+4. **Copy Public Key:**
+   Copy your SSH public key to the clipboard:
+
+   ```bash
+   cat ~/.ssh/name_of_the_key.pub | xclip -selection clipboard
+   ```
+
+5. **Add Public Key to GitLab:**
+   Log in to your GitLab account. Go to "Settings" > "SSH Keys." Add the copied key and save it.
+
+6. **Test Connection:**
+   In the terminal, run:
+
+   ```bash
+   ssh -T git@gitlab.com
+   ```
+
+Now, you can interact with your repositories without the hassle of entering credentials every time.
+
+You can add them to GitHub as well, so you get the cool verified badge on your commits :>
