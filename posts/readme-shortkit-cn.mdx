@@ -1,0 +1,156 @@
+---
+title: Readme of @shortkit/cn
+tags:
+   - npm
+   - javascript
+   - web-development
+   - readme
+date: 26 Mar 25 19:21 UTC+0
+excerpt: cn is a tiny, high-performance utility for constructing class names.
+---
+
+`cn` is a tiny, high-performance utility for constructing class names. It provides two primary functions:
+
+1. **`cn`** – Merges strings and/or objects (`Record<string, BooleanLike>`) into a single class name string.  
+2. **`oneOf`** – Returns the key of the first truthy value in an object. Optionally prepends a prefix.
+
+## Installation
+
+```bash
+npm i @shortkit/cn
+```
+
+## Usage
+
+### `cn("caption", { highlighted: false, faded: true }, ...)` // 'caption faded'
+
+**Signature:**
+
+```ts
+type BooleanLike = boolean | 0 | 1 | undefined | null;
+type CnInput = string | BooleanLike | Record<string, BooleanLike>;
+
+/**
+ * Merges any number of arguments (strings and/or { key: boolean } objects)
+ * into a single space-delimited string. Returns undefined if all are falsy.
+ */
+declare function cn(...args: CnInput[]): string | undefined;
+```
+
+- If you pass a **string**, it gets appended to the output unless it’s falsy (e.g. `""` still counts as a string).
+- If you pass an **object**, each key with a truthy value is appended as a class name.
+- Falsy values (`false`, `0`, `null`, `undefined`) are ignored.
+- Returns `undefined` if the result is empty.
+
+**Example:**
+
+```tsx
+import { cn } from "@shortkit/cn";
+
+type ButtonProps = {
+  className?: string;
+  fullWidth?: boolean;
+  loading?: boolean;
+};
+
+export const Button = ({ className, fullWidth, loading }: ButtonProps) => {
+  return (
+    <button
+      className={cn("button-class", { "full-width": fullWidth, loading }, className)}
+    >
+      Button
+    </button>
+  );
+}
+```
+
+### `cn.withSeparator(separator)`
+
+If you want a variant of `cn` that uses a different separator (e.g., `"--"` instead of `" "`), you can call:
+
+```ts
+cn.withSeparator("--")("button", { secondary: true, icon: false }, "wide"); // "button-secondary--wide"
+```
+
+This internally generates a specialized version with your chosen separator.
+
+---
+
+### `oneOf(...)`
+
+**Signatures:**
+
+```ts
+/**
+ * Returns the first key in the object whose value is truthy.
+ * If called with a prefix + record, returns prefix + that key.
+ */
+declare function oneOf<S extends string>(
+  record: Record<S, BooleanLike> | undefined
+): S | undefined;
+
+declare function oneOf<P extends string, S extends string>(
+  prefix: P,
+  record: Record<S, BooleanLike> | undefined
+): `${P}${S}` | undefined;
+```
+
+1. **`oneOf(record)`**  
+   - Returns the **first** key with a truthy value.  
+   - Skips `""` keys if there’s no prefix.  
+   - Returns `undefined` if none are truthy.
+
+2. **`oneOf(prefix, record)`**  
+   - Same logic, but returns `prefix + key` for the first truthy key (including empty keys).  
+   - Returns `undefined` if none are truthy.
+
+**Examples:**
+
+```ts
+import { oneOf } from "@shortkit/cn";
+
+// 1) Without prefix
+oneOf({ red: true, blue: true }); // "red"
+oneOf({ red: false }); // undefined
+oneOf({ "": true }); // undefined (empty key is ignored when no prefix)
+
+// 2) With prefix
+oneOf("color--", { red: true, blue: true }); // "color--red"
+oneOf("color--", { red: false }); // undefined
+oneOf("color--", { "": true }); // "color--"
+```
+
+---
+
+## Example: Colored Button
+
+```tsx
+import { cn, oneOf } from "@shortkit/cn";
+import { Button, type ButtonProps } from "./Button";
+
+type ColoredButtonProps = ButtonProps & {
+  isRed?: boolean;
+  isBlue?: boolean;
+};
+
+export function ColoredButton({ className, isRed, isBlue, ...rest }: ColoredButtonProps) {
+  return (
+    <Button
+      className={cn(
+        oneOf("color--", { red: isRed, blue: isBlue }),
+        className
+      )}
+      {...rest}
+    />
+  );
+}
+```
+
+---
+
+## Notes on Performance
+
+- Both `cn` and `oneOf` use straightforward loops and early exits. They’re **fast** in large-scale usage. Maybe this is for you than for your users...
+- `cn.withSeparator(...)` creates a specialized function using a closure. Modern JavaScript engines handle this efficiently with minimal overhead.  
+
+---
