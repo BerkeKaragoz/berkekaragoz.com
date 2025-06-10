@@ -65,6 +65,6 @@ lazyObj.value.count == 6
 ### Custom property name
 
 ```ts
-const lazyUser = makeLazy(() => fetchUser(), 'user'); // instead of 'value'
-console.log(lazyUser.user);   // runs fetchUser() once
+const lazyUser = makeLazy(() => fetchUser(), 'user') // instead of 'value'
+console.log(lazyUser.user)   // runs fetchUser() once
 ```
