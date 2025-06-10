@@ -1,0 +1,70 @@
+---
+title: Readme of @shortkit/make-lazy
+tags:
+   - npm
+   - javascript
+   - web-development
+   - readme
+date: 10 Jun 25 01:48 UTC+0
+excerpt: Delay execution of a function until you actually need its result.
+---
+
+Delay execution of a function until you actually need its result.
+
+```js
+import { makeLazy } from '@shortkit/make-lazy';
+
+let count = 0;
+const lazyCount = makeLazy(() => ++count); // returns { value: count }
+
+console.log(count);           // 0
+console.log(lazyCount.value); // 1   ← function runs here
+console.log(lazyCount.value); // 1   ← returns the same result
+console.log(count);           // 1
+```
+
+## Why use `makeLazy`?
+
+Maybe you don't need to initalize everything at the start which can have a performance impact. Use `makeLazy` when you want to improve inital loading. Given that you can afford the performance impact on inital usage of the output value.
+
+
+## Install
+
+```bash
+npm i @shortkit/make-lazy
+````
+
+## `makeLazy` Usage
+
+```ts
+const obj = { count: 0, init: false }
+const initObj = (count: number) => {
+    obj.init = true
+    obj.count = obj.count + count
+    return obj
+}
+const lazyObj = makeLazy(() => initObj(5))
+
+obj.init            == false
+obj.count           == 0
+
+lazyObj.value.init  == true // ← function runs here
+lazyObj.value.count == 5    // ← second access, it is not 10
+
+const { init, count } = lazyObj.value
+init                == true
+count               == 5
+
+obj.init            == true
+obj.count           == 5
+
+++obj.count         == 6
+lazyObj.value.count == 6
+```
+
+### Custom property name
+
+```ts
+const lazyUser = makeLazy(() => fetchUser(), 'user'); // instead of 'value'
+console.log(lazyUser.user);   // runs fetchUser() once
+```
