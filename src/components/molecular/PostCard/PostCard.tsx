@@ -59,7 +59,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                   src={postMeta.coverSrc}
                   className="object-cover h-full"
                   alt={postMeta.title}
-                  layout="fill"
+                  fill
                   placeholder="blur"
                   quality={40}
                   blurDataURL={placeholderBlurBase64}

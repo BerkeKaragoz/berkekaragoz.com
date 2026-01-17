@@ -60,6 +60,7 @@ const LinkBox: React.FC<
          prefetch={prefetch}
          locale={locale}
          passHref
+         legacyBehavior
       >
          <LinkBoxAnchor as={component} {...rest}>
             {children}

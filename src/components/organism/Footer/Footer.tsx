@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </div>
          </Section>
          <div className="text-center opacity-60">
-            <p className="m-1 text-sm">E. Berke Karagöz © 2023.</p>
+            <p className="m-1 text-sm">E. Berke Karagöz © 2026.</p>
          </div>
       </footer>
    )

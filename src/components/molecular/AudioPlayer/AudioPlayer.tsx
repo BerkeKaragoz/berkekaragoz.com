@@ -180,7 +180,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                   src={imageSrc}
                   className="object-cover h-full"
                   alt={title ? title : "audio cover"}
-                  layout="fill"
+                  fill
                   placeholder="blur"
                   blurDataURL={blurDataURL}
                />

@@ -2,11 +2,11 @@ import { Popover } from "@headlessui/react"
 import clsx from "clsx"
 import React from "react"
 
-export const Tooltip: React.FC<{
+export const Tooltip: React.FC<React.PropsWithChildren<{
    text?: string
    capitalize?: boolean
    className?: HTMLElement["className"]
-}> = (props) => {
+}>> = (props) => {
    const { children, className, capitalize = false, text } = props
 
    const [isOpen, setIsOpen] = React.useState(false)

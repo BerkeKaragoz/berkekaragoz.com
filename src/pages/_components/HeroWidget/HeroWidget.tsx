@@ -83,11 +83,13 @@ const HeroWidget: React.FC<Props> = (props) => {
       React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorBlue)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
-   const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(100))
+   const [randomNumber, setRandomNumber] = React.useState(() =>
+      generateRandomInt(100)
+   )
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
-   const jsConfettiRef = React.useRef<JSConfetti>()
+   const jsConfettiRef = React.useRef<JSConfetti>(undefined)
    const sliderParagraphRef = React.useRef<HTMLParagraphElement>(null)
    const cipherRef = React.useRef<HTMLInputElement>(null)
    const cipherShiftRef = React.useRef<HTMLInputElement>(null)
