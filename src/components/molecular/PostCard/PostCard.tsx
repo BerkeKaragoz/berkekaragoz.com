@@ -62,7 +62,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                   fill
                   placeholder="blur"
                   quality={40}
-                  blurDataURL={placeholderBlurBase64}
+                  blurDataURL={postMeta.coverBlurDataURL ?? placeholderBlurBase64}
                />
             </LinkBox>
          )}

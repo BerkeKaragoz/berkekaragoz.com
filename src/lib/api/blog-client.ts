@@ -13,6 +13,12 @@ export const getPostCoverSrc = (contentString: string) => {
    return match ? match[1] : null
 }
 
+export const getPostBlurDataURL = (contentString: string) => {
+   const regex = /<(?:Image|img)\s+[^>]*blurDataURL=['"]([^'"]+)['"][^>]*>/i
+   const match = contentString.match(regex)
+   return match ? match[1] : null
+}
+
 export const getPostMeta = (
    contentString: string,
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +32,7 @@ export const getPostMeta = (
    date: (data.date ?? new Date()).toString(),
    wordCount: getWordCount(contentString),
    coverSrc: getPostCoverSrc(contentString),
+   coverBlurDataURL: getPostBlurDataURL(contentString),
 })
 
 export const serializeWithAppOptions = (stringContent: string) =>

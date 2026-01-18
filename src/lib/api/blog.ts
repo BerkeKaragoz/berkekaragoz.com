@@ -37,6 +37,7 @@ export interface PostMeta {
    date: string
    wordCount: number
    coverSrc: string | null
+   coverBlurDataURL: string | null
 }
 
 export interface Post {
