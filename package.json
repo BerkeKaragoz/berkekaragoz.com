@@ -21,6 +21,7 @@
       "@headlessui/react": "^2.2.9",
       "@heroicons/react": "^1.0.6",
       "@shortkit/cn": "^1.0.2",
+      "@shortkit/debounce-throttle": "^1.0.2",
       "@statekit/react": "0.10.4-dev",
       "@types/react-dom": "19.2.3",
       "caesars-cipher": "^2.0.2",

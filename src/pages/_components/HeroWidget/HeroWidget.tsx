@@ -48,6 +48,11 @@ import {
    RandomIntMachineProvider,
 } from "@/pages/_components/HeroWidget/randomIntMachine"
 import { wrap } from "@statekit/react"
+import { throttle } from "@shortkit/debounce-throttle"
+
+const confettiThrottleSymbol = Symbol()
+const emojiThrottleSymbol = Symbol()
+const addConfettiThrottle = throttle.withOptions({ trailing: false })
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
@@ -71,7 +76,7 @@ const plainConfettiConfig: IAddConfettiConfig[] = [
 const emojiConfettiConfig: IAddConfettiConfig[] = [
    {
       emojis: ["🎊", "🎉", "💥", "✨"],
-      confettiNumber: 20,
+      confettiNumber: 5,
    },
 ]
 
@@ -114,7 +119,33 @@ const HeroWidget = wrap(RandomIntMachineProvider, (props: Props) => {
 
          const config = isEmoji ? emojiConfettiConfig : plainConfettiConfig
 
-         jsConfettiRef.current.addConfetti(config[generateRandomInt(config.length)])
+         if (isEmoji) {
+            addConfettiThrottle(
+               emojiThrottleSymbol,
+               () =>
+                  jsConfettiRef.current!.addConfetti(
+                     config[generateRandomInt(config.length)]
+                  ),
+               750
+            )
+
+            addConfettiThrottle(
+               confettiThrottleSymbol,
+               () =>
+                  jsConfettiRef.current!.addConfetti(
+                     plainConfettiConfig[generateRandomInt(config.length)]
+                  ),
+               64
+            )
+         } else
+            addConfettiThrottle(
+               confettiThrottleSymbol,
+               () =>
+                  jsConfettiRef.current!.addConfetti(
+                     config[generateRandomInt(config.length)]
+                  ),
+               64
+            )
       },
       [jsConfettiRef]
    )

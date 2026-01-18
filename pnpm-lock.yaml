@@ -21,6 +21,9 @@ importers:
       '@shortkit/cn':
         specifier: ^1.0.2
         version: 1.0.2
+      '@shortkit/debounce-throttle':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@statekit/react':
         specifier: 0.10.4-dev
         version: 0.10.4-dev(@types/react@19.2.8)(react@19.2.3)
@@ -891,6 +894,9 @@ packages:
 
   '@shortkit/cn@1.0.2':
     resolution: {integrity: sha512-HWYKyrcnIWvmMoOKPve5/f9sJ2awVP/N4zpv296A+5CD/PU65KKEb+nrT2BT7uQtFnv0S3hpyrd7OxyCyYOTOQ==}
+
+  '@shortkit/debounce-throttle@1.0.2':
+    resolution: {integrity: sha512-w9xDNUqaYAsRvd3fdqWpQTeqovATrj+SHCglKxnAqQvDEAlioEI9QrGTKXPdcY1u723deyx/8fr9xDzR6Ir8/A==}
 
   '@sinclair/typebox@0.34.47':
     resolution: {integrity: sha512-ZGIBQ+XDvO5JQku9wmwtabcVTHJsgSWAHYtVuM9pBNNR5E88v6Jcj/llpmsjivig5X8A8HHOb4/mbEKPS5EvAw==}
@@ -5101,6 +5107,8 @@ snapshots:
   '@rtsao/scc@1.1.0': {}
 
   '@shortkit/cn@1.0.2': {}
+
+  '@shortkit/debounce-throttle@1.0.2': {}
 
   '@sinclair/typebox@0.34.47': {}
 
