@@ -23,7 +23,14 @@ import {
    ETH_PRICE_API,
    MINUTES_IN_MS,
 } from "@/lib/utils/consts"
-import { Switch, Tab } from "@headlessui/react"
+import {
+   Switch,
+   Tab,
+   TabGroup,
+   TabList,
+   TabPanel,
+   TabPanels,
+} from "@headlessui/react"
 import {
    EyeIcon,
    HeartIcon,
@@ -534,11 +541,11 @@ const HeroWidget: React.FC<Props> = (props) => {
                </div>
                {latestPostMetas && (
                   <div className="flex flex-col gap-4 bg-primary-200 bg-opacity-25 dark:bg-background-800 rounded-lg dark:bg-opacity-30 p-2">
-                     <Tab.Group>
-                        <Tab.List className="flex justify-between gap-4 rounded-lg bg-opacity-5 dark:bg-opacity-30">
-                           {latestPostMetas.map((v, i) => (
+                     <TabGroup className="flex flex-col gap-4">
+                        <TabList className="flex justify-between gap-4 rounded-lg bg-opacity-5 dark:bg-opacity-30">
+                           {latestPostMetas.map((el, i) => (
                               <Tab
-                                 key={`${nanoid(5)}-${i}`}
+                                 key={el.slug}
                                  className={"card-input p-2 flex-grow"}
                               >
                                  {({ selected }) => (
@@ -561,15 +568,15 @@ const HeroWidget: React.FC<Props> = (props) => {
                                  )}
                               </Tab>
                            ))}
-                        </Tab.List>
-                        <Tab.Panels>
+                        </TabList>
+                        <TabPanels>
                            {latestPostMetas.map((m, i) => (
-                              <Tab.Panel key={`${m.slug}-${i}`}>
+                              <TabPanel key={m.slug}>
                                  <PostCard postMeta={m} disableSlug forceCoverTop />
-                              </Tab.Panel>
+                              </TabPanel>
                            ))}
-                        </Tab.Panels>
-                     </Tab.Group>
+                        </TabPanels>
+                     </TabGroup>
                   </div>
                )}
                <div className="flex items-center justify-between gap-2">
