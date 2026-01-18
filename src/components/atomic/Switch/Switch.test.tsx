@@ -21,13 +21,13 @@ describe("Switch component", () => {
 
       fireEvent.click(el)
 
-      expect(onChangeHandlerMock).toBeCalledTimes(1)
-      expect(onClickHandlerMock).toBeCalledTimes(1)
+      expect(onChangeHandlerMock).toHaveBeenCalledTimes(1)
+      expect(onClickHandlerMock).toHaveBeenCalledTimes(1)
 
       fireEvent.click(el)
 
-      expect(onChangeHandlerMock).toBeCalledTimes(2)
-      expect(onClickHandlerMock).toBeCalledTimes(2)
+      expect(onChangeHandlerMock).toHaveBeenCalledTimes(2)
+      expect(onClickHandlerMock).toHaveBeenCalledTimes(2)
    })
 
    it("can be disabled", () => {
@@ -41,6 +41,6 @@ describe("Switch component", () => {
 
       fireEvent.click(el)
 
-      expect(handlerMock).toBeCalledTimes(0)
+      expect(handlerMock).toHaveBeenCalledTimes(0)
    })
 })

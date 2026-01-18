@@ -12,11 +12,11 @@ describe("Icon Button", () => {
 
       expect(el).toBeInTheDocument()
 
-      expect(fnMock).toBeCalledTimes(0)
+      expect(fnMock).toHaveBeenCalledTimes(0)
 
       fireEvent.click(el)
 
-      expect(fnMock).toBeCalledTimes(1)
+      expect(fnMock).toHaveBeenCalledTimes(1)
    })
 
    it("can be disabled", () => {
@@ -28,6 +28,6 @@ describe("Icon Button", () => {
 
       fireEvent.click(el)
 
-      expect(fnMock).toBeCalledTimes(0)
+      expect(fnMock).toHaveBeenCalledTimes(0)
    })
 })
