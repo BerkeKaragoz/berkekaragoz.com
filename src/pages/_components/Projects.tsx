@@ -4,7 +4,7 @@ import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { placeholderBlurBase64, PLATFORM_GITHUB_LINK } from "@/lib/utils/consts"
 import Image, { ImageProps } from "next/image"
 import React from "react"
-import { Trans, withTranslation } from "react-i18next"
+import { Trans, withTranslation } from "next-i18next"
 
 const ProjectCard: React.FC<{
    src: string

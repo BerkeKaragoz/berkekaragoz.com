@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 import { HeartIcon } from "@heroicons/react/solid"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
-import { Trans, withTranslation } from "react-i18next"
+import { Trans, withTranslation } from "next-i18next"
 import { PAGES_TNS } from "@/lib/i18n/consts"
 
 const assetNames = [

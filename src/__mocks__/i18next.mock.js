@@ -1,6 +1,6 @@
 const { Component } = require("react")
 const React = require("react")
-const reactI18next = require("react-i18next")
+const i18next = require("next-i18next")
 
 const hasChildren = (node) =>
    node && (node.children || (node.props && node.props.children))
@@ -49,10 +49,10 @@ module.exports = {
    Translation: ({ children }) => children((k) => k, { i18n: {} }),
    useTranslation: () => useMock,
    // mock if needed
-   I18nextProvider: reactI18next.I18nextProvider,
-   initReactI18next: reactI18next.initReactI18next,
-   setDefaults: reactI18next.setDefaults,
-   getDefaults: reactI18next.getDefaults,
-   setI18n: reactI18next.setI18n,
-   getI18n: reactI18next.getI18n,
+   I18nextProvider: i18next.I18nextProvider,
+   initReactI18next: i18next.initReactI18next,
+   setDefaults: i18next.setDefaults,
+   getDefaults: i18next.getDefaults,
+   setI18n: i18next.setI18n,
+   getI18n: i18next.getI18n,
 }

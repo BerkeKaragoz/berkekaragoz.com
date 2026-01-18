@@ -5,7 +5,7 @@ import { Tab } from "@headlessui/react"
 import { cn } from "@shortkit/cn"
 import Image from "next/image"
 import React, { ReactNode } from "react"
-import { Trans, withTranslation } from "react-i18next"
+import { Trans, withTranslation } from "next-i18next"
 
 const ExpTab = (props: Record<string, unknown> & { children: ReactNode }) => {
    const { children, ...rest } = props

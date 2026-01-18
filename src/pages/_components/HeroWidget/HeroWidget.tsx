@@ -39,11 +39,9 @@ import {
 } from "@heroicons/react/solid"
 import { cn } from "@shortkit/cn"
 import JSConfetti from "js-confetti"
-import { nanoid } from "nanoid"
-import { useTranslation } from "next-i18next"
+import { useTranslation, withTranslation, Trans } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
-import { Trans, withTranslation } from "react-i18next"
 import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
 import { useGenerateRandomInt } from "@/pages/_components/HeroWidget/useGenerateRandomInt"
 
@@ -69,6 +67,7 @@ const plainConfettiConfig: IAddConfettiConfig[] = [
 const emojiConfettiConfig: IAddConfettiConfig[] = [
    {
       emojis: ["🎊", "🎉", "💥", "✨"],
+      confettiNumber: 20,
    },
 ]
 

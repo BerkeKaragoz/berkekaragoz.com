@@ -8,7 +8,7 @@ import { DEFAULT_LOCALE, placeholderBlurBase64 } from "@/lib/utils/consts"
 import { cn } from "@shortkit/cn"
 import Image from "next/image"
 import React from "react"
-import { useTranslation, withTranslation } from "react-i18next"
+import { useTranslation, withTranslation } from "next-i18next"
 
 type PostCardProps = ComponentPropsWithActiveTranslation<{
    postMeta: PostMeta

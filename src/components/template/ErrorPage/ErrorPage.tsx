@@ -1,6 +1,6 @@
 import { COMMON_TNS } from "@/lib/i18n/consts"
 import Link from "next/link"
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "next-i18next"
 import { UrlObject } from "url"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import Head from "next/head"

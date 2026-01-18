@@ -1,6 +1,6 @@
 import styles from "./switch.module.css"
 import React from "react"
-import { nanoid } from "nanoid"
+import { generateRandomInt } from "@/lib/utils"
 
 type SwitchProps = React.InputHTMLAttributes<HTMLInputElement>
 
@@ -8,7 +8,10 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
    (props, ref) => {
       const { children, disabled, onClick, ...rest } = props
 
-      const inputId = React.useMemo(() => `app-switch-${nanoid(6)}`, [])
+      const inputId = React.useMemo(
+         () => `app-switch-${generateRandomInt(100_000)}`,
+         []
+      )
 
       return (
          <label

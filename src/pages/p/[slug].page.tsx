@@ -15,7 +15,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { MDXRemoteSerializeResult } from "next-mdx-remote"
 import Head from "next/head"
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "next-i18next"
 
 interface MDXPost {
    source: MDXRemoteSerializeResult<Record<string, unknown>>

@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/solid"
 import { cn } from "@shortkit/cn"
 import React from "react"
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "next-i18next"
 import styles from "./audioPlayer.module.css"
 import Image, { ImageProps } from "next/image"
 

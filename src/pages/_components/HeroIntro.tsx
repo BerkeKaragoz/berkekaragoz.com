@@ -5,7 +5,7 @@ import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { Popover } from "@headlessui/react"
 import { DotsVerticalIcon, ServerIcon } from "@heroicons/react/solid"
 import React from "react"
-import { Trans, withTranslation } from "react-i18next"
+import { Trans, withTranslation } from "next-i18next"
 
 const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = (
    props
