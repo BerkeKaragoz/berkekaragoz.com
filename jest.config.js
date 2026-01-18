@@ -9,10 +9,6 @@ module.exports = {
       /* For Module Path Aliases */
       "^@/(.*)$": "<rootDir>/src/$1",
 
-      /* Handle CSS imports (with CSS modules)
-      https://jestjs.io/docs/webpack#mocking-css-modules */
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-
       // Handle CSS imports (without CSS modules)
       "^.+\\.(css|sass|scss)$": "<rootDir>/src/__mocks__/style.mock.js",
 
