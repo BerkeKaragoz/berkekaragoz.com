@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "./slider.module.css"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 
 const getProgressPercentage = (input: HTMLInputElement): number => {
    const min = +input.min || 0
@@ -23,7 +23,6 @@ function useShareForwardedRef<T>(forwardedRef: React.Ref<T>) {
          forwardedRef(innerRef.current)
          return
       }
-      // @ts-expect-error by default forwardedRef.current is readonly. Let's ignore it
       forwardedRef.current = innerRef.current
    })
 
@@ -65,38 +64,35 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
 
       /** Tailwind works better inline */
       return (
-         <div
-            className={clsx([styles.root, "inline-block", className])}
-            style={style}
-         >
+         <div className={cn(styles.root, "inline-block", className)} style={style}>
             <div
-               className={clsx([
+               className={cn(
                   styles.sliderContainer,
-                  "relative h-3 px-2 overflow-visible group",
-               ])}
+                  "relative h-3 px-2 overflow-visible group"
+               )}
                ref={_divRef}
             >
                <div
-                  className={clsx([
+                  className={cn(
                      styles.track,
-                     "w-full rounded-full overflow-hidden bg-background-300 dark:bg-background-700",
-                  ])}
+                     "w-full rounded-full overflow-hidden bg-background-300 dark:bg-background-700"
+                  )}
                >
                   <div
-                     className={clsx([
+                     className={cn(
                         styles.progress,
                         "rounded-full bg-background-500 dark:bg-primary-200",
                         {
                            "group-hover:bg-primary-400 dark:group-hover:bg-primary-400":
                               !disabled,
                         },
-                        { "opacity-50": disabled },
-                     ])}
+                        { "opacity-50": disabled }
+                     )}
                   />
                </div>
                <div
-                  className={clsx(
-                     [styles.thumb],
+                  className={cn(
+                     styles.thumb,
                      "w-0 h-0 bg-transparent rounded-full",
                      {
                         "group-hover:opacity-50": disabled,

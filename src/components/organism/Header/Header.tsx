@@ -9,7 +9,7 @@ import {
    SunIcon,
    TranslateIcon,
 } from "@heroicons/react/solid"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import { useTheme } from "next-themes"
 import Image from "next/image"
 import { useRouter } from "next/router"
@@ -111,14 +111,14 @@ export const Header: React.FC = (props) => {
                               key={`radio-locale-${locale}`}
                               value={locale}
                               className={({ checked, active }) =>
-                                 clsx([
+                                 cn(
                                     "p-2 m-1 select-none uppercase border rounded-lg cursor-pointer bg-background-50 border-primary-100 hover:bg-primary-100 dark:bg-background-900 dark:hover:bg-primary-900 dark:border-primary-900",
                                     {
                                        "bg-background-200 font-medium text-primary-600 dark:bg-background-800 dark:text-primary-400":
                                           checked,
                                        "text-primary-900": active,
-                                    },
-                                 ])
+                                    }
+                                 )
                               }
                            >
                               {locale.slice(0, locale.indexOf("-"))}

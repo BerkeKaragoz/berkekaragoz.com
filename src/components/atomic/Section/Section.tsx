@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import React from "react"
 
 type SectionProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
@@ -15,14 +15,13 @@ export const Section: React.FC<SectionProps> = (props) => {
          {React.createElement(
             as,
             {
-               className: clsx(
-                  [
-                     "mx-auto",
-                     { flex: !block },
-                     { block: block },
-                     { "max-w-screen-xl": !prose },
-                     { "max-w-prose": prose },
-                  ],
+               className: cn(
+                  "mx-auto",
+                  { flex: !block },
+                  { block: block },
+                  { "max-w-screen-xl": !prose },
+                  { "max-w-prose": prose },
+
                   className
                ),
                ...rest,

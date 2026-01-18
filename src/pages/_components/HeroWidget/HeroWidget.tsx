@@ -30,7 +30,7 @@ import {
    LightBulbIcon,
    PencilIcon,
 } from "@heroicons/react/solid"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import JSConfetti from "js-confetti"
 import { nanoid } from "nanoid"
 import { useTranslation } from "next-i18next"
@@ -38,6 +38,7 @@ import { useTheme } from "next-themes"
 import React from "react"
 import { Trans, withTranslation } from "react-i18next"
 import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
+import { useGenerateRandomInt } from "@/pages/_components/HeroWidget/useGenerateRandomInt"
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
@@ -83,9 +84,7 @@ const HeroWidget: React.FC<Props> = (props) => {
       React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorBlue)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
-   const [randomNumber, setRandomNumber] = React.useState(() =>
-      generateRandomInt(100)
-   )
+   const [randomNumber, setRandomInt] = useGenerateRandomInt()
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
@@ -283,7 +282,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                <div className="hidden gap-6 overflow-hidden rounded-lg md:flex">
                   <div className="relative card">
                      <DrawableCanvas
-                        className={clsx([{ "blur-sm": isBlurSwitchOn }])}
+                        className={cn({ "blur-sm": isBlurSwitchOn })}
                         strokeStyle={strokeColor}
                         clear={clearCount}
                         initDrawSmile
@@ -294,13 +293,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </div>
                   <div className="flex flex-col w-full gap-2">
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorRed,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorRed,
+                        })}
                         onClick={() => setStrokeColor(colorRed)}
                         aria-label={ct("red")}
                      >
@@ -310,13 +306,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         />
                      </button>
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorGreen,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorGreen,
+                        })}
                         onClick={() => setStrokeColor(colorGreen)}
                         aria-label={ct("green")}
                      >
@@ -326,13 +319,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         />
                      </button>
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorBlue,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorBlue,
+                        })}
                         onClick={() => setStrokeColor(colorBlue)}
                         aria-label={ct("blue")}
                      >
@@ -362,7 +352,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      <Switch
                         checked={isBlurSwitchOn}
                         onChange={setIsBlurSwitchOn}
-                        className={clsx([
+                        className={cn(
                            "relative card inline-flex items-center h-6 rounded-full w-11",
                            {
                               "bg-primary-400 dark:bg-primary-600": isBlurSwitchOn,
@@ -370,11 +360,11 @@ const HeroWidget: React.FC<Props> = (props) => {
                            {
                               "bg-background-400 dark:bg-background-800":
                                  !isBlurSwitchOn,
-                           },
-                        ])}
+                           }
+                        )}
                      >
                         <span
-                           className={clsx([
+                           className={cn(
                               "duration-100 inline-block w-4 h-4 bg-white dark:bg-primary-50 rounded-full",
                               {
                                  "translate-x-1 dark:bg-primary-200":
@@ -382,18 +372,18 @@ const HeroWidget: React.FC<Props> = (props) => {
                               },
                               {
                                  "translate-x-6 ": isBlurSwitchOn,
-                              },
-                           ])}
+                              }
+                           )}
                         />
                      </Switch>
                   </Switch.Group>
                   <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <div className="w-10 h-10 p-2 overflow-hidden card dark:border-opacity-60">
                      <EyeIcon
-                        className={clsx([
+                        className={cn(
                            "h-full mx-auto text-primary-600 dark:text-primary-200",
-                           { "blur-sm": isBlurSwitchOn },
-                        ])}
+                           { "blur-sm": isBlurSwitchOn }
+                        )}
                      />
                   </div>
                </div>
@@ -553,7 +543,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                               >
                                  {({ selected }) => (
                                     <span
-                                       className={clsx([
+                                       className={cn(
                                           "inline-block border-b-4 p-1 rounded-sm font-semibold w-full capitalize",
                                           {
                                              "border-primary-400": selected,
@@ -561,8 +551,8 @@ const HeroWidget: React.FC<Props> = (props) => {
                                           {
                                              "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
                                                 !selected,
-                                          },
-                                       ])}
+                                          }
+                                       )}
                                     >
                                        {i === 0
                                           ? `${gt("latest")}`
@@ -589,7 +579,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                   <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <button
                      className="p-2 card-input"
-                     onClick={() => setRandomNumber(generateRandomInt(99))}
+                     onClick={() => setRandomInt(99)}
                   >
                      &larr;{" "}
                      <Trans t={t} i18nKey="index.hero.widget.generateRandomNumber">

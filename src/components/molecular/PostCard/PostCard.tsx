@@ -5,7 +5,7 @@ import { COMMON_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithActiveTranslation } from "@/lib/types/i18n"
 import { estimateReadingMinutes } from "@/lib/utils"
 import { DEFAULT_LOCALE, placeholderBlurBase64 } from "@/lib/utils/consts"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import Image from "next/image"
 import React from "react"
 import { useTranslation, withTranslation } from "react-i18next"
@@ -37,7 +37,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
       <Component
          className={
             "flex flex-col card overflow-hidden " +
-            clsx({
+            cn({
                "xs:flex-row": !forceCoverTop,
             }) +
             " " +
@@ -50,7 +50,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                className={
                   "relative flex-shrink-0 max-w-full w-auto h-24 hover:opacity-80 active:opacity-100" +
                   " " +
-                  clsx({
+                  cn({
                      "xs:h-auto xs:w-24": !forceCoverTop,
                   })
                }
