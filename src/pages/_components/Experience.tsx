@@ -2,19 +2,19 @@ import { PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import { placeholderWhitePixelBlurBase64 } from "@/lib/utils/consts"
 import { Tab } from "@headlessui/react"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import Image from "next/image"
-import React from "react"
-import { Trans, withTranslation } from "react-i18next"
+import React, { ReactNode } from "react"
+import { Trans, withTranslation } from "next-i18next"
 
-const ExpTab: React.FC<Record<string, unknown>> = (props) => {
+const ExpTab = (props: Record<string, unknown> & { children: ReactNode }) => {
    const { children, ...rest } = props
 
    return (
       <Tab className={"card-input p-2 flex-grow"} {...rest}>
          {({ selected }) => (
             <h2
-               className={clsx([
+               className={cn(
                   "inline-block border-b-4 sm:border-b-0 sm:border-r-4 p-1 sm:mr-2 rounded-sm font-semibold w-full",
                   {
                      "border-primary-400": selected,
@@ -22,8 +22,8 @@ const ExpTab: React.FC<Record<string, unknown>> = (props) => {
                   {
                      "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
                         !selected,
-                  },
-               ])}
+                  }
+               )}
             >
                {children}
             </h2>
@@ -32,7 +32,7 @@ const ExpTab: React.FC<Record<string, unknown>> = (props) => {
    )
 }
 
-const ExpPanel: React.FC<{
+const ExpPanel = (props: {
    role: string
    name: string
    nameUrl: React.AnchorHTMLAttributes<HTMLAnchorElement>["href"]
@@ -43,7 +43,8 @@ const ExpPanel: React.FC<{
    jobType?: string
    location?: string
    imageSrcs?: string[]
-}> = (props) => {
+   children?: ReactNode
+}) => {
    const {
       children,
       role,
@@ -100,6 +101,7 @@ const ExpPanel: React.FC<{
                         quality={80}
                         height={128}
                         width={232}
+                        style={{ height: "128px", width: "232px" }}
                         placeholder="blur"
                         blurDataURL={placeholderWhitePixelBlurBase64}
                      />

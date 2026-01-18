@@ -1,6 +1,6 @@
 import { COMMON_TNS } from "@/lib/i18n/consts"
 import Link from "next/link"
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "next-i18next"
 import { UrlObject } from "url"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import Head from "next/head"
@@ -12,7 +12,9 @@ type ErrorPageProps = ComponentPropsWithTranslation<{
    linkMessage?: string
 }>
 
-export const ErrorPage: React.FC<ErrorPageProps> = (props) => {
+export const ErrorPage: React.FC<React.PropsWithChildren<ErrorPageProps>> = (
+   props
+) => {
    const { children, t, code, redCode, href, linkMessage } = props
 
    return (
@@ -36,10 +38,11 @@ export const ErrorPage: React.FC<ErrorPageProps> = (props) => {
                {children || t("an error occured") + "."}
             </h1>
             <hr className="w-4/6 h-1 mx-auto my-4 bg-secondary-400" />
-            <Link href={href || "/"}>
-               <a className="inline-block p-2 text-xl rounded-md uppercase-firstOnly link focus:ring-2">
-                  {linkMessage || t("return to homepage")}.
-               </a>
+            <Link
+               href={href || "/"}
+               className="inline-block p-2 text-xl rounded-md uppercase-firstOnly link focus:ring-2"
+            >
+               {linkMessage || t("return to homepage")}.
             </Link>
          </div>
          <div

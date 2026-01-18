@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import React from "react"
 
 type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -12,12 +12,12 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       return (
          <button
             {...rest}
-            className={clsx([
+            className={cn(
                "app-button group",
                { "app-button-not-small": !small },
                { "app-button-small": small },
-               className,
-            ])}
+               className
+            )}
             ref={ref}
          >
             {children}

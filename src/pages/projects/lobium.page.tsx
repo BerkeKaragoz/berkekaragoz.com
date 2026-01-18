@@ -14,16 +14,15 @@ const ImageCard: React.FC<{ src: string }> = (props) => {
 
    return (
       <div>
-         <Link passHref href={src}>
-            <a className="image-wrapper card" target="_blank">
-               <Image
-                  alt="Lobium Project Image"
-                  height="280"
-                  objectFit="contain"
-                  src={src}
-                  width="340"
-               />
-            </a>
+         <Link href={src} passHref className="image-wrapper card" target="_blank">
+            <Image
+               alt="Lobium Project Image"
+               height={280}
+               className="object-contain"
+               src={src}
+               style={{ height: 280, width: 340 }}
+               width={340}
+            />
          </Link>
       </div>
    )

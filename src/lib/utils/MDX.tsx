@@ -3,7 +3,10 @@ import Image from "next/image"
 
 export const AppMDXComponents: MDXRemoteProps["components"] = {
    Image: (props) => (
-      <div className="mx-auto mb-4 text-center">
+      <div
+         className="mx-auto mb-4 text-center justify-items-center"
+         style={{ justifyItems: "center" }}
+      >
          <Image alt={props.alt} {...props} />
       </div>
    ),

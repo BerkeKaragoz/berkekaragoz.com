@@ -3,7 +3,7 @@ import { PostMeta } from "@/lib/api/blog"
 import { COMMON_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithActiveTranslation } from "@/lib/types/i18n"
 import React from "react"
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "next-i18next"
 
 type PostListProps = ComponentPropsWithActiveTranslation<{
    postMetas: PostMeta[]

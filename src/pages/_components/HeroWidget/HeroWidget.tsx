@@ -23,21 +23,31 @@ import {
    ETH_PRICE_API,
    MINUTES_IN_MS,
 } from "@/lib/utils/consts"
-import { Switch, Tab } from "@headlessui/react"
+import {
+   Switch,
+   Tab,
+   TabGroup,
+   TabList,
+   TabPanel,
+   TabPanels,
+} from "@headlessui/react"
 import {
    EyeIcon,
    HeartIcon,
    LightBulbIcon,
    PencilIcon,
 } from "@heroicons/react/solid"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import JSConfetti from "js-confetti"
-import { nanoid } from "nanoid"
-import { useTranslation } from "next-i18next"
+import { useTranslation, withTranslation, Trans } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
-import { Trans, withTranslation } from "react-i18next"
 import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
+import {
+   useRandomIntMachine,
+   RandomIntMachineProvider,
+} from "@/pages/_components/HeroWidget/randomIntMachine"
+import { wrap } from "@statekit/react"
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
@@ -61,6 +71,7 @@ const plainConfettiConfig: IAddConfettiConfig[] = [
 const emojiConfettiConfig: IAddConfettiConfig[] = [
    {
       emojis: ["🎊", "🎉", "💥", "✨"],
+      confettiNumber: 20,
    },
 ]
 
@@ -70,7 +81,7 @@ type Props = ComponentPropsWithTranslation<{
    initEth?: number | null
 }>
 
-const HeroWidget: React.FC<Props> = (props) => {
+const HeroWidget = wrap(RandomIntMachineProvider, (props: Props) => {
    const { t, latestPostMetas, initBtc = null, initEth = null } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
@@ -83,11 +94,11 @@ const HeroWidget: React.FC<Props> = (props) => {
       React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorBlue)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
-   const [randomNumber, setRandomNumber] = React.useState(generateRandomInt(100))
+   const randomIntMachine = useRandomIntMachine()
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
-   const jsConfettiRef = React.useRef<JSConfetti>()
+   const jsConfettiRef = React.useRef<JSConfetti>(undefined)
    const sliderParagraphRef = React.useRef<HTMLParagraphElement>(null)
    const cipherRef = React.useRef<HTMLInputElement>(null)
    const cipherShiftRef = React.useRef<HTMLInputElement>(null)
@@ -281,7 +292,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                <div className="hidden gap-6 overflow-hidden rounded-lg md:flex">
                   <div className="relative card">
                      <DrawableCanvas
-                        className={clsx([{ "blur-sm": isBlurSwitchOn }])}
+                        className={cn({ "blur-sm": isBlurSwitchOn })}
                         strokeStyle={strokeColor}
                         clear={clearCount}
                         initDrawSmile
@@ -292,13 +303,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                   </div>
                   <div className="flex flex-col w-full gap-2">
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorRed,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorRed,
+                        })}
                         onClick={() => setStrokeColor(colorRed)}
                         aria-label={ct("red")}
                      >
@@ -308,13 +316,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         />
                      </button>
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorGreen,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorGreen,
+                        })}
                         onClick={() => setStrokeColor(colorGreen)}
                         aria-label={ct("green")}
                      >
@@ -324,13 +329,10 @@ const HeroWidget: React.FC<Props> = (props) => {
                         />
                      </button>
                      <button
-                        className={clsx([
-                           "h-full p-1 card-input",
-                           {
-                              "border-primary-600 dark:border-primary-500":
-                                 strokeColor === colorBlue,
-                           },
-                        ])}
+                        className={cn("h-full p-1 card-input", {
+                           "border-primary-600 dark:border-primary-500":
+                              strokeColor === colorBlue,
+                        })}
                         onClick={() => setStrokeColor(colorBlue)}
                         aria-label={ct("blue")}
                      >
@@ -360,7 +362,7 @@ const HeroWidget: React.FC<Props> = (props) => {
                      <Switch
                         checked={isBlurSwitchOn}
                         onChange={setIsBlurSwitchOn}
-                        className={clsx([
+                        className={cn(
                            "relative card inline-flex items-center h-6 rounded-full w-11",
                            {
                               "bg-primary-400 dark:bg-primary-600": isBlurSwitchOn,
@@ -368,11 +370,11 @@ const HeroWidget: React.FC<Props> = (props) => {
                            {
                               "bg-background-400 dark:bg-background-800":
                                  !isBlurSwitchOn,
-                           },
-                        ])}
+                           }
+                        )}
                      >
                         <span
-                           className={clsx([
+                           className={cn(
                               "duration-100 inline-block w-4 h-4 bg-white dark:bg-primary-50 rounded-full",
                               {
                                  "translate-x-1 dark:bg-primary-200":
@@ -380,18 +382,18 @@ const HeroWidget: React.FC<Props> = (props) => {
                               },
                               {
                                  "translate-x-6 ": isBlurSwitchOn,
-                              },
-                           ])}
+                              }
+                           )}
                         />
                      </Switch>
                   </Switch.Group>
                   <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <div className="w-10 h-10 p-2 overflow-hidden card dark:border-opacity-60">
                      <EyeIcon
-                        className={clsx([
+                        className={cn(
                            "h-full mx-auto text-primary-600 dark:text-primary-200",
-                           { "blur-sm": isBlurSwitchOn },
-                        ])}
+                           { "blur-sm": isBlurSwitchOn }
+                        )}
                      />
                   </div>
                </div>
@@ -542,16 +544,16 @@ const HeroWidget: React.FC<Props> = (props) => {
                </div>
                {latestPostMetas && (
                   <div className="flex flex-col gap-4 bg-primary-200 bg-opacity-25 dark:bg-background-800 rounded-lg dark:bg-opacity-30 p-2">
-                     <Tab.Group>
-                        <Tab.List className="flex justify-between gap-4 rounded-lg bg-opacity-5 dark:bg-opacity-30">
-                           {latestPostMetas.map((v, i) => (
+                     <TabGroup className="flex flex-col gap-4">
+                        <TabList className="flex justify-between gap-4 rounded-lg bg-opacity-5 dark:bg-opacity-30">
+                           {latestPostMetas.map((el, i) => (
                               <Tab
-                                 key={`${nanoid(5)}-${i}`}
+                                 key={el.slug}
                                  className={"card-input p-2 flex-grow"}
                               >
                                  {({ selected }) => (
                                     <span
-                                       className={clsx([
+                                       className={cn(
                                           "inline-block border-b-4 p-1 rounded-sm font-semibold w-full capitalize",
                                           {
                                              "border-primary-400": selected,
@@ -559,8 +561,8 @@ const HeroWidget: React.FC<Props> = (props) => {
                                           {
                                              "border-background-300 dark:border-primary-200 text-primary-800 dark:text-primary-200 text-opacity-60 dark:text-opacity-60":
                                                 !selected,
-                                          },
-                                       ])}
+                                          }
+                                       )}
                                     >
                                        {i === 0
                                           ? `${gt("latest")}`
@@ -569,25 +571,25 @@ const HeroWidget: React.FC<Props> = (props) => {
                                  )}
                               </Tab>
                            ))}
-                        </Tab.List>
-                        <Tab.Panels>
+                        </TabList>
+                        <TabPanels>
                            {latestPostMetas.map((m, i) => (
-                              <Tab.Panel key={`${m.slug}-${i}`}>
+                              <TabPanel key={m.slug}>
                                  <PostCard postMeta={m} disableSlug forceCoverTop />
-                              </Tab.Panel>
+                              </TabPanel>
                            ))}
-                        </Tab.Panels>
-                     </Tab.Group>
+                        </TabPanels>
+                     </TabGroup>
                   </div>
                )}
                <div className="flex items-center justify-between gap-2">
                   <code className="p-2 font-semibold card">
-                     {randomNumber.toString().padStart(2, "0")}
+                     {randomIntMachine.data.number.toString().padStart(2, "0")}
                   </code>
                   <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <button
                      className="p-2 card-input"
-                     onClick={() => setRandomNumber(generateRandomInt(99))}
+                     onClick={() => randomIntMachine.event.generate(99)}
                   >
                      &larr;{" "}
                      <Trans t={t} i18nKey="index.hero.widget.generateRandomNumber">
@@ -625,6 +627,6 @@ const HeroWidget: React.FC<Props> = (props) => {
          </div>
       </div>
    )
-}
+})
 
 export default withTranslation(PAGES_TNS)(HeroWidget)

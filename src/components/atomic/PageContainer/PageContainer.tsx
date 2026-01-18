@@ -1,8 +1,10 @@
 import React from "react"
 
-type PageContainerProps = Record<string, unknown>
+type PageContainerProps = Record<string, unknown> & {
+   children?: React.ReactNode
+}
 
-export const PageContainer: React.FC<PageContainerProps> = (props) => {
+export const PageContainer = (props: PageContainerProps) => {
    const { children } = props
 
    return (

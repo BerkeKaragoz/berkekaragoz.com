@@ -1,12 +1,14 @@
 import { Popover } from "@headlessui/react"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import React from "react"
 
-export const Tooltip: React.FC<{
-   text?: string
-   capitalize?: boolean
-   className?: HTMLElement["className"]
-}> = (props) => {
+export const Tooltip: React.FC<
+   React.PropsWithChildren<{
+      text?: string
+      capitalize?: boolean
+      className?: HTMLElement["className"]
+   }>
+> = (props) => {
    const { children, className, capitalize = false, text } = props
 
    const [isOpen, setIsOpen] = React.useState(false)
@@ -31,12 +33,12 @@ export const Tooltip: React.FC<{
                {isOpen && (
                   <Popover.Panel
                      static
-                     className={clsx([
+                     className={cn(
                         // TODO temply disabled on small screens
                         "hidden sm:block absolute right-1/2 translate-x-1/2 text-center p-1 mt-1 text-sm z-41 text-subtitle-color card",
                         className,
-                        { capitalize: capitalize },
-                     ])}
+                        { capitalize: capitalize }
+                     )}
                   >
                      {text}
                   </Popover.Panel>

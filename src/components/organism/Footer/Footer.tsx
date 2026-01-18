@@ -5,7 +5,7 @@ import React from "react"
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import { PLATFORM_GITHUB_LINK, PLATFORM_LINKEDIN_LINK } from "@/lib/utils/consts"
 import { CodeIcon } from "@heroicons/react/solid"
-import { Trans, useTranslation, withTranslation } from "react-i18next"
+import { Trans, useTranslation, withTranslation } from "next-i18next"
 import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import LinkText from "@/components/atomic/LinkText/LinkText"
@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </div>
          </Section>
          <div className="text-center opacity-60">
-            <p className="m-1 text-sm">E. Berke Karagöz © 2023.</p>
+            <p className="m-1 text-sm">E. Berke Karagöz © 2026.</p>
          </div>
       </footer>
    )

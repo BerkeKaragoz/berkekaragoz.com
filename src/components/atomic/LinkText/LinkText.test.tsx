@@ -1,12 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import LinkText from "./LinkText"
-import { RouterContext } from "next/dist/shared/lib/router-context"
-import { createRouterMock } from "@/__mocks__/createRouter.mock"
+import { AppRouterContext } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import { createMockRouter } from "@/__mocks__/createRouter.mock"
 
 describe("LinkText", () => {
    const msg = "Testing message."
    const href = "/testing"
-   const router = createRouterMock({ pathname: "/" })
+   const mockRouter = createMockRouter({})
 
    it("renders the contents", () => {
       render(<LinkText href={href}>{msg}</LinkText>)
@@ -19,16 +20,16 @@ describe("LinkText", () => {
 
    it("link routes correctly", () => {
       render(
-         <RouterContext.Provider value={router}>
+         <AppRouterContext.Provider value={mockRouter}>
             <LinkText href={href}>{msg}</LinkText>
-         </RouterContext.Provider>
+         </AppRouterContext.Provider>
       )
 
       const el = screen.getByRole("link")
 
       fireEvent.click(el)
 
-      expect(router.push).toHaveBeenCalledTimes(1)
-      // expect(router.push).toHaveBeenCalledWith("href"); //TODO
+      expect(mockRouter.push).toHaveBeenCalledTimes(1)
+      expect(mockRouter.push).toHaveBeenCalledWith(href)
    })
 })

@@ -9,16 +9,16 @@ import {
    VolumeOffIcon,
    VolumeUpIcon,
 } from "@heroicons/react/solid"
-import clsx from "clsx"
+import { cn } from "@shortkit/cn"
 import React from "react"
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "next-i18next"
 import styles from "./audioPlayer.module.css"
 import Image, { ImageProps } from "next/image"
 
 const volumeMin = 0
 const volumeMax = 1
 
-const seek = (ref: React.RefObject<HTMLMediaElement>, seekTime = 0) => {
+const seek = (ref: React.RefObject<HTMLMediaElement | null>, seekTime = 0) => {
    if (ref.current)
       if (ref.current.fastSeek) ref.current.fastSeek(seekTime)
       else ref.current.currentTime = seekTime
@@ -171,7 +171,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
    return (
       <div
          {...rest}
-         className={clsx(["inline-flex card overflow-hidden", className])}
+         className={cn("inline-flex card overflow-hidden", className)}
          style={{ minWidth: "14rem" }}
       >
          {imageSrc && (
@@ -180,7 +180,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                   src={imageSrc}
                   className="object-cover h-full"
                   alt={title ? title : "audio cover"}
-                  layout="fill"
+                  fill
                   placeholder="blur"
                   blurDataURL={blurDataURL}
                />
@@ -220,7 +220,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                   aria-label={isLooping ? ct("no repeat") : ct("repeat")}
                >
                   <RefreshIcon
-                     className={clsx([
+                     className={cn(
                         {
                            "text-background-400 group-hover:text-primary-400 dark:text-background-500 dark:group-hover:text-primary-600":
                               !isLooping && !!src,
@@ -228,8 +228,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
                         {
                            "text-primary-500 group-hover:text-primary-600 dark:text-primary-400 dark:group-hover:text-primary-300":
                               isLooping && !!src,
-                        },
-                     ])}
+                        }
+                     )}
                   />
                </IconButton>
                <div // spacer

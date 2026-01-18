@@ -1,7 +1,7 @@
 import { PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import React from "react"
-import { Trans, withTranslation } from "react-i18next"
+import { Trans, withTranslation } from "next-i18next"
 
 const ReachMe: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = (
    props

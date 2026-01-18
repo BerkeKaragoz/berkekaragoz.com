@@ -82,7 +82,6 @@ const DrawableCanvas: React.FC<DrawableCanvasProps> = (props) => {
       context.lineWidth = 2
       context.strokeStyle = strokeStyle
 
-      // @ts-expect-error by default forwardedRef.current is readonly. Let's ignore it
       contextRef.current = context
 
       if (initDrawSmile) drawSmile(context)

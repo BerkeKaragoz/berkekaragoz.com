@@ -12,7 +12,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import React from "react"
-import { Trans, useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "next-i18next"
 
 export const TagPage: NextPage<{
    postMetas: PostMeta[]

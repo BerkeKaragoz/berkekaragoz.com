@@ -12,8 +12,8 @@ const LinkText: React.FC<
    const { children, className, href, ...rest } = props
 
    return (
-      <Link {...rest} href={href || ""}>
-         <a className={className}>{children}</a>
+      <Link {...rest} href={href || ""} className={className}>
+         {children}
       </Link>
    )
 }

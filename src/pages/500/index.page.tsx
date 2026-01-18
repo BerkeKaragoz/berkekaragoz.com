@@ -3,7 +3,7 @@ import { COMMON_TNS } from "@/lib/i18n/consts"
 import { DEFAULT_LOCALE } from "@/lib/utils/consts"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "next-i18next"
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
    const { locale = DEFAULT_LOCALE } = ctx

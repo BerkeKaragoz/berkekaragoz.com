@@ -18,8 +18,8 @@ export const getSlugs = (): string[] => {
 
    const paths = sync(`${POSTS_PATH}/*.mdx`)
 
-   slugs = paths.map((path) => {
-      const parts = path.split("/")
+   slugs = paths.map((el) => {
+      const parts = el.split(path.sep)
       const fileName = parts[parts.length - 1]
       // const [slug, _ext] = fileName.split(".")
       const [slug] = fileName.split(".")
