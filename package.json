@@ -14,6 +14,7 @@
       "commit": "git-cz"
    },
    "prettier": "eslint-config-berkekaragoz-formatting/prettier",
+   "packageManager": "pnpm@10.20.0",
    "dependencies": {
       "@headlessui/react": "^2.2.9",
       "@heroicons/react": "^1.0.6",
