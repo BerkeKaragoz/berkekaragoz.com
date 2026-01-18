@@ -10,7 +10,7 @@ import { BTC_PRICE_API, DEFAULT_LOCALE, ETH_PRICE_API } from "@/lib/utils/consts
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import React from "react"
+import React, { Suspense } from "react"
 import AboutMe from "./_components/AboutMe"
 import Experience from "./_components/Experience"
 import HeroIntro from "./_components/HeroIntro"

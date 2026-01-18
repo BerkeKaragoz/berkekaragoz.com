@@ -43,7 +43,11 @@ import { useTranslation, withTranslation, Trans } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
 import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
-import { useGenerateRandomInt } from "@/pages/_components/HeroWidget/useGenerateRandomInt"
+import {
+   useRandomIntMachine,
+   RandomIntMachineProvider,
+} from "@/pages/_components/HeroWidget/randomIntMachine"
+import { wrap } from "@statekit/react"
 
 const plainConfettiConfig: IAddConfettiConfig[] = [
    {},
@@ -77,7 +81,7 @@ type Props = ComponentPropsWithTranslation<{
    initEth?: number | null
 }>
 
-const HeroWidget: React.FC<Props> = (props) => {
+const HeroWidget = wrap(RandomIntMachineProvider, (props: Props) => {
    const { t, latestPostMetas, initBtc = null, initEth = null } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
@@ -90,7 +94,7 @@ const HeroWidget: React.FC<Props> = (props) => {
       React.useState<CanvasFillStrokeStyles["strokeStyle"]>(colorBlue)
    const [isBlurSwitchOn, setIsBlurSwitchOn] = React.useState(false)
    const [clearCount, setClearCount] = React.useState(0)
-   const [randomNumber, setRandomInt] = useGenerateRandomInt()
+   const randomIntMachine = useRandomIntMachine()
    const [btcPrice, setBtcPrice] = React.useState<number>(NaN)
    const [ethPrice, setEthPrice] = React.useState<number>(NaN)
 
@@ -580,12 +584,12 @@ const HeroWidget: React.FC<Props> = (props) => {
                )}
                <div className="flex items-center justify-between gap-2">
                   <code className="p-2 font-semibold card">
-                     {randomNumber.toString().padStart(2, "0")}
+                     {randomIntMachine.data.number.toString().padStart(2, "0")}
                   </code>
                   <hr className="flex-grow border-primary-300 dark:border-primary-900" />
                   <button
                      className="p-2 card-input"
-                     onClick={() => setRandomInt(99)}
+                     onClick={() => randomIntMachine.event.generate(99)}
                   >
                      &larr;{" "}
                      <Trans t={t} i18nKey="index.hero.widget.generateRandomNumber">
@@ -623,6 +627,6 @@ const HeroWidget: React.FC<Props> = (props) => {
          </div>
       </div>
    )
-}
+})
 
 export default withTranslation(PAGES_TNS)(HeroWidget)
