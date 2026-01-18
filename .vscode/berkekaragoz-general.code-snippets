@@ -21,16 +21,16 @@
    "className Shorthand": {
       "prefix": "cn",
       "scope": "javascriptreact,typescriptreact",
-      "body": ["className=\"$0\""]
+      "body": ["className=\"$0\""],
    },
    "console.log Shorthand": {
       "prefix": "cl",
       "scope": "javascript,typescript,javascriptreact,typescriptreact",
-      "body": ["console.log(\"${TM_FILENAME_BASE} - $0\");"]
+      "body": ["console.log(\"${TM_FILENAME_BASE} - $0\");"],
    },
    "console.log a Variable Shorthand": {
       "prefix": "clv",
       "scope": "javascript,typescript,javascriptreact,typescriptreact",
-      "body": ["console.log(\"${TM_FILENAME_BASE} - ${1}\", $1);"]
-   }
+      "body": ["console.log(\"${TM_FILENAME_BASE} - ${1}\", $1);"],
+   },
 }

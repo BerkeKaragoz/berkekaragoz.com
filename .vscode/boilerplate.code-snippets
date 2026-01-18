@@ -12,19 +12,19 @@
          "    },",
          "  };",
          "};",
-         ""
-      ]
+         "",
+      ],
    },
    "const { t } = useTranslation([PAGES_TNS]...": {
       "prefix": "0-UseTransPages",
       "scope": "javascriptreact,typescriptreact",
       "body": [
-         "const { t } = useTranslation([PAGES_TNS], { keyPrefix: \"$0${RELATIVE_FILEPATH/(?:^.*(?:[\\\\\\/]pages[\\\\\\/]))(.*)\\..+/${1}/g}\" });"
-      ]
+         "const { t } = useTranslation([PAGES_TNS], { keyPrefix: \"$0${RELATIVE_FILEPATH/(?:^.*(?:[\\\\\\/]pages[\\\\\\/]))(.*)\\..+/${1}/g}\" });",
+      ],
    },
    "const { t: gt } = useTranslation([GLOSSARY])": {
       "prefix": "0-UseTransGlossary",
       "scope": "javascriptreact,typescriptreact",
-      "body": ["const { t: gt } = useTranslation([GLOSSARY_TNS]);"]
-   }
+      "body": ["const { t: gt } = useTranslation([GLOSSARY_TNS]);"],
+   },
 }
