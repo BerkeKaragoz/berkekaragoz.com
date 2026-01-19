@@ -1,5 +1,6 @@
 @import "./components/index.css";
 @import "./explicit-base.css";
+@import "./giscus.css";
 
 @tailwind base;
 @tailwind components;

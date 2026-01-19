@@ -14,6 +14,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
 import React from "react"
 import { Trans, useTranslation } from "next-i18next"
+import { GithubCommentSection } from "@/components/organism/GithubCommentSection"
 
 // TODO pass locale to date parsing
 // TODO empty state
@@ -92,6 +93,10 @@ export const PostsPage: NextPage<{
                   </p>
                )}
                <PostList postMetas={postMetas} />
+
+               <hr className="mt-12 mb-10 opacity-10" />
+
+               <GithubCommentSection disableReactions />
             </Section>
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
          </Main>

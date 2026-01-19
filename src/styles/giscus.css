@@ -1,0 +1,24 @@
+.giscus,
+.giscus-frame {
+  width: 100% !important;
+  border: none !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.66;
+  }
+}
+
+.dark .giscus,
+.dark .giscus-frame {
+  color-scheme: dark;
+}
+
+.giscus,
+.giscus-frame {
+  color-scheme: light dark;
+}

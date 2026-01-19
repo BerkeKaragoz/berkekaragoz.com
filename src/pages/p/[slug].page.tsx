@@ -2,6 +2,7 @@ import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import { GithubCommentSection } from "@/components/organism/GithubCommentSection"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import { getPostFromSlug, getSlugs, PostMeta } from "@/lib/api/blog"
@@ -120,6 +121,8 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
                      ))}
                   </p>
                </Section>
+
+               <GithubCommentSection className="mt-4 mb-10" />
             </div>
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
          </Main>
