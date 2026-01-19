@@ -5,6 +5,7 @@ import Giscus from "@giscus/react"
 import { giscusConfig, validateGiscusConfig } from "@/config/giscus"
 import { useTheme } from "next-themes"
 import { cn } from "@shortkit/cn"
+import { useTranslation } from "next-i18next"
 
 type GithubCommentProps = {
    disableReactions?: boolean
@@ -13,6 +14,7 @@ type GithubCommentProps = {
 const GithubComment = ({ disableReactions = false }) => {
    const [mounted, setMounted] = useState(false)
    const { theme = "dark" } = useTheme()
+   const { i18n } = useTranslation()
 
    useEffect(() => void setMounted(true), [])
 
@@ -43,7 +45,7 @@ const GithubComment = ({ disableReactions = false }) => {
          emitMetadata={giscusConfig.emitMetadata}
          inputPosition={giscusConfig.inputPosition}
          theme={giscusTheme}
-         lang={giscusConfig.lang}
+         lang={i18n.language.slice(0, 2) || giscusConfig.lang}
          loading={giscusConfig.loading}
       />
    )
