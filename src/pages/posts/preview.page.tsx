@@ -134,7 +134,10 @@ export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
 
             <div className="h-12 bg-plus-pattern dark:bg-background-900" />
 
-            <div className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min">
+            <div
+               className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min"
+               style={{ maxInlineSize: "100vw" }}
+            >
                <Section
                   as="article"
                   block

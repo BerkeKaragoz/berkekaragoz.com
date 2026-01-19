@@ -96,7 +96,10 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
          <Header />
          <Main>
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
-            <div className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min">
+            <div
+               className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min"
+               style={{ maxInlineSize: "100vw" }}
+            >
                <Section as="article" block prose className="py-8 md:py-4 sm:text-lg">
                   <div style={{ width: "100vw", height: 0 }} />
                   <h1 className="mt-0 mb-1 md:mt-2 h1 text-gradient-primary">
@@ -122,7 +125,9 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
                   </p>
                </Section>
 
-               <GithubCommentSection className="mt-4 mb-10" />
+               <Section block className="py-8 md:py-4 mt-4 sm:text-lg">
+                  <GithubCommentSection className="mb-10" />
+               </Section>
             </div>
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
          </Main>
