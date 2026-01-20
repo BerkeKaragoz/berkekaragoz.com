@@ -93,7 +93,7 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
                <div
                   className={cn(
                      styles.thumb,
-                     "w-0 h-0 bg-transparent rounded-full",
+                     "w-0 h-0 rounded-full",
                      {
                         "group-hover:opacity-50": disabled,
                      },
