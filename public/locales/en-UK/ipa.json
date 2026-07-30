@@ -1,0 +1,109 @@
+{
+   "meta": {
+      "title": "Learn English IPA | E. Berke Karagöz",
+      "description": "Learn all 44 English IPA sounds, hear each sound in isolation and in a word, and convert English text to IPA in your browser.",
+      "converterTitle": "Text to English IPA | E. Berke Karagöz",
+      "converterDescription": "Convert English text to IPA in your browser, hear the full pronunciation, and explore each sound.",
+      "ogTitle": "English IPA — Hear it. Read it. Use it.",
+      "ogDescription": "A focused English IPA sound guide and browser-based text converter.",
+      "ogImageAlt": "English IPA sound cards around the pronunciation /reɪn/."
+   },
+   "hero": {
+      "eyebrow": "British English · 44 sounds · Browser-based",
+      "title": "English pronunciation, written sound by sound.",
+      "description": "Hear each English sound alone and in a word, or convert your own text to IPA."
+   },
+   "toolLabel": "IPA tool",
+   "tabs": {
+      "sounds": "44 sounds",
+      "converter": "Text to IPA"
+   },
+   "categories": {
+      "all": "All",
+      "consonant": "Consonants",
+      "monophthong": "Monophthongs",
+      "diphthong": "Diphthongs"
+   },
+   "actions": {
+      "sound": "Sound",
+      "inWord": "In “{{word}}”",
+      "play": "Play",
+      "stop": "Stop",
+      "copy": "Copy",
+      "copied": "Copied",
+      "dismiss": "Dismiss"
+   },
+   "speech": {
+      "unsupported": "Speech is not supported by this browser.",
+      "noVoice": "No English voice is installed on this device. The recorded sound samples still work.",
+      "soundError": "The /{{symbol}}/ sound could not be played."
+   },
+   "soundsUi": {
+      "reference": "English reference",
+      "title": "The 44 sounds",
+      "searchLabel": "Search sounds",
+      "searchPlaceholder": "Search sound or word",
+      "filterLabel": "Filter sounds",
+      "empty": "No sound matches “{{query}}”. Try a spelling such as “th”.",
+      "guideLabel": "{{symbol}} sound guide",
+      "openGuide": "Open the {{symbol}} sound guide",
+      "openSymbolGuide": "Open /{{symbol}}/ guide",
+      "playSound": "Play the {{symbol}} sound",
+      "playSymbol": "Play /{{symbol}}/",
+      "playWord": "Play {{word}}",
+      "howTo": "How to make it",
+      "commonSpellings": "Common spellings",
+      "compareWith": "Compare with"
+   },
+   "marks": {
+      "eyebrow": "Reading IPA",
+      "title": "Marks that change or describe a sound",
+      "summary": "Stress, length, syllables and pitch",
+      "intro": "These marks add information to IPA symbols. Only the marks needed for a word appear in the converter.",
+      "items": {
+         "stress": {
+            "name": "Stress",
+            "description": "Primary ˈ and secondary ˌ stress appear before the syllable that receives the emphasis."
+         },
+         "length": {
+            "name": "Length",
+            "description": "Hold the sound before this mark for longer. The mark is not pronounced separately."
+         },
+         "syllableBreak": {
+            "name": "Syllable break",
+            "description": "A dot shows where one syllable ends and the next begins. It does not add a pause."
+         },
+         "brackets": {
+            "name": "Transcription brackets",
+            "description": "Slashes show meaning-changing sounds; square brackets show finer details of an actual pronunciation."
+         },
+         "diacritics": {
+            "name": "Diacritics",
+            "description": "Small marks attach to a sound. These examples mean syllabic and nasalised; broad transcriptions often omit them."
+         },
+         "intonation": {
+            "name": "Pitch and intonation",
+            "description": "Arrows can show rising or falling pitch in teaching material. This word converter omits them because intonation depends on the full sentence."
+         }
+      }
+   },
+   "converter": {
+      "ariaLabel": "Text to IPA converter",
+      "englishText": "English text",
+      "convert": "Convert to IPA",
+      "converting": "Converting…",
+      "dictionaryError": "The English dictionary could not be loaded. Please try again.",
+      "englishPronunciation": "English pronunciation",
+      "wordsNotFound_one": "{{count}} word not found",
+      "wordsNotFound_other": "{{count}} words not found",
+      "playFullText": "Play the full text",
+      "stopPronunciation": "Stop English pronunciation",
+      "convertedIpa": "Converted IPA",
+      "showSoundsIn": "Show sounds in {{word}}",
+      "wordNotFound": "{{word}} was not found",
+      "pronunciation": "Pronunciation",
+      "soundBySound": "Sound by sound",
+      "unknownHelp": "Keep this spelling as written, or try the base form of the word.",
+      "dictionaryCredit": "Dictionary: Britfone 100.0.1 · Standard English pronunciation"
+   }
+}

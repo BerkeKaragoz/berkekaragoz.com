@@ -7,6 +7,20 @@ module.exports = {
    output: "standalone",
    transpilePackages: ["next-mdx-remote"],
    i18n,
+   async redirects() {
+      return [
+         {
+            source: "/ipa",
+            destination: "/english-ipa",
+            permanent: true,
+         },
+         {
+            source: "/ipa/text-to-ipa",
+            destination: "/english-ipa/text-to-ipa",
+            permanent: true,
+         },
+      ]
+   },
    pageExtensions: [
       "page.mdx",
       "page.md",

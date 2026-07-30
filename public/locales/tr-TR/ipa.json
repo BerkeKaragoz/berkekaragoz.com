@@ -1,0 +1,467 @@
+{
+   "meta": {
+      "title": "Learn English IPA | E. Berke Karagöz",
+      "description": "İngilizcedeki 44 sesi öğrenin, sesleri tek başına ve kelime içinde dinleyin, İngilizce metinleri tarayıcınızda IPA'ya çevirin.",
+      "converterTitle": "Text to English IPA | E. Berke Karagöz",
+      "converterDescription": "İngilizce metni tarayıcınızda IPA'ya çevirin, tamamını dinleyin ve kelimeleri seslerine ayırın.",
+      "ogTitle": "İngilizce IPA — Dinleyin, okuyun, söyleyin",
+      "ogDescription": "İngilizce sesleri öğrenmek ve metinleri IPA'ya çevirmek için pratik bir rehber.",
+      "ogImageAlt": "Ortada /reɪn/ telaffuzu, çevresinde İngilizce IPA ses kartları."
+   },
+   "hero": {
+      "eyebrow": "Britanya İngilizcesi · 44 ses · Tarayıcıda çalışır",
+      "title": "İngilizce telaffuzu adım adım öğrenin.",
+      "description": "İngilizcedeki her sesi tek başına veya bir kelimenin içinde dinleyin. Dilerseniz kendi metninizi de IPA'ya çevirin."
+   },
+   "toolLabel": "İngilizce IPA aracı",
+   "tabs": {
+      "sounds": "44 ses",
+      "converter": "Metni IPA'ya çevir"
+   },
+   "categories": {
+      "all": "Tüm sesler",
+      "consonant": "Ünsüzler",
+      "monophthong": "Tek ünlüler",
+      "diphthong": "Çift ünlüler"
+   },
+   "actions": {
+      "sound": "Sesi dinle",
+      "inWord": "“{{word}}” içinde dinle",
+      "play": "Dinle",
+      "stop": "Durdur",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "dismiss": "Kapat"
+   },
+   "speech": {
+      "unsupported": "Tarayıcınız metni sesli okumayı desteklemiyor.",
+      "noVoice": "Cihazınızda İngilizce seslendirme seçeneği bulunamadı. Hazır ses örneklerini yine de dinleyebilirsiniz.",
+      "soundError": "/{{symbol}}/ ses örneği açılamadı."
+   },
+   "soundsUi": {
+      "reference": "İngilizce telaffuz rehberi",
+      "title": "İngilizcedeki 44 ses",
+      "searchLabel": "Seslerde ve kelimelerde ara",
+      "searchPlaceholder": "Bir ses ya da kelime yazın",
+      "filterLabel": "Ses türünü seçin",
+      "empty": "“{{query}}” için sonuç yok. “th” gibi bir yazım deneyin.",
+      "guideLabel": "/{{symbol}}/ sesinin anlatımı",
+      "openGuide": "/{{symbol}}/ sesinin anlatımını aç",
+      "openSymbolGuide": "/{{symbol}}/ sesine git",
+      "playSound": "/{{symbol}}/ sesini dinle",
+      "playSymbol": "/{{symbol}}/ sesini dinle",
+      "playWord": "“{{word}}” kelimesini dinle",
+      "howTo": "Bu ses nasıl çıkarılır?",
+      "commonSpellings": "Hangi harflerle yazılır?",
+      "compareWith": "Benzer ses"
+   },
+   "marks": {
+      "eyebrow": "IPA'yı okumayı öğrenin",
+      "title": "Telaffuzu etkileyen işaretler",
+      "summary": "Vurgu, uzunluk, hece ve tonlama",
+      "intro": "Bu işaretler bir sesin nasıl okunacağını açıklar. Metni IPA'ya çevirdiğinizde yalnızca gereken işaretler gösterilir.",
+      "items": {
+         "stress": {
+            "name": "Vurgu",
+            "description": "ˈ ana vurguyu, ˌ ise ikincil vurguyu gösterir. İşaret, vurgulanan hecenin başına gelir."
+         },
+         "length": {
+            "name": "Ses uzunluğu",
+            "description": "ː işaretinden önceki sesi uzatın; işaretin kendisini okumayın."
+         },
+         "syllableBreak": {
+            "name": "Hece sınırı",
+            "description": "Nokta, kelimenin hecelere ayrıldığı yeri gösterir. Burada duraklamayın."
+         },
+         "brackets": {
+            "name": "Eğik çizgi ve köşeli parantez",
+            "description": "Eğik çizgiler / / kelimenin temel seslerini, köşeli parantezler [ ] ise gerçek söyleyişin daha ince ayrıntılarını gösterir."
+         },
+         "diacritics": {
+            "name": "Ek işaretler",
+            "description": "Bir sembole eklenen küçük işaretler, sesin nasıl çıkarıldığına dair ayrıntı verir. Buradaki örnekler hece oluşturan ve genizden söylenen sesleri gösterir."
+         },
+         "intonation": {
+            "name": "Tonlama",
+            "description": "Oklar, sesin yükseldiğini veya alçaldığını gösterebilir. Tonlama cümlenin bütününe göre değiştiği için metin çevirisi bu okları eklemez."
+         }
+      }
+   },
+   "converter": {
+      "ariaLabel": "İngilizce metni IPA'ya çevirme aracı",
+      "englishText": "İngilizce metin",
+      "convert": "IPA'ya çevir",
+      "converting": "IPA'ya çevriliyor…",
+      "dictionaryError": "Telaffuz sözlüğü yüklenemedi. Lütfen tekrar deneyin.",
+      "englishPronunciation": "Metni İngilizce dinleyin",
+      "wordsNotFound_one": "{{count}} kelimenin telaffuzu bulunamadı",
+      "wordsNotFound_other": "{{count}} kelimenin telaffuzu bulunamadı",
+      "playFullText": "Metnin tamamını dinle",
+      "stopPronunciation": "Sesli okumayı durdur",
+      "convertedIpa": "Metnin IPA karşılığı",
+      "showSoundsIn": "“{{word}}” kelimesini seslerine ayır",
+      "wordNotFound": "“{{word}}” sözlükte bulunamadı",
+      "pronunciation": "Telaffuz seçeneği",
+      "soundBySound": "Kelimedeki sesler",
+      "unknownHelp": "Kelimeyi farklı bir biçimde yazmayı veya sözlükteki kök hâlini aramayı deneyin.",
+      "dictionaryCredit": "Britfone 100.0.1 · Standart İngilizce telaffuz sözlüğü"
+   },
+   "sounds": {
+      "p": {
+         "name": "İki dudakla çıkarılan titreşimsiz patlamalı ses",
+         "instructions": [
+            "Dudaklarınızı tamamen kapatın.",
+            "Ağzınızdaki havayı kısa bir an tutun.",
+            "Boğazınızı titreştirmeden dudaklarınızı bir anda açın."
+         ]
+      },
+      "b": {
+         "name": "İki dudakla çıkarılan titreşimli patlamalı ses",
+         "instructions": [
+            "Dudaklarınızı tamamen kapatın.",
+            "Ağzınızdaki havayı kısa bir an tutun.",
+            "Boğazınız titreşirken dudaklarınızı bir anda açın."
+         ]
+      },
+      "t": {
+         "name": "Dil ucuyla çıkarılan titreşimsiz patlamalı ses",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına dayayın.",
+            "Havayı dilinizin arkasında kısa bir an tutun.",
+            "Boğazınızı titreştirmeden dilinizi hızla geri çekin."
+         ]
+      },
+      "d": {
+         "name": "Dil ucuyla çıkarılan titreşimli patlamalı ses",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına dayayın.",
+            "Havayı dilinizin arkasında kısa bir an tutun.",
+            "Boğazınız titreşirken dilinizi hızla geri çekin."
+         ]
+      },
+      "k": {
+         "name": "Dilin arka kısmıyla çıkarılan titreşimsiz patlamalı ses",
+         "instructions": [
+            "Dilinizin arka kısmını yumuşak damağınıza dayayın.",
+            "Havayı kısa bir an burada tutun.",
+            "Boğazınızı titreştirmeden dilinizi bir anda aşağı indirin."
+         ]
+      },
+      "g": {
+         "name": "Dilin arka kısmıyla çıkarılan titreşimli patlamalı ses",
+         "instructions": [
+            "Dilinizin arka kısmını yumuşak damağınıza dayayın.",
+            "Havayı kısa bir an burada tutun.",
+            "Boğazınız titreşirken dilinizi bir anda aşağı indirin."
+         ]
+      },
+      "f": {
+         "name": "Diş ve dudakla çıkarılan titreşimsiz sürtünmeli ses",
+         "instructions": [
+            "Üst dişlerinizi alt dudağınıza hafifçe değdirin.",
+            "Arada kalan ince boşluktan kesintisiz hava verin.",
+            "Boğazınızı titreştirmeyin."
+         ]
+      },
+      "v": {
+         "name": "Diş ve dudakla çıkarılan titreşimli sürtünmeli ses",
+         "instructions": [
+            "Üst dişlerinizi alt dudağınıza hafifçe değdirin.",
+            "Arada kalan ince boşluktan kesintisiz hava verin.",
+            "Aynı anda boğazınızı titreştirin."
+         ]
+      },
+      "theta": {
+         "name": "Dilin dişler arasında olduğu titreşimsiz “th” sesi",
+         "instructions": [
+            "Dil ucunuzu üst ve alt dişlerinizin arasına hafifçe çıkarın.",
+            "Dilinizle dişleriniz arasındaki boşluktan hava verin.",
+            "Boğazınızı titreştirmeyin."
+         ]
+      },
+      "eth": {
+         "name": "Dilin dişler arasında olduğu titreşimli “th” sesi",
+         "instructions": [
+            "Dil ucunuzu üst ve alt dişlerinizin arasına hafifçe çıkarın.",
+            "Dilinizle dişleriniz arasındaki boşluktan hava verin.",
+            "Aynı anda boğazınızı titreştirin."
+         ]
+      },
+      "s": {
+         "name": "Dil ucuyla çıkarılan titreşimsiz sürtünmeli ses",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına yaklaştırın; değdirmeyin.",
+            "Havayı dilinizin ortasında kalan ince kanaldan verin.",
+            "Boğazınızı titreştirmeyin."
+         ]
+      },
+      "z": {
+         "name": "Dil ucuyla çıkarılan titreşimli sürtünmeli ses",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına yaklaştırın; değdirmeyin.",
+            "Havayı dilinizin ortasında kalan ince kanaldan verin.",
+            "Aynı anda boğazınızı titreştirin."
+         ]
+      },
+      "sh": {
+         "name": "Diş etinin gerisinden çıkan titreşimsiz sürtünmeli ses",
+         "instructions": [
+            "Dilinizin ön kısmını üst diş etinizin biraz gerisine kaldırın.",
+            "Dudaklarınızı hafifçe öne doğru yuvarlayın.",
+            "Boğazınızı titreştirmeden havayı yumuşakça dışarı verin."
+         ]
+      },
+      "zh": {
+         "name": "Diş etinin gerisinden çıkan titreşimli sürtünmeli ses",
+         "instructions": [
+            "Dilinizin ön kısmını üst diş etinizin biraz gerisine kaldırın.",
+            "Dudaklarınızı hafifçe öne doğru yuvarlayın.",
+            "Havayı verirken boğazınızı titreştirin."
+         ]
+      },
+      "h": {
+         "name": "Boğazdan çıkan soluklu ses",
+         "instructions": [
+            "Ağzınızı ardından gelecek ünlünün konumuna getirin.",
+            "Boğazınızı açık tutup nefes verin.",
+            "Ses tellerinizi titreştirmeyin."
+         ]
+      },
+      "tsh": {
+         "name": "Patlamayla başlayıp sürtünmeyle biten titreşimsiz ses",
+         "instructions": [
+            "Dilinizi /t/ sesi çıkaracak konuma getirin.",
+            "Havayı tek hamlede /ʃ/ sesine bırakın.",
+            "Boğazınızı titreştirmeyin."
+         ]
+      },
+      "dzh": {
+         "name": "Patlamayla başlayıp sürtünmeyle biten titreşimli ses",
+         "instructions": [
+            "Dilinizi /d/ sesi çıkaracak konuma getirin.",
+            "Havayı tek hamlede /ʒ/ sesine bırakın.",
+            "Başından sonuna kadar boğazınızı titreştirin."
+         ]
+      },
+      "m": {
+         "name": "İki dudakla çıkarılan geniz sesi",
+         "instructions": [
+            "Dudaklarınızı tamamen kapatın.",
+            "Boğazınızı titreştirin.",
+            "Havayı ağzınızdan değil, burnunuzdan verin."
+         ]
+      },
+      "n": {
+         "name": "Dil ucuyla çıkarılan geniz sesi",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına dayayın.",
+            "Boğazınızı titreştirin.",
+            "Havayı ağzınızdan değil, burnunuzdan verin."
+         ]
+      },
+      "ng": {
+         "name": "Dilin arka kısmıyla çıkarılan geniz sesi",
+         "instructions": [
+            "Dilinizin arka kısmını yumuşak damağınıza dayayın.",
+            "Boğazınızı titreştirin ve havayı burnunuzdan verin.",
+            "Sesin sonuna ayrıca /ɡ/ eklemeyin."
+         ]
+      },
+      "l": {
+         "name": "Havanın dilin yanlarından geçtiği ses",
+         "instructions": [
+            "Dil ucunuzu üst ön dişlerinizin hemen arkasına dayayın.",
+            "Boğazınızı titreştirin.",
+            "Havanın dilinizin iki yanından akmasına izin verin."
+         ]
+      },
+      "r": {
+         "name": "İngilizce /r/ sesi",
+         "instructions": [
+            "Dil ucunuzu üst diş etinizin gerisine doğru kaldırın.",
+            "Dilinizi damağınıza değdirmeyin.",
+            "Dudaklarınızı rahat tutarak boğazınızı titreştirin."
+         ],
+         "variationNote": "Bu rehberde kullanılan r'siz aksanda /r/ yalnızca ardından bir ünlü geliyorsa duyulur. Bu yüzden car kelimesinin sonunda söylenmez."
+      },
+      "j": {
+         "name": "Damağa yaklaşarak çıkarılan kayma sesi",
+         "instructions": [
+            "Dilinizin orta kısmını sert damağınıza yaklaştırın.",
+            "Havanın geçebileceği dar bir boşluk bırakın.",
+            "Boğazınızı titreştirerek hızla ardından gelen ünlüye geçin."
+         ]
+      },
+      "w": {
+         "name": "Dudakları yuvarlayarak çıkarılan kayma sesi",
+         "instructions": [
+            "Dudaklarınızı öne doğru ve sıkıca yuvarlayın.",
+            "Dilinizin arka kısmını hafifçe kaldırın.",
+            "Boğazınızı titreştirerek hızla ardından gelen ünlüye geçin."
+         ]
+      },
+      "i-long": {
+         "name": "FLEECE ünlüsü",
+         "instructions": [
+            "Dudaklarınızı hafifçe gülümser gibi yana açın.",
+            "Dilinizin ön kısmını ağzınızda yukarı kaldırın.",
+            "Dilinizi oynatmadan sesi bir süre uzatın."
+         ]
+      },
+      "i-short": {
+         "name": "KIT ünlüsü",
+         "instructions": [
+            "Dudaklarınızı ve çenenizi rahat bırakın.",
+            "Dilinizin ön kısmını kaldırın, ancak /iː/ sesindeki kadar yukarı çıkarmayın.",
+            "Sesi kısa ve zorlamadan söyleyin."
+         ]
+      },
+      "e": {
+         "name": "DRESS ünlüsü",
+         "instructions": [
+            "Dudaklarınızı hafifçe yana açın.",
+            "Dilinizin ön kısmını orta yükseklikte tutun.",
+            "Sesi kısa söyleyin; /eɪ/ sesine doğru kaydırmayın."
+         ]
+      },
+      "ash": {
+         "name": "TRAP ünlüsü",
+         "instructions": [
+            "Çenenizi rahatça aşağı indirip ağzınızı açın.",
+            "Dilinizi aşağıda ve öne yakın tutun.",
+            "Dudaklarınızı yuvarlamadan sesi kısa söyleyin."
+         ]
+      },
+      "alpha-long": {
+         "name": "PALM ünlüsü",
+         "instructions": [
+            "Ağzınızı rahatça açın.",
+            "Dilinizi aşağıda ve geriye yakın tutun.",
+            "Dudaklarınızı yuvarlamadan sesi uzatın."
+         ]
+      },
+      "lot": {
+         "name": "LOT ünlüsü",
+         "instructions": [
+            "Çenenizi aşağı indirip ağzınızı açın.",
+            "Dilinizi aşağıda ve geriye yakın tutun.",
+            "Dudaklarınızı hafifçe yuvarlayıp sesi kısa söyleyin."
+         ]
+      },
+      "thought": {
+         "name": "THOUGHT ünlüsü",
+         "instructions": [
+            "Dudaklarınızı öne doğru yuvarlayın.",
+            "Dilinizin arka kısmını orta yükseklikte tutun.",
+            "Dilinizi oynatmadan sesi bir süre uzatın."
+         ]
+      },
+      "foot": {
+         "name": "FOOT ünlüsü",
+         "instructions": [
+            "Dudaklarınızı hafifçe ve rahatça yuvarlayın.",
+            "Dilinizin arka kısmını yukarı kaldırın.",
+            "Sesi kısa ve zorlamadan söyleyin."
+         ]
+      },
+      "u-long": {
+         "name": "GOOSE ünlüsü",
+         "instructions": [
+            "Dudaklarınızı öne doğru yuvarlayın.",
+            "Dilinizin arka kısmını ağzınızda yukarı kaldırın.",
+            "Dilinizi oynatmadan sesi bir süre uzatın."
+         ]
+      },
+      "strut": {
+         "name": "STRUT ünlüsü",
+         "instructions": [
+            "Dudaklarınızı doğal ve yuvarlanmamış hâlde tutun.",
+            "Dilinizi ağzınızın ortasında, alçak bir konumda bırakın.",
+            "Sesi kısa ve belirgin söyleyin."
+         ]
+      },
+      "nurse": {
+         "name": "NURSE ünlüsü",
+         "instructions": [
+            "Dudaklarınızı doğal ve yuvarlanmamış hâlde tutun.",
+            "Dilinizi ağzınızın ortasında tutun.",
+            "Sesi uzatın; sonuna /r/ eklemeyin."
+         ]
+      },
+      "schwa": {
+         "name": "Vurgusuz orta ses (schwa)",
+         "instructions": [
+            "Dudaklarınızı, çenenizi ve dilinizi tamamen rahat bırakın.",
+            "Dilinizi ağzınızın ortasında tutun.",
+            "Sesi çok kısa ve vurgusuz söyleyin."
+         ]
+      },
+      "face": {
+         "name": "FACE çift ünlüsü",
+         "instructions": [
+            "Kısa bir /e/ sesine yakın başlayın.",
+            "Dilinizi /ɪ/ konumuna doğru yukarı kaydırın.",
+            "İki konum arasında durmadan, tek ses gibi söyleyin."
+         ]
+      },
+      "price": {
+         "name": "PRICE çift ünlüsü",
+         "instructions": [
+            "Ağzınız açık, diliniz aşağıdayken başlayın.",
+            "Dilinizi öndeki /ɪ/ konumuna doğru yukarı kaydırın.",
+            "İki konum arasında durmadan, tek ses gibi söyleyin."
+         ]
+      },
+      "choice": {
+         "name": "CHOICE çift ünlüsü",
+         "instructions": [
+            "Dudaklarınız yuvarlakken /ɔː/ sesine yakın başlayın.",
+            "Dilinizi öndeki /ɪ/ konumuna doğru yukarı kaydırın.",
+            "Sona yaklaşırken dudaklarınızı yavaşça gevşetin."
+         ]
+      },
+      "goat": {
+         "name": "GOAT çift ünlüsü",
+         "instructions": [
+            "Ağzınızın ortasında, rahat bir ünlüyle başlayın.",
+            "/ʊ/ sesine doğru yumuşakça kayın.",
+            "Sona yaklaşırken dudaklarınızı yuvarlayın."
+         ]
+      },
+      "mouth": {
+         "name": "MOUTH çift ünlüsü",
+         "instructions": [
+            "Ağzınız açık, diliniz aşağıdayken başlayın.",
+            "/ʊ/ sesine doğru yumuşakça kayın.",
+            "Sona yaklaşırken dudaklarınızı yuvarlayın."
+         ]
+      },
+      "near": {
+         "name": "NEAR çift ünlüsü",
+         "instructions": [
+            "Kısa /ɪ/ sesine yakın başlayın.",
+            "Rahat bir schwa sesine doğru yumuşakça kayın.",
+            "Bu aksanda sesin sonuna /r/ eklemeyin."
+         ],
+         "variationNote": "Günümüzde birçok İngilizce konuşuru bu sesi daha az kaydırarak, neredeyse tek bir uzun ünlü gibi söyler."
+      },
+      "square": {
+         "name": "SQUARE çift ünlüsü",
+         "instructions": [
+            "/e/ sesine yakın başlayın.",
+            "Rahat bir schwa sesine doğru yumuşakça kayın.",
+            "Bu aksanda sesin sonuna /r/ eklemeyin."
+         ],
+         "variationNote": "Günümüzde birçok İngilizce konuşuru belirgin bir geçiş yapmak yerine tek ve uzun bir ünlü kullanır."
+      },
+      "cure": {
+         "name": "CURE çift ünlüsü",
+         "instructions": [
+            "Kısa /ʊ/ sesine yakın başlayın.",
+            "Rahat bir schwa sesine doğru yumuşakça kayın.",
+            "Geçişi kesmeyin ve sesin sonuna /r/ eklemeyin."
+         ],
+         "variationNote": "Günümüzde cure ve poor gibi kelimelerde bu sesin yerine çoğu zaman /ɔː/ duyulur."
+      }
+   }
+}

@@ -1,7 +1,7 @@
 # PRD: English IPA Sound Lab
 
 **Status:** Draft  
-**Product route:** `berkekaragoz.com/ipa`  
+**Product route:** `berkekaragoz.com/english-ipa`
 **Priority accent:** British English (`en-GB`)  
 **Implementation:** Frontend-first, static Next.js application  
 **Updated:** 29 July 2026
