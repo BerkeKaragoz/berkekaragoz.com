@@ -26,6 +26,11 @@ const config: Config = {
    },
 
    testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+   modulePathIgnorePatterns: [
+      "<rootDir>/.next/standalone/",
+      "<rootDir>/.open-next/",
+      "<rootDir>/dist/",
+   ],
 
    testEnvironment: "jsdom",
 

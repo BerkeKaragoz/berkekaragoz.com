@@ -8,7 +8,7 @@ export const PageContainer = (props: PageContainerProps) => {
    const { children } = props
 
    return (
-      <div className="box-border flex flex-col flex-grow h-full min-h-screen p-0 m-0 overflow-x-hidden">
+      <div className="box-border flex flex-col flex-grow h-full min-h-screen p-0 m-0 overflow-x-clip">
          {children}
       </div>
    )
