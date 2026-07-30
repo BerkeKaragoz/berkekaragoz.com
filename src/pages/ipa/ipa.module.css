@@ -1,0 +1,721 @@
+.tool {
+   --ipa-text: #0f172a;
+   --ipa-muted: #475569;
+   --ipa-subtle: #64748b;
+   --ipa-surface: #ffffff;
+   --ipa-surface-raised: #f8fafc;
+   --ipa-hover: #f0f9ff;
+   --ipa-border: #cbd5e1;
+   --ipa-accent: #0284c7;
+   --ipa-accent-strong: #0369a1;
+   --ipa-accent-soft: #e0f2fe;
+   --ipa-divider: #cbd5e1;
+   color: var(--ipa-text);
+}
+
+:global(.dark) .tool {
+   --ipa-text: #e8eef7;
+   --ipa-muted: #b5c2d4;
+   --ipa-subtle: #8fa0b8;
+   --ipa-surface: #19263a;
+   --ipa-surface-raised: #223149;
+   --ipa-hover: #273a55;
+   --ipa-border: rgba(148, 163, 184, 0.26);
+   --ipa-accent: #38bdf8;
+   --ipa-accent-strong: #7dd3fc;
+   --ipa-accent-soft: rgba(14, 165, 233, 0.15);
+   --ipa-divider: rgba(203, 213, 225, 0.28);
+}
+
+.tool :global(.card),
+.tool :global(.card-backdrop) {
+   color: var(--ipa-text);
+   border-color: var(--ipa-border);
+}
+
+.tool :global(.card) {
+   background: var(--ipa-surface);
+}
+
+.tool :global(.card-backdrop) {
+   background: var(--ipa-surface-raised);
+}
+
+.eyebrow {
+   @apply text-xs font-semibold tracking-widest uppercase;
+   color: var(--ipa-accent);
+}
+
+.sectionLabel {
+   @apply text-xs font-semibold tracking-wider uppercase;
+   color: var(--ipa-subtle);
+}
+
+.tab,
+.filterButton,
+.actionButton,
+.iconButton,
+.soundCard,
+.compareChip,
+.miniPlay,
+.breakdownButton,
+.breakdownPlay,
+.searchBox {
+   border: 1px solid var(--ipa-border);
+   background: var(--ipa-surface-raised);
+   color: var(--ipa-text);
+   transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      box-shadow 150ms ease,
+      transform 150ms ease;
+}
+
+.tab:hover,
+.filterButton:hover,
+.actionButton:hover,
+.iconButton:hover,
+.compareChip:hover,
+.miniPlay:hover,
+.breakdownButton:hover,
+.breakdownPlay:hover,
+.searchBox:focus-within {
+   border-color: color-mix(in srgb, var(--ipa-accent) 52%, var(--ipa-border));
+   background: var(--ipa-hover);
+}
+
+.tab:focus-visible,
+.filterButton:focus-visible,
+.actionButton:focus-visible,
+.iconButton:focus-visible,
+.soundCard:focus-visible,
+.compareChip:focus-visible,
+.miniPlay:focus-visible,
+.breakdownButton:focus-visible,
+.breakdownPlay:focus-visible {
+   outline: 2px solid var(--ipa-accent);
+   outline-offset: 2px;
+}
+
+.tab {
+   @apply px-4 py-2 text-sm font-semibold rounded-lg;
+}
+
+.tabActive {
+   border-color: var(--ipa-accent);
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-accent-strong);
+   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ipa-accent) 30%, transparent);
+}
+
+.primaryButton,
+.secondaryButton {
+   @apply inline-flex items-center justify-center gap-2 px-4 py-2 font-semibold rounded-lg;
+}
+
+.primaryButton {
+   border-color: var(--ipa-accent);
+   background: var(--ipa-accent);
+   color: #ffffff;
+}
+
+.primaryButton:hover {
+   border-color: var(--ipa-accent-strong);
+   background: var(--ipa-accent-strong);
+}
+
+.secondaryButton {
+   color: var(--ipa-text);
+}
+
+.actionButton svg,
+.iconButton svg,
+.miniPlay svg {
+   @apply w-4;
+}
+
+.actionButton:disabled {
+   @apply cursor-not-allowed opacity-50;
+}
+
+.audioNotice,
+.errorMessage {
+   @apply flex items-center justify-between gap-4 p-3 mb-6 text-sm rounded-lg;
+}
+
+.audioNotice {
+   border: 1px solid color-mix(in srgb, var(--ipa-accent) 35%, var(--ipa-border));
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-muted);
+}
+
+.audioNotice button {
+   @apply font-semibold;
+   color: var(--ipa-accent-strong);
+}
+
+.soundsLayout {
+   @apply grid gap-6;
+}
+
+.soundsColumns {
+   @apply grid items-start gap-6;
+   grid-template-columns: minmax(0, 1.6fr) minmax(315px, 0.8fr);
+}
+
+.library {
+   min-width: 0;
+}
+
+.libraryHeader,
+.detailHeader,
+.resultHeader,
+.wordInspectorHeader {
+   @apply flex items-center justify-between gap-4;
+}
+
+.libraryHeader {
+   @apply items-end mb-5;
+}
+
+.libraryHeader h2 {
+   @apply mt-2 text-3xl font-semibold sm:text-4xl;
+   color: var(--ipa-accent-strong);
+}
+
+.searchBox {
+   @apply flex items-center w-full max-w-xs gap-2 px-3 py-2 rounded-lg;
+}
+
+.searchBox svg {
+   @apply flex-shrink-0 w-4;
+   color: var(--ipa-subtle);
+}
+
+.searchBox input {
+   @apply w-full min-w-0 bg-transparent outline-none text-inherit;
+}
+
+.searchBox input::placeholder {
+   color: var(--ipa-subtle);
+}
+
+.filters {
+   @apply flex flex-wrap gap-2 mb-4;
+}
+
+.filterButton {
+   @apply inline-flex items-center gap-2 px-3 py-2 text-sm rounded-lg;
+}
+
+.filterButton span {
+   color: var(--ipa-subtle);
+}
+
+.filterButton[aria-pressed="true"] {
+   border-color: var(--ipa-accent);
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-accent-strong);
+   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ipa-accent) 28%, transparent);
+}
+
+.soundGrid {
+   @apply grid grid-cols-4 gap-3;
+}
+
+.soundCard {
+   @apply relative min-h-[100px] overflow-hidden rounded-lg;
+}
+
+.soundCard:hover {
+   border-color: color-mix(in srgb, var(--ipa-accent) 48%, var(--ipa-border));
+   background: var(--ipa-hover);
+   transform: translateY(-1px);
+   box-shadow: 0 6px 16px rgba(2, 8, 23, 0.1);
+}
+
+.soundCardSelect {
+   @apply flex flex-col items-start justify-between w-full h-full min-h-[100px] p-3 pr-12 text-left;
+   color: inherit;
+}
+
+.soundCardSelect:focus-visible,
+.soundCardPlay:focus-visible {
+   outline: 2px solid var(--ipa-accent);
+   outline-offset: -3px;
+}
+
+.soundCardPlay {
+   @apply absolute grid w-9 h-9 rounded-full place-items-center;
+   top: 0.65rem;
+   right: 0.65rem;
+   border: 1px solid var(--ipa-border);
+   background: var(--ipa-surface);
+   color: var(--ipa-accent-strong);
+   transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      transform 150ms ease;
+}
+
+.soundCardPlay:hover {
+   border-color: var(--ipa-accent);
+   background: var(--ipa-accent);
+   color: #ffffff;
+   transform: scale(1.05);
+}
+
+.soundCardPlay svg {
+   @apply w-4;
+}
+
+.soundCardActive {
+   border-color: var(--ipa-accent);
+   background: var(--ipa-accent-soft);
+   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ipa-accent) 32%, transparent);
+}
+
+.soundCardActive:hover {
+   border-color: var(--ipa-accent-strong);
+   background: var(--ipa-accent-soft);
+}
+
+.soundSymbol {
+   @apply font-monospace text-2xl font-semibold;
+   color: var(--ipa-accent-strong);
+}
+
+.soundExample {
+   @apply text-xs;
+   color: var(--ipa-muted);
+}
+
+.soundExample span {
+   @apply font-monospace;
+   color: var(--ipa-subtle);
+}
+
+.emptyState {
+   @apply p-12 text-center rounded-lg;
+   color: var(--ipa-muted);
+}
+
+.detailRail {
+   @apply relative self-stretch min-w-0;
+}
+
+.detailPanel {
+   @apply sticky p-5;
+   top: 5rem;
+   max-height: calc(100vh - 6.5rem);
+   overflow-y: auto;
+   overscroll-behavior: contain;
+}
+
+.detailHeader {
+   @apply items-start;
+}
+
+.detailSymbol {
+   @apply mt-1 font-monospace text-5xl font-semibold leading-tight;
+   color: var(--ipa-accent-strong);
+}
+
+.detailName {
+   @apply text-sm;
+   color: var(--ipa-muted);
+}
+
+.detailExample {
+   @apply flex flex-col items-end;
+}
+
+.detailExample span:first-child {
+   @apply text-lg font-semibold;
+}
+
+.detailExample span:last-child {
+   @apply text-sm font-monospace;
+   color: var(--ipa-muted);
+}
+
+.audioActions {
+   @apply grid grid-cols-2 gap-2 my-5;
+}
+
+.howTo {
+   @apply py-4 border-t border-b;
+   border-color: var(--ipa-divider);
+}
+
+.howTo ol {
+   @apply grid gap-3 mt-3;
+}
+
+.howTo li {
+   @apply grid gap-3 text-sm leading-relaxed;
+   grid-template-columns: auto 1fr;
+   color: var(--ipa-muted);
+}
+
+.howTo li span {
+   @apply grid w-6 h-6 text-xs font-semibold rounded-full place-items-center;
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-accent-strong);
+}
+
+.detailMeta {
+   @apply grid gap-4 mt-4;
+}
+
+.chipRow {
+   @apply flex flex-wrap gap-2 mt-2;
+}
+
+.plainChip,
+.compareChip {
+   @apply px-2 py-1 text-sm rounded-md;
+}
+
+.plainChip {
+   color: var(--ipa-muted) !important;
+}
+
+.compareChip {
+   @apply font-monospace;
+   color: var(--ipa-accent-strong);
+}
+
+.variationNote {
+   @apply p-3 mt-4 text-sm leading-relaxed rounded-lg;
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-muted);
+}
+
+.marksGuide {
+   @apply overflow-hidden;
+}
+
+.marksGuide summary {
+   @apply relative flex items-center justify-between gap-4 p-5 pr-14 cursor-pointer;
+   list-style: none;
+}
+
+.marksGuide summary::-webkit-details-marker {
+   display: none;
+}
+
+.marksGuide summary::after {
+   @apply absolute w-8 h-8 rounded-full;
+   right: 1.25rem;
+   content: "";
+   border: 1px solid var(--ipa-border);
+   background-color: var(--ipa-surface-raised);
+   background-image:
+      linear-gradient(currentColor, currentColor),
+      linear-gradient(currentColor, currentColor);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size:
+      0.625rem 1px,
+      1px 0.625rem;
+   color: var(--ipa-accent-strong);
+}
+
+.marksGuide[open] summary::after {
+   background-size:
+      0.625rem 1px,
+      0 0;
+}
+
+.marksGuide summary:focus-visible {
+   outline: 2px solid var(--ipa-accent);
+   outline-offset: -3px;
+}
+
+.marksGuide summary h3 {
+   @apply mt-1 text-xl font-semibold;
+}
+
+.marksGuide summary > span {
+   @apply hidden mr-10 text-sm sm:block;
+   color: var(--ipa-muted);
+}
+
+.marksContent {
+   @apply p-5 pt-0 border-t;
+   border-color: var(--ipa-divider);
+}
+
+.marksContent > p {
+   @apply mt-4 text-sm leading-relaxed;
+   color: var(--ipa-muted);
+}
+
+.markGrid {
+   @apply grid gap-3 mt-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.markItem {
+   @apply p-3 rounded-lg;
+   border: 1px solid var(--ipa-border);
+   background: var(--ipa-surface-raised);
+}
+
+.markHeader {
+   @apply flex items-center justify-between gap-3;
+}
+
+.markSymbol {
+   @apply font-monospace text-2xl font-semibold;
+   color: var(--ipa-accent-strong);
+}
+
+.markExample {
+   @apply text-xs font-monospace;
+   color: var(--ipa-subtle);
+}
+
+.markItem h4 {
+   @apply mt-3 text-sm font-semibold;
+}
+
+.markItem p {
+   @apply mt-1 text-sm leading-relaxed;
+   color: var(--ipa-muted);
+}
+
+.converterLayout {
+   @apply max-w-4xl mx-auto;
+}
+
+.converterCard,
+.resultCard {
+   @apply p-5;
+}
+
+.inputHeader {
+   @apply flex items-center justify-between mb-3 text-sm font-semibold;
+   color: var(--ipa-muted);
+}
+
+.converterCard textarea {
+   @apply w-full text-xl leading-relaxed bg-transparent outline-none resize-y;
+}
+
+.converterCard textarea::placeholder {
+   color: var(--ipa-subtle);
+}
+
+.convertActions {
+   @apply flex items-center justify-between pt-4 mt-3 border-t;
+   border-color: var(--ipa-divider);
+}
+
+.convertActions > span,
+.resultHeader > div:first-child > span {
+   @apply text-xs;
+   color: var(--ipa-muted);
+}
+
+.errorMessage {
+   @apply mt-4 text-red-700 border border-red-300 bg-red-50 dark:text-red-200 dark:border-red-900 dark:bg-red-950;
+}
+
+.resultCard {
+   @apply mt-4;
+}
+
+.resultHeader > div:first-child {
+   @apply flex items-center gap-3;
+}
+
+.resultActions {
+   @apply flex gap-2;
+}
+
+.iconButton {
+   @apply flex items-center gap-1 px-3 py-2 text-sm rounded-lg;
+}
+
+.ipaResult {
+   @apply py-8 overflow-visible font-monospace text-2xl leading-relaxed sm:text-4xl;
+   overflow-wrap: anywhere;
+}
+
+.ipaWord {
+   @apply rounded-sm;
+   transition:
+      background-color 140ms ease,
+      color 140ms ease;
+}
+
+.ipaWord:hover,
+.selectedWord {
+   background: var(--ipa-accent-soft);
+   color: var(--ipa-accent-strong);
+}
+
+.unknownWord {
+   @apply underline decoration-secondary-500 decoration-wavy underline-offset-4;
+   color: var(--ipa-muted);
+}
+
+.wordInspector {
+   @apply p-4;
+}
+
+.wordInspectorHeader > div {
+   @apply flex items-baseline gap-3;
+}
+
+.wordInspectorHeader span {
+   @apply font-semibold;
+}
+
+.wordInspectorHeader strong {
+   @apply font-monospace text-lg;
+   color: var(--ipa-accent-strong);
+}
+
+.miniPlay {
+   @apply grid w-9 h-9 rounded-full place-items-center;
+   color: var(--ipa-accent-strong);
+}
+
+.alternativeSelect {
+   @apply flex items-center gap-2 mt-4 text-sm;
+   color: var(--ipa-muted);
+}
+
+.alternativeSelect select {
+   @apply px-2 py-1 font-monospace border rounded-md;
+   border-color: var(--ipa-border);
+   background: var(--ipa-surface-raised);
+   color: var(--ipa-text);
+}
+
+.soundBreakdown {
+   @apply mt-4;
+}
+
+.soundBreakdown > div {
+   @apply flex flex-wrap gap-2 mt-2;
+}
+
+.breakdownControl {
+   @apply inline-flex overflow-hidden rounded-md;
+   border: 1px solid var(--ipa-border);
+   background: var(--ipa-surface-raised);
+}
+
+.breakdownButton {
+   @apply px-2 py-1 font-monospace;
+   border: 0;
+   border-radius: 0;
+   background: transparent;
+   color: var(--ipa-accent-strong);
+}
+
+.breakdownPlay {
+   @apply grid w-8 place-items-center;
+   border: 0;
+   border-left: 1px solid var(--ipa-border);
+   border-radius: 0;
+   background: transparent;
+   color: var(--ipa-accent-strong);
+}
+
+.breakdownPlay svg {
+   @apply w-3.5;
+}
+
+.unknownHelp {
+   @apply mt-3 text-sm;
+   color: var(--ipa-muted);
+}
+
+.dictionaryCredit {
+   @apply mt-4 text-xs text-center;
+   color: var(--ipa-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .tab,
+   .filterButton,
+   .actionButton,
+   .iconButton,
+   .soundCard,
+   .soundCardPlay,
+   .compareChip,
+   .miniPlay,
+   .breakdownButton,
+   .breakdownPlay,
+   .searchBox,
+   .ipaWord {
+      transition: none;
+   }
+
+   .soundCard:hover {
+      transform: none;
+   }
+}
+
+@media (max-width: 1000px) {
+   .soundsColumns {
+      grid-template-columns: 1fr;
+   }
+
+   .detailRail {
+      grid-row: 1;
+   }
+
+   .detailPanel {
+      @apply relative top-0;
+      max-height: none;
+      overflow-y: visible;
+   }
+
+   .soundGrid {
+      @apply grid-cols-3;
+   }
+}
+
+@media (max-width: 720px) {
+   .libraryHeader,
+   .resultHeader {
+      @apply items-start flex-col;
+   }
+
+   .searchBox {
+      @apply max-w-none;
+   }
+
+   .soundGrid {
+      @apply grid-cols-2;
+   }
+
+   .ipaResult {
+      @apply py-5;
+   }
+}
+
+@media (max-width: 420px) {
+   .detailHeader {
+      @apply items-start flex-col;
+   }
+
+   .detailExample {
+      @apply items-start;
+   }
+
+   .audioActions {
+      @apply grid-cols-1;
+   }
+
+   .soundCard {
+      min-height: 94px;
+   }
+}

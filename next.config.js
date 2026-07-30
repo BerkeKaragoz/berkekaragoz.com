@@ -4,6 +4,8 @@ const { i18n } = require("./next-i18next.config")
 
 module.exports = {
    reactStrictMode: true,
+   output: "standalone",
+   transpilePackages: ["next-mdx-remote"],
    i18n,
    pageExtensions: [
       "page.mdx",
