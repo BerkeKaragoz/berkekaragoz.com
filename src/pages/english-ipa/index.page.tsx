@@ -989,7 +989,7 @@ const IpaPage: NextPage = () => {
             <div className="pb-12 bg-linear-gradient-100">
                <Section block className={`py-8 ${styles.tool}`} id="ipa-tool">
                   <nav
-                     className="flex justify-between w-full max-w-md gap-4 mb-8 rounded-lg bg-opacity-5 dark:bg-opacity-30"
+                     className="flex justify-between w-full max-w-prose mx-auto gap-4 mb-10 rounded-lg bg-opacity-5 dark:bg-opacity-30"
                      aria-label={t("toolLabel")}
                   >
                      {(["sounds", "converter"] as View[]).map((option) => (
@@ -1005,7 +1005,7 @@ const IpaPage: NextPage = () => {
                         >
                            <span
                               className={cn(
-                                 "inline-block border-b-4 p-1 rounded-sm font-semibold w-full",
+                                 "inline-block border-b-4 p-1 rounded-sm font-semibold capitalize",
                                  {
                                     "border-primary-400": view === option,
                                  },
