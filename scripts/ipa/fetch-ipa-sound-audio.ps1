@@ -10,7 +10,7 @@ $outputPath = [System.IO.Path]::GetFullPath(
    (Join-Path (Get-Location) $OutputDirectory)
 )
 $headers = @{
-   "User-Agent" = "BritishIPATool/1.0 (https://berkekaragoz.com/ipa)"
+   "User-Agent" = "BritishIPATool/1.0 (https://berkekaragoz.com/english-ipa)"
 }
 
 function Invoke-WithRetry {
