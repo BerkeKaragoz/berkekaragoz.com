@@ -37,6 +37,10 @@ export const getPostMeta = (
 
 export const serializeWithAppOptions = (stringContent: string) =>
    serialize(stringContent, {
+      // Posts are trusted, repository-owned MDX and use JSX expressions for
+      // component props. Keep v6's dangerous-global protection enabled.
+      blockJS: false,
+      blockDangerousJS: true,
       mdxOptions: {
          remarkPlugins: [remarkGfm],
          rehypePlugins: [

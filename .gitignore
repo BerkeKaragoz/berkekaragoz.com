@@ -15,6 +15,9 @@
 
 # production
 /build
+/dist
+/.open-next
+/.sites-worker
 
 # misc
 .DS_Store
