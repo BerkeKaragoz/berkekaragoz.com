@@ -1,12 +1,13 @@
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import Tooltip from "@/components/atomic/Tooltip/Tooltip"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import {
    ConvertedToken,
    DictionaryChunk,
-   dictionaryChunkFor,
+   dictionaryChunksForPrediction,
    mergeDictionaryChunks,
    tokeniseWithDictionary,
    wordsInText,
@@ -24,6 +25,7 @@ import {
    CheckIcon,
    ClipboardCopyIcon,
    PlayIcon,
+   RefreshIcon,
    SearchIcon,
    SpeakerphoneIcon,
    StopIcon,
@@ -43,6 +45,24 @@ type CategoryFilter = SoundCategory | "all"
 
 const EXAMPLE_TEXT = "A bright blue bird sang near the old oak tree."
 const CONVERTER_INPUT_KEY = "ipa-converter-input"
+const RANDOM_TEXT_URL =
+   "https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&grnminsize=1000&grnlimit=1&prop=extracts&exintro=1&explaintext=1&exsentences=4&format=json&formatversion=2&origin=*"
+
+const fetchRandomText = async (signal: AbortSignal) => {
+   const response = await fetch(RANDOM_TEXT_URL, {
+      cache: "no-store",
+      signal,
+   })
+   if (!response.ok) throw new Error()
+
+   const data = (await response.json()) as {
+      query?: { pages?: { extract?: unknown }[] }
+   }
+   const extract = data.query?.pages?.[0]?.extract
+   if (typeof extract !== "string" || !extract.trim()) throw new Error()
+
+   return extract.trim()
+}
 
 const viewRoutes: Record<View, string> = {
    sounds: "/english-ipa",
@@ -117,14 +137,15 @@ const getPreferredVoice = (voices: SpeechSynthesisVoice[]) =>
    ) ?? voices.find((voice) => voice.lang.toLowerCase().startsWith("en-gb"))
 
 const useBritishSpeech = () => {
-   const { t } = useTranslation(IPA_TNS)
    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
+   const [speechApiAvailable, setSpeechApiAvailable] = useState(false)
    const [message, setMessage] = useState("")
    const [isSpeaking, setIsSpeaking] = useState(false)
    const activeUtterance = useRef<SpeechSynthesisUtterance | null>(null)
 
    useEffect(() => {
       if (!("speechSynthesis" in window)) return
+      setSpeechApiAvailable(true)
 
       const refreshVoices = () => {
          setVoices(
@@ -155,16 +176,10 @@ const useBritishSpeech = () => {
    }
 
    const speak = (text: string, rate = 0.82) => {
-      if (!("speechSynthesis" in window)) {
-         setMessage(t("speech.unsupported"))
-         return false
-      }
+      if (!("speechSynthesis" in window)) return false
 
       const voice = getPreferredVoice(voices)
-      if (!voice) {
-         setMessage(t("speech.noVoice"))
-         return false
-      }
+      if (!voice) return false
 
       stop()
       const utterance = new SpeechSynthesisUtterance(text)
@@ -186,7 +201,9 @@ const useBritishSpeech = () => {
       return true
    }
 
-   return { isSpeaking, message, setMessage, speak, stop }
+   const canSpeak = speechApiAvailable && Boolean(getPreferredVoice(voices))
+
+   return { canSpeak, isSpeaking, message, setMessage, speak, stop }
 }
 
 const SoundButton = ({
@@ -522,12 +539,14 @@ const SoundsView = ({
 }
 
 const ConverterView = ({
+   canSpeak,
    isSpeaking,
    onPlay,
    onPlaySound,
    onSelectSound,
    onStop,
 }: {
+   canSpeak: boolean
    isSpeaking: boolean
    onPlay: (text: string, rate?: number) => void
    onPlaySound: (sound: IpaSound) => void
@@ -536,14 +555,41 @@ const ConverterView = ({
 }) => {
    const { t } = useTranslation(IPA_TNS)
    const dictionaryCache = useRef<Record<string, DictionaryChunk>>({})
+   const prefetchedRandomText = useRef<string | null>(null)
    const [input, setInput] = useState(EXAMPLE_TEXT)
    const [inputHydrated, setInputHydrated] = useState(false)
+   const [convertedInput, setConvertedInput] = useState<string | null>(null)
    const [tokens, setTokens] = useState<ConvertedToken[]>([])
    const [choices, setChoices] = useState<Record<number, number>>({})
    const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [copied, setCopied] = useState(false)
+   const [randomTextAvailable, setRandomTextAvailable] = useState(false)
+   const [randomTextLoading, setRandomTextLoading] = useState(false)
+
+   useEffect(() => {
+      const controller = new AbortController()
+      const timeout = window.setTimeout(() => controller.abort(), 4000)
+      let active = true
+
+      void fetchRandomText(controller.signal)
+         .then((text) => {
+            if (!active) return
+            prefetchedRandomText.current = text
+            setRandomTextAvailable(true)
+         })
+         .catch(() => {
+            if (active) setRandomTextAvailable(false)
+         })
+         .finally(() => window.clearTimeout(timeout))
+
+      return () => {
+         active = false
+         window.clearTimeout(timeout)
+         controller.abort()
+      }
+   }, [])
 
    useEffect(() => {
       const storedInput = window.sessionStorage.getItem(CONVERTER_INPUT_KEY)
@@ -558,18 +604,22 @@ const ConverterView = ({
    }, [input, inputHydrated])
 
    const convert = async () => {
-      if (!input.trim()) {
+      const sourceText = input
+
+      if (!sourceText.trim()) {
          setTokens([])
          setSelectedIndex(null)
          return
       }
+
+      if (loading || sourceText === convertedInput) return
 
       setLoading(true)
       setError("")
 
       try {
          const letters = Array.from(
-            new Set(wordsInText(input).map(dictionaryChunkFor))
+            new Set(wordsInText(sourceText).flatMap(dictionaryChunksForPrediction))
          )
          const chunks = await Promise.all(
             letters.map(async (letter) => {
@@ -588,10 +638,11 @@ const ConverterView = ({
          )
 
          const nextTokens = tokeniseWithDictionary(
-            input,
+            sourceText,
             mergeDictionaryChunks(chunks)
          )
          setTokens(nextTokens)
+         setConvertedInput(sourceText)
          setChoices({})
          setSelectedIndex(
             nextTokens.findIndex(
@@ -630,6 +681,10 @@ const ConverterView = ({
    const unknownCount = tokens.filter(
       (token) => token.type === "word" && token.pronunciations.length === 0
    ).length
+   const predictedCount = tokens.filter(
+      (token) => token.type === "word" && token.predicted
+   ).length
+   const canConvert = Boolean(input.trim()) && !loading && input !== convertedInput
 
    const copyIpa = async () => {
       if (!ipaText) return
@@ -637,6 +692,46 @@ const ConverterView = ({
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1600)
    }
+
+   const fillWithRandomText = async () => {
+      setRandomTextLoading(true)
+      const controller = new AbortController()
+      const timeout = window.setTimeout(() => controller.abort(), 4000)
+
+      try {
+         const text =
+            prefetchedRandomText.current ??
+            (await fetchRandomText(controller.signal))
+         prefetchedRandomText.current = null
+         setInput(text.slice(0, 10000))
+      } catch {
+         setRandomTextAvailable(false)
+      } finally {
+         window.clearTimeout(timeout)
+         setRandomTextLoading(false)
+      }
+   }
+
+   const fullTextPlayButton = (
+      <button
+         type="button"
+         className={styles.iconButton}
+         disabled={!canSpeak}
+         onClick={() => (isSpeaking ? onStop() : onPlay(input, 0.78))}
+         aria-label={
+            isSpeaking
+               ? t("converter.stopPronunciation")
+               : t("converter.playFullText")
+         }
+      >
+         {isSpeaking ? (
+            <StopIcon aria-hidden="true" />
+         ) : (
+            <SpeakerphoneIcon aria-hidden="true" />
+         )}
+         {isSpeaking ? t("actions.stop") : t("actions.play")}
+      </button>
+   )
 
    return (
       <section
@@ -646,17 +741,38 @@ const ConverterView = ({
          <div className={`card ${styles.converterCard}`}>
             <div className={styles.inputHeader}>
                <label htmlFor="ipa-input">{t("converter.englishText")}</label>
-               <span>{input.length}/500</span>
+               <div className={styles.inputHeaderActions}>
+                  {randomTextAvailable && (
+                     <button
+                        type="button"
+                        className={styles.randomTextButton}
+                        disabled={randomTextLoading}
+                        onClick={() => void fillWithRandomText()}
+                     >
+                        <RefreshIcon aria-hidden="true" />
+                        {t(
+                           randomTextLoading
+                              ? "converter.loadingRandomText"
+                              : "converter.randomText"
+                        )}
+                     </button>
+                  )}
+                  {input.length >= 9000 && <span>{input.length}/10000</span>}
+               </div>
             </div>
             <textarea
                id="ipa-input"
                value={input}
-               maxLength={500}
+               maxLength={10000}
                rows={4}
                spellCheck
                onChange={(event) => setInput(event.target.value)}
                onKeyDown={(event) => {
-                  if ((event.metaKey || event.ctrlKey) && event.key === "Enter")
+                  if (
+                     canConvert &&
+                     (event.metaKey || event.ctrlKey) &&
+                     event.key === "Enter"
+                  )
                      void convert()
                }}
             />
@@ -664,7 +780,7 @@ const ConverterView = ({
                <button
                   type="button"
                   className={`${styles.actionButton} ${styles.primaryButton}`}
-                  disabled={loading || !input.trim()}
+                  disabled={!canConvert}
                   onClick={() => void convert()}
                >
                   {loading ? t("converter.converting") : t("converter.convert")}
@@ -691,25 +807,25 @@ const ConverterView = ({
                            {t("converter.wordsNotFound", { count: unknownCount })}
                         </span>
                      )}
+                     {predictedCount > 0 && (
+                        <span>
+                           {t("converter.predictions", { count: predictedCount })}
+                        </span>
+                     )}
                   </div>
                   <div className={styles.resultActions}>
-                     <button
-                        type="button"
-                        className={styles.iconButton}
-                        onClick={() => (isSpeaking ? onStop() : onPlay(input, 0.78))}
-                        aria-label={
-                           isSpeaking
-                              ? t("converter.stopPronunciation")
-                              : t("converter.playFullText")
-                        }
-                     >
-                        {isSpeaking ? (
-                           <StopIcon aria-hidden="true" />
-                        ) : (
-                           <SpeakerphoneIcon aria-hidden="true" />
-                        )}
-                        {isSpeaking ? t("actions.stop") : t("actions.play")}
-                     </button>
+                     {canSpeak ? (
+                        fullTextPlayButton
+                     ) : (
+                        <Tooltip
+                           text={t("converter.textToSpeechUnavailable")}
+                           className={styles.playUnavailableTooltip}
+                        >
+                           <span className={styles.disabledPlayWrapper}>
+                              {fullTextPlayButton}
+                           </span>
+                        </Tooltip>
+                     )}
                      <button
                         type="button"
                         className={styles.iconButton}
@@ -746,12 +862,18 @@ const ConverterView = ({
                            key={`${token.source}-${index}`}
                            className={`${styles.ipaWord} ${
                               pronunciation ? "" : styles.unknownWord
+                           } ${
+                              token.predicted ? styles.predictedWord : ""
                            } ${selectedIndex === index ? styles.selectedWord : ""}`}
                            title={
                               pronunciation
-                                 ? t("converter.showSoundsIn", {
-                                      word: token.source,
-                                   })
+                                 ? token.predicted
+                                    ? t("converter.predictedPronunciation", {
+                                         word: token.source,
+                                      })
+                                    : t("converter.showSoundsIn", {
+                                         word: token.source,
+                                      })
                                  : t("converter.wordNotFound", {
                                       word: token.source,
                                    })
@@ -785,6 +907,12 @@ const ConverterView = ({
                            <PlayIcon aria-hidden="true" />
                         </button>
                      </div>
+
+                     {selectedToken.predicted && (
+                        <p className={styles.predictionHelp}>
+                           {t("converter.predictionHelp")}
+                        </p>
+                     )}
 
                      {selectedToken.pronunciations.length > 1 && (
                         <label className={styles.alternativeSelect}>
@@ -876,7 +1004,8 @@ const IpaPage: NextPage = () => {
       IPA_SOUNDS.find((sound) => sound.id === "schwa") ?? IPA_SOUNDS[0]
    )
    const activeAudio = useRef<HTMLAudioElement | null>(null)
-   const { isSpeaking, message, setMessage, speak, stop } = useBritishSpeech()
+   const { canSpeak, isSpeaking, message, setMessage, speak, stop } =
+      useBritishSpeech()
 
    useEffect(() => {
       if (view === "converter") setConverterMounted(true)
@@ -1040,6 +1169,7 @@ const IpaPage: NextPage = () => {
                   {converterMounted && (
                      <div hidden={view !== "converter"}>
                         <ConverterView
+                           canSpeak={canSpeak}
                            isSpeaking={isSpeaking}
                            onPlay={speak}
                            onPlaySound={(sound) => playAudio(sound, "sound")}

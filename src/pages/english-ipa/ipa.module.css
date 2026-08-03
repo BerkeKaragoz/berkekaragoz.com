@@ -500,6 +500,32 @@
    color: var(--ipa-muted);
 }
 
+.inputHeaderActions {
+   @apply flex items-center gap-3;
+}
+
+.randomTextButton {
+   @apply flex items-center gap-1 px-2 py-1 text-xs rounded-md;
+   color: var(--ipa-accent-strong);
+   background: var(--ipa-accent-soft);
+   transition:
+      background-color 140ms ease,
+      color 140ms ease;
+}
+
+.randomTextButton:hover:not(:disabled) {
+   color: var(--ipa-text);
+   background: var(--ipa-surface-raised);
+}
+
+.randomTextButton:disabled {
+   @apply cursor-wait opacity-60;
+}
+
+.randomTextButton svg {
+   @apply w-3.5 h-3.5;
+}
+
 .converterCard textarea {
    @apply w-full text-xl leading-relaxed bg-transparent outline-none resize-y;
 }
@@ -539,6 +565,23 @@
    @apply flex items-center gap-1 px-3 py-2 text-sm rounded-lg;
 }
 
+.iconButton:disabled {
+   @apply cursor-not-allowed opacity-50;
+}
+
+.disabledPlayWrapper {
+   @apply inline-flex cursor-not-allowed;
+}
+
+.disabledPlayWrapper .iconButton {
+   pointer-events: none;
+}
+
+.playUnavailableTooltip {
+   width: max-content;
+   max-width: min(16rem, 75vw);
+}
+
 .ipaResult {
    @apply py-8 overflow-visible font-monospace text-2xl leading-relaxed sm:text-4xl;
    overflow-wrap: anywhere;
@@ -560,6 +603,14 @@
 .unknownWord {
    @apply underline decoration-secondary-500 decoration-wavy underline-offset-4;
    color: var(--ipa-muted);
+}
+
+.predictedWord {
+   text-decoration-line: underline;
+   text-decoration-color: var(--ipa-accent-strong);
+   text-decoration-style: dotted;
+   text-decoration-thickness: 2px;
+   text-underline-offset: 0.22em;
 }
 
 .wordInspector {
@@ -634,6 +685,11 @@
 .unknownHelp {
    @apply mt-3 text-sm;
    color: var(--ipa-muted);
+}
+
+.predictionHelp {
+   @apply mt-3 text-sm;
+   color: var(--ipa-accent-strong);
 }
 
 .dictionaryCredit {
