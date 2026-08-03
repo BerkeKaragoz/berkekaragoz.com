@@ -34,8 +34,6 @@
       "dismiss": "Dismiss"
    },
    "speech": {
-      "unsupported": "Speech is not supported by this browser.",
-      "noVoice": "No English voice is installed on this device. The recorded sound samples still work.",
       "soundError": "The /{{symbol}}/ sound could not be played."
    },
    "soundsUi": {
@@ -90,20 +88,27 @@
    "converter": {
       "ariaLabel": "Text to IPA converter",
       "englishText": "English text",
+      "randomText": "Random article",
+      "loadingRandomText": "Loading…",
       "convert": "Convert to IPA",
       "converting": "Converting…",
       "dictionaryError": "The English dictionary could not be loaded. Please try again.",
       "englishPronunciation": "English pronunciation",
       "wordsNotFound_one": "{{count}} word not found",
       "wordsNotFound_other": "{{count}} words not found",
+      "predictions_one": "{{count}} pronunciation estimated",
+      "predictions_other": "{{count}} pronunciations estimated",
       "playFullText": "Play the full text",
+      "textToSpeechUnavailable": "Text-to-speech is not available in this browser.",
       "stopPronunciation": "Stop English pronunciation",
       "convertedIpa": "Converted IPA",
       "showSoundsIn": "Show sounds in {{word}}",
+      "predictedPronunciation": "{{word}} was estimated from its spelling",
       "wordNotFound": "{{word}} was not found",
       "pronunciation": "Pronunciation",
       "soundBySound": "Sound by sound",
       "unknownHelp": "Keep this spelling as written, or try the base form of the word.",
+      "predictionHelp": "The blue underline means this pronunciation was estimated from the spelling and may not capture every variation.",
       "dictionaryCredit": "Dictionary: Britfone 100.0.1 · Standard English pronunciation"
    }
 }

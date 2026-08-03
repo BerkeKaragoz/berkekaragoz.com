@@ -34,8 +34,6 @@
       "dismiss": "Kapat"
    },
    "speech": {
-      "unsupported": "Tarayıcınız metni sesli okumayı desteklemiyor.",
-      "noVoice": "Cihazınızda İngilizce seslendirme seçeneği bulunamadı. Hazır ses örneklerini yine de dinleyebilirsiniz.",
       "soundError": "/{{symbol}}/ ses örneği açılamadı."
    },
    "soundsUi": {
@@ -90,20 +88,27 @@
    "converter": {
       "ariaLabel": "İngilizce metni IPA'ya çevirme aracı",
       "englishText": "İngilizce metin",
+      "randomText": "Rastgele makale",
+      "loadingRandomText": "Yükleniyor…",
       "convert": "IPA'ya çevir",
       "converting": "IPA'ya çevriliyor…",
       "dictionaryError": "Telaffuz sözlüğü yüklenemedi. Lütfen tekrar deneyin.",
       "englishPronunciation": "Metni İngilizce dinleyin",
       "wordsNotFound_one": "{{count}} kelimenin telaffuzu bulunamadı",
       "wordsNotFound_other": "{{count}} kelimenin telaffuzu bulunamadı",
+      "predictions_one": "{{count}} kelimenin telaffuzu tahmin edildi",
+      "predictions_other": "{{count}} kelimenin telaffuzu tahmin edildi",
       "playFullText": "Metnin tamamını dinle",
+      "textToSpeechUnavailable": "Bu tarayıcıda İngilizce metin seslendirme kullanılamıyor.",
       "stopPronunciation": "Sesli okumayı durdur",
       "convertedIpa": "Metnin IPA karşılığı",
       "showSoundsIn": "“{{word}}” kelimesini seslerine ayır",
+      "predictedPronunciation": "“{{word}}” kelimesinin telaffuzu yazımından tahmin edildi",
       "wordNotFound": "“{{word}}” sözlükte bulunamadı",
       "pronunciation": "Telaffuz seçeneği",
       "soundBySound": "Kelimedeki sesler",
       "unknownHelp": "Kelimeyi farklı bir biçimde yazmayı veya sözlükteki kök hâlini aramayı deneyin.",
+      "predictionHelp": "Mavi alt çizgi, telaffuzun kelimenin yazımından tahmin edildiğini gösterir. Bazı söyleyiş farkları yansımayabilir.",
       "dictionaryCredit": "Britfone 100.0.1 · Standart İngilizce telaffuz sözlüğü"
    },
    "sounds": {
