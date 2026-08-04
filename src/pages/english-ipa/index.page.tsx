@@ -21,7 +21,7 @@ import {
 } from "@/features/ipa/sounds"
 import { IPA_TNS } from "@/features/ipa/i18n"
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
-import { fetchRandomText } from "@/features/ipa/randomText"
+import { checkRandomTextAvailable, fetchRandomText } from "@/features/ipa/randomText"
 import {
    CheckIcon,
    ClipboardCopyIcon,
@@ -559,7 +559,6 @@ const ConverterView = ({
 }) => {
    const { t } = useTranslation(IPA_TNS)
    const dictionaryCache = useRef<Record<string, DictionaryChunk>>({})
-   const prefetchedRandomText = useRef<string | null>(null)
    const [input, setInput] = useState(EXAMPLE_TEXT)
    const [inputHydrated, setInputHydrated] = useState(false)
    const [convertedInput, setConvertedInput] = useState<string | null>(null)
@@ -577,10 +576,9 @@ const ConverterView = ({
       const timeout = window.setTimeout(() => controller.abort(), 6000)
       let active = true
 
-      void fetchRandomText(controller.signal)
-         .then((text) => {
+      void checkRandomTextAvailable(controller.signal)
+         .then(() => {
             if (!active) return
-            prefetchedRandomText.current = text
             setRandomTextAvailable(true)
          })
          .catch(() => {
@@ -703,10 +701,7 @@ const ConverterView = ({
       const timeout = window.setTimeout(() => controller.abort(), 6000)
 
       try {
-         const text =
-            prefetchedRandomText.current ??
-            (await fetchRandomText(controller.signal))
-         prefetchedRandomText.current = null
+         const text = await fetchRandomText(controller.signal)
          setInput(text.slice(0, 10000))
       } catch {
          setRandomTextAvailable(false)

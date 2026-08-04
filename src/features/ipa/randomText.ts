@@ -24,6 +24,17 @@ const fetchWikipedia = async (
    return response.json() as Promise<unknown>
 }
 
+export const checkRandomTextAvailable = async (signal: AbortSignal) => {
+   await fetchWikipedia(
+      {
+         action: "query",
+         meta: "siteinfo",
+         siprop: "general",
+      },
+      signal
+   )
+}
+
 export const fetchRandomText = async (signal: AbortSignal) => {
    const candidateData = await fetchWikipedia(
       {
