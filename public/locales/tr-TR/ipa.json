@@ -88,7 +88,7 @@
    "converter": {
       "ariaLabel": "İngilizce metni IPA'ya çevirme aracı",
       "englishText": "İngilizce metin",
-      "randomText": "Gutenberg'den bir bölüm",
+      "randomText": "Wikipedia'dan bir bölüm",
       "loadingRandomText": "Yükleniyor…",
       "convert": "IPA'ya çevir",
       "converting": "IPA'ya çevriliyor…",
