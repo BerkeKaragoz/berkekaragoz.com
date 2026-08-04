@@ -573,6 +573,7 @@
    @apply inline-flex cursor-not-allowed;
 }
 
+.disabledPlayWrapper > button,
 .disabledPlayWrapper .iconButton {
    pointer-events: none;
 }
@@ -580,6 +581,10 @@
 .playUnavailableTooltip {
    width: max-content;
    max-width: min(16rem, 75vw);
+}
+
+.touchSpeechNotice {
+   display: none;
 }
 
 .ipaResult {
@@ -633,6 +638,11 @@
 .miniPlay {
    @apply grid w-9 h-9 rounded-full place-items-center;
    color: var(--ipa-accent-strong);
+}
+
+.miniPlay:disabled,
+.breakdownPlay:disabled {
+   @apply cursor-not-allowed opacity-50;
 }
 
 .alternativeSelect {
@@ -714,6 +724,13 @@
 
    .soundCard:hover {
       transform: none;
+   }
+}
+
+@media (hover: none), (pointer: coarse) {
+   .touchSpeechNotice {
+      @apply block p-3 mt-4 text-sm rounded-lg;
+      color: var(--ipa-muted);
    }
 }
 

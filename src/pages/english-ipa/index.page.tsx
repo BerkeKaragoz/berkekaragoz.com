@@ -21,6 +21,7 @@ import {
 } from "@/features/ipa/sounds"
 import { IPA_TNS } from "@/features/ipa/i18n"
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
+import { fetchRandomText } from "@/features/ipa/randomText"
 import {
    CheckIcon,
    ClipboardCopyIcon,
@@ -45,24 +46,6 @@ type CategoryFilter = SoundCategory | "all"
 
 const EXAMPLE_TEXT = "A bright blue bird sang near the old oak tree."
 const CONVERTER_INPUT_KEY = "ipa-converter-input"
-const RANDOM_TEXT_URL =
-   "https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&grnminsize=1000&grnlimit=1&prop=extracts&exintro=1&explaintext=1&exsentences=4&format=json&formatversion=2&origin=*"
-
-const fetchRandomText = async (signal: AbortSignal) => {
-   const response = await fetch(RANDOM_TEXT_URL, {
-      cache: "no-store",
-      signal,
-   })
-   if (!response.ok) throw new Error()
-
-   const data = (await response.json()) as {
-      query?: { pages?: { extract?: unknown }[] }
-   }
-   const extract = data.query?.pages?.[0]?.extract
-   if (typeof extract !== "string" || !extract.trim()) throw new Error()
-
-   return extract.trim()
-}
 
 const viewRoutes: Record<View, string> = {
    sounds: "/english-ipa",
@@ -139,27 +122,37 @@ const getPreferredVoice = (voices: SpeechSynthesisVoice[]) =>
 const useBritishSpeech = () => {
    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
    const [speechApiAvailable, setSpeechApiAvailable] = useState(false)
+   const [speechCheckComplete, setSpeechCheckComplete] = useState(false)
    const [message, setMessage] = useState("")
    const [isSpeaking, setIsSpeaking] = useState(false)
    const activeUtterance = useRef<SpeechSynthesisUtterance | null>(null)
 
    useEffect(() => {
-      if (!("speechSynthesis" in window)) return
+      if (!("speechSynthesis" in window)) {
+         setSpeechCheckComplete(true)
+         return
+      }
       setSpeechApiAvailable(true)
 
       const refreshVoices = () => {
-         setVoices(
-            window.speechSynthesis
-               .getVoices()
-               .filter((voice) => voice.lang.toLowerCase().startsWith("en-gb"))
-         )
+         const nextVoices = window.speechSynthesis
+            .getVoices()
+            .filter((voice) => voice.lang.toLowerCase().startsWith("en-gb"))
+         setVoices(nextVoices)
+         if (getPreferredVoice(nextVoices)) setSpeechCheckComplete(true)
       }
 
+      const checkTimeout = window.setTimeout(
+         () => setSpeechCheckComplete(true),
+         1200
+      )
       refreshVoices()
       window.speechSynthesis.addEventListener("voiceschanged", refreshVoices)
 
-      return () =>
+      return () => {
+         window.clearTimeout(checkTimeout)
          window.speechSynthesis.removeEventListener("voiceschanged", refreshVoices)
+      }
    }, [])
 
    useEffect(
@@ -202,8 +195,17 @@ const useBritishSpeech = () => {
    }
 
    const canSpeak = speechApiAvailable && Boolean(getPreferredVoice(voices))
+   const speechUnavailable = speechCheckComplete && !canSpeak
 
-   return { canSpeak, isSpeaking, message, setMessage, speak, stop }
+   return {
+      canSpeak,
+      isSpeaking,
+      message,
+      setMessage,
+      speak,
+      speechUnavailable,
+      stop,
+   }
 }
 
 const SoundButton = ({
@@ -545,6 +547,7 @@ const ConverterView = ({
    onPlaySound,
    onSelectSound,
    onStop,
+   speechUnavailable,
 }: {
    canSpeak: boolean
    isSpeaking: boolean
@@ -552,6 +555,7 @@ const ConverterView = ({
    onPlaySound: (sound: IpaSound) => void
    onSelectSound: (sound: IpaSound) => void
    onStop: () => void
+   speechUnavailable: boolean
 }) => {
    const { t } = useTranslation(IPA_TNS)
    const dictionaryCache = useRef<Record<string, DictionaryChunk>>({})
@@ -570,7 +574,7 @@ const ConverterView = ({
 
    useEffect(() => {
       const controller = new AbortController()
-      const timeout = window.setTimeout(() => controller.abort(), 4000)
+      const timeout = window.setTimeout(() => controller.abort(), 6000)
       let active = true
 
       void fetchRandomText(controller.signal)
@@ -696,7 +700,7 @@ const ConverterView = ({
    const fillWithRandomText = async () => {
       setRandomTextLoading(true)
       const controller = new AbortController()
-      const timeout = window.setTimeout(() => controller.abort(), 4000)
+      const timeout = window.setTimeout(() => controller.abort(), 6000)
 
       try {
          const text =
@@ -732,6 +736,18 @@ const ConverterView = ({
          {isSpeaking ? t("actions.stop") : t("actions.play")}
       </button>
    )
+
+   const renderSpeechControl = (control: React.ReactElement) =>
+      speechUnavailable ? (
+         <Tooltip
+            text={t("converter.textToSpeechUnavailable")}
+            className={styles.playUnavailableTooltip}
+         >
+            <span className={styles.disabledPlayWrapper}>{control}</span>
+         </Tooltip>
+      ) : (
+         control
+      )
 
    return (
       <section
@@ -814,18 +830,7 @@ const ConverterView = ({
                      )}
                   </div>
                   <div className={styles.resultActions}>
-                     {canSpeak ? (
-                        fullTextPlayButton
-                     ) : (
-                        <Tooltip
-                           text={t("converter.textToSpeechUnavailable")}
-                           className={styles.playUnavailableTooltip}
-                        >
-                           <span className={styles.disabledPlayWrapper}>
-                              {fullTextPlayButton}
-                           </span>
-                        </Tooltip>
-                     )}
+                     {renderSpeechControl(fullTextPlayButton)}
                      <button
                         type="button"
                         className={styles.iconButton}
@@ -840,6 +845,15 @@ const ConverterView = ({
                      </button>
                   </div>
                </div>
+
+               {speechUnavailable && (
+                  <p
+                     className={`card-backdrop ${styles.touchSpeechNotice}`}
+                     role="status"
+                  >
+                     {t("converter.textToSpeechUnavailable")}
+                  </p>
+               )}
 
                <div
                   className={styles.ipaResult}
@@ -896,16 +910,19 @@ const ConverterView = ({
                               <strong>/{selectedPronunciation}/</strong>
                            )}
                         </div>
-                        <button
-                           type="button"
-                           className={styles.miniPlay}
-                           onClick={() => onPlay(selectedToken.source)}
-                           aria-label={t("soundsUi.playWord", {
-                              word: selectedToken.source,
-                           })}
-                        >
-                           <PlayIcon aria-hidden="true" />
-                        </button>
+                        {renderSpeechControl(
+                           <button
+                              type="button"
+                              className={styles.miniPlay}
+                              disabled={!canSpeak}
+                              onClick={() => onPlay(selectedToken.source)}
+                              aria-label={t("soundsUi.playWord", {
+                                 word: selectedToken.source,
+                              })}
+                           >
+                              <PlayIcon aria-hidden="true" />
+                           </button>
+                        )}
                      </div>
 
                      {selectedToken.predicted && (
@@ -961,19 +978,22 @@ const ConverterView = ({
                                     >
                                        /{sound.symbol}/
                                     </button>
-                                    <button
-                                       type="button"
-                                       className={styles.breakdownPlay}
-                                       onClick={() => onPlaySound(sound)}
-                                       aria-label={t("soundsUi.playSound", {
-                                          symbol: sound.symbol,
-                                       })}
-                                       title={t("soundsUi.playSymbol", {
-                                          symbol: sound.symbol,
-                                       })}
-                                    >
-                                       <VolumeUpIcon aria-hidden="true" />
-                                    </button>
+                                    {renderSpeechControl(
+                                       <button
+                                          type="button"
+                                          className={styles.breakdownPlay}
+                                          disabled={!canSpeak}
+                                          onClick={() => onPlaySound(sound)}
+                                          aria-label={t("soundsUi.playSound", {
+                                             symbol: sound.symbol,
+                                          })}
+                                          title={t("soundsUi.playSymbol", {
+                                             symbol: sound.symbol,
+                                          })}
+                                       >
+                                          <VolumeUpIcon aria-hidden="true" />
+                                       </button>
+                                    )}
                                  </div>
                               ))}
                            </div>
@@ -1004,8 +1024,15 @@ const IpaPage: NextPage = () => {
       IPA_SOUNDS.find((sound) => sound.id === "schwa") ?? IPA_SOUNDS[0]
    )
    const activeAudio = useRef<HTMLAudioElement | null>(null)
-   const { canSpeak, isSpeaking, message, setMessage, speak, stop } =
-      useBritishSpeech()
+   const {
+      canSpeak,
+      isSpeaking,
+      message,
+      setMessage,
+      speak,
+      speechUnavailable,
+      stop,
+   } = useBritishSpeech()
 
    useEffect(() => {
       if (view === "converter") setConverterMounted(true)
@@ -1175,6 +1202,7 @@ const IpaPage: NextPage = () => {
                            onPlaySound={(sound) => playAudio(sound, "sound")}
                            onSelectSound={openSound}
                            onStop={stop}
+                           speechUnavailable={speechUnavailable}
                         />
                      </div>
                   )}
