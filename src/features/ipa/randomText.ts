@@ -1,115 +1,48 @@
-const DEV_ARTICLES_URL = "https://dev.to/api/articles?tag=discuss&top=30&per_page=30"
-const DEV_ARTICLE_URL = "https://dev.to/api/articles"
-const DEV_ACCEPT = "application/vnd.forem.api-v1+json"
-const MIN_EXCERPT_LENGTH = 220
-const MAX_EXCERPT_LENGTH = 1200
-const MAX_ARTICLE_ATTEMPTS = 3
+const GUTENBERG_EXCERPTS_URL = "/data/ipa/gutenberg-excerpts.json"
 
-type DevArticleSummary = {
-   id?: unknown
+export type GutenbergExcerpt = {
+   gutenbergId: number
+   title: string
+   text: string
 }
 
-type DevArticle = {
-   body_html?: unknown
-}
+const isExcerpt = (value: unknown): value is GutenbergExcerpt => {
+   if (!value || typeof value !== "object") return false
 
-const normaliseParagraph = (text: string) => text.replace(/\s+/g, " ").trim()
-
-const isReadableEnglishProse = (text: string) => {
-   if (text.length < 55 || text.split(/\s+/).length < 10) return false
-
-   const letters = Array.from(text).filter(
-      (character) => character.toLowerCase() !== character.toUpperCase()
-   )
-   const englishLetters = text.match(/[A-Za-z]/g) ?? []
-   if (!letters.length || englishLetters.length / letters.length < 0.9) return false
-
-   return !/^(?:image (?:credit|description)|photo by|subscribe|follow me|thanks for reading)\b/i.test(
-      text
-   )
-}
-
-const trimAtSentence = (text: string, maximumLength: number) => {
-   if (text.length <= maximumLength) return text
-
-   const candidate = text.slice(0, maximumLength + 1)
-   const sentenceEnd = Math.max(
-      candidate.lastIndexOf(". "),
-      candidate.lastIndexOf("? "),
-      candidate.lastIndexOf("! ")
-   )
-
+   const excerpt = value as Partial<GutenbergExcerpt>
    return (
-      sentenceEnd >= MIN_EXCERPT_LENGTH
-         ? candidate.slice(0, sentenceEnd + 1)
-         : candidate.slice(0, maximumLength)
-   ).trim()
+      typeof excerpt.gutenbergId === "number" &&
+      typeof excerpt.title === "string" &&
+      typeof excerpt.text === "string" &&
+      excerpt.text.trim().length >= 200
+   )
 }
 
-export const extractReadableDevText = (html: string) => {
-   const document = new DOMParser().parseFromString(html, "text/html")
-   document
-      .querySelectorAll(
-         "pre, code, figure, picture, img, iframe, video, table, script, style"
-      )
-      .forEach((element) => element.remove())
+export const selectRandomExcerpt = (
+   values: unknown,
+   excludedText = "",
+   random = Math.random
+) => {
+   if (!Array.isArray(values)) throw new Error()
 
-   const paragraphs = Array.from(document.querySelectorAll("p"))
-      .map((paragraph) => normaliseParagraph(paragraph.textContent ?? ""))
-      .filter(isReadableEnglishProse)
+   const excerpts = values.filter(isExcerpt)
+   if (!excerpts.length) throw new Error()
 
-   let excerpt = ""
-   for (const paragraph of paragraphs) {
-      const nextExcerpt = excerpt ? `${excerpt}\n\n${paragraph}` : paragraph
-      if (nextExcerpt.length > MAX_EXCERPT_LENGTH) {
-         if (excerpt.length >= MIN_EXCERPT_LENGTH) break
-         excerpt = trimAtSentence(nextExcerpt, MAX_EXCERPT_LENGTH)
-         break
-      }
+   const alternatives = excerpts.filter(
+      (excerpt) => excerpt.text.trim() !== excludedText.trim()
+   )
+   const candidates = alternatives.length ? alternatives : excerpts
+   const randomIndex = Math.min(
+      candidates.length - 1,
+      Math.floor(Math.max(0, random()) * candidates.length)
+   )
 
-      excerpt = nextExcerpt
-      if (excerpt.length >= 700) break
-   }
-
-   if (excerpt.length < MIN_EXCERPT_LENGTH) throw new Error()
-   return excerpt
+   return candidates[randomIndex].text.trim()
 }
 
-const fetchJson = async <Response>(url: string, signal: AbortSignal) => {
-   const response = await fetch(url, {
-      cache: "no-store",
-      headers: { Accept: DEV_ACCEPT },
-      signal,
-   })
+export const fetchRandomText = async (signal: AbortSignal, excludedText = "") => {
+   const response = await fetch(GUTENBERG_EXCERPTS_URL, { signal })
    if (!response.ok) throw new Error()
-   return (await response.json()) as Response
-}
 
-export const fetchRandomText = async (signal: AbortSignal) => {
-   const articles = await fetchJson<DevArticleSummary[]>(DEV_ARTICLES_URL, signal)
-   const articleIds = articles
-      .map((article) => article.id)
-      .filter((id): id is number => typeof id === "number")
-   if (!articleIds.length) throw new Error()
-
-   const startIndex = Math.floor(Math.random() * articleIds.length)
-   const candidates = articleIds
-      .slice(startIndex)
-      .concat(articleIds.slice(0, startIndex))
-      .slice(0, MAX_ARTICLE_ATTEMPTS)
-
-   for (const id of candidates) {
-      try {
-         const article = await fetchJson<DevArticle>(
-            `${DEV_ARTICLE_URL}/${id}`,
-            signal
-         )
-         if (typeof article.body_html !== "string") continue
-         return extractReadableDevText(article.body_html)
-      } catch (error) {
-         if (signal.aborted) throw error
-      }
-   }
-
-   throw new Error()
+   return selectRandomExcerpt(await response.json(), excludedText)
 }

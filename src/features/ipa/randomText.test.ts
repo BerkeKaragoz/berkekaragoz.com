@@ -1,26 +1,42 @@
-import { extractReadableDevText } from "./randomText"
+import { selectRandomExcerpt } from "./randomText"
+
+const excerpts = [
+   {
+      gutenbergId: 11,
+      title: "First",
+      text: "A complete public-domain passage with enough natural English prose to be useful for practising pronunciation. ".repeat(
+         3
+      ),
+   },
+   {
+      gutenbergId: 84,
+      title: "Second",
+      text: "A different public-domain passage with enough natural English prose to make the random choice observable in a focused test. ".repeat(
+         3
+      ),
+   },
+]
 
 describe("IPA random practice text", () => {
-   it("keeps readable prose while removing code and utility content", () => {
-      const text = extractReadableDevText(`
-         <p>This week I tried replacing my usual morning routine with a long walk through the park. I noticed sounds, colours, and small details that I normally miss.</p>
-         <pre><code>const answer = await fetch('/api')</code></pre>
-         <p>By the time I reached home, the problem I had been worrying about felt much easier to understand. Stepping away gave me room to think clearly.</p>
-         <p>Thanks for reading and follow me for more posts.</p>
-      `)
-
-      expect(text).toContain("This week I tried")
-      expect(text).toContain("Stepping away")
-      expect(text).not.toContain("const answer")
-      expect(text).not.toContain("follow me")
+   it("selects a valid Gutenberg passage", () => {
+      expect(selectRandomExcerpt(excerpts, "", () => 0)).toBe(
+         excerpts[0].text.trim()
+      )
+      expect(selectRandomExcerpt(excerpts, "", () => 0.99)).toBe(
+         excerpts[1].text.trim()
+      )
    })
 
-   it("rejects extracts without enough English prose", () => {
+   it("avoids immediately repeating the active passage", () => {
+      expect(selectRandomExcerpt(excerpts, excerpts[0].text, () => 0)).toBe(
+         excerpts[1].text.trim()
+      )
+   })
+
+   it("rejects an invalid or empty excerpt pack", () => {
+      expect(() => selectRandomExcerpt([], "", () => 0)).toThrow()
       expect(() =>
-         extractReadableDevText(`
-            <p>Short text.</p>
-            <p>Bugün hava güzel olduğu için dışarı çıkıp uzun bir yürüyüş yaptım ve eve döndüğümde kendimi çok daha iyi hissettim.</p>
-         `)
+         selectRandomExcerpt([{ text: "Too short" }], "", () => 0)
       ).toThrow()
    })
 })

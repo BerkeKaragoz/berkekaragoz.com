@@ -88,7 +88,7 @@
    "converter": {
       "ariaLabel": "Text to IPA converter",
       "englishText": "English text",
-      "randomText": "Random DEV post",
+      "randomText": "Gutenberg passage",
       "loadingRandomText": "Loading…",
       "convert": "Convert to IPA",
       "converting": "Converting…",
