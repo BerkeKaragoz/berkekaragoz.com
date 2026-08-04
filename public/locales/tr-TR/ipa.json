@@ -88,7 +88,7 @@
    "converter": {
       "ariaLabel": "İngilizce metni IPA'ya çevirme aracı",
       "englishText": "İngilizce metin",
-      "randomText": "Rastgele makale",
+      "randomText": "Rastgele DEV yazısı",
       "loadingRandomText": "Yükleniyor…",
       "convert": "IPA'ya çevir",
       "converting": "IPA'ya çevriliyor…",

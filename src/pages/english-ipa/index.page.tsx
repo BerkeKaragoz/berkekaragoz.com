@@ -21,6 +21,7 @@ import {
 } from "@/features/ipa/sounds"
 import { IPA_TNS } from "@/features/ipa/i18n"
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
+import { fetchRandomText } from "@/features/ipa/randomText"
 import {
    CheckIcon,
    ClipboardCopyIcon,
@@ -45,24 +46,6 @@ type CategoryFilter = SoundCategory | "all"
 
 const EXAMPLE_TEXT = "A bright blue bird sang near the old oak tree."
 const CONVERTER_INPUT_KEY = "ipa-converter-input"
-const RANDOM_TEXT_URL =
-   "https://en.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&grnminsize=1000&grnlimit=1&prop=extracts&exintro=1&explaintext=1&exsentences=4&format=json&formatversion=2&origin=*"
-
-const fetchRandomText = async (signal: AbortSignal) => {
-   const response = await fetch(RANDOM_TEXT_URL, {
-      cache: "no-store",
-      signal,
-   })
-   if (!response.ok) throw new Error()
-
-   const data = (await response.json()) as {
-      query?: { pages?: { extract?: unknown }[] }
-   }
-   const extract = data.query?.pages?.[0]?.extract
-   if (typeof extract !== "string" || !extract.trim()) throw new Error()
-
-   return extract.trim()
-}
 
 const viewRoutes: Record<View, string> = {
    sounds: "/english-ipa",
@@ -570,7 +553,7 @@ const ConverterView = ({
 
    useEffect(() => {
       const controller = new AbortController()
-      const timeout = window.setTimeout(() => controller.abort(), 4000)
+      const timeout = window.setTimeout(() => controller.abort(), 6000)
       let active = true
 
       void fetchRandomText(controller.signal)
@@ -696,7 +679,7 @@ const ConverterView = ({
    const fillWithRandomText = async () => {
       setRandomTextLoading(true)
       const controller = new AbortController()
-      const timeout = window.setTimeout(() => controller.abort(), 4000)
+      const timeout = window.setTimeout(() => controller.abort(), 6000)
 
       try {
          const text =
