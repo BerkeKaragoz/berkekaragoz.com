@@ -705,7 +705,7 @@ const ConverterView = ({
       try {
          const text =
             prefetchedRandomText.current ??
-            (await fetchRandomText(controller.signal, input))
+            (await fetchRandomText(controller.signal))
          prefetchedRandomText.current = null
          setInput(text.slice(0, 10000))
       } catch {
