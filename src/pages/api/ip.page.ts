@@ -1,34 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { getClientIp, TrustedProxy } from "@/features/public-ip/clientIp"
+import { getClientIp } from "@/features/request-info/clientIp"
+import { getRequestContext } from "@/features/request-info/requestContext"
+import { sendText } from "@/features/request-info/textResponse"
 
-type IpResponse = { ip: string } | { error: string }
-
-export default function handler(
-   req: NextApiRequest,
-   res: NextApiResponse<IpResponse>
-) {
-   res.setHeader("Cache-Control", "private, no-store, max-age=0")
-
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
    if (req.method !== "GET" && req.method !== "HEAD") {
       res.setHeader("Allow", "GET, HEAD")
-      return res.status(405).json({ error: "Method not allowed" })
+      return sendText(req, res, 405, "Method not allowed")
    }
 
-   const trustedProxy: TrustedProxy =
-      process.env.IP_TRUSTED_PROXY === "cloudflare"
-         ? "cloudflare"
-         : process.env.VERCEL === "1"
-           ? "vercel"
-           : "direct"
-   const ip = getClientIp(req.headers, req.socket?.remoteAddress, trustedProxy)
+   const { proxy } = getRequestContext()
+   const ip = getClientIp(req.headers, req.socket?.remoteAddress, proxy)
 
    if (!ip) {
-      res.status(503)
-      return req.method === "HEAD"
-         ? res.end()
-         : res.json({ error: "Client IP address unavailable" })
+      return sendText(req, res, 503, "Client IP address unavailable")
    }
 
-   res.status(200)
-   return req.method === "HEAD" ? res.end() : res.json({ ip })
+   return sendText(req, res, 200, ip)
 }
+
+export const config = { api: { bodyParser: false } }

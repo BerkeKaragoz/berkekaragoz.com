@@ -7,6 +7,16 @@ module.exports = {
    output: "standalone",
    transpilePackages: ["next-mdx-remote"],
    i18n,
+   async rewrites() {
+      return {
+         beforeFiles: [
+            {
+               source: "/trace/:level*",
+               destination: "/api/trace/:level*",
+            },
+         ],
+      }
+   },
    async redirects() {
       return [
          {

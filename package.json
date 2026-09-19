@@ -15,7 +15,8 @@
       "lint": "eslint **/*.ts* --fix",
       "format": "prettier . --write",
       "commit": "git-cz",
-      "type-check": "tsc --noEmit"
+      "type-check": "tsc --noEmit",
+      "refresh:network-data": "node scripts/refresh-network-data.mjs"
    },
    "prettier": "eslint-config-berkekaragoz-formatting/prettier",
    "packageManager": "pnpm@10.20.0",

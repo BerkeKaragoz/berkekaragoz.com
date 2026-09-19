@@ -1,17 +1,17 @@
 import { isIP } from "node:net"
 import type { IncomingHttpHeaders } from "node:http"
+import { parseIpAddress } from "./ipAddress"
 
 export type TrustedProxy = "cloudflare" | "vercel" | "direct"
 
 function parseIp(value: string | string[] | undefined): string | null {
    if (typeof value !== "string") return null
    const ip = value.trim()
-   if (ip.includes("%") || !isIP(ip)) return null
+   const address = parseIpAddress(ip)
+   if (!address) return null
 
    // Node can represent an IPv4 peer as an IPv4-mapped IPv6 address.
-   if (ip.toLowerCase().startsWith("::ffff:") && isIP(ip.slice(7)) === 4) {
-      return ip.slice(7)
-   }
+   if (address.version === 4) return Array.from(address.bytes).join(".")
    return ip
 }
 

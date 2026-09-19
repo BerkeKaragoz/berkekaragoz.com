@@ -93,6 +93,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <a href="/api/ip">Public IP</a>
                   </li>
                   <li className="mb-2">
+                     <a href="/trace">Trace</a>
+                  </li>
+                  <li className="mb-2">
                      <LinkText href="https://kognitif.berkekaragoz.com">
                         Kognitif
                      </LinkText>
