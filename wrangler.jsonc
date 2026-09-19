@@ -4,6 +4,9 @@
    "main": ".open-next/worker.js",
    "compatibility_date": "2026-07-29",
    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+   "vars": {
+      "IP_TRUSTED_PROXY": "cloudflare"
+   },
    "assets": {
       "directory": ".open-next/assets",
       "binding": "ASSETS"
