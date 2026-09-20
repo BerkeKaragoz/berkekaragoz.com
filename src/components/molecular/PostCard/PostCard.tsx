@@ -1,6 +1,6 @@
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
 import LinkText from "@/components/atomic/LinkText/LinkText"
-import { PostMeta } from "@/lib/api/blog"
+import { PostMeta } from "@/lib/api/blog-common"
 import { COMMON_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithActiveTranslation } from "@/lib/types/i18n"
 import { estimateReadingMinutes } from "@/lib/utils"
@@ -81,6 +81,11 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                         "min read"
                      )}`}
                   </span>
+                  {postMeta.pages.length > 1 && (
+                     <span className="inline-block px-1.5 ml-2 text-xs align-middle rounded card text-subtitle-color">
+                        {`${postMeta.pages.length} ${ct("pages")}`}
+                     </span>
+                  )}
                   {!disableSlug && (
                      <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
                         {`/p/${postMeta.slug}`}

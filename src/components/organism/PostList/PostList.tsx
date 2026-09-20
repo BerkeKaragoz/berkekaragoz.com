@@ -1,5 +1,5 @@
 import PostCard from "@/components/molecular/PostCard/PostCard"
-import { PostMeta } from "@/lib/api/blog"
+import { PostMeta } from "@/lib/api/blog-common"
 import { COMMON_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithActiveTranslation } from "@/lib/types/i18n"
 import React from "react"

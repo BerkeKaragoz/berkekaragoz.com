@@ -5,8 +5,15 @@ import Section from "@/components/atomic/Section/Section"
 import { GithubCommentSection } from "@/components/organism/GithubCommentSection"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
-import { getPostFromSlug, getSlugs, PostMeta } from "@/lib/api/blog"
-import { serializeWithAppOptions } from "@/lib/api/blog-client"
+import { PostLayout, PostPagination } from "@/components/organism/PostLayout"
+import { getPostPage, getPostPathSlugs } from "@/lib/api/blog"
+import { serializeWithToc } from "@/lib/api/blog-client"
+import {
+   INDEX_PAGE_SLUG,
+   PostMeta,
+   PostPageMeta,
+   TocItem,
+} from "@/lib/api/blog-common"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { estimateReadingMinutes } from "@/lib/utils"
 import { DEFAULT_LOCALE, HOST_URL } from "@/lib/utils/consts"
@@ -21,6 +28,8 @@ import { useTranslation } from "next-i18next"
 interface MDXPost {
    source: MDXRemoteSerializeResult<Record<string, unknown>>
    meta: PostMeta
+   page: PostPageMeta | null
+   toc: TocItem[]
 }
 
 export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
@@ -30,20 +39,34 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
    const locale = i18n.language ?? DEFAULT_LOCALE
 
    const { t: ct } = useTranslation([COMMON_TNS])
-   const { source, meta } = post
+   const { source, meta, page, toc } = post
+
+   const currentPageSlug = page?.slug ?? INDEX_PAGE_SLUG
+   const isMultiPage = meta.pages.length > 1
+   const isIndex = currentPageSlug === INDEX_PAGE_SLUG
+   const pageIndex = meta.pages.findIndex((el) => el.slug === currentPageSlug)
 
    const postDate = new Date(meta.date)
+   const heading = isIndex ? meta.title : (page?.title ?? meta.title)
    const description =
       meta.excerpt ??
       `Read the post "${meta.title}" written on ${postDate.toLocaleDateString(
          locale
       )}.`
-   const canonicalUrl = `/p/${meta.slug}`
+   const canonicalUrl = isIndex
+      ? `/p/${meta.slug}`
+      : `/p/${meta.slug}/${currentPageSlug}`
+   // A page claims its own words, not the whole post's.
+   const wordCount = isMultiPage ? (page?.wordCount ?? 0) : meta.wordCount
 
    return (
       <PageContainer>
          <Head>
-            <title>{meta.title} | E. Berke Karagöz</title>
+            <title>
+               {isIndex
+                  ? `${meta.title} | E. Berke Karagöz`
+                  : `${heading} · ${meta.title} | E. Berke Karagöz`}
+            </title>
             <meta name="description" content={description} />
             <meta content={meta.tags.toString()} name="keywords" />
             <meta content="Berke Karagoz" name="Author" />
@@ -64,7 +87,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
             <meta content="index, follow" name="yandexBOT" />
 
             {/* <!-- Open Graph meta tags for social media sharing --> */}
-            <meta property="og:title" content={meta.title} />
+            <meta property="og:title" content={heading} />
             <meta property="og:site_name" content="Berke Karagoz" />
             <meta property="og:description" content={description} />
             {meta.coverSrc && (
@@ -78,7 +101,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:site" content="@EBerkeKaragoz" />
             <meta name="twitter:creator" content="@EBerkeKaragoz" />
-            <meta name="twitter:title" content={meta.title} />
+            <meta name="twitter:title" content={heading} />
             <meta name="twitter:description" content={description} />
             {meta.coverSrc && (
                <meta name="twitter:image" content={`${HOST_URL}${meta.coverSrc}`} />
@@ -96,25 +119,32 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
          <Header />
          <Main>
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
-            <div
-               className="mx-auto rounded-none md:py-4 md:px-4 card-backdrop md:w-min"
-               style={{ maxInlineSize: "100vw" }}
-            >
+
+            <PostLayout meta={meta} currentPageSlug={currentPageSlug} toc={toc}>
                <Section as="article" block prose className="py-8 md:py-4 sm:text-lg">
-                  <div style={{ width: "100vw", height: 0 }} />
+                  {isMultiPage && !isIndex && (
+                     <p className="mb-1 text-sm text-subtitle-color opacity-60">
+                        <LinkText href={`/p/${meta.slug}`}>{meta.title}</LinkText>
+                        {` • ${ct("page x of y", {
+                           current: pageIndex + 1,
+                           total: meta.pages.length,
+                        })}`}
+                     </p>
+                  )}
                   <h1 className="mt-0 mb-1 md:mt-2 h1 text-gradient-primary">
-                     {meta.title}
+                     {heading}
                   </h1>
                   <p className="mb-6 text-right opacity-60 text-subtitle-color">
                      {`${postDate.toLocaleDateString(locale)} `}
-                     {`• ${estimateReadingMinutes(meta.wordCount)} ${ct(
-                        "min read"
-                     )}`}
+                     {`• ${estimateReadingMinutes(wordCount)} ${ct("min read")}`}
                   </p>
                   <RenderMDX {...source} />
-                  <p className="mt-8 text-right opacity-60">
-                     {`"${meta.title}", ${postDate.toLocaleString(locale)}`}
-                  </p>
+
+                  {!isMultiPage && (
+                     <p className="mt-8 text-right opacity-60">
+                        {`"${meta.title}", ${postDate.toLocaleString(locale)}`}
+                     </p>
+                  )}
                   <p className="text-right opacity-80">
                      {meta.tags.map((tag, i) => (
                         <span key={tag}>
@@ -125,10 +155,21 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
                   </p>
                </Section>
 
+               {isMultiPage && (
+                  <Section block prose className="pb-8 md:pb-4">
+                     <PostPagination meta={meta} currentPageSlug={currentPageSlug} />
+                  </Section>
+               )}
+
                <Section block className="py-8 md:py-4 mt-4 sm:text-lg">
-                  <GithubCommentSection className="mb-10" />
+                  <GithubCommentSection
+                     className="mb-10"
+                     // One discussion per post, not per page.
+                     term={isMultiPage ? `/p/${meta.slug}` : undefined}
+                  />
                </Section>
-            </div>
+            </PostLayout>
+
             <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
          </Main>
          <Footer />
@@ -138,9 +179,13 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
    const { locale = DEFAULT_LOCALE, params } = ctx
-   const { slug } = params as { slug: string }
-   const { content: stringContent, meta } = getPostFromSlug(slug)
-   const mdxSource = await serializeWithAppOptions(stringContent)
+   const { slug: slugParts } = params as { slug: string[] }
+
+   if (slugParts.length > 2) return { notFound: true }
+
+   const [postSlug, pageSlug = INDEX_PAGE_SLUG] = slugParts
+   const { content: stringContent, meta, page } = getPostPage(postSlug, pageSlug)
+   const { source: mdxSource, toc } = await serializeWithToc(stringContent)
 
    return {
       props: {
@@ -150,7 +195,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             COMMON_TNS,
          ])),
          // Will be passed to the page component as props
-         post: { source: mdxSource, meta },
+         post: { source: mdxSource, meta, page, toc },
       },
    }
 }
@@ -158,9 +203,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 export const getStaticPaths: GetStaticPaths = async ({
    locales = [DEFAULT_LOCALE],
 }) => {
-   const slugs = getSlugs()
-
-   const paths = slugs
+   const paths = getPostPathSlugs()
       .map((slug) =>
          locales.map((locale) => ({
             params: { slug },

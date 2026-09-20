@@ -20,5 +20,12 @@
    "other": "diğer",
    "min read": "dakikalık okuma",
    "source code": "kaynak kodu",
-   "click me": "bana tıkla"
+   "click me": "bana tıkla",
+   "on this page": "bu sayfada",
+   "contents": "içindekiler",
+   "pages": "sayfa",
+   "page x of y": "sayfa {{current}} / {{total}}",
+   "previous": "önceki",
+   "next": "sonraki",
+   "close": "kapat"
 }

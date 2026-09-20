@@ -9,9 +9,11 @@ import { useTranslation } from "next-i18next"
 
 type GithubCommentProps = {
    disableReactions?: boolean
+   /** Pins several pages to one discussion, e.g. the pages of a single post */
+   term?: string
 }
 
-const GithubComment = ({ disableReactions = false }) => {
+const GithubComment = ({ disableReactions = false, term }: GithubCommentProps) => {
    const [mounted, setMounted] = useState(false)
    const { theme = "dark" } = useTheme()
    const { i18n } = useTranslation()
@@ -39,7 +41,8 @@ const GithubComment = ({ disableReactions = false }) => {
          repoId={giscusConfig.repoId}
          category={giscusConfig.category}
          categoryId={giscusConfig.categoryId}
-         mapping={giscusConfig.mapping}
+         mapping={term ? "specific" : giscusConfig.mapping}
+         term={term}
          strict={giscusConfig.strict}
          reactionsEnabled={disableReactions ? "0" : giscusConfig.reactionsEnabled}
          emitMetadata={giscusConfig.emitMetadata}
