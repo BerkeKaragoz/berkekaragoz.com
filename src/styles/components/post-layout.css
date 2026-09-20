@@ -1,0 +1,38 @@
+@layer components {
+   .post-rail {
+      display: none;
+   }
+
+   @media (min-width: 1024px) {
+      .post-layout {
+         /* Both side tracks resolve to the same width, filled or not, so the
+            article sits in the centre whatever a rail holds. */
+         --post-rail: clamp(8rem, 14vw, 14rem);
+
+         display: grid;
+         grid-template-columns:
+            var(--post-rail)
+            minmax(0, calc(theme("maxWidth.prose") + 4rem))
+            var(--post-rail);
+         justify-content: center;
+         gap: 2rem;
+      }
+
+      .post-rail {
+         display: block;
+         position: relative;
+         min-width: 0;
+         padding-block: 2rem;
+      }
+
+      .post-panel {
+         position: sticky;
+         top: 5rem;
+         max-height: calc(100vh - 6.5rem);
+         overflow-y: auto;
+         overscroll-behavior: contain;
+         /* Rail entries are heading and page titles. Neither has a length limit. */
+         overflow-wrap: anywhere;
+      }
+   }
+}

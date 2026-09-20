@@ -27,7 +27,7 @@ export const PostNavSheet = ({
             aria-hidden="true"
          />
          <div className="fixed inset-x-0 bottom-0 flex justify-center">
-            <Dialog.Panel className="w-full max-w-md p-4 overflow-y-auto card rounded-b-none max-h-[75vh]">
+            <Dialog.Panel className="w-full max-w-md p-4 overflow-y-auto break-words card rounded-b-none max-h-[75vh]">
                <div className="flex items-center justify-between mb-4">
                   <Dialog.Title className="font-medium uppercase-first">
                      {title}

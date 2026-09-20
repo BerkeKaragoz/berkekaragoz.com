@@ -114,6 +114,14 @@
 html {
    text-rendering: optimizeLegibility;
    font-smooth: auto;
+   /* Clears the fixed header, plus the post sub bar below lg. */
+   scroll-padding-top: 6.5rem;
+}
+
+@media (min-width: 1024px) {
+   html {
+      scroll-padding-top: 5rem;
+   }
 }
 
 body {

@@ -10,7 +10,7 @@ Nothing changed. `posts/my-post.mdx` is served at `/p/my-post`.
 Every post now gets a **contents rail** on the right, built from its `h2` and
 `h3` headings. Nothing to author — the headings already carry ids from
 `rehype-slug`, and the rail tracks whichever heading you are reading. It shows
-from `xl` upwards and collapses into a *contents* sheet below that.
+from `lg` upwards and collapses into a *contents* sheet below that.
 
 ## Multi page posts
 
@@ -93,11 +93,14 @@ Comments are shared: every page of a multi page post points giscus at
 | `src/lib/api/blog-client.ts` | MDX serialization, post meta, heading collection |
 | `src/components/organism/PostLayout/` | The rails, the sheets, pagination, scroll spy |
 
-Both rails use the same two part sticky arrangement as the IPA tool's
-`.detailRail` / `.detailPanel` in `src/pages/english-ipa/ipa.module.css`: an
-outer rail that stretches to the row so the panel has somewhere to travel, and
-an inner panel pinned at `top: 5rem` that caps at the viewport, scrolls its own
-overflow and contains its overscroll. Keep the two in step if either moves.
+`src/styles/components/post-layout.css` holds the three column grid. Both side
+tracks resolve to the same `clamp()`, so the article stays centred whether a
+rail holds anything or not, and an empty track needs no spacer. Rail entries are
+heading and page titles, so the panel wraps on `overflow-wrap: anywhere` and
+scrolls its own overflow rather than growing.
+
+The panel is pinned the same way as the IPA tool's `.detailPanel` in
+`src/pages/english-ipa/ipa.module.css`. Keep the two in step if either moves.
 
 Keep value exports out of `blog.ts` if a component needs them. Importing one
 from a component drags `fs` and `glob` into the browser bundle and the page

@@ -13,7 +13,7 @@ type PostNavProps = {
 }
 
 /** Collapses consecutive pages that share a group into one block */
-export const groupPostPages = (pages: PostPageMeta[]) =>
+const groupPostPages = (pages: PostPageMeta[]) =>
    pages.reduce<{ group: string | null; pages: PostPageMeta[] }[]>(
       (groups, page) => {
          const last = groups[groups.length - 1]

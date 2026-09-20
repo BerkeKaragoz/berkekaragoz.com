@@ -42,7 +42,7 @@ export const PostToc = ({
                         aria-current={isActive ? "location" : undefined}
                         className={cn(
                            "block py-1 -ms-px border-s-2 transition-colors hover:text-primary-500",
-                           item.depth === 3 ? "ps-6" : "ps-3",
+                           item.depth === 3 ? "ps-6" : "ps-3 font-semibold",
                            isActive
                               ? "border-primary-500 text-primary-600 dark:text-primary-400"
                               : "border-transparent text-subtitle-color opacity-70"
