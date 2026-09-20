@@ -10,7 +10,7 @@ Nothing changed. `posts/my-post.mdx` is served at `/p/my-post`.
 Every post now gets a **contents rail** on the right, built from its `h2` and
 `h3` headings. Nothing to author — the headings already carry ids from
 `rehype-slug`, and the rail tracks whichever heading you are reading. It shows
-from `lg` upwards and collapses into a *contents* sheet below that.
+from `lg` upwards; there is no contents button or sheet on smaller screens.
 
 ## Multi page posts
 
@@ -81,8 +81,27 @@ is used as the cover instead.
 Reading time is per page in the article header, and the total across pages in
 the sidebar and on the post card.
 
-Comments are shared: every page of a multi page post points giscus at
-`/p/<slug>`, so the post has one discussion rather than one per page.
+Comments are per page. By default, giscus maps each page by its pathname, so
+`/p/my-guide` and `/p/my-guide/installation` each carry their own discussion.
+
+When moving or renaming a page, preserve its discussion by adding
+`commentTerm` to that page's frontmatter before changing its URL:
+
+```yaml
+---
+title: cn
+commentTerm: p/readme-shortkit-cn
+---
+```
+
+Use the original discussion's exact identifier. Giscus's pathname mapping
+removes the leading slash, so `/p/readme-shortkit-cn` uses
+`p/readme-shortkit-cn`. Keep this value unchanged on later moves. Redirects
+alone do not reconnect discussions.
+
+`commentTerm` belongs to the individual page, including a single file post
+or an `index.mdx`; child pages never inherit it from the index. Pages without
+it keep the configured default mapping.
 
 ## Where the code lives
 

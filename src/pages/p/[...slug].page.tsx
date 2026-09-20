@@ -29,6 +29,7 @@ interface MDXPost {
    source: MDXRemoteSerializeResult<Record<string, unknown>>
    meta: PostMeta
    page: PostPageMeta | null
+   commentTerm: string | null
    toc: TocItem[]
 }
 
@@ -39,7 +40,7 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
    const locale = i18n.language ?? DEFAULT_LOCALE
 
    const { t: ct } = useTranslation([COMMON_TNS])
-   const { source, meta, page, toc } = post
+   const { source, meta, page, commentTerm, toc } = post
 
    const currentPageSlug = page?.slug ?? INDEX_PAGE_SLUG
    const isMultiPage = meta.pages.length > 1
@@ -163,9 +164,9 @@ export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
 
                <Section block className="py-8 md:py-4 mt-4 sm:text-lg">
                   <GithubCommentSection
+                     key={canonicalUrl}
                      className="mb-10"
-                     // One discussion per post, not per page.
-                     term={isMultiPage ? `/p/${meta.slug}` : undefined}
+                     term={commentTerm ?? undefined}
                   />
                </Section>
             </PostLayout>
@@ -184,7 +185,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
    if (slugParts.length > 2) return { notFound: true }
 
    const [postSlug, pageSlug = INDEX_PAGE_SLUG] = slugParts
-   const { content: stringContent, meta, page } = getPostPage(postSlug, pageSlug)
+   const { content: stringContent, meta, page, commentTerm } = getPostPage(
+      postSlug,
+      pageSlug
+   )
    const { source: mdxSource, toc } = await serializeWithToc(stringContent)
 
    return {
@@ -195,7 +199,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             COMMON_TNS,
          ])),
          // Will be passed to the page component as props
-         post: { source: mdxSource, meta, page, toc },
+         post: { source: mdxSource, meta, page, commentTerm, toc },
       },
    }
 }

@@ -29,6 +29,21 @@ module.exports = {
             destination: "/english-ipa/text-to-ipa",
             permanent: true,
          },
+         {
+            source: "/p/readme-shortkit-cn",
+            destination: "/p/shortkit/cn",
+            permanent: true,
+         },
+         {
+            source: "/p/readme-shortkit-debounce-throttle",
+            destination: "/p/shortkit/debounce-throttle",
+            permanent: true,
+         },
+         {
+            source: "/p/readme-shortkit-make-lazy",
+            destination: "/p/shortkit/make-lazy",
+            permanent: true,
+         },
       ]
    },
    pageExtensions: [

@@ -75,17 +75,16 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
                <div className="inline-block">
                   <span className="text-subtitle-color">
                      {new Date(postMeta.date).toLocaleDateString(locale)}
-                  </span>
+                  </span>                  {postMeta.pages.length > 1 && (
+                     <span className="inline-block ml-1 opacity-60 text-subtitle-color">
+                        {`• ${postMeta.pages.length} ${ct("pages")}`}
+                     </span>
+                  )}
                   <span className="inline-block ml-1 opacity-60 text-subtitle-color">
                      {`• ${estimateReadingMinutes(postMeta.wordCount)} ${ct(
                         "min read"
                      )}`}
                   </span>
-                  {postMeta.pages.length > 1 && (
-                     <span className="inline-block px-1.5 ml-2 text-xs align-middle rounded card text-subtitle-color">
-                        {`${postMeta.pages.length} ${ct("pages")}`}
-                     </span>
-                  )}
                   {!disableSlug && (
                      <span className="hidden ml-2 text-sm sm:inline-block text-subtitle-color opacity-30">
                         {`/p/${postMeta.slug}`}

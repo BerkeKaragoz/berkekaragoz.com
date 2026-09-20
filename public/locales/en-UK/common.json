@@ -22,9 +22,10 @@
    "source code": "source code",
    "click me": "click me",
    "on this page": "on this page",
+   "menu": "Menu",
    "contents": "contents",
    "pages": "pages",
-   "page x of y": "page {{current}} of {{total}}",
+   "page x of y": "Page {{current}} of {{total}}",
    "previous": "previous",
    "next": "next",
    "close": "close"

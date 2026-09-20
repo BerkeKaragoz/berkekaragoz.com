@@ -45,7 +45,13 @@ export const PostToc = ({
                            item.depth === 3 ? "ps-6" : "ps-3 font-semibold",
                            isActive
                               ? "border-primary-500 text-primary-600 dark:text-primary-400"
-                              : "border-transparent text-subtitle-color opacity-70"
+                              : cn(
+                                   "border-transparent",
+                                   // Override global link colors only at rest, preserving hover.
+                                   item.depth === 3
+                                      ? "[&:not(:hover)]:!text-background-500 dark:[&:not(:hover)]:!text-background-400"
+                                      : "[&:not(:hover)]:!text-background-600 dark:[&:not(:hover)]:!text-[#aebbcf]"
+                                )
                         )}
                      >
                         {item.text}

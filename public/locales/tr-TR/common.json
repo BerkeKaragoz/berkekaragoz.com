@@ -22,9 +22,10 @@
    "source code": "kaynak kodu",
    "click me": "bana tıkla",
    "on this page": "bu sayfada",
+   "menu": "Menü",
    "contents": "içindekiler",
    "pages": "sayfa",
-   "page x of y": "sayfa {{current}} / {{total}}",
+   "page x of y": "Sayfa {{current}} / {{total}}",
    "previous": "önceki",
    "next": "sonraki",
    "close": "kapat"

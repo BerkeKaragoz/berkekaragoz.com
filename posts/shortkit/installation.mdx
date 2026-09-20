@@ -1,0 +1,34 @@
+---
+title: Installation
+---
+
+Each package installs on its own. There's no meta package and nothing shared
+between them, so take only what you need.
+
+## Install
+
+```bash
+npm i @shortkit/cn
+```
+
+```bash
+npm i @shortkit/debounce-throttle
+```
+
+```bash
+npm i @shortkit/make-lazy
+```
+
+## What ships
+
+`@shortkit/cn` and `@shortkit/debounce-throttle` each publish three files and
+nothing else: a minified `index.js`, an `index.d.ts` beside it, and the readme.
+There are no dependencies, so an install adds exactly one entry to your
+lockfile.
+
+Both are CommonJS, built with the `__esModule` interop flag. `import { cn } from
+"@shortkit/cn"` works as written under any bundler, and under Node's ESM interop
+the named exports resolve. `require` works unchanged. There's no separate ESM
+build and no `exports` map, so a deep import is just a file path.
+
+Types come with the package. Nothing to install from `@types`.

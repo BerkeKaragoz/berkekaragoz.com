@@ -1,0 +1,50 @@
+---
+title: shortkit
+pageTitle: Overview
+tags:
+   - npm
+   - javascript
+   - web-development
+   - readme
+date: 18 Jan 26 22:21 UTC+0
+excerpt: Tiny, single purpose JavaScript utilities. One job each, no dependencies.
+nav:
+   - Getting started:
+        - installation
+   - Packages:
+        - cn
+        - debounce-throttle
+        - make-lazy
+---
+
+`shortkit` is a set of tiny JavaScript utilities, published one package per job.
+
+## The rule
+
+Every package follows the same constraints:
+
+- **One job.** A package does one thing. If you need two, you install two.
+- **No dependencies.** Nothing gets pulled in behind your back, so your lockfile
+  stays clear of anything you did not ask for.
+- **Small enough to read.** You can open the source and understand it in a
+  sitting instead of taking it on faith.
+
+These aren't hard problems. They just shouldn't cost you a dependency tree, or
+an afternoon spent working out what the code does.
+
+## The packages
+
+| Package | What it does | |
+| --- | --- | --- |
+| `@shortkit/cn` | Merges strings and condition objects into a class name string. | [Read](/p/shortkit/cn) |
+| `@shortkit/debounce-throttle` | Executor-style debounce and throttle, called directly rather than wrapping. | [Read](/p/shortkit/debounce-throttle) |
+| `@shortkit/make-lazy` | Defers a function until something reads its result. | [Read](/p/shortkit/make-lazy) |
+
+`@shortkit/cn` and `@shortkit/debounce-throttle` run this site. `@shortkit/make-lazy`
+is published but not used here.
+
+## Where to start
+
+Each package page is its readme, install line and all. If you're picking between
+debouncing and throttling, [`@shortkit/debounce-throttle`](/p/shortkit/debounce-throttle)
+compares the two at the end.

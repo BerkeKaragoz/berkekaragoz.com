@@ -23,6 +23,8 @@ export interface Post {
 export interface PostPage extends Post {
    /** `null` for single file posts */
    page: PostPageMeta | null
+   /** A stable discussion identifier owned by this page, never inherited. */
+   commentTerm: string | null
 }
 
 let slugs: string[] | null = null
@@ -160,15 +162,21 @@ export const getPostPage = (
    const post = getPostFromSlug(slug)
    const page = post.meta.pages.find((el) => el.slug === pageSlug) ?? null
 
-   if (pageSlug === INDEX_PAGE_SLUG) return { ...post, page }
-
    const file = readPostMatter(slug, pageSlug)
 
    if (file === null) {
       throw new Error(`No page "${pageSlug}" found for the post "${slug}".`)
    }
 
-   return { content: file.content, meta: post.meta, page }
+   return {
+      content: file.content,
+      meta: post.meta,
+      page,
+      commentTerm:
+         typeof file.data.commentTerm === "string"
+            ? file.data.commentTerm.trim() || null
+            : null,
+   }
 }
 
 export const getAllPosts = () => {

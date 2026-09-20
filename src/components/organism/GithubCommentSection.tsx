@@ -9,7 +9,7 @@ import { useTranslation } from "next-i18next"
 
 type GithubCommentProps = {
    disableReactions?: boolean
-   /** Pins several pages to one discussion, e.g. the pages of a single post */
+   /** Uses a stable discussion identifier even when the page URL changes. */
    term?: string
 }
 

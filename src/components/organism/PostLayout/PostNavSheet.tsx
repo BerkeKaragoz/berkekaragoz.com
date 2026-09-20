@@ -11,7 +11,7 @@ type PostNavSheetProps = {
    children: ReactNode
 }
 
-/** Page tree and contents sheet, below the rail breakpoints */
+/** Page navigation sheet, below the rail breakpoint */
 export const PostNavSheet = ({
    open,
    title,
@@ -21,7 +21,7 @@ export const PostNavSheet = ({
    const { t } = useTranslation([COMMON_TNS])
 
    return (
-      <Dialog open={open} onClose={onClose} className="relative z-30">
+      <Dialog open={open} onClose={onClose} className="post-nav-sheet relative z-30">
          <div
             className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"
             aria-hidden="true"

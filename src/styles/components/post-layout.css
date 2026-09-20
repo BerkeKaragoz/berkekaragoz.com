@@ -1,3 +1,15 @@
+/* Keep the viewport and fixed header steady when a mobile sheet locks scrolling. */
+@supports (scrollbar-gutter: stable) {
+   html:has(.post-layout) {
+      scrollbar-gutter: stable;
+   }
+
+   html:has(.post-nav-sheet) {
+      /* The gutter already reserves the space Headless UI adds as inline padding. */
+      padding-right: 0 !important;
+   }
+}
+
 @layer components {
    .post-rail {
       display: none;
