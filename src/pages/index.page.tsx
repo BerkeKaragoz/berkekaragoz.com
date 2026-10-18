@@ -84,7 +84,7 @@ const Homepage: NextPage<
          <Header />
 
          <Main>
-            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <div className="hero-backdrop dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
                <Section
                   id="hero"
                   className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row md:max-h-screen-sm xl:max-h-screen-lg lg:gap-8"

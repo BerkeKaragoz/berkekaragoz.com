@@ -2,6 +2,11 @@
    .hero-widget {
       @apply flex items-start h-full min-w-full p-4 overflow-y-auto bg-opacity-50 justify-items-start md:w-max md:p-8 rounded-t-xl md:rounded-t-none rounded-b-xl bg-primary-100 dark:bg-background-900;
       background: linear-gradient(90deg, theme("colors.primary.100") 15%, #fff);
+      /* Below md the widget is its own scroll box; fade its right edge so the
+         cut reads as "swipe for more", and pad the end so the last card can
+         scroll clear of the fade. */
+      mask-image: linear-gradient(to left, transparent, #000 2rem);
+      padding-inline-end: 2rem;
    }
 
    .dark .hero-widget {
@@ -11,6 +16,14 @@
    @media screen(md) {
       .hero-widget {
          min-width: 2200px;
+         mask-image: none;
+         padding-inline-end: 2rem;
+      }
+
+      /* From md the widget runs past the screen edge on purpose, so the fade
+         sits on the full-width hero backdrop instead, at the screen edge. */
+      .hero-backdrop {
+         mask-image: linear-gradient(to left, transparent, #000 5rem);
       }
    }
 }
