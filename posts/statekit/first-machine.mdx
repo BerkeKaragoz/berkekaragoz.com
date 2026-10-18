@@ -1,0 +1,67 @@
+---
+title: Your first machine
+---
+
+A machine is created from a config: the `data` it holds and the `events` that
+change it.
+
+```ts
+import { createMachine } from "@statekit/core"
+
+type Todo = { id: number; title: string; done: boolean }
+
+const todoMachine = createMachine({
+   data: {
+      todos: [] as Todo[],
+      nextId: 1,
+   },
+   events: {
+      add: ({ draft }, title: string) => {
+         draft.todos.push({
+            id: draft.nextId++,
+            title,
+            done: false,
+         })
+      },
+   },
+})
+```
+
+The types come from the config: `todoMachine.event.add` takes a `string`,
+`todoMachine.data.todos` is a `Todo[]`, and a misspelled event name is a type
+error.
+
+## Call events
+
+```ts
+todoMachine.event.add("Write the docs")
+todoMachine.event.add("Ship it")
+
+todoMachine.data.todos.length // 2
+```
+
+An event's first parameter comes from the machine. Here it's the `draft`, and
+[data and events](/p/statekit/data-and-events) covers the rest of it. The
+parameters after it are the arguments you pass.
+
+## Anywhere
+
+The machine is a plain object, so nothing has to be created or subscribed
+before a timer, a worker handler or a test calls it:
+
+```ts
+setTimeout(() => todoMachine.event.add("Later"), 1000)
+
+worker.onmessage = (message) =>
+   todoMachine.event.add(message.data)
+```
+
+```ts
+test("add gives each todo an id", () => {
+   todoMachine.event.add("Test me")
+
+   const todo = todoMachine.data.todos.at(-1)!
+   expect(todo.title).toBe("Test me")
+   expect(todo.done).toBe(false)
+})
+```

@@ -1,0 +1,144 @@
+---
+title: States
+---
+
+States are declared, typed names for what the machine is doing. If you keep
+them in data as `isLoading` and `isFailed`, nothing stops both being `true`.
+`setState` replaces the current state, so states can't disagree.
+
+```ts
+import { createMachine } from "@statekit/core"
+
+const uploadMachine = createMachine({
+   states: ["idle", "uploading", "done", "failed"],
+   events: {
+      start: ({ setState, S }) => setState(S.uploading),
+      finish: ({ setState, S }) => setState(S.done),
+      fail: ({ setState, S }) => setState(S.failed),
+   },
+})
+
+const { STATE } = uploadMachine
+
+// the first declared state starts active
+uploadMachine.state === STATE.idle // true
+
+uploadMachine.event.start()
+uploadMachine.state === STATE.uploading // true
+```
+
+Inside an event, `S` is the machine's `STATE` and `setState` switches state.
+Outside, call `machine.setState(machine.STATE.done)`. A misspelled state is a
+type error in both.
+
+## States are flags
+
+Each state is one bit: with the states above, `STATE` is
+`{ idle: 1, uploading: 2, done: 4, failed: 8 }`, and a machine has room for 32.
+`setState` replaces every active state with one, so `===` works while a machine
+is in one state at a time.
+
+The bits let a machine be in several states at once. `setState.enter` turns one
+on and keeps the others, `setState.exit` turns one off:
+
+```ts
+const playerMachine = createMachine({
+   states: ["idle", "playing", "buffering"],
+   events: {
+      play: ({ setState, S }) => setState(S.playing),
+      bufferStart: ({ setState, S }) =>
+         setState.enter(S.buffering),
+      bufferEnd: ({ setState, S }) =>
+         setState.exit(S.buffering),
+      stop: ({ setState, S }) => setState(S.idle),
+   },
+   transitionRules: {
+      deny: {
+         idle: ["buffering"],
+      },
+   },
+})
+```
+
+Play, then start buffering, and the machine is `playing` and `buffering` at
+once: `state` is `0b110`, which is `6`. The rule makes buffering from `idle` an
+error:
+
+<Demo name="statekit-state-flags" minHeight={190} />
+
+With more than one state on, check a state with `&`:
+
+```ts
+const isBuffering =
+   (playerMachine.state &
+      playerMachine.STATE.buffering) !==
+   0
+```
+
+Use that check on a machine you didn't write. A
+[decoration](/p/statekit/decorations) can turn states on next to the active
+ones, and then `===` misses.
+
+## After an await
+
+Inside an async event, check the state after an `await` with `hasState`. It
+reads the state at the time of the call. A `state` destructured from the first
+parameter is the state the event started with:
+
+```ts
+const uploadChanges = () =>
+   new Promise((resolve) => setTimeout(resolve, 1000))
+
+const syncMachine = createMachine({
+   states: ["idle", "syncing", "paused"],
+   events: {
+      sync: async ({ setState, hasState, S }) => {
+         setState(S.syncing)
+         await uploadChanges()
+
+         // paused while uploading? leave it paused
+         if (hasState(S.paused)) return
+         setState(S.idle)
+      },
+      pause: ({ setState, S }) => setState(S.paused),
+   },
+})
+```
+
+`hasState(S.idle | S.paused)` is true when either is active.
+
+## Transition rules
+
+`transitionRules` limits where a state can go. For a named state, `only` lists
+the states it may move to and `deny` the states it may not:
+
+```ts
+const checkoutMachine = createMachine({
+   states: ["cart", "paying", "paid", "failed"],
+   events: {
+      pay: ({ setState, S }) => setState(S.paying),
+      succeed: ({ setState, S }) => setState(S.paid),
+      fail: ({ setState, S }) => setState(S.failed),
+   },
+   transitionRules: {
+      only: {
+         paying: ["paid", "failed"],
+      },
+      deny: {
+         cart: ["paid"],
+      },
+   },
+})
+```
+
+A blocked transition throws an error that starts
+`Cannot make transition: cart (1) => paid (100)`, with the states as bits. With
+several states active, every active state's rule must allow the one being
+entered. Leaving a state is always allowed. A state in both `only` and `deny`
+throws when the machine is created.
+
+## Data or states?
+
+A state is what the machine is doing, the box you'd draw in a diagram. Data is
+what it knows. An upload's progress percentage is data, while `uploading` is a
+state.

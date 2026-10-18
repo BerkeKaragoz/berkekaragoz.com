@@ -1,0 +1,85 @@
+---
+title: Infinite queries
+---
+
+`withTanstackInfiniteQuery` is the [query decoration](/p/statekit/tanstack-query)
+for lists that load page by page. The machine holds one flat list, and
+`fetchNextPage` adds to it.
+
+```ts
+import { createMachine } from "@statekit/core"
+import {
+   withTanstackInfiniteQuery,
+} from "@statekit/decoration-tanstack-query"
+
+type Post = { id: number; title: string }
+
+const feedMachine = createMachine(
+   withTanstackInfiniteQuery(
+      {
+         states: [
+            "idle",
+            "loading",
+            "loadingMore",
+            "ready",
+            "failed",
+         ],
+         data: {
+            posts: [] as Post[],
+            hasMore: true,
+            error: null as Error | null,
+         },
+      },
+      {
+         initialPageParam: 0,
+         queryFn: ({ pageParam }) => getPosts(pageParam),
+         into: (d) => d.posts,
+      }
+   )
+)
+
+await feedMachine.event.fetch()
+await feedMachine.event.fetchNextPage()
+feedMachine.data.posts // both pages' posts, in one list
+```
+
+Here `getPosts(page)` returns `{ items, nextCursor }`, with `nextCursor` as
+`null` on the last page. The demo's API is fake, slow on purpose, and can be
+told to fail:
+
+<Demo name="statekit-infinite-query" minHeight={300} />
+
+## What it adds
+
+On top of the query's `fetch`, `refetch`, `cancel`, `subscribe` and `sync`:
+
+- `fetchNextPage()` loads the next page in the `loadingMore` state. With no
+  page loaded yet it loads the first one, in `loading`. After the last page it
+  does nothing.
+- `hasMore` is written to the `hasMore` field.
+
+While the next page loads, the machine is in `loadingMore` and still in
+`ready`: there is data on screen and more coming. In the demo, both lights are
+on.
+
+`refetch` reloads every loaded page. When it fails, the machine enters
+`failed`, the error is written, and the posts already there stay.
+
+## Pages of another shape
+
+By default the items come from each page's `items` and the next page's param
+from the last page's `nextCursor`. For an API that answers differently, set
+`items` and TanStack's `getNextPageParam`:
+
+```ts
+withTanstackInfiniteQuery(config, {
+   initialPageParam: 1,
+   queryFn: ({ pageParam }) => getPostsPage(pageParam),
+   items: (page) => page.results,
+   getNextPageParam: (lastPage) =>
+      lastPage.next_page ?? undefined,
+   into: (d) => d.posts,
+})
+```
+
+When `getNextPageParam` returns `null` or `undefined`, there are no more pages.

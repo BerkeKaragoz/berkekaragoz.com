@@ -1,0 +1,128 @@
+---
+title: Decorations
+---
+
+A decoration is reusable behaviour for machines. It takes a machine config and
+returns it with more events and selectors.
+
+It never adds data or states. The machine keeps the shape its config declares,
+and the decoration is told, through slots, where in that shape to work.
+
+## Using one
+
+A decoration is a function of the config and its options. Pass what it returns
+to `createMachine`. Here `withLoad` loads something into a field and reports
+progress in the machine's states:
+
+```ts
+import { createMachine } from "@statekit/core"
+import { withLoad } from "./withLoad"
+
+type User = { name: string }
+
+const userMachine = createMachine(
+   withLoad(
+      {
+         states: ["idle", "loading", "ready"],
+         data: { user: null as User | null },
+      },
+      { load: getUser, into: (d) => d.user }
+   )
+)
+
+await userMachine.event.load()
+userMachine.data.user // { name: "Ada" }
+```
+
+`load` is the event the decoration added. `into` is a slot, a function from the
+data to the field the decoration writes. The states it uses, `loading` and
+`ready`, it finds by name, and `loading: ({ S }) => S.busy` points one
+elsewhere. A slot that finds nothing does nothing, so a machine without a
+`loading` state skips that step.
+
+Mistakes are type errors: a required option left out, a field that can't hold
+what the decoration writes, or a state the machine doesn't have.
+
+[`@statekit/decoration-tanstack-query`](/p/statekit/tanstack-query) works the
+same way: `withLoad` with caching, deduplication, cancellation, refetching and
+paging.
+
+## Stacking
+
+Decorations nest, and the innermost is applied first:
+
+```ts
+const machine = createMachine(
+   withLogging(withLoad(config, loadOptions), {})
+)
+```
+
+When the config already has an event with the same name as one a decoration
+adds, both run, the config's first, and the call resolves to the config's
+result once both have finished. Two decorations on one machine work the same
+way. A selector with the same name replaces the earlier one.
+
+## Writing one
+
+```bash
+npm i @statekit/decorations
+```
+
+`createDecoration` takes a name, the options a user passes, and the events and
+selectors to add. This is `withLoad`:
+
+```ts
+import {
+   createDecoration,
+   fn,
+   slot,
+} from "@statekit/decorations"
+
+type User = { name: string }
+
+export const withLoad = createDecoration({
+   name: "withLoad",
+   options: {
+      load: fn<() => Promise<User>>(),
+      into: slot.data<User | null>(),
+      loading: slot.state("loading"),
+      success: slot.state("ready", "success"),
+   },
+   events: {
+      load: async ({ options }) => {
+         options.loading.enter()
+         const user = await options.load()
+
+         options.into.set(user)
+         options.loading.exit()
+         options.success.enter()
+      },
+   },
+})
+```
+
+### Options
+
+| Option | When decorating | In the event |
+| --- | --- | --- |
+| `fn<F>()` | Required | The function |
+| A plain value | Optional, the value is the default | The value |
+| `slot.data<T>()` | Required: `(d) => d.user`, or `(d, id) => d.users[id]` for `event(id)` | `get()`, `set(value)`, `path` |
+| `slot.field<T>(names)` | Optional: `(d) => d.error`. Defaults to the first of the names that is a top-level field | `get()`, `set(value)`, `path` |
+| `slot.state(names)` | Optional: `({ S }) => S.done`. Defaults to the first of the names that is a state | `enter()`, `exit()`, `is()` |
+
+`slot.state("ready", "success")` uses whichever of the two the machine has.
+
+### What events and selectors get
+
+A decoration's events get `{ options, data, id }`, then their arguments.
+`options` are the resolved options: functions to call, slots to read and write.
+`data` is a copy of the machine's data, taken when it's read, and it stays
+usable after the event ends. There is no draft, since a decoration writes
+through its slots. `id` is the machine's.
+
+Slot paths get the event's arguments, so with `into: (d, id) => d.users[id]`,
+`load(42)` writes to `d.users[42]`.
+
+`selectors` go next to `events` and get the same. Slots there are for reading,
+and `set`, `enter` and `exit` throw at runtime.

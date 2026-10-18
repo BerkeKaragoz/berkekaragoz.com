@@ -1,0 +1,68 @@
+---
+title: Selectors
+---
+
+A selector is a named read. It gets `data`, `state`, `S` and the machine's `id`,
+and returns something derived from them:
+
+```ts
+import { createMachine } from "@statekit/core"
+
+type Product = {
+   id: number
+   name: string
+   price: number
+   inStock: boolean
+}
+
+const catalogMachine = createMachine({
+   states: ["browsing", "checkingOut"],
+   data: {
+      products: [] as Product[],
+      query: "",
+   },
+   events: {
+      search: ({ draft }, query: string) => {
+         draft.query = query
+      },
+   },
+   selectors: {
+      results: ({ data }) =>
+         data.products.filter((product) =>
+            product.name
+               .toLowerCase()
+               .includes(data.query.toLowerCase())
+         ),
+      byId: ({ data }, id: number) =>
+         data.products.find(
+            (product) => product.id === id
+         ),
+      canEditCart: ({ state, S }) =>
+         (state & S.checkingOut) === 0,
+   },
+})
+
+catalogMachine.select.results()
+catalogMachine.select.byId(42)
+catalogMachine.select.canEditCart()
+```
+
+As with events, extra parameters become the selector's arguments, typed.
+
+## Why not a function next to the machine?
+
+`getResults(catalogMachine.data)` works too. What a selector adds:
+
+- It travels with the machine, so whatever imports the machine gets its reads
+  too.
+- In React, `m.select` is tracked like `m.data`. A component that calls a
+  selector subscribes to the fields the selector read, so it rerenders when one
+  of those changes. See [rerenders](/p/statekit/rerenders).
+- [Decorations](/p/statekit/decorations) can add them. The TanStack Query
+  decoration adds a selector that reads a field and fetches it when it's
+  missing or stale.
+
+## Keep them cheap
+
+A selector runs every time it's called. Nothing is memoised, so put expensive
+derived values in data, written by the event that changes their inputs.

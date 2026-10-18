@@ -1,0 +1,91 @@
+---
+title: Subscribing to events
+---
+
+`subscribeEvents` calls a listener for every event a machine runs, with the
+event's name, its arguments and how it went. It returns the function that stops
+listening.
+
+```ts
+import { createMachine } from "@statekit/core"
+
+const sleep = (ms: number) =>
+   new Promise((resolve) => setTimeout(resolve, ms))
+
+const counterMachine = createMachine({
+   data: { count: 0 },
+   events: {
+      increment: ({ draft }, by: number) => {
+         draft.count += by
+      },
+      save: async () => {
+         await sleep(100)
+      },
+   },
+})
+
+const stop = counterMachine.subscribeEvents(
+   ([name, args, success]) => {
+      console.log(name, args, success)
+   }
+)
+
+counterMachine.event.increment(2)
+// "increment", [2], undefined
+
+await counterMachine.event.save()
+// "save", [], undefined   when it starts
+// "save", [], true        when it resolves
+
+stop()
+```
+
+A sync event sends one call, with `success` as `undefined`, or `false` if it
+threw. An async event sends two: one when it starts, with `undefined`, and one
+when it settles, with `true` or `false`. The
+[async events demo](/p/statekit/data-and-events#async-events) prints them as
+they happen.
+
+## What it's for
+
+Code that watches a machine without being part of it:
+
+- logging and analytics;
+- a dev panel of events as they happen;
+- one machine reacting to another.
+
+This site's home page does the last one. A random-number machine regenerates
+its number when the app machine reports it has mounted:
+
+```ts
+const randomIntMachine = createMachine({
+   data: { number: 99 },
+   initializer: (init) => {
+      appMachine.subscribeEvents(([eventName]) => {
+         if (eventName !== "mounted") return
+         randomIntMachine.event.generate()
+      })
+
+      return init
+   },
+   events: {
+      generate: ({ draft }, max = 99) => {
+         draft.number = generateRandomInt(max)
+      },
+   },
+})
+```
+
+The `initializer` runs once, in the browser, the first time a component uses
+the machine. See [providers](/p/statekit/providers#initializers).
+
+## Details
+
+- Listeners run in the order they subscribed.
+- A listener that throws is reported with `console.error`. The event still
+  finishes and the other listeners still run.
+- Calling the returned function twice is safe.
+- `setData` isn't an event, so it isn't reported.
+- At runtime the second element is the full argument list, as above, but the
+  current types describe it as the first argument only. Treat it as
+  `unknown[]` for now.

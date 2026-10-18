@@ -27,9 +27,15 @@ importers:
       '@shortkit/debounce-throttle':
         specifier: ^1.0.2
         version: 1.0.2
+      '@statekit/decoration-tanstack-query':
+        specifier: 0.0.2-dev
+        version: 0.0.2-dev(@tanstack/query-core@5.104.3)
       '@statekit/react':
-        specifier: 0.10.4-dev
-        version: 0.10.4-dev(@types/react@19.2.8)(react@19.2.3)
+        specifier: 0.13.3-dev
+        version: 0.13.3-dev(@types/react@19.2.8)(react@19.2.3)
+      '@tanstack/query-core':
+        specifier: ^5.104.3
+        version: 5.104.3
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
@@ -1749,14 +1755,22 @@ packages:
   '@speed-highlight/core@1.2.17':
     resolution: {integrity: sha512-Z92FwKpCtfaW1V0jTU/fh3QzYEZN8wDwrzRIBoADCJfn4mJCNcJN/XegifX7BDrQ8/h9Xh/JnbyMchL0FqXrkg==}
 
-  '@statekit/connector@0.3.2-dev':
-    resolution: {integrity: sha512-DOF8WEjrH08zPhLiF4pcgMQNIUeb9A2jWxBtMY/hXJ3tJAxb4PkmBw9B1Bj+2JL/9vf7XHpr21kSWDBe1n0ixQ==}
+  '@statekit/connector@0.5.4-dev':
+    resolution: {integrity: sha512-rg39kubDI2PRZe3QVXo/xJp68we6AtYBMOsAKYDhAVcgy6gv3z2atbrN51EYd00hR0X42VuwREMTIZj1LeUOcg==}
 
-  '@statekit/core@0.8.1-dev':
-    resolution: {integrity: sha512-SoHKTNP/nWUsc7AQWrWYZU52jiT0ltqpBbpoRsAJ9g7FY5uOg3K1JaDS45gYhN/N9jK+GreaGPZEfflnHiXPiQ==}
+  '@statekit/core@0.10.4-dev':
+    resolution: {integrity: sha512-NFTLqoRd4moYjpDSurMg64ZU+fDQY6FMswMGI5OcYV4dYfWQJ9Kge6f2EhmmU2k0/+fy8R5e/0a7tSTgM5xA/w==}
 
-  '@statekit/react@0.10.4-dev':
-    resolution: {integrity: sha512-umyQxZf6hTDH4i2Vvcy9uqukUUiA5MhtFt8Py6QryfLPcb3OKUCZwJ97tvDDhUuGLUp+E0pgNgDMOF2xQ9hROA==}
+  '@statekit/decoration-tanstack-query@0.0.2-dev':
+    resolution: {integrity: sha512-ypHO5+sFm3JLLZsiAoEv2IndUNeMC0kQ3ccqkJfUrljsyXk9WaCdndIlpIinvmEeMTnLhV8zI1gZS2ARgsumrA==}
+    peerDependencies:
+      '@tanstack/query-core': ^5.104.0
+
+  '@statekit/decorations@0.0.2-dev':
+    resolution: {integrity: sha512-tY4BNcOfddyABwACYge4yjBs6pkHW7hVAPy/wpio6OrbD37py0tkx39kmDkABLcrttYGtVNQPF3CY8Q6iCDILQ==}
+
+  '@statekit/react@0.13.3-dev':
+    resolution: {integrity: sha512-GGb37YSfebC/uUeBGm8uTbUnevuZlh2qK7wFKgEldDtof2sN7EwGPs5EwB5+DkjS6jFJODMpeBRz/cR00D8cQw==}
     peerDependencies:
       '@types/react': 19.2.8
       react: '>= 18'
@@ -1769,6 +1783,9 @@ packages:
 
   '@swc/helpers@0.5.18':
     resolution: {integrity: sha512-TXTnIcNJQEKwThMMqBXsZ4VGAza6bvN4pa41Rkqoio6QBKMvo+5lexeTMScGCIxtzgQJzElcvIltani+adC5PQ==}
+
+  '@tanstack/query-core@5.104.3':
+    resolution: {integrity: sha512-DZY9TuJAOgU3UyHUhXb4CcTYEHNZszlwkPg4VViIwTxOKzLprPUU+rbaPZQd3srqkGOtpaDdKpW972UV/LKlcg==}
 
   '@tanstack/react-virtual@3.13.18':
     resolution: {integrity: sha512-dZkhyfahpvlaV0rIKnvQiVoWPyURppl6w4m9IwMDpuIjcJ1sD9YGWrt0wISvgU7ewACXx2Ct46WPgI6qAD4v6A==}
@@ -7512,18 +7529,30 @@ snapshots:
 
   '@speed-highlight/core@1.2.17': {}
 
-  '@statekit/connector@0.3.2-dev':
+  '@statekit/connector@0.5.4-dev':
     dependencies:
-      '@statekit/core': 0.8.1-dev
+      '@statekit/core': 0.10.4-dev
 
-  '@statekit/core@0.8.1-dev':
+  '@statekit/core@0.10.4-dev':
     dependencies:
       immer: 11.0.1
 
-  '@statekit/react@0.10.4-dev(@types/react@19.2.8)(react@19.2.3)':
+  '@statekit/decoration-tanstack-query@0.0.2-dev(@tanstack/query-core@5.104.3)':
     dependencies:
-      '@statekit/connector': 0.3.2-dev
-      '@statekit/core': 0.8.1-dev
+      '@statekit/core': 0.10.4-dev
+      '@statekit/decorations': 0.0.2-dev
+      '@tanstack/query-core': 5.104.3
+      immer: 11.0.1
+
+  '@statekit/decorations@0.0.2-dev':
+    dependencies:
+      '@statekit/core': 0.10.4-dev
+      immer: 11.0.1
+
+  '@statekit/react@0.13.3-dev(@types/react@19.2.8)(react@19.2.3)':
+    dependencies:
+      '@statekit/connector': 0.5.4-dev
+      '@statekit/core': 0.10.4-dev
       react: 19.2.3
     optionalDependencies:
       '@types/react': 19.2.8
@@ -7535,6 +7564,8 @@ snapshots:
   '@swc/helpers@0.5.18':
     dependencies:
       tslib: 2.8.1
+
+  '@tanstack/query-core@5.104.3': {}
 
   '@tanstack/react-virtual@3.13.18(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:

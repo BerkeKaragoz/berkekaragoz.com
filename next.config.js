@@ -3,7 +3,8 @@
 const { i18n } = require("./next-i18next.config")
 
 module.exports = {
-   reactStrictMode: true,
+   // Applied per page in _app instead, see AppPage.
+   reactStrictMode: false,
    output: "standalone",
    transpilePackages: ["next-mdx-remote"],
    i18n,

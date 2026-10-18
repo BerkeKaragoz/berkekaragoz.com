@@ -1,0 +1,55 @@
+---
+title: ESLint plugin
+---
+
+Two statekit mistakes compile fine and still misbehave: a draft write that
+shows up late, and a destructuring that rerenders on every change.
+`@statekit/eslint-plugin` reports both.
+
+## Install
+
+```bash
+npm i -D @statekit/eslint-plugin
+```
+
+`eslint.config.js`:
+
+```js
+import statekit from "@statekit/eslint-plugin"
+
+export default [statekit.configs.recommended]
+```
+
+With `.eslintrc`, extend `plugin:@statekit/recommended-legacy`.
+
+To check machine hooks imported from other files, turn on
+[typed linting](https://typescript-eslint.io/getting-started/typed-linting).
+
+## no-draft-write-between-awaits
+
+This rule is an error by default. A draft write between two `await`s is
+published late, at a moment you can't predict.
+[Async events](/p/statekit/data-and-events#async-events) has the example.
+
+Write before the first `await` or after the last. When a middle step needs to
+show on its own, give it its own event:
+
+```ts
+loadUser: async ({ draft }, id: number) => {
+   const user = await fetchUser(id)
+   draft.user = user
+},
+loadPosts: async ({ draft }, id: number) => {
+   const posts = await fetchPosts(id)
+   draft.posts = posts
+},
+```
+
+## no-subscribe-all-destructuring
+
+This rule is a warning by default. Rest and array destructuring on `m.data`
+read every property and
+[subscribe the component to all of it](/p/statekit/rerenders#reading-more-than-you-need).
+
+It's a warning because sometimes a component does need the whole object. Then
+keep the destructuring and disable the rule for that line.

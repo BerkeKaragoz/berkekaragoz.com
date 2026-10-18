@@ -1,0 +1,96 @@
+---
+title: Using it in React
+---
+
+`createMachineContext` gives a machine a hook. Create both outside your
+components, once:
+
+```tsx
+import {
+   createMachine,
+   createMachineContext,
+} from "@statekit/react"
+
+const inviteMachine = createMachine({
+   data: {
+      inviteUrl: "https://example.com/invite/team-42",
+      copies: 0,
+      message: "Ready to share",
+   },
+   events: {
+      copyLink: async ({ draft }) => {
+         draft.message = "Copying"
+
+         await navigator.clipboard.writeText(
+            draft.inviteUrl
+         )
+
+         draft.copies++
+         draft.message = "Copied"
+      },
+   },
+   selectors: {
+      hasBeenCopied: ({ data }) => data.copies > 0,
+   },
+})
+
+const [useInviteMachine] =
+   createMachineContext(inviteMachine)
+
+export const InviteLink = () => {
+   const m = useInviteMachine()
+
+   return (
+      <section>
+         <p>{m.data.inviteUrl}</p>
+         <button onClick={m.event.copyLink}>
+            Copy invite link
+         </button>
+         <p>{m.data.message}</p>
+         <p>
+            {m.select.hasBeenCopied()
+               ? `Copied ${m.data.copies} times`
+               : "Not copied yet"}
+         </p>
+      </section>
+   )
+}
+```
+
+Clicking shows "Copying" at once and "Copied" when the clipboard is done. Both
+updates come from the one async event.
+
+## What the hook returns
+
+The machine, with this component's reads tracked:
+
+- `m.data`, the current snapshot;
+- `m.event`, the events;
+- `m.select`, the selectors;
+- `m.state` and `m.STATE`, the [states](/p/statekit/states).
+
+`m.setData`, `m.setState` and `m.subscribeEvents` are there too, for lower
+level work.
+
+`m` is a new object every render, so don't put it in a dependency array. Use
+`m.data.copies` or `m.event.copyLink` there instead.
+
+Call the value `m` when a component is built around one machine. With several,
+name each after its machine: `const cartMachine = useCartMachine()`.
+
+## Every hook shares one machine
+
+The hook creates nothing. Every component that calls `useInviteMachine()` sees
+the same `inviteMachine`, and so does code outside React. Mounted components
+update either way:
+
+```ts
+await inviteMachine.event.copyLink()
+inviteMachine.data.copies // the latest snapshot
+```
+
+## Events as handlers
+
+An event is a function, so `onClick={m.event.copyLink}` works. React passes
+the click event as the first argument, so do this only for events that take
+none, and wrap the others: `onClick={() => m.event.add(1)}`.

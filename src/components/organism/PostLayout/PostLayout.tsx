@@ -42,10 +42,18 @@ export const PostLayout = ({
                <div className="flex items-center gap-2 px-4 py-2 mx-auto sm:px-8 max-w-screen-2xl">
                   <button
                      onClick={() => setPageSheetOpen(true)}
-                     className="flex items-center gap-1.5 px-2 py-1 text-sm card-input"
+                     aria-haspopup="dialog"
+                     className="flex items-center min-w-0 gap-1.5 px-2 py-1 text-sm card-input"
                   >
-                     <ViewListIcon className="w-4 h-4" />
-                     {t("menu")}
+                     <ViewListIcon className="w-4 h-4 shrink-0" />
+                     <span className="truncate">
+                        {meta.pages[pageIndex]?.title ?? t("menu")}
+                     </span>
+                     {pageIndex >= 0 && (
+                        <span className="opacity-60 tabular-nums">
+                           {pageIndex + 1}/{meta.pages.length}
+                        </span>
+                     )}
                   </button>
                </div>
             </div>

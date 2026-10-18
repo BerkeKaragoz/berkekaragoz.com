@@ -1,0 +1,130 @@
+---
+title: Rerenders
+---
+
+Each component that calls a machine's hook subscribes to what it reads, and
+rerenders when one of those things changes. There are no selectors to write for
+it.
+
+## See it
+
+One machine, four components. Each reads something different and counts its
+renders:
+
+<Demo
+   name="statekit-rerenders"
+   lead="Press like or view, or type a note, then compare the render counts."
+   minHeight={265}
+/>
+
+`Row` shows what the component reads, the value, and its render count:
+
+```tsx
+import {
+   createMachine,
+   createMachineContext,
+} from "@statekit/react"
+
+const statsMachine = createMachine({
+   data: { likes: 0, views: 0, note: "" },
+   events: {
+      like: ({ draft }) => {
+         draft.likes++
+      },
+      view: ({ draft }) => {
+         draft.views++
+      },
+      write: ({ draft }, note: string) => {
+         draft.note = note
+      },
+   },
+   selectors: {
+      likeRate: ({ data }) =>
+         data.views
+            ? Math.round((data.likes / data.views) * 100)
+            : 0,
+   },
+})
+
+const [useStatsMachine] =
+   createMachineContext(statsMachine)
+
+const Likes = () => {
+   const m = useStatsMachine()
+   return (
+      <Row reads="m.data.likes" value={m.data.likes} />
+   )
+}
+
+const Views = () => {
+   const m = useStatsMachine()
+   return (
+      <Row reads="m.data.views" value={m.data.views} />
+   )
+}
+
+const LikeRate = () => {
+   const m = useStatsMachine()
+   return (
+      <Row
+         reads="m.select.likeRate()"
+         value={`${m.select.likeRate()}%`}
+      />
+   )
+}
+
+const Everything = () => {
+   const m = useStatsMachine()
+   const { ...data } = m.data
+   return (
+      <Row
+         reads="const { ...data } = m.data"
+         value={JSON.stringify(data)}
+      />
+   )
+}
+```
+
+- Typing a note rerenders only the last row. Nothing else read `note`.
+- `like` rerenders `likes`. While `views` is `0` the rate row stays put: the
+  selector returned at `data.views ?` without reading `likes`. After one view
+  it reads both.
+- The spread reads every field, so it rerenders on everything.
+
+## The rules
+
+- A component rerenders when a field it has read changes.
+- Reads add up for the life of the component. A field read once stays
+  subscribed, and reads in event handlers count too.
+- Nested objects, arrays, object keys and array methods are tracked.
+  `m.data.user.name` subscribes to that one field, and the rest of `user` can
+  change without a rerender.
+- Reading `m.state` subscribes to state changes.
+- A selector subscribes to the fields it read.
+- `Date`, `Map`, `Set`, `RegExp` and `Promise` values are returned as they are.
+  Only replacing one rerenders, so keep the data components read to plain
+  objects, arrays and primitives.
+
+## Reading more than you need
+
+Rest and array destructuring read the whole object:
+
+```tsx
+const { name, ...rest } = m.data // all of data
+const [first] = m.data.tags // every tag
+
+const { name, email } = m.data // name and email
+const first = m.data.tags[0] // the first tag
+```
+
+When a component does need the whole object, that's fine. When it doesn't,
+[`@statekit/eslint-plugin`](/p/statekit/eslint-plugin) warns.
+
+`Object.keys(m)` and `{ ...m }` are empty on what the hook returns. Read
+`m.data`, `m.event`, `m.select` and `m.state` by name.
+
+## Outside React
+
+A change made from a timer or a socket handler rerenders components the same
+way. The subscription is on what a component read, so where a change came from
+makes no difference.

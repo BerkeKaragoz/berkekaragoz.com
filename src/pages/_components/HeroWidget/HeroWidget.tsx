@@ -43,11 +43,7 @@ import { useTranslation, withTranslation, Trans } from "next-i18next"
 import { useTheme } from "next-themes"
 import React from "react"
 import { caesarsCipher, caesarsDecipher } from "caesars-cipher"
-import {
-   useRandomIntMachine,
-   RandomIntMachineProvider,
-} from "@/pages/_components/HeroWidget/randomIntMachine"
-import { wrap } from "@statekit/react"
+import { useRandomIntMachine } from "@/pages/_components/HeroWidget/randomIntMachine"
 import { throttle } from "@shortkit/debounce-throttle"
 
 const confettiThrottleSymbol = Symbol()
@@ -86,7 +82,7 @@ type Props = ComponentPropsWithTranslation<{
    initEth?: number | null
 }>
 
-const HeroWidget = wrap(RandomIntMachineProvider, (props: Props) => {
+const HeroWidget = (props: Props) => {
    const { t, latestPostMetas, initBtc = null, initEth = null } = props
    const { t: ct } = useTranslation([COMMON_TNS])
    const { t: gt } = useTranslation([GLOSSARY_TNS])
@@ -658,6 +654,6 @@ const HeroWidget = wrap(RandomIntMachineProvider, (props: Props) => {
          </div>
       </div>
    )
-})
+}
 
 export default withTranslation(PAGES_TNS)(HeroWidget)

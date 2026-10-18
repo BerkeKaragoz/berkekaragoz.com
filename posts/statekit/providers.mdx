@@ -1,0 +1,124 @@
+---
+title: Providers
+---
+
+A machine is created when its module loads, before any component mounts. That
+is what lets code outside React call it, and it has two costs: values only the
+browser has, and server rendering.
+
+Providers don't create machines. `StatekitProvider` goes near the root, once.
+It is how statekit finds the machines components are using, and the
+[TanStack Query decoration](/p/statekit/tanstack-query) relies on it. A machine
+provider is optional and only limits where a machine can be used.
+
+## Public machines
+
+Machines are public by default. Their hook works in any component, with no
+provider to place:
+
+```tsx
+import {
+   createMachine,
+   createMachineContext,
+} from "@statekit/react"
+
+const themeMachine = createMachine({
+   data: { theme: "dark" as "dark" | "light" },
+   events: {
+      toggle: ({ draft }) => {
+         draft.theme =
+            draft.theme === "dark" ? "light" : "dark"
+      },
+   },
+})
+
+export const [useThemeMachine] =
+   createMachineContext(themeMachine)
+```
+
+## Private machines
+
+A private machine's hook throws when called outside its provider:
+
+```tsx
+const checkoutMachine = createMachine(
+   { data: { step: 1 } },
+   { private: true }
+)
+
+export const [useCheckoutMachine, CheckoutProvider] =
+   createMachineContext(checkoutMachine)
+
+const Checkout = () => (
+   <CheckoutProvider>
+      <CheckoutSteps />
+   </CheckoutProvider>
+)
+
+const CheckoutSteps = () => {
+   const m = useCheckoutMachine()
+   return <p>Step {m.data.step}</p>
+}
+```
+
+The provider doesn't create a copy. Two `CheckoutProvider`s share the one
+`checkoutMachine`.
+
+To make every machine private unless it says `{ private: false }`, call
+`setDefaultMachineOptions` in its own module and import that module before any
+module that calls `createMachineContext`. Imports run first, so a call written
+under the imports of your entry file is too late.
+
+```ts
+import { setDefaultMachineOptions } from "@statekit/react"
+
+setDefaultMachineOptions({ private: true })
+```
+
+### wrap
+
+`wrap` mounts a provider around the component that uses the hook. Props pass
+through:
+
+```tsx
+import { wrap } from "@statekit/react"
+
+export const Checkout = wrap(CheckoutProvider, () => {
+   const m = useCheckoutMachine()
+   return <p>Step {m.data.step}</p>
+})
+```
+
+Pass an array for several providers. The last one is the outermost.
+
+## Initializers
+
+A machine is built at import time, before `localStorage` exists. `data` is for
+what you know then. An `initializer` is for what only the browser can tell
+you:
+
+```tsx
+const preferencesMachine = createMachine({
+   data: { theme: "system" },
+   initializer: (data) => ({
+      ...data,
+      theme: localStorage.getItem("theme") ?? data.theme,
+   }),
+})
+```
+
+`createMachine` stores it without running it. `@statekit/react` runs it once,
+in the browser, the first time a component uses the machine.
+
+It receives the `data` the machine was created with, and its result replaces
+the current data. Changes made by events before that first render are lost.
+
+## Server rendering
+
+On a server, one machine serves every request in the process. Keep per-user
+data out of machines that render on the server, or load it in the browser.
+
+Server rendering uses the `data` a machine was created with. The initializer
+runs in the first browser render, hydration included, so if its result changes
+what the server rendered, React reports a hydration mismatch. Render that part
+after mount.

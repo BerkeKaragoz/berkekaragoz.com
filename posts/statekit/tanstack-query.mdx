@@ -1,0 +1,214 @@
+---
+title: TanStack Query
+---
+
+`@statekit/decoration-tanstack-query` runs a
+[TanStack Query](https://tanstack.com/query) for a machine and writes the
+result, loading state and error into the machine's data and states. Components
+keep reading `m.data` and calling events, and TanStack handles the caching,
+deduplication and refetching behind them.
+
+## Set up
+
+```bash
+npm i @statekit/decoration-tanstack-query
+```
+
+```ts
+import {
+   setTanstackQueryClient,
+} from "@statekit/decoration-tanstack-query"
+import { QueryClient } from "@tanstack/query-core"
+
+setTanstackQueryClient(new QueryClient())
+```
+
+Call it once, before any config is decorated. If the app already has a
+`QueryClient`, pass that one and the machines share its cache.
+
+## A query
+
+```ts
+import { createMachine } from "@statekit/core"
+import {
+   withTanstackQuery,
+} from "@statekit/decoration-tanstack-query"
+
+type Todo = { id: number; title: string }
+
+const todoMachine = createMachine(
+   withTanstackQuery(
+      {
+         states: ["idle", "loading", "ready", "failed"],
+         data: {
+            todoId: 5,
+            todo: null as Todo | null,
+            error: null as unknown,
+         },
+         events: {
+            open: ({ draft }, id: number) => {
+               draft.todoId = id
+            },
+         },
+      },
+      {
+         queryFn: ({ data, signal }) =>
+            getTodo(data.todoId, signal),
+         into: (d) => d.todo,
+         staleTime: 30_000,
+      }
+   )
+)
+
+await todoMachine.event.fetch()
+todoMachine.data.todo // todo 5
+```
+
+`queryFn` gets TanStack's context with the machine's `data` on it, and its
+result is written where `into` points. The machine and the cache share one
+object, so nothing is copied.
+
+Every other option, like `staleTime`, `gcTime`, `retry` or `meta`, goes to
+TanStack. Retries are off unless `retry` is set, on the query or in the client's
+defaults.
+
+## Events
+
+| Event | Does |
+| --- | --- |
+| `fetch()` | Uses the cache while it's fresh, fetches otherwise. |
+| `refetch()` | Always goes to the network. |
+| `cancel()` | Stops the fetch. |
+| `subscribe()` | Keeps the machine up to date, like a mounted `useQuery`. Returns the unsubscribe. |
+| `sync()` | Writes what the cache has into the machine. |
+
+`fetch` and `refetch` resolve even when a request fails. The machine enters its
+`failed` state, the error is written to `error`, and the data that was there
+stays. A `catch` around the call never runs, so read the outcome off the
+machine.
+
+## States and fields
+
+The decoration finds its states and the error field by name:
+
+| Option | Defaults to | Point it elsewhere |
+| --- | --- | --- |
+| `loading` | the `loading` state | `loading: ({ S }) => S.busy` |
+| `success` | the `ready` or `success` state | `success: ({ S }) => S.done` |
+| `failed` | the `failed` or `error` state | `failed: ({ S }) => S.broken` |
+| `error` | the `error` field | `error: (d) => d.lastError` |
+
+When nothing matches, that part is skipped. The decoration turns its own states
+on and off and leaves the machine's other states alone, so check them with `&`:
+
+```ts
+const isLoading =
+   (todoMachine.state & todoMachine.STATE.loading) !== 0
+```
+
+## Query keys
+
+The key is made from what `queryFn` reads off `data`:
+
+```ts
+queryFn: ({ data }) => getTodo(data.todoId, data.preview)
+// ["todo", 5, { preview: true }]
+```
+
+It starts with where the query writes, then the ids it read, then the rest. A
+top-level field named `id`, or ending in `Id`, `ID` or `_id`, is an id. A field
+`queryFn` doesn't read, like a theme, doesn't change the key. While an id is
+`null` or `undefined`, nothing is fetched.
+
+The reads are learned from runs, so the first `fetch` doesn't know the key yet
+and can't skip a missing id. Don't call it before the id is set.
+
+After `todoMachine.event.open(6)`, `fetch()` gets todo 6 under its own key, and
+going back to 5 is served from the cache while it's fresh. To set the key
+yourself: `queryKey: (d) => ["todos", d.todoId]`.
+
+## Items by id
+
+Events take the arguments `queryFn` takes after its context, and `into` gets
+them too, so one machine can hold many items:
+
+```ts
+const todosMachine = createMachine(
+   withTanstackQuery(
+      {
+         states: ["idle", "loading", "ready", "failed"],
+         data: {
+            todos: {} as Record<number, Todo>,
+            error: null as unknown,
+         },
+      },
+      {
+         queryFn: ({ signal }, id: number) =>
+            getTodo(id, signal),
+         into: (d, id) => d.todos[id],
+      }
+   )
+)
+
+await todosMachine.event.fetch(5) // written to d.todos[5]
+```
+
+The key is `["todos", 5]`. The states follow the fetch that reported last, so
+with several items loading, `loading` can end while another still loads.
+
+## In a component
+
+The decoration adds a selector named after the fields `into` goes through:
+`select.todo` above, `select.todos(id)` for items by id, `select.profileUser`
+for `(d) => d.profile.user`. It reads the value and fetches it when it's
+missing, invalidated, or past a `staleTime` you set:
+
+```tsx
+import { createMachineContext } from "@statekit/react"
+
+const [useTodosMachine] =
+   createMachineContext(todosMachine)
+
+const TodoTitle = ({ id }: { id: number }) => {
+   const m = useTodosMachine()
+   const todo = m.select.todos(id)
+
+   if ((m.state & m.STATE.failed) !== 0)
+      return <p>Couldn't load it.</p>
+
+   return <p>{todo?.title ?? "Loading…"}</p>
+}
+```
+
+The selector fetches, and `subscribe` writes, while a component uses the
+machine under `StatekitProvider`. Outside React, call `fetch` and read
+`machine.data`.
+
+Without a `staleTime`, reading again doesn't fetch again, and a failed query
+isn't fetched again either, so both take `refetch`. To refetch on focus, on
+reconnect and after `invalidateQueries`, subscribe in an effect:
+
+```tsx
+React.useEffect(
+   () => todosMachine.event.subscribe(id),
+   [id]
+)
+```
+
+The subscription keeps the key the data had when `subscribe` was called. After
+an event changes a field the key uses, subscribe again.
+
+## Writes
+
+There is no mutation helper. A write is an async event like any other. Do the
+write, then `refetch`:
+
+```ts
+await todosMachine.event.rename(5, "Water the plants")
+await todosMachine.event.refetch(5)
+```
+
+## Paging
+
+Lists that load page by page use
+[`withTanstackInfiniteQuery`](/p/statekit/infinite-query).

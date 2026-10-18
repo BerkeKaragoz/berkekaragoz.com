@@ -14,7 +14,8 @@ import { RenderMDX } from "@/lib/utils/MDX"
 import { BeakerIcon } from "@heroicons/react/outline"
 import matter from "gray-matter"
 import "highlight.js/styles/atom-one-dark.css"
-import { GetStaticProps, NextPage } from "next"
+import { GetStaticProps } from "next"
+import { AppPage } from "@/pages/_app.page"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { MDXRemoteSerializeResult } from "next-mdx-remote"
 import Head from "next/head"
@@ -40,7 +41,7 @@ You better not write the blog post here. Write somewhere else and paste here...
 
 `
 
-export const PreviewPage: NextPage<{ defaultPost: MDXPost }> = (props) => {
+export const PreviewPage: AppPage<{ defaultPost: MDXPost }> = (props) => {
    const { defaultPost } = props
 
    const [post, setPost] = React.useState<MDXPost>(defaultPost)
@@ -203,5 +204,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
    }
 }
+
+PreviewPage.strictMode = false
 
 export default PreviewPage

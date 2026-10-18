@@ -1,0 +1,50 @@
+---
+title: Installation
+---
+
+## Without a view library
+
+```bash
+npm i @statekit/core
+```
+
+That is enough for Node, a worker, a CLI or tests. Its one dependency is
+[Immer](https://immerjs.github.io/immer/), which turns the `draft` an event
+writes to into the next frozen snapshot.
+
+## With React
+
+```bash
+npm i @statekit/react
+```
+
+`@statekit/react` installs `@statekit/core` and re-exports `createMachine`.
+
+Add `StatekitProvider` near the root, once per React tree:
+
+```tsx
+import { StatekitProvider } from "@statekit/react"
+import { createRoot } from "react-dom/client"
+import { App } from "./App"
+
+createRoot(document.getElementById("root")!).render(
+   <StatekitProvider>
+      <App />
+   </StatekitProvider>
+)
+```
+
+On this site, a Next.js pages router app, it wraps the page in `_app`.
+
+## ESLint plugin
+
+```bash
+npm i -D @statekit/eslint-plugin
+```
+
+It has [two rules](/p/statekit/eslint-plugin).
+
+## Versions
+
+The published packages depend on each other at exact versions, so upgrade them
+together. Each ships its own types.

@@ -1,0 +1,153 @@
+---
+title: Data and events
+---
+
+`data` is what the machine holds. `events` change it.
+
+## The draft
+
+An event gets a `draft` of the current data, an
+[Immer](https://immerjs.github.io/immer/) draft. Change it like a normal
+object, and when the event ends the changes become the next snapshot. The
+draft is one field of the event's first parameter, which also has `state`,
+`setState`, `S` and `hasState` for [states](/p/statekit/states), and the
+machine's `id`.
+
+```ts
+import { createMachine } from "@statekit/core"
+
+const cartMachine = createMachine({
+   data: {
+      items: [] as { sku: string; quantity: number }[],
+   },
+   events: {
+      add: ({ draft }, sku: string) => {
+         const item = draft.items.find(
+            (item) => item.sku === sku
+         )
+
+         if (item) item.quantity++
+         else draft.items.push({ sku, quantity: 1 })
+      },
+      clear: ({ draft }) => {
+         draft.items = []
+      },
+   },
+})
+```
+
+What you didn't touch keeps its identity: after `add`, `cartMachine.data.items`
+is a new array, but the unchanged items are the same objects.
+
+An event can return a value, and calling it returns that value. Don't keep the
+draft past the event.
+
+## Async events
+
+An async event is an `async` function. Changes made before its first `await`
+are published right away, and changes made after its last `await` when it
+settles:
+
+```ts
+const sleep = (ms: number) =>
+   new Promise((resolve) => setTimeout(resolve, ms))
+
+const noteMachine = createMachine({
+   states: ["idle", "saving", "saved", "failed"],
+   data: { message: "Not saved yet", saves: 0 },
+   events: {
+      save: async (
+         { draft, setState, S },
+         fail: boolean
+      ) => {
+         setState(S.saving)
+         draft.message = "Saving…"
+
+         try {
+            await sleep(1500)
+            if (fail)
+               throw new Error("The network is down")
+
+            draft.saves++
+            draft.message = `Saved ${draft.saves} times`
+            setState(S.saved)
+         } catch (error) {
+            draft.message = (error as Error).message
+            setState(S.failed)
+            throw error
+         }
+      },
+   },
+})
+```
+
+The log under the demo is [`subscribeEvents`](/p/statekit/subscribing), which
+reports when an event starts and how it ends:
+
+<Demo name="statekit-async-events" minHeight={300} />
+
+Calling the event returns its promise. It resolves to what the event returns
+and rejects with what it throws:
+
+```ts
+await noteMachine.event.save(false)
+noteMachine.data.message // "Saved 1 times"
+```
+
+### No writes between two awaits
+
+Write to the draft before the first `await` or after the last. A write between
+two `await`s is published when the event ends, or earlier if anything else on
+the machine publishes first, so you can't tell when it will show:
+
+```ts
+load: async ({ draft }, id: number) => {
+   // ❌ another await follows
+   draft.user = await fetchUser(id)
+   // ✅ after the last await
+   draft.posts = await fetchPosts(id)
+}
+```
+
+When a middle step should show, give it its own event.
+[`@statekit/eslint-plugin`](/p/statekit/eslint-plugin) reports these writes.
+
+`setState` between two `await`s behaves the same: `state` changes at once, but
+components hear about it when the event next publishes.
+
+### Parallel events
+
+Async events on one machine share one draft, so none overwrites another's
+changes. The flip side is that when one publishes, whatever the others have
+written so far goes out with it.
+
+## When an event throws
+
+The changes made before the throw stay, with no rollback. The event reports
+`false` to `subscribeEvents` and throws to its caller. In the demo, "Save, then
+fail" ends with the error message in `data` and a rejected promise.
+
+## Outside events
+
+Data is deeply frozen, including the object you passed as `data`. Writing to it
+or sorting it in place throws a `TypeError`:
+
+```ts
+cartMachine.data.items.push(item) // throws
+cartMachine.data.items.sort() // throws
+
+const sorted = [...cartMachine.data.items].sort() // fine
+```
+
+`setData` is for syncing: when two different sources represent one thing, it
+copies one into the machine without going through an event. Give it a function
+that gets a draft:
+
+```ts
+cartMachine.setData((draft) => {
+   draft.items = savedCart.items
+})
+```
+
+It isn't reported to `subscribeEvents` and has no name to search for, so use an
+event for anything else.

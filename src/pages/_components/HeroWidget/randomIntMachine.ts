@@ -20,5 +20,4 @@ const randomIntMachine = createMachine({
    },
 })
 
-export const [RandomIntMachineProvider, useRandomIntMachine] =
-   createMachineContext(randomIntMachine)
+export const [useRandomIntMachine] = createMachineContext(randomIntMachine)

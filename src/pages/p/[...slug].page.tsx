@@ -19,7 +19,8 @@ import { estimateReadingMinutes } from "@/lib/utils"
 import { DEFAULT_LOCALE, HOST_URL } from "@/lib/utils/consts"
 import { RenderMDX } from "@/lib/utils/MDX"
 import "highlight.js/styles/atom-one-dark.css"
-import { GetStaticPaths, GetStaticProps, NextPage } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { AppPage } from "@/pages/_app.page"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { MDXRemoteSerializeResult } from "next-mdx-remote"
 import Head from "next/head"
@@ -33,7 +34,7 @@ interface MDXPost {
    toc: TocItem[]
 }
 
-export const PostPage: NextPage<{ post: MDXPost }> = (props) => {
+export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
    const { post } = props
 
    const { i18n } = useTranslation([PAGES_TNS], { keyPrefix: "p.[slug]" })
@@ -185,10 +186,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
    if (slugParts.length > 2) return { notFound: true }
 
    const [postSlug, pageSlug = INDEX_PAGE_SLUG] = slugParts
-   const { content: stringContent, meta, page, commentTerm } = getPostPage(
-      postSlug,
-      pageSlug
-   )
+   const {
+      content: stringContent,
+      meta,
+      page,
+      commentTerm,
+   } = getPostPage(postSlug, pageSlug)
    const { source: mdxSource, toc } = await serializeWithToc(stringContent)
 
    return {
@@ -221,5 +224,7 @@ export const getStaticPaths: GetStaticPaths = async ({
       fallback: false, // do not try generate if it doesn't exist
    }
 }
+
+PostPage.strictMode = false
 
 export default PostPage

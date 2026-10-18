@@ -1,0 +1,21 @@
+@layer components {
+   .post-demo-flash {
+      animation: post-demo-flash 700ms ease-out;
+   }
+
+   @keyframes post-demo-flash {
+      from {
+         background-color: color-mix(
+            in srgb,
+            theme("colors.primary.500") 25%,
+            transparent
+         );
+      }
+   }
+
+   @media (prefers-reduced-motion: reduce) {
+      .post-demo-flash {
+         animation: none;
+      }
+   }
+}

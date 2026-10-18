@@ -1,0 +1,160 @@
+---
+title: statekit
+pageTitle: Overview
+tags:
+   - npm
+   - javascript
+   - typescript
+   - react
+   - web-development
+   - readme
+date: 17 Oct 26 17:00 UTC+0
+excerpt: A typed state manager whose stores are plain objects you can call from anywhere, with React rerenders limited to what a component reads.
+nav:
+   - Getting started:
+        - installation
+        - first-machine
+        - react
+   - React:
+        - providers
+        - rerenders
+   - Core concepts:
+        - data-and-events
+        - states
+        - selectors
+        - subscribing
+   - Decorations:
+        - decorations
+        - tanstack-query
+        - infinite-query
+   - More:
+        - eslint-plugin
+---
+
+A straightforward state manager. Events are just functions. Async event? Async
+Function. To get the data, useSelec-bleh... Call the machine's hook and read
+the data, proxies handle subscriptions automagically.
+
+<Image
+   priority
+   src="/assets/posts/statekit/cover.png"
+   alt="useSelector((s) => s.rows) struck out, above m.data.rows"
+   width={1200}
+   height={630}
+   quality={100}
+   placeholder="blur"
+   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAFklEQVR4nGOQkDcWkzNgEFe3FVEzBQALUwG5VP3lHAAAAABJRU5ErkJggg=="
+/>
+
+```ts
+import { createMachine } from "@statekit/core"
+
+const importMachine = createMachine({
+   states: ["idle", "importing", "ready", "failed"],
+   data: { fileName: "", rows: 0 },
+   events: {
+      importFile: async (
+         { draft, setState, S },
+         file: File
+      ) => {
+         setState(S.importing)
+         try {
+            const text = await file.text()
+            draft.fileName = file.name
+            draft.rows = text.split("\n").length
+            setState(S.ready)
+         } catch (error) {
+            setState(S.failed)
+            throw error
+         }
+      },
+   },
+})
+```
+
+In React, the same machine gets a hook. A component rerenders on what it reads
+and nothing else, with no selectors to write:
+
+```tsx
+import { createMachineContext } from "@statekit/react"
+
+const [useImportMachine] =
+   createMachineContext(importMachine)
+
+const Importer = () => {
+   const m = useImportMachine()
+
+   if (m.state === m.STATE.importing)
+      return <p>Importing…</p>
+   if (m.state === m.STATE.failed)
+      return <p>Couldn't read that file.</p>
+
+   return (
+      <>
+         <input
+            type="file"
+            onChange={(e) =>
+               m.event.importFile(e.target.files![0])
+            }
+         />
+         <p>
+            {m.data.rows} rows from {m.data.fileName}
+         </p>
+      </>
+   )
+}
+```
+
+## What's different
+
+- **No selector hooks.** A component reads `m.data.rows` and rerenders when
+  `rows` changes, with nothing else to write.
+- **Events are functions.** Sync or `async`, they get a draft and your
+  arguments. An async one publishes before its first `await` and when it
+  settles.
+- **Isolated.** The data, events and states of one thing live in one object,
+  and that object doesn't get registered in a store.
+- **Easy to test.** Call the event, then read the data. Nothing has to render.
+- **Easy to share.** Export the machine. Whatever imports it can read it, call
+  it or subscribe to it, in React or not.
+- **Extensible.** Decorations add events and selectors to any config. The
+  TanStack Query one puts a query behind `m.data`.
+
+Outside React, the same machine:
+
+```ts
+await importMachine.event.importFile(
+   new File(["a,b", "\n", "c,d"], "pairs.csv")
+)
+expect(importMachine.data.rows).toBe(2)
+
+dropZone.ondrop = (e) =>
+   importMachine.event.importFile(e.dataTransfer!.files[0])
+```
+
+## The packages
+
+| Package | What it does | |
+| --- | --- | --- |
+| [`@statekit/core`](https://www.npmjs.com/package/@statekit/core) | Runs machines: data, events, states, selectors, subscriptions. | [Read](/p/statekit/first-machine) |
+| [`@statekit/react`](https://www.npmjs.com/package/@statekit/react) | A hook per machine, with rerenders limited to what a component reads. | [Read](/p/statekit/react) |
+| [`@statekit/decorations`](https://www.npmjs.com/package/@statekit/decorations) | Config wrappers that add events and selectors to machines. | [Read](/p/statekit/decorations) |
+| [`@statekit/decoration-tanstack-query`](https://www.npmjs.com/package/@statekit/decoration-tanstack-query) | Writes a TanStack Query's data, loading state and error into a machine. | [Read](/p/statekit/tanstack-query) |
+| [`@statekit/eslint-plugin`](https://www.npmjs.com/package/@statekit/eslint-plugin) | Two rules for mistakes the type checker can't see. | [Read](/p/statekit/eslint-plugin) |
+
+[`@statekit/connector`](https://www.npmjs.com/package/@statekit/connector) is
+the read tracking the React package is built on, for writing adapters to other
+view libraries.
+
+## Status
+
+`statekit` is a work in progress on `-dev` releases, and the API has changed
+before.
+
+This site uses it: the random number on the [home page](/) is a machine.
+
+## Where to start
+
+[Installation](/p/statekit/installation), then
+[your first machine](/p/statekit/first-machine). If you know the core already,
+[rerenders](/p/statekit/rerenders) has a demo of what the React hook does.

@@ -1,5 +1,6 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote"
 import Image from "next/image"
+import PostDemo from "@/components/organism/PostDemo/PostDemo"
 
 export const AppMDXComponents: MDXRemoteProps["components"] = {
    Image: (props) => (
@@ -10,6 +11,7 @@ export const AppMDXComponents: MDXRemoteProps["components"] = {
          <Image alt={props.alt} {...props} />
       </div>
    ),
+   Demo: PostDemo,
    p: (props) => <p className="mb-8" {...props} />,
    h1: (props) => <h1 className="h1" {...props} />,
    h2: (props) => <h2 className="h2" {...props} />,
