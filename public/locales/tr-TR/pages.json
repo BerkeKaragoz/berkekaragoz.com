@@ -19,8 +19,9 @@
          "localeVerifierSubtitle": "GNU/Linux sistemleri için",
          "resourceUsageTrackerSubtitle": "CPU, RAM, Disk, Ağ...",
          "lobiumSubtitle": "Turnuva Yönetim Paketi",
+         "graphitectSubtitle": "Dilden bağımsız, düğüm tabanlı iş akışı oluşturucu",
          "kognitifSubtitle": "Kognitif Antreman Aracı (PWA)",
-         "vrTrainingSubtitle": "DATAMARKET için PoC uygulaması",
+         "yaverSubtitle": "Sesle çalışan CRM",
          "seeMore": "Ve daha fazla repository'ler..."
       },
       "aboutMe": {

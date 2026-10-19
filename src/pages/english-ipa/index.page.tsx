@@ -973,22 +973,19 @@ const ConverterView = ({
                                     >
                                        /{sound.symbol}/
                                     </button>
-                                    {renderSpeechControl(
-                                       <button
-                                          type="button"
-                                          className={styles.breakdownPlay}
-                                          disabled={!canSpeak}
-                                          onClick={() => onPlaySound(sound)}
-                                          aria-label={t("soundsUi.playSound", {
-                                             symbol: sound.symbol,
-                                          })}
-                                          title={t("soundsUi.playSymbol", {
-                                             symbol: sound.symbol,
-                                          })}
-                                       >
-                                          <VolumeUpIcon aria-hidden="true" />
-                                       </button>
-                                    )}
+                                    <button
+                                       type="button"
+                                       className={styles.breakdownPlay}
+                                       onClick={() => onPlaySound(sound)}
+                                       aria-label={t("soundsUi.playSound", {
+                                          symbol: sound.symbol,
+                                       })}
+                                       title={t("soundsUi.playSymbol", {
+                                          symbol: sound.symbol,
+                                       })}
+                                    >
+                                       <VolumeUpIcon aria-hidden="true" />
+                                    </button>
                                  </div>
                               ))}
                            </div>

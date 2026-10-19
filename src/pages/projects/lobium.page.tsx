@@ -7,7 +7,10 @@ import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
-import { NextPage } from "next"
+import { GetStaticProps, NextPage } from "next"
+import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
+import { DEFAULT_LOCALE } from "@/lib/utils/consts"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const ImageCard: React.FC<{ src: string }> = (props) => {
    const { src } = props
@@ -140,5 +143,11 @@ const LobiumPage: NextPage = () => (
       <Footer />
    </div>
 )
+
+export const getStaticProps: GetStaticProps = async ({
+   locale = DEFAULT_LOCALE,
+}) => ({
+   props: await serverSideTranslations(locale, [PAGES_TNS, COMMON_TNS]),
+})
 
 export default LobiumPage

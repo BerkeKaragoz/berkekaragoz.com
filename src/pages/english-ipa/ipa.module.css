@@ -640,8 +640,7 @@
    color: var(--ipa-accent-strong);
 }
 
-.miniPlay:disabled,
-.breakdownPlay:disabled {
+.miniPlay:disabled {
    @apply cursor-not-allowed opacity-50;
 }
 

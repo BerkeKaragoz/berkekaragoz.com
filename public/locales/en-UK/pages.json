@@ -19,8 +19,9 @@
          "localeVerifierSubtitle": "For GNU/Linux systems",
          "resourceUsageTrackerSubtitle": "CPU, RAM, Disk, Network...",
          "lobiumSubtitle": "Tournament Management Bundle",
+         "graphitectSubtitle": "Language agnostic node-based workflow builder",
          "kognitifSubtitle": "Cognitive Training Tool (PWA)",
-         "vrTrainingSubtitle": "A PoC app for DATAMARKET",
+         "yaverSubtitle": "Voice-first CRM",
          "seeMore": "And more repositories..."
       },
       "aboutMe": {
