@@ -37,9 +37,14 @@
          padding-block: 2rem;
       }
 
-      .post-panel {
+      .post-sticky {
          position: sticky;
          top: 5rem;
+      }
+
+      /* Capped to the screen and scrolls. Anything after it in the same
+         .post-sticky (the rail ad) may run past the bottom of a short screen. */
+      .post-panel {
          max-height: calc(100vh - 6.5rem);
          overflow-y: auto;
          overscroll-behavior: contain;

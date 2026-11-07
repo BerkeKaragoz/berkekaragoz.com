@@ -384,16 +384,6 @@ const SoundDetail = ({
                })}
             </p>
          )}
-
-         {/* Desktop only, where this panel is a sticky side column, from the
-             width where it has 300px inside. Kept well clear of the buttons
-             above (AdSense: no accidental clicks). */}
-         <AdSenseBanner
-            slot={ADSENSE_SLOTS.ipaRail}
-            size={[300, 250]}
-            media="(min-width: 1120px)"
-            className="pt-6 mt-8 border-t border-background-400 border-opacity-30"
-         />
       </aside>
    )
 }
@@ -504,15 +494,26 @@ const SoundsView = ({
             </div>
 
             <div className={styles.detailRail}>
-               <SoundDetail
-                  sound={selected}
-                  onPlaySound={() => onPlay(selected, "sound")}
-                  onPlayWord={() => onPlay(selected, "word")}
-                  onSelectSound={(id) => {
-                     const sound = IPA_SOUNDS.find((item) => item.id === id)
-                     if (sound) onSelect(sound)
-                  }}
-               />
+               <div className={styles.detailStack}>
+                  <SoundDetail
+                     sound={selected}
+                     onPlaySound={() => onPlay(selected, "sound")}
+                     onPlayWord={() => onPlay(selected, "word")}
+                     onSelectSound={(id) => {
+                        const sound = IPA_SOUNDS.find((item) => item.id === id)
+                        if (sound) onSelect(sound)
+                     }}
+                  />
+                  {/* Desktop only, where the panel is a sticky side column
+                      (300px wide from 1001px). Outside the card, so it never
+                      makes the card scroll, and clear of its buttons. */}
+                  <AdSenseBanner
+                     slot={ADSENSE_SLOTS.ipaRail}
+                     size={[300, 250]}
+                     media="(min-width: 1001px)"
+                     className="mt-4"
+                  />
+               </div>
             </div>
          </div>
 

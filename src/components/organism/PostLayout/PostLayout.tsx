@@ -66,7 +66,7 @@ export const PostLayout = ({
             <div className="post-layout">
                <aside className="post-rail">
                   {hasPages && (
-                     <nav aria-label={meta.title} className="post-panel">
+                     <nav aria-label={meta.title} className="post-sticky post-panel">
                         <PostNav meta={meta} currentPageSlug={currentPageSlug} />
                      </nav>
                   )}
@@ -80,9 +80,9 @@ export const PostLayout = ({
 
                <aside className="post-rail">
                   {(hasToc || railFooter) && (
-                     <div className="post-panel">
+                     <div className="post-sticky">
                         {hasToc && (
-                           <nav aria-label={t("on this page")}>
+                           <nav aria-label={t("on this page")} className="post-panel">
                               <PostToc toc={toc} activeId={activeId} />
                            </nav>
                         )}

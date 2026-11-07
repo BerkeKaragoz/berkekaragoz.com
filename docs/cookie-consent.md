@@ -98,7 +98,7 @@ Everything stays off until the two build-time variables below are set. With neit
 | `NEXT_PUBLIC_ADSENSE_SLOT_TOOL` | slot id | The ad below the pitch graph and English IPA tools |
 | `NEXT_PUBLIC_ADSENSE_SLOT_POST_MID` | slot id | Inside post pages of 800+ words, before the second h2 (`remarkMidAd` in `blog-client.ts`) |
 | `NEXT_PUBLIC_ADSENSE_SLOT_POST_RAIL` | slot id | Under a post's table of contents, fixed 160×600, screens 1143px+ only |
-| `NEXT_PUBLIC_ADSENSE_SLOT_IPA_RAIL` | slot id | At the end of the English IPA sound detail panel, fixed 300×250, screens 1120px+ only |
+| `NEXT_PUBLIC_ADSENSE_SLOT_IPA_RAIL` | slot id | Under the English IPA sound detail panel, fixed 300×250, desktop (1001px+) only |
 
 No ads on home, projects, post lists, privacy or 404: the portfolio pages stay clean, the lists are thin, and AdSense bars ads on error and no-content pages.
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | `G-…` | GA4 after analytics consent |

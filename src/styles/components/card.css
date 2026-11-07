@@ -27,6 +27,10 @@
       accent (sky 600 to indigo 600), the angle of .text-gradient-primary. */
    .card-input-primary {
       @apply inline-block transition-colors border border-transparent rounded-lg shadow dark:shadow-md;
+      /* The gradient spans the transparent border too; otherwise it's sized to
+         the padding box and tiles into the border, showing the opposite end's
+         colour as a 1px line on each side. */
+      background-origin: border-box;
    }
 
    .card-input-primary:not([disabled]) {

@@ -305,9 +305,15 @@
    @apply relative self-stretch min-w-0;
 }
 
-.detailPanel {
-   @apply sticky p-5;
+/* Sticks the panel and the ad under it. Only the panel is capped to the
+   screen and scrolls; the ad may run past the bottom of a short screen. */
+.detailStack {
+   @apply sticky;
    top: 5rem;
+}
+
+.detailPanel {
+   @apply p-5;
    max-height: calc(100vh - 6.5rem);
    overflow-y: auto;
    overscroll-behavior: contain;
@@ -742,8 +748,11 @@
       grid-row: 1;
    }
 
-   .detailPanel {
+   .detailStack {
       @apply relative top-0;
+   }
+
+   .detailPanel {
       max-height: none;
       overflow-y: visible;
    }
