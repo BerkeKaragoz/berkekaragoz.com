@@ -34,7 +34,7 @@ const BUTTON_BASE = "px-3 py-1.5 text-sm font-medium grow basis-0 whitespace-now
 const BUTTON = `${BUTTON_BASE} card-input enabled:!bg-background-50 dark:enabled:!bg-background-700 enabled:text-primary-700 enabled:hover:text-primary-800`
 const BUTTON_GHOST = `${BUTTON_BASE} card-input-ghost`
 
-// "Necessary cookies only" sits on the first screen in the same style as
+// "Necessary only" sits on the first screen in the same style as
 // "Accept all" (ICO, EDPB, CNIL: refusing must be as easy as accepting).
 // "Settings" only opens the preferences, so it is the ghost variant; once they
 // are open, "Save choices" takes its place in the full style.
