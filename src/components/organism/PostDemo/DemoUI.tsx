@@ -1,11 +1,22 @@
 import { cn } from "@shortkit/cn"
 import React from "react"
 
+// The header's card-input, one step lighter than the demo's card, as it is
+// against the header. Disabled ones go flat and dashed, but stay readable.
 export const DemoButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
    className,
    ...props
 }) => (
-   <button className={cn("px-3 py-1.5 text-sm card-input", className)} {...props} />
+   <button
+      className={cn(
+         "px-3 py-1.5 text-sm card-input",
+         "enabled:!bg-background-50 dark:enabled:!bg-background-700",
+         "enabled:text-primary-700 enabled:hover:text-primary-800",
+         "disabled:border-dashed disabled:shadow-none disabled:!text-background-500 disabled:!text-opacity-100 dark:disabled:border-background-600",
+         className
+      )}
+      {...props}
+   />
 )
 
 export const DemoInput: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({
@@ -21,14 +32,22 @@ export const DemoInput: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = 
    />
 )
 
-export const DemoRow: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
-   className,
-   children,
-}) => (
-   <div className={cn("flex flex-wrap items-center gap-2", className)}>
-      {children}
-   </div>
-)
+// Controls the demo's frame adds, like the strict mode toggle. A row marked
+// `controls` ends with them, so they sit beside the demo's own buttons.
+export const DemoControls = React.createContext<React.ReactNode>(null)
+
+export const DemoRow: React.FC<
+   React.PropsWithChildren<{ className?: string; controls?: boolean }>
+> = ({ className, controls, children }) => {
+   const frameControls = React.useContext(DemoControls)
+
+   return (
+      <div className={cn("flex flex-wrap items-center gap-2", className)}>
+         {children}
+         {controls && frameControls}
+      </div>
+   )
+}
 
 type DemoStatesProps = {
    state: number

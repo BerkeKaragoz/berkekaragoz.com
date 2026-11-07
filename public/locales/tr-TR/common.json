@@ -28,5 +28,22 @@
    "page x of y": "Sayfa {{current}} / {{total}}",
    "previous": "önceki",
    "next": "sonraki",
-   "close": "kapat"
+   "close": "kapat",
+   "consent": {
+      "region": "Çerez izni",
+      "title": "Çerezler",
+      "body": "İzin verirseniz bu site, hangi sayfaların okunduğunu görmek için Google Analytics'i, reklam göstermek için Google AdSense'i kullanır. İkisi de çerez kullanır. Siz seçene kadar hiçbiri yüklenmez.",
+      "bodyAnalytics": "İzin verirseniz bu site, hangi sayfaların okunduğunu görmek için Google Analytics'i kullanır. Çerez kullanır. Siz seçene kadar hiçbir şey yüklenmez.",
+      "bodyAds": "İzin verirseniz bu site, reklam göstermek için Google AdSense'i kullanır. Çerez kullanır. Siz seçene kadar hiçbir şey yüklenmez.",
+      "privacy": "Gizlilik ve çerezler",
+      "acceptAll": "Tümünü kabul et",
+      "rejectAll": "Tümünü reddet",
+      "choose": "Seç",
+      "save": "Seçimleri kaydet",
+      "analytics": "Analitik",
+      "analyticsDetail": "Google Analytics ziyaretleri ve hangi sayfaların okunduğunu sayar.",
+      "ads": "Reklam",
+      "adsDetail": "Google AdSense, ilgi alanlarınıza dayalı olabilecek reklamlar gösterir.",
+      "settings": "Çerez ayarları"
+   }
 }

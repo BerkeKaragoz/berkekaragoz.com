@@ -31,9 +31,10 @@ nav:
         - eslint-plugin
 ---
 
-A straightforward state manager. Events are just functions. Async event? Async
-Function. To get the data, useSelec-bleh... Call the machine's hook and read
-the data, proxies handle subscriptions automagically.
+I started this because every other state manager felt off to me. I wanted
+events to be plain function calls, async to be easy, a store instance to work
+in different frameworks simultaneously, and data you can just read. That was
+around 2022.
 
 <Image
    priority
@@ -51,7 +52,7 @@ import { createMachine } from "@statekit/core"
 
 const importMachine = createMachine({
    states: ["idle", "importing", "ready", "failed"],
-   data: { fileName: "", rows: 0 },
+   data: { rows: [] as string[] },
    events: {
       importFile: async (
          { draft, setState, S },
@@ -60,8 +61,7 @@ const importMachine = createMachine({
          setState(S.importing)
          try {
             const text = await file.text()
-            draft.fileName = file.name
-            draft.rows = text.split("\n").length
+            draft.rows = text.split("\n")
             setState(S.ready)
          } catch (error) {
             setState(S.failed)
@@ -71,6 +71,11 @@ const importMachine = createMachine({
    },
 })
 ```
+
+Here it runs in the `Importer` component further down. Import a file and see
+what the component shows at each step:
+
+<Demo name="statekit-importer" />
 
 In React, the same machine gets a hook. A component rerenders on what it reads
 and nothing else, with no selectors to write:
@@ -86,8 +91,6 @@ const Importer = () => {
 
    if (m.state === m.STATE.importing)
       return <p>Importing…</p>
-   if (m.state === m.STATE.failed)
-      return <p>Couldn't read that file.</p>
 
    return (
       <>
@@ -97,13 +100,26 @@ const Importer = () => {
                m.event.importFile(e.target.files![0])
             }
          />
-         <p>
-            {m.data.rows} rows from {m.data.fileName}
-         </p>
+         {m.state === m.STATE.failed && (
+            <p>Couldn't read that file.</p>
+         )}
+         {m.state === m.STATE.ready && (
+            <ul>
+               {m.data.rows.slice(0, 3).map((row, i) => (
+                  <li key={i}>{row}</li>
+               ))}
+               {m.data.rows.length > 3 && <li>…</li>}
+            </ul>
+         )}
       </>
    )
 }
 ```
+
+Below, a feed outside React updates a portfolio machine. Each cell reads its own
+price and shares, and flashes green or red when it rerenders:
+
+<Demo name="statekit-prices" />
 
 ## What's different
 
@@ -126,7 +142,7 @@ Outside React, the same machine:
 await importMachine.event.importFile(
    new File(["a,b", "\n", "c,d"], "pairs.csv")
 )
-expect(importMachine.data.rows).toBe(2)
+expect(importMachine.data.rows).toEqual(["a,b", "c,d"])
 
 dropZone.ondrop = (e) =>
    importMachine.event.importFile(e.dataTransfer!.files[0])

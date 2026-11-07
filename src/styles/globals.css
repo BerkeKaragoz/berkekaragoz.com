@@ -1,6 +1,7 @@
 @import "./components/index.css";
 @import "./explicit-base.css";
 @import "./giscus.css";
+@import "./google-consent.css";
 
 @tailwind base;
 @tailwind components;

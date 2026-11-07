@@ -16,7 +16,9 @@
       "format": "prettier . --write",
       "commit": "git-cz",
       "type-check": "tsc --noEmit",
-      "refresh:network-data": "node scripts/refresh-network-data.mjs"
+      "refresh:network-data": "node scripts/refresh-network-data.mjs",
+      "downloads": "node --env-file-if-exists=.env.local scripts/downloads.mjs",
+      "trace:hits": "node --env-file-if-exists=.env.local scripts/trace-hits.mjs"
    },
    "prettier": "eslint-config-berkekaragoz-formatting/prettier",
    "packageManager": "pnpm@10.20.0",
@@ -30,6 +32,7 @@
       "@statekit/react": "0.13.3-dev",
       "@tanstack/query-core": "^5.104.3",
       "@types/react-dom": "19.2.3",
+      "aws4fetch": "1.0.20",
       "caesars-cipher": "^2.0.2",
       "debounce": "^1.2.1",
       "glob": "^13.0.0",
@@ -83,7 +86,9 @@
    "pnpm": {
       "overrides": {
          "@types/react": "19.2.8",
-         "@types/react-dom": "19.2.3"
+         "@types/react-dom": "19.2.3",
+         "@statekit/connector": "file:../BerkeKit/node/-packages/statekit-connector/.dist",
+         "@statekit/connector>@statekit/core": "0.10.4-dev"
       }
    }
 }

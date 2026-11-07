@@ -1,0 +1,68 @@
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import React from "react"
+import PitchPage from "./index.page"
+
+// A factory, so Jest never parses createWorker.ts (import.meta).
+jest.mock("@/features/pitch/createWorker", () => ({ createPitchWorker: jest.fn() }))
+jest.mock("@/components/organism/Header/Header", () => ({
+   __esModule: true,
+   default: () => null,
+}))
+jest.mock("@/components/organism/Footer/Footer", () => ({
+   __esModule: true,
+   default: () => null,
+}))
+
+describe("pitch page with the simulated engine", () => {
+   beforeAll(() => {
+      window.history.replaceState({}, "", "/pitch-graph?simulate")
+      // jsdom has no canvas; the graph must cope with a null context.
+      jest.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null)
+   })
+
+   afterAll(() => {
+      jest.restoreAllMocks()
+      window.history.replaceState({}, "", "/")
+   })
+
+   it("mounts, runs the mic and the tab, and unmounts cleanly", async () => {
+      const errors = jest.spyOn(console, "error")
+      const { unmount } = render(<PitchPage />)
+
+      expect(
+         screen.getByRole("img", { name: "graph.ariaLabel" })
+      ).toBeInTheDocument()
+      expect(
+         screen.getByRole("heading", { name: "intro.title" })
+      ).toBeInTheDocument()
+
+      fireEvent.click(screen.getByRole("button", { name: "controls.mic.off" }))
+      await screen.findByRole(
+         "button",
+         { name: "controls.mic.on" },
+         { timeout: 2000 }
+      )
+
+      // The simulated singer starts within a second; the readout shows a note.
+      await waitFor(
+         () => expect(screen.getByText("readout.centsValue")).toBeInTheDocument(),
+         {
+            timeout: 3000,
+         }
+      )
+
+      fireEvent.click(screen.getByRole("button", { name: "controls.tab.off" }))
+      await screen.findByRole(
+         "button",
+         { name: "controls.tab.on" },
+         { timeout: 2000 }
+      )
+
+      fireEvent.click(screen.getByRole("button", { name: "controls.tab.on" }))
+      await screen.findByRole("button", { name: "controls.tab.off" })
+
+      act(() => unmount())
+      expect(errors).not.toHaveBeenCalled()
+      errors.mockRestore()
+   }, 10000)
+})

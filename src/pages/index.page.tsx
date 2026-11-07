@@ -84,21 +84,23 @@ const Homepage: NextPage<
          <Header />
 
          <Main>
-            <div className="hero-backdrop dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
-               <Section
-                  id="hero"
-                  className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row md:max-h-screen-sm xl:max-h-screen-lg lg:gap-8"
-               >
-                  {/* Left side of the Hero */}
-                  <HeroIntro />
+            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+               <div className="hero-edge-fade">
+                  <Section
+                     id="hero"
+                     className="flex-col justify-center h-full gap-6 overflow-x-visible md:flex-row md:max-h-screen-sm xl:max-h-screen-lg lg:gap-8"
+                  >
+                     {/* Left side of the Hero */}
+                     <HeroIntro />
 
-                  {/* Right */}
-                  <HeroWidget
-                     latestPostMetas={latestPostMetas}
-                     initBtc={initialCoinPrices.btc}
-                     initEth={initialCoinPrices.eth}
-                  />
-               </Section>
+                     {/* Right */}
+                     <HeroWidget
+                        latestPostMetas={latestPostMetas}
+                        initBtc={initialCoinPrices.btc}
+                        initEth={initialCoinPrices.eth}
+                     />
+                  </Section>
+               </div>
 
                <Section id="socials">
                   <Socials />

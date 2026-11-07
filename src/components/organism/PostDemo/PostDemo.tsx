@@ -1,10 +1,10 @@
 import { DemoLoader, demos, DemoName } from "@/components/organism/PostDemo/demos"
+import { DemoControls } from "@/components/organism/PostDemo/DemoUI"
 import dynamic from "next/dynamic"
 import React from "react"
 
 type PostDemoProps = {
    name: DemoName
-   lead?: string
    caption?: string
    minHeight?: number
 }
@@ -73,7 +73,7 @@ const StrictModeToggle: React.FC<{
 )
 
 export const PostDemo: React.FC<PostDemoProps> = (props) => {
-   const { name, lead, caption, minHeight = 120 } = props
+   const { name, caption, minHeight = 120 } = props
    const Demo = getDemo(name)
    const [strict, setStrict] = React.useState(false)
    const Strict = strict ? React.StrictMode : React.Fragment
@@ -81,17 +81,15 @@ export const PostDemo: React.FC<PostDemoProps> = (props) => {
    return (
       <figure className="mb-8">
          <div className="p-4 card" style={{ minHeight }}>
-            {(lead || isDev) && (
-               <div className="flex flex-wrap items-center mb-3 gap-x-4 gap-y-1">
-                  {lead && <div className="text-sm opacity-80">{lead}</div>}
-                  {isDev && <StrictModeToggle on={strict} onChange={setStrict} />}
-               </div>
-            )}
-            <DemoErrorBoundary>
-               <Strict>
-                  <Demo />
-               </Strict>
-            </DemoErrorBoundary>
+            <DemoControls.Provider
+               value={isDev && <StrictModeToggle on={strict} onChange={setStrict} />}
+            >
+               <DemoErrorBoundary>
+                  <Strict>
+                     <Demo />
+                  </Strict>
+               </DemoErrorBoundary>
+            </DemoControls.Provider>
          </div>
          {caption && (
             <figcaption className="mt-2 text-sm text-center opacity-70">

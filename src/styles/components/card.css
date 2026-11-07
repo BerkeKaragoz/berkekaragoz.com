@@ -13,7 +13,20 @@
    }
 
    .card-input[disabled] {
-      @apply transition-none cursor-default shadow bg-none bg-opacity-80 border-background-200 text-background-300 bg-background-100 text-opacity-70 dark:border-background-700 dark:bg-background-700 dark:bg-opacity-80;
+      @apply transition-none cursor-default shadow bg-none bg-opacity-80 border-background-200 text-background-300 bg-background-100 text-opacity-70 dark:bg-background-800 dark:bg-opacity-40 dark:text-background-500 dark:border-background-700;
+   }
+
+   /* One level in from a card, darker than it: code, logs, graphs and data
+      cells inside a demo. Nothing nests inside a well but content and raised
+      controls, and a well has no border; its tone sets it apart. */
+   .well {
+      @apply rounded-md bg-background-900/[0.08] dark:bg-black/40;
+   }
+
+   /* A well for highlighted code. The code theme is dark, so this one stays
+      dark in light mode too, like a post's code blocks. */
+   .well-code {
+      @apply well bg-background-800;
    }
 
    .card-backdrop {

@@ -20,10 +20,28 @@
          padding-inline-end: 2rem;
       }
 
-      /* From md the widget runs past the screen edge on purpose, so the fade
-         sits on the full-width hero backdrop instead, at the screen edge. */
-      .hero-backdrop {
-         mask-image: linear-gradient(to left, transparent, #000 5rem);
+      /* From md the widget runs past the screen edge on purpose, so it fades
+         into the page background there, through an overlay on a full-width
+         wrapper around the hero row. Only the widget reaches that edge, so
+         the backdrop pattern and the rows below keep their colour. A mask
+         would show the backdrop through instead, which is bluer than the
+         widget in dark mode and reads as a glow. */
+      .hero-edge-fade {
+         position: relative;
+      }
+
+      .hero-edge-fade::after {
+         content: "";
+         position: absolute;
+         inset-block: 0;
+         right: 0;
+         width: 5rem;
+         pointer-events: none;
+         background: linear-gradient(to right, transparent, theme("colors.background.50"));
+      }
+
+      .dark .hero-edge-fade::after {
+         background: linear-gradient(to right, transparent, theme("colors.background.900"));
       }
    }
 }

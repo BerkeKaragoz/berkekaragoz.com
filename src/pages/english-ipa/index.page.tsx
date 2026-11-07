@@ -2,6 +2,8 @@ import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
 import Tooltip from "@/components/atomic/Tooltip/Tooltip"
+import AdSenseBanner from "@/components/molecular/AdSenseBanner/AdSenseBanner"
+import { ADSENSE_SLOTS } from "@/features/consent/config"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import {
@@ -1198,6 +1200,9 @@ const IpaPage: NextPage = () => {
                         />
                      </div>
                   )}
+               </Section>
+               <Section block>
+                  <AdSenseBanner slot={ADSENSE_SLOTS.tool} className="mt-4" />
                </Section>
             </div>
          </Main>

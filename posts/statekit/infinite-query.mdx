@@ -44,8 +44,9 @@ feedMachine.data.posts // both pages' posts, in one list
 ```
 
 Here `getPosts(page)` returns `{ items, nextCursor }`, with `nextCursor` as
-`null` on the last page. The demo's API is fake, slow on purpose, and can be
-told to fail:
+`null` on the last page. In the demo it's a fake API, slow on purpose, with
+three pages of three posts. `<Feed />` renders straight from `m.data`, and one
+button makes the next request fail:
 
 <Demo name="statekit-infinite-query" minHeight={300} />
 

@@ -10,6 +10,8 @@ import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { ComponentPropsWithTranslation } from "@/lib/types/i18n"
 import LinkText from "@/components/atomic/LinkText/LinkText"
 import Tooltip from "@/components/atomic/Tooltip/Tooltip"
+import { CONSENT_NEEDED } from "@/features/consent/config"
+import { openConsentSettings } from "@/features/consent/consent"
 
 type FooterProps = ComponentPropsWithTranslation<Record<string, unknown>>
 
@@ -90,7 +92,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <LinkText href="/english-ipa">English IPA</LinkText>
                   </li>
                   <li className="mb-2">
-                     <a href="/api/ip">Public IP</a>
+                     <LinkText href="/pitch-graph">Pitch graph</LinkText>
                   </li>
                   <li className="mb-2">
                      <a href="/trace">Trace</a>
@@ -143,6 +145,18 @@ export const Footer: React.FC<FooterProps> = (props) => {
                   </p>
                   <a href="mailto:mail@berkekaragoz.com">mail@berkekaragoz.com</a>
                </div>
+               <ul className="mt-8">
+                  <li className="mb-2">
+                     <LinkText href="/privacy">{ct("consent.privacy")}</LinkText>
+                  </li>
+                  {CONSENT_NEEDED && (
+                     <li className="mb-2">
+                        <button type="button" className="link" onClick={openConsentSettings}>
+                           {ct("consent.settings")}
+                        </button>
+                     </li>
+                  )}
+               </ul>
             </div>
          </Section>
          <div className="text-center opacity-60">

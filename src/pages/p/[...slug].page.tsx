@@ -1,4 +1,6 @@
 import LinkText from "@/components/atomic/LinkText/LinkText"
+import AdSenseBanner from "@/components/molecular/AdSenseBanner/AdSenseBanner"
+import { ADSENSE_SLOTS } from "@/features/consent/config"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
@@ -155,6 +157,10 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
                         </span>
                      ))}
                   </p>
+               </Section>
+
+               <Section block prose>
+                  <AdSenseBanner slot={ADSENSE_SLOTS.post} className="mb-8" />
                </Section>
 
                {isMultiPage && (

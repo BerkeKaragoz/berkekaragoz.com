@@ -14,11 +14,11 @@ const config: Config = {
       "^@/(.*)$": "<rootDir>/src/$1",
 
       // Handle CSS imports (without CSS modules)
-      "^.+\\.(css|sass|scss)$": "<rootDir>/src/__mocks__/style.mock.js",
+      "^.+\\.(css|sass|scss)$": "<rootDir>/src/__mocks__/style.mock.ts",
 
       // Handle image imports
       "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$":
-         "<rootDir>/src/__mocks__/file.mock.js",
+         "<rootDir>/src/__mocks__/file.mock.ts",
 
       // i18n
       i18next: "<rootDir>/src/__mocks__/i18next.mock.js",

@@ -1,0 +1,104 @@
+/* Restyles Google's consent message (AdSense Privacy & messaging) to match the
+   site. Google renders it in the page DOM under .fc-consent-root, with its own
+   <style> tag; `html .fc-consent-root` outranks that.
+
+   The .fc-* class names are undocumented and can change without notice, so
+   every rule here is cosmetic: if a selector stops matching, Google's own
+   styling shows and nothing breaks. Check the message after Google updates.
+
+   TCF Policies v5.0.b, Appendix B, sets the limits. Keep:
+   - the backdrop over the whole page (C(a)); only the dialog moves;
+   - every first-layer item readable: vendor count and link, purposes, special
+     features, how to reopen, the consent and "Manage options" buttons (C(b));
+   - the two main buttons alike in font, size and style, with at least 5:1
+     contrast, neither looking disabled (C(g)).
+
+   Pages pick a placement and a variant through data-consent-placement and
+   data-consent-variant on <html> (see src/features/consent/config.ts). */
+
+html .fc-consent-root {
+   font-family: Saira, "Open Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html .fc-consent-root .fc-dialog-overlay {
+   background: rgb(2 6 23 / 0.45);
+   backdrop-filter: blur(3px);
+}
+
+html .fc-consent-root .fc-dialog {
+   border: 1px solid theme("colors.slate.400 / 30%");
+   border-radius: 0.75rem;
+   background: theme("colors.slate.100");
+   color: theme("colors.slate.800");
+   box-shadow: 0 12px 40px rgb(0 0 0 / 0.25);
+}
+
+html.dark .fc-consent-root .fc-dialog {
+   border-color: theme("colors.slate.700 / 25%");
+   background: theme("colors.slate.800");
+   color: theme("colors.slate.100");
+}
+
+html .fc-consent-root .fc-dialog-headline,
+html .fc-consent-root h1,
+html .fc-consent-root h2 {
+   font-family: inherit;
+   font-weight: 600;
+}
+
+html .fc-consent-root a {
+   color: theme("colors.sky.600");
+}
+
+html.dark .fc-consent-root a {
+   color: theme("colors.sky.400");
+}
+
+/* Both kinds of button share one look so neither stands out (C(g)). Text and
+   background clear 5:1 in both themes: sky-800 on sky-50, sky-50 on sky-800. */
+html .fc-consent-root .fc-button,
+html .fc-consent-root .fc-primary-button,
+html .fc-consent-root .fc-secondary-button {
+   border: 1px solid theme("colors.sky.800");
+   border-radius: 0.5rem;
+   background: theme("colors.sky.50");
+   color: theme("colors.sky.800");
+   font-family: inherit;
+   font-weight: 500;
+   box-shadow: none;
+}
+
+html.dark .fc-consent-root .fc-button,
+html.dark .fc-consent-root .fc-primary-button,
+html.dark .fc-consent-root .fc-secondary-button {
+   border-color: theme("colors.sky.200");
+   background: theme("colors.sky.800");
+   color: theme("colors.sky.50");
+}
+
+html .fc-consent-root .fc-button:hover,
+html .fc-consent-root .fc-primary-button:hover,
+html .fc-consent-root .fc-secondary-button:hover {
+   filter: brightness(1.08);
+}
+
+/* Placement: the backdrop still covers the page; only the dialog moves. */
+html[data-consent-placement="corner"] .fc-consent-root .fc-dialog-container,
+html[data-consent-placement="inline"] .fc-consent-root .fc-dialog-container {
+   justify-content: flex-start;
+   align-items: flex-end;
+   padding: 1rem;
+}
+
+html[data-consent-placement="bar"] .fc-consent-root .fc-dialog-container {
+   align-items: flex-end;
+}
+
+html[data-consent-placement="bar"] .fc-consent-root .fc-dialog {
+   max-width: none;
+   width: 100%;
+   border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Per-page variants go below, e.g.:
+   html[data-consent-variant="post"] .fc-consent-root .fc-dialog { … } */

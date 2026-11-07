@@ -28,5 +28,22 @@
    "page x of y": "Page {{current}} of {{total}}",
    "previous": "previous",
    "next": "next",
-   "close": "close"
+   "close": "close",
+   "consent": {
+      "region": "Cookie consent",
+      "title": "Cookies",
+      "body": "With your permission, this site uses Google Analytics to see which pages get read and Google AdSense to show ads. Both use cookies. Nothing loads until you choose.",
+      "bodyAnalytics": "With your permission, this site uses Google Analytics to see which pages get read. It uses cookies. Nothing loads until you choose.",
+      "bodyAds": "With your permission, this site uses Google AdSense to show ads. It uses cookies. Nothing loads until you choose.",
+      "privacy": "Privacy and cookies",
+      "acceptAll": "Accept all",
+      "rejectAll": "Reject all",
+      "choose": "Choose",
+      "save": "Save choices",
+      "analytics": "Analytics",
+      "analyticsDetail": "Google Analytics counts visits and which pages are read.",
+      "ads": "Advertising",
+      "adsDetail": "Google AdSense shows ads, which may be based on your interests.",
+      "settings": "Cookie settings"
+   }
 }

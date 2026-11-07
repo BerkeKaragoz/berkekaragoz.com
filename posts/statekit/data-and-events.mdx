@@ -69,7 +69,7 @@ const noteMachine = createMachine({
                throw new Error("The network is down")
 
             draft.saves++
-            draft.message = `Saved ${draft.saves} times`
+            draft.message = `Saved (${draft.saves})`
             setState(S.saved)
          } catch (error) {
             draft.message = (error as Error).message
@@ -81,17 +81,18 @@ const noteMachine = createMachine({
 })
 ```
 
-The log under the demo is [`subscribeEvents`](/p/statekit/subscribing), which
-reports when an event starts and how it ends:
+In the demo, `<Note />` reads `noteMachine`, and the timeline shows each
+publish as [`subscribeEvents`](/p/statekit/subscribing) reports it: one as
+`save` starts, and one with its outcome as it settles:
 
-<Demo name="statekit-async-events" minHeight={300} />
+<Demo name="statekit-async-events" minHeight={370} />
 
 Calling the event returns its promise. It resolves to what the event returns
 and rejects with what it throws:
 
 ```ts
 await noteMachine.event.save(false)
-noteMachine.data.message // "Saved 1 times"
+noteMachine.data.message // "Saved (1)"
 ```
 
 ### No writes between two awaits
@@ -124,8 +125,8 @@ written so far goes out with it.
 ## When an event throws
 
 The changes made before the throw stay, with no rollback. The event reports
-`false` to `subscribeEvents` and throws to its caller. In the demo, "Save, then
-fail" ends with the error message in `data` and a rejected promise.
+`false` to `subscribeEvents` and throws to its caller. In the demo, "Save with
+the network down" ends with the error message in `data` and a rejected promise.
 
 ## Outside events
 

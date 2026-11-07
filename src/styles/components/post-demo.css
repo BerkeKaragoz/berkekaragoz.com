@@ -1,20 +1,67 @@
 @layer components {
    .post-demo-flash {
-      animation: post-demo-flash 700ms ease-out;
+      /* Holds, then drops: a slow faint tail reads as a selected state */
+      animation: post-demo-flash 450ms ease-in;
+   }
+
+   /* A value that went up or down flashes green or red instead */
+   .post-demo-flash-up {
+      --post-demo-flash: theme("colors.green.500");
+   }
+
+   .post-demo-flash-down {
+      --post-demo-flash: theme("colors.red.500");
    }
 
    @keyframes post-demo-flash {
       from {
          background-color: color-mix(
             in srgb,
-            theme("colors.primary.500") 25%,
+            var(--post-demo-flash, theme("colors.primary.500")) 40%,
             transparent
          );
       }
    }
 
+   /* The statekit overview's state graph */
+   .overview-graph-grid {
+      background-image: radial-gradient(
+         circle,
+         color-mix(in srgb, currentColor 14%, transparent) 1px,
+         transparent 1px
+      );
+      background-size: 16px 16px;
+   }
+
+   .overview-graph-spin {
+      transform-box: fill-box;
+      transform-origin: 0 100%;
+      animation: overview-graph-spin 900ms linear infinite;
+   }
+
+   .overview-graph-blocked {
+      animation: overview-graph-blocked 900ms ease-out forwards;
+   }
+
+   @keyframes overview-graph-spin {
+      to {
+         transform: rotate(360deg);
+      }
+   }
+
+   @keyframes overview-graph-blocked {
+      0%,
+      40% {
+         opacity: 1;
+      }
+      to {
+         opacity: 0;
+      }
+   }
+
    @media (prefers-reduced-motion: reduce) {
-      .post-demo-flash {
+      .post-demo-flash,
+      .overview-graph-spin {
          animation: none;
       }
    }

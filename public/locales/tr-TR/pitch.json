@@ -1,0 +1,65 @@
+{
+   "meta": {
+      "title": "Perde grafiği | E. Berke Karagöz",
+      "description": "Mikrofonunuzun ve başka bir sekmede çalan sesin canlı perdesi, tek grafikte."
+   },
+   "intro": {
+      "title": "Perde grafiği",
+      "description": "Mikrofonunuzun ve paylaştığınız sekmenin canlı perdesi, tek grafikte."
+   },
+   "controls": {
+      "label": "Girişler",
+      "mic": {
+         "off": "Mikrofonu aç",
+         "starting": "Mikrofon açılıyor…",
+         "on": "Mikrofonu kapat",
+         "denied": "Mikrofonu tekrar dene",
+         "error": "Mikrofonu tekrar dene"
+      },
+      "tab": {
+         "off": "Sekme paylaş",
+         "starting": "Bir sekme seçin…",
+         "on": "Paylaşımı durdur",
+         "noAudio": "Sesle tekrar paylaş",
+         "unsupported": "Sekme paylaş",
+         "error": "Paylaşımı tekrar dene"
+      },
+      "headphones": "Kulaklık kullanın, yoksa mikrofon sekmenin sesini de duyar.",
+      "zoom": {
+         "label": "Aralık",
+         "value_one": "{{value}} oktav",
+         "value_other": "{{value}} oktav",
+         "less": "Daha az oktav göster",
+         "more": "Daha çok oktav göster"
+      }
+   },
+   "readout": {
+      "note": "Nota",
+      "cents": "Sapma",
+      "centsValue": "{{value}} sent",
+      "inTuneCheck": "15 sent içinde",
+      "hz": "Frekans",
+      "hzValue": "{{value}} Hz",
+      "target": "En yakın nota",
+      "score": "Doğru perde"
+   },
+   "graph": {
+      "ariaLabel": "Son 8 saniyenin perdesi. Mikrofon mavi çizgi, paylaşılan sekme turuncu çizgi, mikrofonun en yakın notası yeşil bant.",
+      "voice": "Mikrofon",
+      "song": "Sekme",
+      "target": "En yakın nota"
+   },
+   "errors": {
+      "micDenied": "Mikrofon erişimi engelli. Site ayarlarından izin verip tekrar deneyin.",
+      "noTabAudio": "Sekme sessiz paylaşıldı. “Sekme sesini de paylaş” işaretliyken tekrar paylaşın.",
+      "unsupported": "Sekme sesi paylaşımı yalnızca masaüstü Chrome ve Edge'de çalışır.",
+      "insecure": "Tarayıcı mikrofona ve sekme paylaşımına yalnızca https'te ya da localhost'ta izin verir. Bu sayfa düz http ile açık.",
+      "generic": "Başlatılamadı. Tekrar deneyin."
+   },
+   "warnings": {
+      "echoCancellation": "Yankı engelleme hâlâ açık. Ölçümler daha az kararlı olabilir.",
+      "noiseSuppression": "Gürültü bastırma hâlâ açık. Kısık notalar kaybolabilir.",
+      "autoGainControl": "Otomatik kazanç hâlâ açık. Ses düzeyi sıçrayabilir.",
+      "monoTab": "Sekme sesi mono."
+   }
+}

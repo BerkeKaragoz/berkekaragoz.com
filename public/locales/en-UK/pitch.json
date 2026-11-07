@@ -1,0 +1,65 @@
+{
+   "meta": {
+      "title": "Pitch graph | E. Berke Karagöz",
+      "description": "Live pitch of your microphone and of audio playing in another tab, on one graph."
+   },
+   "intro": {
+      "title": "Pitch graph",
+      "description": "Live pitch of your mic, and of any tab you share, on one graph."
+   },
+   "controls": {
+      "label": "Inputs",
+      "mic": {
+         "off": "Start mic",
+         "starting": "Starting mic…",
+         "on": "Stop mic",
+         "denied": "Retry mic",
+         "error": "Retry mic"
+      },
+      "tab": {
+         "off": "Share a tab",
+         "starting": "Choose a tab…",
+         "on": "Stop sharing",
+         "noAudio": "Share again with audio",
+         "unsupported": "Share a tab",
+         "error": "Retry sharing"
+      },
+      "headphones": "Use headphones, otherwise the mic also picks up the tab.",
+      "zoom": {
+         "label": "Range",
+         "value_one": "{{value}} octave",
+         "value_other": "{{value}} octaves",
+         "less": "Show fewer octaves",
+         "more": "Show more octaves"
+      }
+   },
+   "readout": {
+      "note": "Note",
+      "cents": "Off",
+      "centsValue": "{{value}} cents",
+      "inTuneCheck": "Within 15 cents",
+      "hz": "Frequency",
+      "hzValue": "{{value}} Hz",
+      "target": "Nearest note",
+      "score": "In tune"
+   },
+   "graph": {
+      "ariaLabel": "Pitch over the last 8 seconds. The mic is the blue line, the shared tab the orange line, the mic's nearest note the green band.",
+      "voice": "Mic",
+      "song": "Tab",
+      "target": "Nearest note"
+   },
+   "errors": {
+      "micDenied": "Microphone access is blocked. Allow it in the site settings and retry.",
+      "noTabAudio": "The tab was shared without audio. Share it again with “Also share tab audio” ticked.",
+      "unsupported": "Tab audio sharing only works in desktop Chrome and Edge.",
+      "insecure": "The browser only allows the mic and tab sharing on https or localhost. This page is open over plain http.",
+      "generic": "Couldn't start. Retry."
+   },
+   "warnings": {
+      "echoCancellation": "Echo cancellation is still on. Readings may be less steady.",
+      "noiseSuppression": "Noise suppression is still on. Quiet notes may drop out.",
+      "autoGainControl": "Automatic gain is still on. Loudness may jump.",
+      "monoTab": "Tab audio is mono."
+   }
+}

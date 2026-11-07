@@ -4,6 +4,10 @@ export type DemoLoader = () => Promise<{ default: React.ComponentType }>
 
 // Used in posts as <Demo name="..." />.
 export const demos = {
+   "statekit-importer": () =>
+      import("@/components/organism/PostDemo/statekit/ImporterDemo"),
+   "statekit-prices": () =>
+      import("@/components/organism/PostDemo/statekit/PricesDemo"),
    "statekit-async-events": () =>
       import("@/components/organism/PostDemo/statekit/AsyncEventsDemo"),
    "statekit-state-flags": () =>

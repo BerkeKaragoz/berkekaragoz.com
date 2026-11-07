@@ -8,16 +8,13 @@ it.
 
 ## See it
 
-One machine, four components. Each reads something different and counts its
-renders:
+One machine holds a post's stats, and four components read it. Each one reads
+something different and counts its renders. Like the post, add a view or type
+a note, and see which ones rerender:
 
-<Demo
-   name="statekit-rerenders"
-   lead="Press like or view, or type a note, then compare the render counts."
-   minHeight={265}
-/>
+<Demo name="statekit-rerenders" minHeight={300} />
 
-`Row` shows what the component reads, the value, and its render count:
+Without the render counts, the components are:
 
 ```tsx
 import {
@@ -26,7 +23,7 @@ import {
 } from "@statekit/react"
 
 const statsMachine = createMachine({
-   data: { likes: 0, views: 0, note: "" },
+   data: { likes: 6, views: 48, note: "Share on Friday" },
    events: {
       like: ({ draft }) => {
          draft.likes++
@@ -34,15 +31,16 @@ const statsMachine = createMachine({
       view: ({ draft }) => {
          draft.views++
       },
-      write: ({ draft }, note: string) => {
+      setNote: ({ draft }, note: string) => {
          draft.note = note
       },
    },
    selectors: {
-      likeRate: ({ data }) =>
-         data.views
-            ? Math.round((data.likes / data.views) * 100)
-            : 0,
+      likeRate: ({ data }) => {
+         if (!data.views) return 0
+         const rate = data.likes / data.views
+         return Math.round(rate * 1000) / 10
+      },
    },
 })
 
@@ -51,45 +49,35 @@ const [useStatsMachine] =
 
 const Likes = () => {
    const m = useStatsMachine()
-   return (
-      <Row reads="m.data.likes" value={m.data.likes} />
-   )
+   return <p>{m.data.likes} likes</p>
 }
 
 const Views = () => {
    const m = useStatsMachine()
-   return (
-      <Row reads="m.data.views" value={m.data.views} />
-   )
+   return <p>{m.data.views} views</p>
 }
 
 const LikeRate = () => {
    const m = useStatsMachine()
-   return (
-      <Row
-         reads="m.select.likeRate()"
-         value={`${m.select.likeRate()}%`}
-      />
-   )
+   return <p>{m.select.likeRate()}% like rate</p>
 }
 
-const Everything = () => {
+const Summary = () => {
    const m = useStatsMachine()
    const { ...data } = m.data
    return (
-      <Row
-         reads="const { ...data } = m.data"
-         value={JSON.stringify(data)}
-      />
+      <p>
+         {data.likes} likes, {data.views} views. {data.note}.
+      </p>
    )
 }
 ```
 
-- Typing a note rerenders only the last row. Nothing else read `note`.
-- `like` rerenders `likes`. While `views` is `0` the rate row stays put: the
-  selector returned at `data.views ?` without reading `likes`. After one view
-  it reads both.
-- The spread reads every field, so it rerenders on everything.
+- `like` rerenders `Likes`, and `LikeRate`, whose selector reads `likes`.
+  `Views` never read `likes`, so it stays put.
+- `view` is the same for `views`, and leaves `Likes` alone.
+- A new note rerenders only `Summary`. Nothing else reads `note`, and the
+  spread reads every field, so `Summary` rerenders on every change.
 
 ## The rules
 

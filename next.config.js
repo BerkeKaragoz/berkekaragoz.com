@@ -15,6 +15,14 @@ module.exports = {
                source: "/trace/:level*",
                destination: "/api/trace/:level*",
             },
+            {
+               source: "/downloads/:path*",
+               destination: "/api/downloads/:path*",
+            },
+            {
+               source: "/ads.txt",
+               destination: "/api/ads-txt",
+            },
          ],
       }
    },
