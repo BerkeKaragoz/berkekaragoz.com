@@ -23,6 +23,41 @@
       @apply text-primary-700 dark:text-primary-200 hover:text-primary-800 dark:hover:text-primary-100 hover:bg-background-200 dark:hover:bg-background-700 hover:bg-opacity-50 dark:hover:bg-opacity-40 active:bg-accent-200 dark:active:bg-accent-900;
    }
 
+   /* A filled card-input for the one action a group leads with: primary into
+      accent (sky 600 to indigo 600), the angle of .text-gradient-primary. */
+   .card-input-primary {
+      @apply inline-block transition-colors border border-transparent rounded-lg shadow dark:shadow-md;
+   }
+
+   .card-input-primary:not([disabled]) {
+      @apply text-white;
+      background-image: linear-gradient(
+         290deg,
+         theme("colors.accent.600"),
+         theme("colors.primary.600")
+      );
+   }
+
+   .card-input-primary:not([disabled]):hover {
+      background-image: linear-gradient(
+         290deg,
+         theme("colors.accent.500"),
+         theme("colors.primary.500")
+      );
+   }
+
+   .card-input-primary:not([disabled]):active {
+      background-image: linear-gradient(
+         290deg,
+         theme("colors.accent.700"),
+         theme("colors.primary.700")
+      );
+   }
+
+   .card-input-primary[disabled] {
+      @apply cursor-default text-background-300 bg-background-200 dark:text-background-500 dark:bg-background-700;
+   }
+
    .card-input-ghost[disabled] {
       @apply cursor-default text-background-300 dark:text-background-500;
    }

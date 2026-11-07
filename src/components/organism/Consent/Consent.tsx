@@ -33,11 +33,13 @@ const BODY_KEY =
 const BUTTON_BASE = "px-3 py-1.5 text-sm font-medium grow basis-0 whitespace-nowrap"
 const BUTTON = `${BUTTON_BASE} card-input enabled:!bg-background-50 dark:enabled:!bg-background-700 enabled:text-primary-700 enabled:hover:text-primary-800`
 const BUTTON_GHOST = `${BUTTON_BASE} card-input-ghost`
+const BUTTON_PRIMARY = `${BUTTON_BASE} card-input-primary`
 
-// "Necessary only" sits on the first screen in the same style as
-// "Accept all" (ICO, EDPB, CNIL: refusing must be as easy as accepting).
-// "Settings" only opens the preferences, so it is the ghost variant; once they
-// are open, "Save choices" takes its place in the full style.
+// "Necessary only" sits on the first screen, the same size as "Accept all"
+// (ICO, EDPB, CNIL: refusing must be as easy as accepting). "Accept all" is
+// filled with a sky-to-indigo gradient, as Steam and others do, by the owner's choice;
+// see docs/cookie-consent.md. "Settings" only opens the preferences, so it is
+// the ghost variant; once they are open, "Save choices" takes its place.
 const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
    const m = useConsentMachine()
    const { t } = useTranslation(COMMON_TNS)
@@ -116,7 +118,7 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
          <div className="flex flex-row-reverse flex-wrap gap-2">
             <button
                type="button"
-               className={BUTTON}
+               className={BUTTON_PRIMARY}
                onClick={() => decideOwn({ analytics: true, ads: true })}
             >
                {t("consent.acceptAll")}

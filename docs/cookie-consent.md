@@ -59,7 +59,7 @@ Runner-up, if hacking the CSS gets too painful: Cookiebot's custom template, abo
 
 - **Nothing before consent.** GA4 and AdSense ad requests run only after a decision. Doing nothing, or simply browsing, is not consent (ICO, CNIL).
 - **Equal-weight buttons.** Accept and Reject get the same weight.
-  - Our banner orders them Settings, Necessary only, Accept all. Accept and Necessary-only share the `card-input` style, so refusing is as prominent as accepting. Settings only opens the preferences, so it is the ghost `card-input-ghost` variant (text only, background on hover). In the preferences view it becomes Save choices, in the full style.
+  - Our banner orders them Settings, Necessary only, Accept all. All three are the same size. Accept all is filled with a sky-to-indigo gradient (`card-input-primary`), the way Steam does it, at the owner's choice. Necessary only is the plain `card-input`. The ICO asks for equal *prominence*, so a highlighted Accept is a known risk, though a common one. If the ICO or counsel raises it, switch Accept to `card-input` too. Settings only opens the preferences, so it is the ghost `card-input-ghost` variant (text only, background on hover). In the preferences view it becomes Save choices, in the full style.
   - In Google's message, turn on the "Do not consent" button for every country. TCF doesn't require it, but the ICO, EDPB and CNIL expect a reject option on the first screen.
   - Google says consent rates are higher without it, but those regulators expect one.
 - **Separate categories.** Our own banner has separate Analytics and Advertising toggles, both off by default.
