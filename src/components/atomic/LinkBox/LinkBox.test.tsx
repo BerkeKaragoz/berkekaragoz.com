@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import LinkBox from "./LinkBox"
-import { RouterContext } from "next/dist/shared/lib/router-context"
-import { createRouterMock } from "@/__mocks__/createRouter.mock"
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime"
+import { createMockRouter } from "@/__mocks__/createRouter.mock"
 
-describe("LinkText", () => {
+describe("LinkBox", () => {
    const msg = "Testing message."
    const href = "/testing"
-   const router = createRouterMock({ pathname: "/" })
+   const router = createMockRouter()
 
    it("renders the contents", () => {
       render(
@@ -33,6 +33,6 @@ describe("LinkText", () => {
       fireEvent.click(el)
 
       expect(router.push).toHaveBeenCalledTimes(1)
-      // expect(router.push).toHaveBeenCalledWith("href"); //TODO
+      expect(router.push).toHaveBeenCalledWith(href, href, expect.anything())
    })
 })

@@ -12,6 +12,11 @@ jest.mock("@/components/organism/Footer/Footer", () => ({
    __esModule: true,
    default: () => null,
 }))
+// It reads the pages router, which this test doesn't mount.
+jest.mock("@/components/molecular/AdSenseBanner/AdSenseBanner", () => ({
+   __esModule: true,
+   default: () => null,
+}))
 
 describe("pitch page with the simulated engine", () => {
    beforeAll(() => {
