@@ -5,7 +5,7 @@
    },
    "intro": {
       "title": "Pitch graph",
-      "description": "Live pitch of your mic, and of any tab you share, on one graph."
+      "description": "Live pitch of your mic, and of any tab you share."
    },
    "controls": {
       "label": "Inputs",
@@ -31,6 +31,11 @@
          "value_other": "{{value}} octaves",
          "less": "Show fewer octaves",
          "more": "Show more octaves"
+      },
+      "height": "Graph height",
+      "fullscreen": {
+         "enter": "Full screen",
+         "exit": "Exit full screen"
       }
    },
    "readout": {
@@ -40,8 +45,7 @@
       "inTuneCheck": "Within 15 cents",
       "hz": "Frequency",
       "hzValue": "{{value}} Hz",
-      "target": "Nearest note",
-      "score": "In tune"
+      "target": "Nearest note"
    },
    "graph": {
       "ariaLabel": "Pitch over the last 8 seconds. The mic is the blue line, the shared tab the orange line, the mic's nearest note the green band.",

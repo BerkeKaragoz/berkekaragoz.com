@@ -62,11 +62,13 @@ type PitchGraphProps = {
    engine: PitchEngine | null
    /** Semitones of vertical space. */
    semitones: number
+   /** In CSS pixels; the stylesheet's height when left out. */
+   height?: number
    ariaLabel: string
 }
 
 export const PitchGraph = (props: PitchGraphProps) => {
-   const { session, engine, semitones, ariaLabel } = props
+   const { session, engine, semitones, height, ariaLabel } = props
    const wrapRef = useRef<HTMLDivElement>(null)
    const canvasRef = useRef<HTMLCanvasElement>(null)
    // Read by the draw loop each frame, so zooming doesn't restart it.
@@ -407,7 +409,7 @@ export const PitchGraph = (props: PitchGraphProps) => {
    }, [session, engine])
 
    return (
-      <div ref={wrapRef} className={styles.graph}>
+      <div ref={wrapRef} className={styles.graph} style={{ height }}>
          <canvas
             ref={canvasRef}
             className={styles.canvas}

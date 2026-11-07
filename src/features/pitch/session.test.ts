@@ -53,16 +53,3 @@ describe("alignedEdge", () => {
       expect(s.alignedEdge()).toBeCloseTo(1.495)
    })
 })
-
-describe("score", () => {
-   it("scores voice frames against their nearest note without waiting for the song", () => {
-      const s = createSession()
-      s.setActive({ voice: true, song: true })
-      s.addFrames(frames("voice", 0, 1, 60.05)) // 5 cents off C4
-      s.addFrames(frames("voice", 1, 2, 61.3)) // 30 cents off C#4
-      const score = s.score()
-      expect(score.voiced).toBe(400)
-      expect(score.inTune).toBe(200)
-      expect(score.percent).toBe(50)
-   })
-})

@@ -130,8 +130,11 @@
    color: var(--pitch-error);
 }
 
-.hint {
-   @apply mt-3 text-sm;
+/* Beside the buttons; wraps under them when the row is full. */
+.caption {
+   @apply self-center text-xs leading-snug;
+   flex: 1 1 14rem;
+   max-width: 28rem;
    color: var(--pitch-muted);
 }
 
@@ -146,13 +149,22 @@
    @apply flex flex-col;
 }
 
+/* Fixed widths, so changing values don't move anything. */
 .bigNote {
    @apply text-5xl font-semibold leading-none sm:text-6xl;
-   min-width: 3ch;
+   width: 3.5ch;
+   white-space: nowrap;
 }
 
 .stats {
-   @apply grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-4;
+   @apply grid w-full grid-cols-2 gap-x-6 gap-y-3;
+}
+
+@media (min-width: 640px) {
+   .stats {
+      @apply w-auto;
+      grid-template-columns: repeat(3, 8.5rem);
+   }
 }
 
 .stat {
@@ -182,13 +194,41 @@
 
 .graph {
    @apply relative mt-4 w-full;
-   height: 24rem;
+   height: 36rem;
 }
 
-@media (min-width: 640px) {
-   .graph {
-      height: 36rem;
-   }
+/* Drag bar under the graph. */
+.heightHandle {
+   @apply relative flex h-4 w-full cursor-row-resize items-center justify-center;
+   touch-action: none;
+}
+
+.heightHandle::after {
+   @apply block h-1 w-12 rounded-full;
+   content: "";
+   background: var(--pitch-border);
+   transition: background-color 120ms ease;
+}
+
+.heightHandle:hover::after,
+.heightHandle:active::after {
+   background: var(--pitch-muted);
+}
+
+.heightHandle:focus-visible {
+   outline: 2px solid var(--pitch-focus);
+   outline-offset: 2px;
+}
+
+/* Full screen: the panel fills the screen and the graph takes what is left. */
+.panel:fullscreen {
+   @apply m-0 flex flex-col overflow-auto rounded-none border-0;
+}
+
+.panel:fullscreen .graph {
+   flex: 1 1 0;
+   min-height: 12rem;
+   height: auto;
 }
 
 .canvas {
@@ -209,6 +249,10 @@
 .zoom {
    @apply mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-t pt-4 text-sm;
    border-color: var(--pitch-border);
+}
+
+.fullscreen {
+   @apply ml-auto px-3 py-1 text-xs;
 }
 
 .zoomLabel {

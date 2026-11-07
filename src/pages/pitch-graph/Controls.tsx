@@ -1,4 +1,5 @@
 import { PITCH_TNS } from "@/features/pitch/i18n"
+import { ArrowsExpandIcon } from "@heroicons/react/solid"
 import type { EngineState } from "@/features/pitch/types"
 import { useTranslation } from "next-i18next"
 import React from "react"
@@ -97,6 +98,7 @@ export const Controls = (props: ControlsProps) => {
                   </p>
                )}
             </div>
+            <p className={styles.caption}>{t("controls.headphones")}</p>
          </div>
 
          {insecure && (
@@ -114,7 +116,6 @@ export const Controls = (props: ControlsProps) => {
                {t(`warnings.${warning}`)}
             </p>
          ))}
-         <p className={styles.hint}>{t("controls.headphones")}</p>
       </div>
    )
 }
@@ -133,11 +134,13 @@ export const isZoomStep = (semitones: number) =>
 type ZoomProps = {
    value: number
    onChange: (semitones: number) => void
+   /** Full screen toggle at the row's end, when the browser allows it. */
+   fullscreen?: { on: boolean; onToggle: () => void }
 }
 
 /** How many octaves the graph shows, in half-octave steps. */
 export const Zoom = (props: ZoomProps) => {
-   const { value, onChange } = props
+   const { value, onChange, fullscreen } = props
    const { t, i18n } = useTranslation(PITCH_TNS)
    const octaves = value / 12
    const step = (by: number) =>
@@ -179,7 +182,86 @@ export const Zoom = (props: ZoomProps) => {
                +
             </button>
          </span>
+         {fullscreen && (
+            <button
+               type="button"
+               className={`${styles.button} ${styles.fullscreen}`}
+               onClick={fullscreen.onToggle}
+            >
+               <ArrowsExpandIcon className="h-4 w-4" aria-hidden="true" />
+               {t(
+                  fullscreen.on
+                     ? "controls.fullscreen.exit"
+                     : "controls.fullscreen.enter"
+               )}
+            </button>
+         )}
       </div>
+   )
+}
+
+/** Graph height limits, default and keyboard step, in CSS pixels. */
+export const GRAPH_MIN_HEIGHT = 240
+export const GRAPH_MAX_HEIGHT = 1400
+export const GRAPH_DEFAULT_HEIGHT = 576
+const GRAPH_HEIGHT_STEP = 32
+
+export const clampGraphHeight = (px: number) =>
+   Math.round(Math.min(GRAPH_MAX_HEIGHT, Math.max(GRAPH_MIN_HEIGHT, px)))
+
+type HeightHandleProps = {
+   value: number
+   /** Called while dragging; `done` once the drag or key press ends. */
+   onChange: (px: number, done: boolean) => void
+}
+
+/** A bar under the graph: drag it, or focus it and use the arrow keys. */
+export const HeightHandle = (props: HeightHandleProps) => {
+   const { value, onChange } = props
+   const { t } = useTranslation(PITCH_TNS)
+   const drag = React.useRef<{ y: number; height: number; last: number } | null>(
+      null
+   )
+
+   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+      event.currentTarget.setPointerCapture(event.pointerId)
+      drag.current = { y: event.clientY, height: value, last: value }
+   }
+   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!drag.current) return
+      drag.current.last = clampGraphHeight(
+         drag.current.height + event.clientY - drag.current.y
+      )
+      onChange(drag.current.last, false)
+   }
+   const onPointerUp = () => {
+      if (!drag.current) return
+      onChange(drag.current.last, true)
+      drag.current = null
+   }
+   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      const by = event.key === "ArrowDown" ? 1 : event.key === "ArrowUp" ? -1 : 0
+      if (!by) return
+      event.preventDefault()
+      onChange(clampGraphHeight(value + by * GRAPH_HEIGHT_STEP), true)
+   }
+
+   return (
+      <div
+         className={styles.heightHandle}
+         role="separator"
+         aria-orientation="horizontal"
+         aria-label={t("controls.height")}
+         aria-valuemin={GRAPH_MIN_HEIGHT}
+         aria-valuemax={GRAPH_MAX_HEIGHT}
+         aria-valuenow={value}
+         tabIndex={0}
+         onPointerDown={onPointerDown}
+         onPointerMove={onPointerMove}
+         onPointerUp={onPointerUp}
+         onPointerCancel={onPointerUp}
+         onKeyDown={onKeyDown}
+      />
    )
 }
 

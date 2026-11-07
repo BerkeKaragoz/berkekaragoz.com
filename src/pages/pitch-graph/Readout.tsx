@@ -1,6 +1,6 @@
 import { PITCH_TNS } from "@/features/pitch/i18n"
 import { noteName } from "@/features/pitch/notes"
-import type { Readout as ReadoutValues, Score } from "@/features/pitch/session"
+import type { Readout as ReadoutValues } from "@/features/pitch/session"
 import { CheckCircleIcon } from "@heroicons/react/solid"
 import { useTranslation } from "next-i18next"
 import React from "react"
@@ -15,11 +15,10 @@ const formatCents = (cents: number) => {
 
 type ReadoutProps = {
    readout: ReadoutValues
-   score: Score
 }
 
 export const Readout = (props: ReadoutProps) => {
-   const { readout, score } = props
+   const { readout } = props
    const { t } = useTranslation(PITCH_TNS)
    const { midi, hz, cents, target, inTune } = readout
 
@@ -59,12 +58,6 @@ export const Readout = (props: ReadoutProps) => {
                <dt className={styles.statLabel}>{t("readout.target")}</dt>
                <dd className={`${styles.statValue} ${styles.targetValue}`}>
                   {target === null ? EMPTY : noteName(target)}
-               </dd>
-            </div>
-            <div className={styles.stat}>
-               <dt className={styles.statLabel}>{t("readout.score")}</dt>
-               <dd className={styles.statValue}>
-                  {score.percent === null ? EMPTY : `${Math.round(score.percent)}%`}
                </dd>
             </div>
          </dl>

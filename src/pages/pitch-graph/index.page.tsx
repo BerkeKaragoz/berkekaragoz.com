@@ -12,21 +12,28 @@ import {
    createSession,
    DEFAULT_RANGE_SEMITONES,
    type Readout as ReadoutValues,
-   type Score,
 } from "@/features/pitch/session"
 import { createSimulatedEngine } from "@/features/pitch/simulatedEngine"
 import type { EngineState, PitchEngine } from "@/features/pitch/types"
 import { NextPage } from "next"
 import { useTranslation } from "next-i18next"
 import Head from "next/head"
-import React, { useCallback, useEffect, useState } from "react"
-import { Controls, Zoom, isZoomStep } from "./Controls"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import {
+   Controls,
+   GRAPH_DEFAULT_HEIGHT,
+   HeightHandle,
+   Zoom,
+   clampGraphHeight,
+   isZoomStep,
+} from "./Controls"
 import { PitchGraph } from "./PitchGraph"
 import { Readout } from "./Readout"
 import styles from "./pitch.module.css"
 
 // v2: the default went from 1.5 to 2.5 octaves; old choices are dropped.
 const ZOOM_STORAGE_KEY = "pitch.zoomSemitones.v2"
+const HEIGHT_STORAGE_KEY = "pitch.graphHeight"
 const READOUT_INTERVAL_MS = 100
 
 const INITIAL_STATE: EngineState = {
@@ -44,8 +51,6 @@ const EMPTY_READOUT: ReadoutValues = {
    inTune: false,
 }
 
-const EMPTY_SCORE: Score = { voiced: 0, inTune: 0, percent: null }
-
 const sameReadout = (a: ReadoutValues, b: ReadoutValues) =>
    a.midi === b.midi &&
    a.hz === b.hz &&
@@ -62,11 +67,26 @@ const PitchPage: NextPage = () => {
    const [engineState, setEngineState] = useState<EngineState>(INITIAL_STATE)
    const [failed, setFailed] = useState(false)
    const [readout, setReadout] = useState<ReadoutValues>(EMPTY_READOUT)
-   const [score, setScore] = useState<Score>(EMPTY_SCORE)
    const [zoom, setZoom] = useState(DEFAULT_RANGE_SEMITONES)
+   const [graphHeight, setGraphHeight] = useState(GRAPH_DEFAULT_HEIGHT)
+   const panelRef = useRef<HTMLDivElement>(null)
+   const [fullscreen, setFullscreen] = useState(false)
    // Read after mount, so the server render and hydration agree.
    const [insecure, setInsecure] = useState(false)
-   useEffect(() => setInsecure(window.isSecureContext === false), [])
+   const [canFullscreen, setCanFullscreen] = useState(false)
+   useEffect(() => {
+      setInsecure(window.isSecureContext === false)
+      setCanFullscreen(document.fullscreenEnabled === true)
+      const onChange = () =>
+         setFullscreen(document.fullscreenElement === panelRef.current)
+      document.addEventListener("fullscreenchange", onChange)
+      return () => document.removeEventListener("fullscreenchange", onChange)
+   }, [])
+
+   const toggleFullscreen = () => {
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {})
+      else panelRef.current?.requestFullscreen().catch(() => {})
+   }
 
    // The engine: simulated with ?simulate.
    useEffect(() => {
@@ -98,13 +118,25 @@ const PitchPage: NextPage = () => {
       }
    }, [session])
 
-   // The zoom, remembered per browser.
+   // The zoom and the graph height, remembered per browser.
    useEffect(() => {
       try {
          const stored = Number(window.localStorage.getItem(ZOOM_STORAGE_KEY))
          if (isZoomStep(stored)) setZoom(stored)
+         const height = Number(window.localStorage.getItem(HEIGHT_STORAGE_KEY))
+         if (height > 0) setGraphHeight(clampGraphHeight(height))
       } catch {
-         // Storage blocked: keep the default.
+         // Storage blocked: keep the defaults.
+      }
+   }, [])
+
+   const changeGraphHeight = useCallback((px: number, done: boolean) => {
+      setGraphHeight(px)
+      if (!done) return
+      try {
+         window.localStorage.setItem(HEIGHT_STORAGE_KEY, String(px))
+      } catch {
+         // Storage blocked: the height still holds for this visit.
       }
    }, [])
 
@@ -117,26 +149,17 @@ const PitchPage: NextPage = () => {
       }
    }, [])
 
-   // Turning the mic or the tab on or off starts a new take.
    const micOn = engineState.mic === "on"
    const tabOn = engineState.tab === "on"
    useEffect(() => {
       session.setActive({ voice: micOn, song: tabOn })
-      session.resetScore()
-      setScore(session.score())
    }, [session, micOn, tabOn])
 
-   // Readout and score at ~10 Hz; the graph reads the session every frame.
+   // The readout at ~10 Hz; the graph reads the session every frame.
    useEffect(() => {
       const id = setInterval(() => {
          const nextReadout = session.readout()
          setReadout((prev) => (sameReadout(prev, nextReadout) ? prev : nextReadout))
-         const nextScore = session.score()
-         setScore((prev) =>
-            prev.voiced === nextScore.voiced && prev.inTune === nextScore.inTune
-               ? prev
-               : nextScore
-         )
       }, READOUT_INTERVAL_MS)
       return () => clearInterval(id)
    }, [session])
@@ -170,7 +193,7 @@ const PitchPage: NextPage = () => {
                <h1 className={styles.title}>{t("intro.title")}</h1>
                <p className={styles.intro}>{t("intro.description")}</p>
 
-               <div className={styles.panel}>
+               <div ref={panelRef} className={styles.panel}>
                   <Controls
                      state={engineState}
                      failed={failed}
@@ -178,13 +201,20 @@ const PitchPage: NextPage = () => {
                      onMic={toggleMic}
                      onTab={toggleTab}
                   />
-                  <Readout readout={readout} score={score} />
+                  <Readout readout={readout} />
                   <PitchGraph
                      session={session}
                      engine={engine}
                      semitones={zoom}
+                     height={fullscreen ? undefined : graphHeight}
                      ariaLabel={t("graph.ariaLabel")}
                   />
+                  {!fullscreen && (
+                     <HeightHandle
+                        value={graphHeight}
+                        onChange={changeGraphHeight}
+                     />
+                  )}
                   <div className={styles.legend} aria-hidden="true">
                      <span className={styles.legendItem}>
                         <span className={`${styles.swatch} ${styles.swatchVoice}`} />
@@ -201,7 +231,15 @@ const PitchPage: NextPage = () => {
                         {t("graph.target")}
                      </span>
                   </div>
-                  <Zoom value={zoom} onChange={changeZoom} />
+                  <Zoom
+                     value={zoom}
+                     onChange={changeZoom}
+                     fullscreen={
+                        canFullscreen
+                           ? { on: fullscreen, onToggle: toggleFullscreen }
+                           : undefined
+                     }
+                  />
                </div>
             </Section>
             <Section block>

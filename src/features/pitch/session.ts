@@ -1,7 +1,7 @@
 import { centsBetween, midiToHz } from "./notes"
 import type { PitchFrame, Source, SpectrumFrame } from "./types"
 
-/** Half-width of the target band and of "in tune", in cents. */
+/** Half-width of the target band and of the readout's check, in cents. */
 export const IN_TUNE_CENTS = 15
 /** Semitones of vertical space in the graph, unless zoomed. */
 export const DEFAULT_RANGE_SEMITONES = 30
@@ -28,13 +28,6 @@ export interface Readout {
    inTune: boolean
 }
 
-export interface Score {
-   voiced: number
-   inTune: number
-   /** 0..100, null before any voiced frame was scored. */
-   percent: number | null
-}
-
 export interface VisibleRange {
    /** Fractional midi at the bottom and top of the graph. */
    min: number
@@ -56,8 +49,6 @@ export interface Session {
    range(edge: number, semitones?: number): VisibleRange
    targetAt(time: number): number | null
    readout(): Readout
-   score(): Score
-   resetScore(): void
    /** Frames with time in [from, to], in time order. */
    forEachFrame(
       source: Source,
@@ -148,10 +139,6 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
    let center = DEFAULT_CENTER
    let rangeEdge: number | null = null
 
-   let scoredUpTo = -Infinity
-   let voiced = 0
-   let inTune = 0
-
    /** Midi of the source at time t, null when unvoiced or no frame. */
    const midiAt = (source: Source, t: number) => {
       const track = tracks[source]
@@ -187,26 +174,6 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
       return voice === null ? null : Math.round(voice)
    }
 
-   const advanceScore = () => {
-      const edge = latest("voice")
-      if (edge === null || edge <= scoredUpTo) return
-      const track = tracks.voice
-      let i = lowerBound(track, scoredUpTo)
-      if (i < track.times.length && track.times[i] === scoredUpTo) i++
-      for (; i < track.times.length && track.times[i] <= edge; i++) {
-         const midi = track.values[i]
-         if (midi === null) continue
-         voiced++
-         const target = targetAt(track.times[i])
-         if (
-            target !== null &&
-            Math.abs(centsBetween(target, midi)) <= IN_TUNE_CENTS
-         )
-            inTune++
-      }
-      scoredUpTo = edge
-   }
-
    const forEachIn = <T>(
       track: Track<T>,
       from: number,
@@ -229,7 +196,6 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
             push(tracks[frame.source], frame.time, frame.midi)
             fresh[frame.source] = true
          })
-         advanceScore()
          const sources: Source[] = ["voice", "song"]
          sources.forEach((source) => {
             const last = lastTime(tracks[source])
@@ -310,22 +276,6 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
             target,
             inTune: cents !== null && Math.abs(cents) <= IN_TUNE_CENTS,
          }
-      },
-
-      score: () => {
-         advanceScore()
-         return {
-            voiced,
-            inTune,
-            percent: voiced ? (100 * inTune) / voiced : null,
-         }
-      },
-
-      resetScore: () => {
-         voiced = 0
-         inTune = 0
-         const last = lastTime(tracks.voice)
-         if (last !== null) scoredUpTo = Math.max(scoredUpTo, last)
       },
 
       forEachFrame: (source, from, to, cb) =>

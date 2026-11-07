@@ -5,7 +5,7 @@
    },
    "intro": {
       "title": "Perde grafiği",
-      "description": "Mikrofonunuzun ve paylaştığınız sekmenin canlı perdesi, tek grafikte."
+      "description": "Mikrofonunuzun ve paylaştığınız sekmenin canlı perdesi."
    },
    "controls": {
       "label": "Girişler",
@@ -31,6 +31,11 @@
          "value_other": "{{value}} oktav",
          "less": "Daha az oktav göster",
          "more": "Daha çok oktav göster"
+      },
+      "height": "Grafik yüksekliği",
+      "fullscreen": {
+         "enter": "Tam ekran",
+         "exit": "Tam ekrandan çık"
       }
    },
    "readout": {
@@ -40,8 +45,7 @@
       "inTuneCheck": "15 sent içinde",
       "hz": "Frekans",
       "hzValue": "{{value}} Hz",
-      "target": "En yakın nota",
-      "score": "Doğru perde"
+      "target": "En yakın nota"
    },
    "graph": {
       "ariaLabel": "Son 8 saniyenin perdesi. Mikrofon mavi çizgi, paylaşılan sekme turuncu çizgi, mikrofonun en yakın notası yeşil bant.",
