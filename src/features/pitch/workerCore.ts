@@ -1,3 +1,4 @@
+import { createPolarity, type Polarity } from "./polarity"
 import { createSongAnalyzer, type SongAnalyzer } from "./song"
 import { createSpectrum, type Spectrum } from "./spectrum"
 import type {
@@ -28,6 +29,7 @@ export const createWorkerCore = (post: WorkerPost): WorkerCore => {
    const analyzers: { voice?: Analyzer; song?: SongAnalyzer } = {}
    const ports: Partial<Record<Source, MessagePort>> = {}
    const spectra: Partial<Record<Source, Spectrum>> = {}
+   let polarity: Polarity | null = null
 
    let frames: PitchFrame[] = []
    let spectrum: SpectrumFrame[] = []
@@ -64,16 +66,19 @@ export const createWorkerCore = (post: WorkerPost): WorkerCore => {
    const onBlock = (source: Source, msg: TapMessage) => {
       if (!msg || msg.type !== "block") return
       try {
+         // The tab's right channel, inverted back if the recording has it inverted.
+         const right =
+            msg.right && polarity ? polarity.fix(msg.samples, msg.right) : msg.right
          if (source === "voice") {
             const analyzer = analyzers.voice
             if (analyzer) emit(analyzer.push(msg.samples, msg.startFrame))
          } else {
             const analyzer = analyzers.song
-            if (analyzer) emit(analyzer.push(msg.samples, msg.startFrame, msg.right))
+            if (analyzer) emit(analyzer.push(msg.samples, msg.startFrame, right))
          }
          const spec = spectra[source]
          if (spec) {
-            const out = spec.push(msg.samples, msg.startFrame, msg.right)
+            const out = spec.push(msg.samples, msg.startFrame, right)
             for (let i = 0; i < out.length; i++) spectrum.push(out[i])
             if (out.length > 0) schedule()
          }
@@ -102,6 +107,7 @@ export const createWorkerCore = (post: WorkerPost): WorkerCore => {
                song = createSongAnalyzer(msg.sampleRate)
                spectra.voice = createSpectrum("voice", msg.sampleRate)
                spectra.song = createSpectrum("song", msg.sampleRate)
+               polarity = createPolarity(msg.sampleRate)
             } catch (error) {
                post({ type: "error", message: `init: ${messageOf(error)}` })
                return
@@ -131,6 +137,7 @@ export const createWorkerCore = (post: WorkerPost): WorkerCore => {
             const analyzer = analyzers[source]
             if (analyzer) analyzer.reset()
             spectra[source]?.reset()
+            if (source === "song") polarity?.reset()
             frames = frames.filter((frame) => frame.source !== source)
             spectrum = spectrum.filter((frame) => frame.source !== source)
             return

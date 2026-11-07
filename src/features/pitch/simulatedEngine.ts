@@ -16,7 +16,7 @@ const HOP = 256 / 48000
 const TICK_MS = 16
 const LATENCY: Record<Source, number> = { voice: 0.075, song: 0.12 }
 /** Output step of the real spectrum at 48 kHz. */
-const SPECTRUM_STEP = (3 * 4096) / 8 / 48000
+const SPECTRUM_STEP = 0.032
 /** The backing: one chord per 2 s, under the melody (C, Am, F, G). */
 const CHORDS = [
    [48, 55, 60, 64],
@@ -142,22 +142,26 @@ const voiceMidiAt = (t: number): number | null => {
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-/** Levels on the spectrum's rows: each note's harmonics, over a noise floor. */
-const simulatedSpectrum = (source: Source, time: number, key: number) => {
-   const values = new Uint8Array(SPECTRUM_ROWS)
-   for (let r = 0; r < SPECTRUM_ROWS; r++)
-      values[r] = 20 + Math.round(15 * Math.abs(hashNoise(key * 977 + r)))
+/** Levels per row: each sounding note's harmonics, louder low ones first, over a faint floor. */
+const simulatedSpectrum = (source: Source, time: number) => {
+   const values = new Uint8Array(SPECTRUM_ROWS).fill(40)
    const add = (midi: number, level: number) => {
-      for (let h = 1; h <= 10; h++) {
-         const row = Math.round(
+      for (let h = 1; h <= 8; h++) {
+         const centre =
             (midi + 12 * Math.log2(h) - SPECTRUM_LOWEST) * SPECTRUM_ROWS_PER_SEMITONE
-         )
-         if (row < 0 || row >= SPECTRUM_ROWS) continue
-         const v = Math.max(0, level - 25 * Math.log2(h))
-         values[row] = Math.max(values[row], v)
-         if (row > 0) values[row - 1] = Math.max(values[row - 1], v * 0.6)
-         if (row + 1 < SPECTRUM_ROWS)
-            values[row + 1] = Math.max(values[row + 1], v * 0.6)
+         const peak = level - 50 * Math.log2(h)
+         // Spread over about a semitone, like a real window's peak.
+         for (
+            let d = -SPECTRUM_ROWS_PER_SEMITONE;
+            d <= SPECTRUM_ROWS_PER_SEMITONE;
+            d++
+         ) {
+            const row = Math.round(centre) + d
+            if (row < 0 || row >= SPECTRUM_ROWS) continue
+            const v =
+               peak - (40 * Math.abs(row - centre)) / SPECTRUM_ROWS_PER_SEMITONE
+            values[row] = Math.max(values[row], Math.max(0, Math.round(v)))
+         }
       }
    }
    if (source === "voice") {
@@ -232,7 +236,7 @@ export const createSimulatedEngine = (): PitchEngine => {
                source,
                time,
                duration: SPECTRUM_STEP,
-               values: simulatedSpectrum(source, time, i),
+               values: simulatedSpectrum(source, time),
             })
          }
          nextSpectrum[source] = i

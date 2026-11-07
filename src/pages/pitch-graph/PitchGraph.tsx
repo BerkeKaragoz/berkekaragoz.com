@@ -1,7 +1,7 @@
 import { isNatural, noteName } from "@/features/pitch/notes"
 import { IN_TUNE_CENTS, type Session } from "@/features/pitch/session"
 import {
-   SPECTRUM_LOWEST,
+   SPECTRUM_HIGHEST,
    SPECTRUM_ROWS,
    SPECTRUM_ROWS_PER_SEMITONE,
 } from "@/features/pitch/spectrum"
@@ -24,7 +24,7 @@ const RIGHT_PAD = 10
  */
 const SONG_MAX_STEP_SEMITONES = 1
 /** Each source's spectrum sits behind the lines in its own colour at this opacity. */
-const SPECTRUM_OPACITY = 0.1
+const SPECTRUM_OPACITY = 0.15
 
 interface Colors {
    voice: string
@@ -266,6 +266,7 @@ export const PitchGraph = (props: PitchGraphProps) => {
             for (let c = 0; c < columns; c++) {
                const values = frames[from + c].values
                for (let row = 0; row < SPECTRUM_ROWS; row++) {
+                  // The highest row is the top of the image.
                   const p = ((SPECTRUM_ROWS - 1 - row) * stride + c) * 4
                   data[p] = rgb[0]
                   data[p + 1] = rgb[1]
@@ -286,10 +287,9 @@ export const PitchGraph = (props: PitchGraphProps) => {
             const last = frames[to - 1]
             const left = x(first.time - first.duration / 2)
             const right = x(last.time + last.duration / 2)
+            // A row's pixel centre sits on its pitch.
             const top =
-               SPECTRUM_ROWS -
-               0.5 -
-               (range.max - SPECTRUM_LOWEST) * SPECTRUM_ROWS_PER_SEMITONE
+               (SPECTRUM_HIGHEST - range.max) * SPECTRUM_ROWS_PER_SEMITONE + 0.5
             ctx.drawImage(
                spectrumCanvas,
                0,

@@ -13,7 +13,7 @@ export interface SpectrumFrame {
    source: Source
    time: number // AudioContext seconds at the middle of the stretch
    duration: number // seconds between frames
-   values: Uint8Array // level per row from C2 upward (spectrum.ts), 0..255
+   values: Uint8Array // level per note from C2 upward (spectrum.ts), 0..255
 }
 
 export interface PitchCandidate {

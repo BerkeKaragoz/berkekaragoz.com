@@ -1,4 +1,5 @@
 import { hzToMidi, midiToHz } from "./notes"
+import { createHarmonicCheck } from "./harmonics"
 import { createTracker, type TrackedFrame } from "./tracker"
 import type { Analyzer, PitchFrame, Source } from "./types"
 import { createYin, VOICE_MAX_HZ, VOICE_MIN_HZ, voiceFraming } from "./yin"
@@ -12,17 +13,28 @@ import { createYin, VOICE_MAX_HZ, VOICE_MIN_HZ, voiceFraming } from "./yin"
  * and each frame's pitch is interpolated from the estimates around that time, so
  * fast glides stay in place whatever the pitch.
  */
-/** `source` tags the frames: the tab line runs this tracker on the mix's centre. */
+/** Longest stretch the spectrum may carry the line after YIN loses the voice. */
+const FOLLOW_SECONDS = 0.3
+
+/**
+ * `source` tags the frames: the tab line runs this tracker on the mix's centre,
+ * with `harmonicCheck` on. In a mix YIN often lands on a harmonic, or loses
+ * the voice under the instruments for a moment; the spectrum's harmonics
+ * correct the first and carry the line through the second (see harmonics.ts).
+ */
 export const createVoiceAnalyzer = (
    sampleRate: number,
-   source: Source = "voice"
+   source: Source = "voice",
+   options: { harmonicCheck?: boolean } = {}
 ): Analyzer => {
    const { window, hop } = voiceFraming(sampleRate)
    const yin = createYin({ sampleRate, window })
-   const tracker = createTracker({
-      minMidi: hzToMidi(VOICE_MIN_HZ),
-      maxMidi: hzToMidi(VOICE_MAX_HZ),
-   })
+   const minMidi = hzToMidi(VOICE_MIN_HZ)
+   const maxMidi = hzToMidi(VOICE_MAX_HZ)
+   const tracker = createTracker({ minMidi, maxMidi })
+   const harmonics = options.harmonicCheck
+      ? createHarmonicCheck({ sampleRate, window, minMidi, maxMidi })
+      : null
    const half = (yin.integration - 1) / 2
    const offset = half + sampleRate / VOICE_MAX_HZ / 2
    const latency = (tracker.delay * hop + yin.span - offset) / sampleRate
@@ -35,6 +47,12 @@ export const createVoiceAnalyzer = (
    let origin = 0
    let analysed = 0
    const recent: TrackedFrame[] = [] // the last few tracked frames, for interpolation
+   // Salience grids of the frames still in the tracker, oldest first.
+   const grids: Float64Array[] = []
+   let gridsStart = 0 // frame index of grids[0]
+   /** The last pitch the tracker voiced, while the line may still be carried from it. */
+   let voiced: number | null = null
+   let voicedIndex = 0 // and its frame
 
    const reset = () => {
       length = 0
@@ -42,6 +60,18 @@ export const createVoiceAnalyzer = (
       analysed = 0
       recent.length = 0
       tracker.reset()
+      grids.length = 0
+      gridsStart = 0
+      voiced = null
+   }
+
+   /** Carries the line through a frame the tracker left unvoiced, if the spectrum backs it. */
+   const follow = (frame: TrackedFrame) => {
+      if (!harmonics || voiced === null) return null
+      if ((frame.index - voicedIndex) * hop > FOLLOW_SECONDS * sampleRate)
+         return null
+      const grid = grids[frame.index - gridsStart]
+      return grid ? harmonics.follow(grid, voiced) : null
    }
 
    /** Where frame `index`'s estimate sits, in samples after the grid time of `at`. */
@@ -55,8 +85,13 @@ export const createVoiceAnalyzer = (
       const time = (origin + frame.index * hop + offset) / sampleRate
       recent.push(frame)
       if (recent.length > 4) recent.shift()
-      if (frame.midi === null)
-         return { source, time, midi: null, confidence: frame.confidence }
+      if (frame.midi === null) {
+         const midi = follow(frame)
+         // Once the spectrum loses it too, wait for the tracker.
+         if (midi === null) voiced = null
+         return { source, time, midi, confidence: 0 }
+      }
+      voicedIndex = frame.index
 
       // Walk back to the estimates either side of this frame's grid time.
       let later = frame
@@ -73,6 +108,7 @@ export const createVoiceAnalyzer = (
          later = earlier
          laterAt = earlierAt
       }
+      voiced = midi
       return { source, time, midi, confidence: frame.confidence }
    }
 
@@ -96,6 +132,14 @@ export const createVoiceAnalyzer = (
       let read = origin + analysed * hop - bufferStart
       while (read + yin.span <= length) {
          const result = yin.analyze(buffer, read)
+         if (harmonics) {
+            grids.push(harmonics.analyze(buffer, read))
+            if (grids.length > tracker.delay + 4) {
+               grids.shift()
+               gridsStart++
+            }
+            result.candidates = harmonics.refine(result.candidates)
+         }
          const tracked = tracker.push(result)
          for (let i = 0; i < tracked.length; i++) out.push(place(tracked[i]))
          analysed++

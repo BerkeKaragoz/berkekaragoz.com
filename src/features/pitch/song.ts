@@ -37,7 +37,7 @@ export const createSongAnalyzer = (sampleRate: number): SongAnalyzer => {
    let size = 256
    while (size < WINDOW_SECONDS * sampleRate) size *= 2
    const hop = size / 4
-   const voice = createVoiceAnalyzer(sampleRate, "song")
+   const voice = createVoiceAnalyzer(sampleRate, "song", { harmonicCheck: true })
    const fft = createRealFft(size)
    const hann = new Float64Array(size)
    for (let n = 0; n < size; n++)
