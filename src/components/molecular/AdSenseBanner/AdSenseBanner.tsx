@@ -24,8 +24,57 @@ type AdSenseBannerProps = {
     * the ad isn't rendered at all.
     */
    media?: string
-   /** Applied to the ad itself, so spacing only exists when an ad does. */
+   /** Spacing around the ad, applied only once an ad has filled the slot. */
    className?: string
+}
+
+/** The id startAds gives the adsbygoogle.js script element. */
+const SCRIPT_ID = "consent-adsbygoogle"
+/** How long AdSense may take to pick up a slot before it is given up. */
+const GIVE_UP_MS = 8000
+
+/** Set once adsbygoogle.js fails to load, e.g. under an ad blocker. */
+let scriptFailed = false
+
+type AdStatus = "loading" | "filled" | "empty"
+
+/**
+ * What became of the ad in `ins`: AdSense marks it filled or unfilled; a
+ * script that never loads, or never picks the slot up, leaves it empty.
+ */
+const useAdStatus = (ins: React.RefObject<HTMLModElement | null>) => {
+   const [status, setStatus] = React.useState<AdStatus>(() =>
+      scriptFailed ? "empty" : "loading"
+   )
+   React.useEffect(() => {
+      const el = ins.current
+      if (!el || scriptFailed) return
+      const read = () => {
+         const ad = el.getAttribute("data-ad-status")
+         if (ad === "filled") setStatus("filled")
+         else if (ad === "unfilled") setStatus("empty")
+      }
+      read()
+      const observer = new MutationObserver(read)
+      observer.observe(el, { attributes: true, attributeFilter: ["data-ad-status"] })
+
+      const script = document.getElementById(SCRIPT_ID)
+      const fail = () => {
+         scriptFailed = true
+         setStatus("empty")
+      }
+      script?.addEventListener("error", fail)
+      const timer = window.setTimeout(() => {
+         if (!el.hasAttribute("data-adsbygoogle-status")) setStatus("empty")
+      }, GIVE_UP_MS)
+
+      return () => {
+         observer.disconnect()
+         script?.removeEventListener("error", fail)
+         window.clearTimeout(timer)
+      }
+   }, [ins])
+   return status
 }
 
 const useMedia = (query: string | undefined) => {
@@ -45,6 +94,8 @@ const useMedia = (query: string | undefined) => {
  * One AdSense ad unit. It renders only once the visitor has allowed ads
  * (src/features/consent), so before that, or without consent, it takes no
  * space. It asks for a new ad on every page, including client-side navigation.
+ * If no ad comes (unfilled, blocked, or the script never loads) it collapses;
+ * its spacing appears only with an ad.
  */
 const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
    const { slot, format = "auto", size, media, className } = props
@@ -53,38 +104,63 @@ const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
    const fits = useMedia(media)
    const show = Boolean(ADSENSE_CLIENT && slot && m.data.grants.ads && fits)
 
-   React.useEffect(() => {
-      if (!show) return
-      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-   }, [show, slot, asPath])
-
    if (!show) return null
+   return (
+      <AdSlot
+         key={`${slot}:${asPath}`}
+         slot={slot}
+         format={format}
+         size={size}
+         fullWidth={!media}
+         className={className}
+      />
+   )
+}
 
-   // The fixed ad sits centred in a wrapper that carries the spacing, so its
-   // own box stays exactly the unit's size.
-   if (size) {
-      return (
-         <div className={`ad-slot ${className ?? ""}`}>
+type AdSlotProps = {
+   slot: string
+   format: string
+   size?: readonly [width: number, height: number]
+   fullWidth: boolean
+   className?: string
+}
+
+/** One ad request; keyed per page, so each page starts over. */
+const AdSlot = (props: AdSlotProps) => {
+   const { slot, format, size, fullWidth, className } = props
+   const ins = React.useRef<HTMLModElement>(null)
+   const status = useAdStatus(ins)
+
+   React.useEffect(() => {
+      if (scriptFailed) return
+      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+   }, [])
+
+   if (status === "empty") return null
+
+   // A fixed ad keeps its size while loading, since AdSense reads it from
+   // there; a responsive one has no height until it fills.
+   return (
+      <div className={`ad-slot ${status === "filled" ? (className ?? "") : ""}`}>
+         {size ? (
             <ins
-               key={`${slot}:${asPath}`}
+               ref={ins}
                className="adsbygoogle block mx-auto"
                style={{ width: size[0], height: size[1] }}
                data-ad-client={ADSENSE_CLIENT}
                data-ad-slot={slot}
             />
-         </div>
-      )
-   }
-
-   return (
-      <ins
-         key={`${slot}:${asPath}`}
-         className={`adsbygoogle block ${className ?? ""}`}
-         data-ad-client={ADSENSE_CLIENT}
-         data-ad-slot={slot}
-         data-ad-format={format}
-         data-full-width-responsive={media ? "false" : "true"}
-      />
+         ) : (
+            <ins
+               ref={ins}
+               className="adsbygoogle block"
+               data-ad-client={ADSENSE_CLIENT}
+               data-ad-slot={slot}
+               data-ad-format={format}
+               data-full-width-responsive={fullWidth ? "true" : "false"}
+            />
+         )}
+      </div>
    )
 }
 
