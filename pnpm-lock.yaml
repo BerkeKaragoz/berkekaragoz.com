@@ -28,11 +28,11 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
       '@statekit/decoration-tanstack-query':
-        specifier: 0.0.2-dev
-        version: 0.0.2-dev(@tanstack/query-core@5.104.3)
+        specifier: 0.0.3-dev
+        version: 0.0.3-dev(@tanstack/query-core@5.104.3)
       '@statekit/react':
-        specifier: 0.13.3-dev
-        version: 0.13.3-dev(@types/react@19.2.8)(react@19.2.3)
+        specifier: 0.13.4-dev
+        version: 0.13.4-dev(@types/react@19.2.8)(react@19.2.3)
       '@tanstack/query-core':
         specifier: ^5.104.3
         version: 5.104.3
@@ -1758,22 +1758,22 @@ packages:
   '@speed-highlight/core@1.2.17':
     resolution: {integrity: sha512-Z92FwKpCtfaW1V0jTU/fh3QzYEZN8wDwrzRIBoADCJfn4mJCNcJN/XegifX7BDrQ8/h9Xh/JnbyMchL0FqXrkg==}
 
-  '@statekit/connector@0.5.4-dev':
-    resolution: {integrity: sha512-rg39kubDI2PRZe3QVXo/xJp68we6AtYBMOsAKYDhAVcgy6gv3z2atbrN51EYd00hR0X42VuwREMTIZj1LeUOcg==}
+  '@statekit/connector@0.5.5-dev':
+    resolution: {integrity: sha512-9bvNn4gAONeiGv82pYlFlmoGp8ck0iuuqYlUQYJ6YYwB1rDJDA6Jh8LJMaROkt8/9bG5rI8N1doe0FZwCcNq6w==}
 
-  '@statekit/core@0.10.4-dev':
-    resolution: {integrity: sha512-NFTLqoRd4moYjpDSurMg64ZU+fDQY6FMswMGI5OcYV4dYfWQJ9Kge6f2EhmmU2k0/+fy8R5e/0a7tSTgM5xA/w==}
+  '@statekit/core@0.10.5-dev':
+    resolution: {integrity: sha512-dGNMazq+dwsr0elyZ/6xDf3kI4+wK3wyCkPD8W2g5nprlfkQLE/mZtwsWfqR0dPxZoH06JKefA3MkMYDB7L2Qw==}
 
-  '@statekit/decoration-tanstack-query@0.0.2-dev':
-    resolution: {integrity: sha512-ypHO5+sFm3JLLZsiAoEv2IndUNeMC0kQ3ccqkJfUrljsyXk9WaCdndIlpIinvmEeMTnLhV8zI1gZS2ARgsumrA==}
+  '@statekit/decoration-tanstack-query@0.0.3-dev':
+    resolution: {integrity: sha512-6y7nlTpN+/DjsNzGnTVF6ozsCBOqrZk4Q/dq8piCL//3segTg2wmi/9xXG9KJEZV8yHVqgn2ouhtov/ruOhG1Q==}
     peerDependencies:
       '@tanstack/query-core': ^5.104.0
 
-  '@statekit/decorations@0.0.2-dev':
-    resolution: {integrity: sha512-tY4BNcOfddyABwACYge4yjBs6pkHW7hVAPy/wpio6OrbD37py0tkx39kmDkABLcrttYGtVNQPF3CY8Q6iCDILQ==}
+  '@statekit/decorations@0.0.3-dev':
+    resolution: {integrity: sha512-0Q2KppyJA54TaIUeE3G2Ww7gou8V73gLseJQbSPvSVzKisjhfr0RIcxy/oCoB0XB3fhs5wbI15dCKAp++lPUUg==}
 
-  '@statekit/react@0.13.3-dev':
-    resolution: {integrity: sha512-GGb37YSfebC/uUeBGm8uTbUnevuZlh2qK7wFKgEldDtof2sN7EwGPs5EwB5+DkjS6jFJODMpeBRz/cR00D8cQw==}
+  '@statekit/react@0.13.4-dev':
+    resolution: {integrity: sha512-MMxtQtyqqF/8K9OvxX67qKfDsgvtQtTnnktc3r9zSRiA3lwcyinvR7v6apUt6FsvJakO78jRIZyN0EvnsVTjdw==}
     peerDependencies:
       '@types/react': 19.2.8
       react: '>= 18'
@@ -7532,30 +7532,30 @@ snapshots:
 
   '@speed-highlight/core@1.2.17': {}
 
-  '@statekit/connector@0.5.4-dev':
+  '@statekit/connector@0.5.5-dev':
     dependencies:
-      '@statekit/core': 0.10.4-dev
+      '@statekit/core': 0.10.5-dev
 
-  '@statekit/core@0.10.4-dev':
+  '@statekit/core@0.10.5-dev':
     dependencies:
       immer: 11.0.1
 
-  '@statekit/decoration-tanstack-query@0.0.2-dev(@tanstack/query-core@5.104.3)':
+  '@statekit/decoration-tanstack-query@0.0.3-dev(@tanstack/query-core@5.104.3)':
     dependencies:
-      '@statekit/core': 0.10.4-dev
-      '@statekit/decorations': 0.0.2-dev
+      '@statekit/core': 0.10.5-dev
+      '@statekit/decorations': 0.0.3-dev
       '@tanstack/query-core': 5.104.3
       immer: 11.0.1
 
-  '@statekit/decorations@0.0.2-dev':
+  '@statekit/decorations@0.0.3-dev':
     dependencies:
-      '@statekit/core': 0.10.4-dev
+      '@statekit/core': 0.10.5-dev
       immer: 11.0.1
 
-  '@statekit/react@0.13.3-dev(@types/react@19.2.8)(react@19.2.3)':
+  '@statekit/react@0.13.4-dev(@types/react@19.2.8)(react@19.2.3)':
     dependencies:
-      '@statekit/connector': 0.5.4-dev
-      '@statekit/core': 0.10.4-dev
+      '@statekit/connector': 0.5.5-dev
+      '@statekit/core': 0.10.5-dev
       react: 19.2.3
     optionalDependencies:
       '@types/react': 19.2.8

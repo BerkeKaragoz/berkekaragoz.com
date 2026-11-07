@@ -230,7 +230,8 @@ const Says = (props: { action: Action; retried: boolean }) => {
    )
 }
 
-// The states the decoration moves through; idle isn't one of them.
+// The states the decoration moves through. Idle only lasts until the first
+// fetch starts, so it gets no light.
 const lights = [
    { name: "loading", tone: "busy" },
    { name: "loadingMore", tone: "busy" },
