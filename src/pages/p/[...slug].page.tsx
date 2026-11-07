@@ -124,7 +124,18 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
          <Main>
             <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
 
-            <PostLayout meta={meta} currentPageSlug={currentPageSlug} toc={toc}>
+            <PostLayout
+               meta={meta}
+               currentPageSlug={currentPageSlug}
+               toc={toc}
+               railFooter={
+                  <AdSenseBanner
+                     slot={ADSENSE_SLOTS.postRail}
+                     media="(min-width: 1024px)"
+                     className="mt-6"
+                  />
+               }
+            >
                <Section as="article" block prose className="py-8 md:py-4 sm:text-lg">
                   {isMultiPage && !isIndex && (
                      <p className="mb-1 text-sm text-subtitle-color opacity-60">
@@ -198,7 +209,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       page,
       commentTerm,
    } = getPostPage(postSlug, pageSlug)
-   const { source: mdxSource, toc } = await serializeWithToc(stringContent)
+   const { source: mdxSource, toc } = await serializeWithToc(stringContent, { midAd: true })
 
    return {
       props: {

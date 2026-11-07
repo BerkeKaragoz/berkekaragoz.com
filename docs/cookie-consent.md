@@ -96,6 +96,11 @@ Everything stays off until the two build-time variables below are set. With neit
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` | Google's message for EEA, UK and Swiss visitors, and AdSense after a decision |
 | `NEXT_PUBLIC_ADSENSE_SLOT_POST` | slot id | The ad at the end of each blog post |
 | `NEXT_PUBLIC_ADSENSE_SLOT_TOOL` | slot id | The ad below the pitch graph and English IPA tools |
+| `NEXT_PUBLIC_ADSENSE_SLOT_POST_MID` | slot id | Inside post pages of 800+ words, before the second h2 (`remarkMidAd` in `blog-client.ts`) |
+| `NEXT_PUBLIC_ADSENSE_SLOT_POST_RAIL` | slot id | Under a post's table of contents, desktop (1024px+) only |
+| `NEXT_PUBLIC_ADSENSE_SLOT_IPA_RAIL` | slot id | At the end of the English IPA sound detail panel, desktop (1001px+) only |
+
+No ads on home, projects, post lists, privacy or 404: the portfolio pages stay clean, the lists are thin, and AdSense bars ads on error and no-content pages.
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | `G-…` | GA4 after analytics consent |
 
 These are inlined at build time. They're public ids, so they go in `.env.production`, which is committed and read by `next build` but not `next dev`, so local dev doesn't send visits to GA. Change them there and redeploy.

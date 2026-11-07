@@ -384,6 +384,14 @@ const SoundDetail = ({
                })}
             </p>
          )}
+
+         {/* Desktop only, where this panel is a sticky side column. Kept well
+             clear of the buttons above (AdSense: no accidental clicks). */}
+         <AdSenseBanner
+            slot={ADSENSE_SLOTS.ipaRail}
+            media="(min-width: 1001px)"
+            className="pt-6 mt-8 border-t border-background-400 border-opacity-30"
+         />
       </aside>
    )
 }

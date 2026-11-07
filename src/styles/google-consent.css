@@ -102,3 +102,9 @@ html[data-consent-placement="bar"] .fc-consent-root .fc-dialog {
 
 /* Per-page variants go below, e.g.:
    html[data-consent-variant="post"] .fc-consent-root .fc-dialog { … } */
+
+/* AdSense: collapse a slot it couldn't fill, so no blank box is left behind
+   (Google's recommended way to hide unfilled ad units). */
+ins.adsbygoogle[data-ad-status="unfilled"] {
+   display: none !important;
+}

@@ -14,8 +14,14 @@ export const ADSENSE_CLIENT = process.env["NEXT_PUBLIC_ADSENSE_CLIENT"] || ""
 export const ADSENSE_SLOTS = {
    /** At the end of a blog post. */
    post: process.env["NEXT_PUBLIC_ADSENSE_SLOT_POST"] || "",
+   /** Inside a long post, before its second section (see blog-client). */
+   postMid: process.env["NEXT_PUBLIC_ADSENSE_SLOT_POST_MID"] || "",
+   /** Under a post's table of contents, desktop only. */
+   postRail: process.env["NEXT_PUBLIC_ADSENSE_SLOT_POST_RAIL"] || "",
    /** Below a tool: pitch graph, English IPA. */
    tool: process.env["NEXT_PUBLIC_ADSENSE_SLOT_TOOL"] || "",
+   /** In the English IPA sound detail panel, desktop only. */
+   ipaRail: process.env["NEXT_PUBLIC_ADSENSE_SLOT_IPA_RAIL"] || "",
 }
 
 /** GA4 measurement id, "G-…". Unset: no analytics. */

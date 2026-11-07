@@ -12,6 +12,8 @@ type PostLayoutProps = {
    meta: PostMeta
    currentPageSlug: string
    toc: TocItem[]
+   /** Shown under the contents, in the same sticky panel (desktop only). */
+   railFooter?: ReactNode
    children: ReactNode
 }
 
@@ -20,6 +22,7 @@ export const PostLayout = ({
    meta,
    currentPageSlug,
    toc,
+   railFooter,
    children,
 }: PostLayoutProps) => {
    const { t } = useTranslation([COMMON_TNS])
@@ -76,10 +79,15 @@ export const PostLayout = ({
                </div>
 
                <aside className="post-rail">
-                  {hasToc && (
-                     <nav aria-label={t("on this page")} className="post-panel">
-                        <PostToc toc={toc} activeId={activeId} />
-                     </nav>
+                  {(hasToc || railFooter) && (
+                     <div className="post-panel">
+                        {hasToc && (
+                           <nav aria-label={t("on this page")}>
+                              <PostToc toc={toc} activeId={activeId} />
+                           </nav>
+                        )}
+                        {railFooter}
+                     </div>
                   )}
                </aside>
             </div>

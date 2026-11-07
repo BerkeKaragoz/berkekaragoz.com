@@ -70,17 +70,38 @@ const rehypeCollectToc = (toc: TocItem[]) => () => (tree: any) => {
 
    walk(tree)
 }
+/** A page this long gets an ad inside it, not only at the end. */
+const MID_AD_MIN_WORDS = 800
+
+/**
+ * Puts `<PostAd />` (see AppMDXComponents) before the page's second h2, so the
+ * ad sits between sections, never inside one. Pages with fewer than two h2s
+ * get none.
+ */
+const remarkMidAd = () => (tree: any) => {
+   let seen = 0
+   const index = tree.children.findIndex(
+      (node: any) => node.type === "heading" && node.depth === 2 && ++seen === 2
+   )
+   if (index < 1) return
+   tree.children.splice(index, 0, {
+      type: "mdxJsxFlowElement",
+      name: "PostAd",
+      attributes: [],
+      children: [],
+   })
+}
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 type SerializeOptions = NonNullable<Parameters<typeof serialize>[1]>
 
-const getSerializeOptions = (toc?: TocItem[]): SerializeOptions => ({
+const getSerializeOptions = (toc?: TocItem[], midAd = false): SerializeOptions => ({
    // Posts are trusted, repository-owned MDX and use JSX expressions for
    // component props. Keep v6's dangerous-global protection enabled.
    blockJS: false,
    blockDangerousJS: true,
    mdxOptions: {
-      remarkPlugins: [remarkGfm],
+      remarkPlugins: [remarkGfm, ...(midAd ? [remarkMidAd] : [])],
       rehypePlugins: [
          rehypeSlug,
          [rehypeAutolinkHeadings, { behavior: "wrap" }],
@@ -94,9 +115,16 @@ const getSerializeOptions = (toc?: TocItem[]): SerializeOptions => ({
 export const serializeWithAppOptions = (stringContent: string) =>
    serialize(stringContent, getSerializeOptions())
 
-export const serializeWithToc = async (stringContent: string) => {
+/** `midAd`: allow an ad inside the page when it's long enough (published posts only). */
+export const serializeWithToc = async (
+   stringContent: string,
+   { midAd = false }: { midAd?: boolean } = {}
+) => {
    const toc: TocItem[] = []
-   const source = await serialize(stringContent, getSerializeOptions(toc))
+   const source = await serialize(
+      stringContent,
+      getSerializeOptions(toc, midAd && getWordCount(stringContent) >= MID_AD_MIN_WORDS)
+   )
 
    return { source, toc }
 }

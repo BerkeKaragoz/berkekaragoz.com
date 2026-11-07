@@ -13,8 +13,27 @@ type AdSenseBannerProps = {
    /** The ad unit's slot id, from ADSENSE_SLOTS. Empty: no ad. */
    slot: string
    format?: string
+   /**
+    * A media query the ad needs, e.g. "(min-width: 1024px)" for a desktop-only
+    * rail. AdSense can't size an ad inside a hidden container, so outside it
+    * the ad isn't rendered at all.
+    */
+   media?: string
    /** Applied to the ad itself, so spacing only exists when an ad does. */
    className?: string
+}
+
+const useMedia = (query: string | undefined) => {
+   const [matches, setMatches] = React.useState(false)
+   React.useEffect(() => {
+      if (!query) return setMatches(true)
+      const list = window.matchMedia(query)
+      const update = () => setMatches(list.matches)
+      update()
+      list.addEventListener("change", update)
+      return () => list.removeEventListener("change", update)
+   }, [query])
+   return matches
 }
 
 /**
@@ -23,10 +42,11 @@ type AdSenseBannerProps = {
  * space. It asks for a new ad on every page, including client-side navigation.
  */
 const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
-   const { slot, format = "auto", className } = props
+   const { slot, format = "auto", media, className } = props
    const m = useConsentMachine()
    const { asPath } = useRouter()
-   const show = Boolean(ADSENSE_CLIENT && slot && m.data.grants.ads)
+   const fits = useMedia(media)
+   const show = Boolean(ADSENSE_CLIENT && slot && m.data.grants.ads && fits)
 
    React.useEffect(() => {
       if (!show) return
@@ -42,7 +62,7 @@ const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
          data-ad-client={ADSENSE_CLIENT}
          data-ad-slot={slot}
          data-ad-format={format}
-         data-full-width-responsive="true"
+         data-full-width-responsive={media ? "false" : "true"}
       />
    )
 }
