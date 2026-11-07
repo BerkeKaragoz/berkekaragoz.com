@@ -86,9 +86,7 @@
    "pnpm": {
       "overrides": {
          "@types/react": "19.2.8",
-         "@types/react-dom": "19.2.3",
-         "@statekit/connector": "file:../BerkeKit/node/-packages/statekit-connector/.dist",
-         "@statekit/connector>@statekit/core": "0.10.4-dev"
+         "@types/react-dom": "19.2.3"
       }
    }
 }
