@@ -92,7 +92,7 @@ Everything stays off until the two build-time variables below are set. With neit
 | `NEXT_PUBLIC_ADSENSE_SLOT_TOOL` | slot id | The ad below the pitch graph and English IPA tools |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | `G-…` | GA4 after analytics consent |
 
-These are inlined at build time, so set them in the Cloudflare build settings and redeploy.
+These are inlined at build time. They're public ids, so they go in `.env.production`, which is committed and read by `next build` but not `next dev`, so local dev doesn't send visits to GA. Change them there and redeploy.
 
 - **Ad placement:** an ad unit renders only after the visitor allows ads, so pages keep no empty gap without consent.
 - **Site verification:** with `NEXT_PUBLIC_ADSENSE_CLIENT` set, the site also gets the `google-adsense-account` meta tag. AdSense needs it because its crawler never consents, so it never sees `adsbygoogle.js`.
