@@ -34,9 +34,10 @@ const BUTTON_BASE = "px-3 py-1.5 text-sm font-medium grow basis-0 whitespace-now
 const BUTTON = `${BUTTON_BASE} card-input enabled:!bg-background-50 dark:enabled:!bg-background-700 enabled:text-primary-700 enabled:hover:text-primary-800`
 const BUTTON_GHOST = `${BUTTON_BASE} card-input-ghost`
 
-// Reject stays on the first screen, the same size and text as Accept (ICO,
-// EDPB, CNIL: refusing must be as easy as accepting). It is the ghost variant
-// by the owner's choice; see docs/cookie-consent.md.
+// "Necessary cookies only" sits on the first screen in the same style as
+// "Accept all" (ICO, EDPB, CNIL: refusing must be as easy as accepting).
+// "Settings" only opens the preferences, so it is the ghost variant; once they
+// are open, "Save choices" takes its place in the full style.
 const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
    const m = useConsentMachine()
    const { t } = useTranslation(COMMON_TNS)
@@ -111,20 +112,13 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
          )}
 
          <div className="flex flex-wrap gap-2">
-            <button
-               type="button"
-               className={BUTTON_GHOST}
-               onClick={() => decideOwn({ analytics: false, ads: false })}
-            >
-               {t("consent.rejectAll")}
-            </button>
             {view === "first" ? (
                <button
                   type="button"
-                  className={BUTTON}
+                  className={BUTTON_GHOST}
                   onClick={() => m.event.showView("preferences")}
                >
-                  {t("consent.choose")}
+                  {t("consent.preferences")}
                </button>
             ) : (
                <button
@@ -135,6 +129,13 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
                   {t("consent.save")}
                </button>
             )}
+            <button
+               type="button"
+               className={BUTTON}
+               onClick={() => decideOwn({ analytics: false, ads: false })}
+            >
+               {t("consent.necessaryOnly")}
+            </button>
             <button
                type="button"
                className={BUTTON}
