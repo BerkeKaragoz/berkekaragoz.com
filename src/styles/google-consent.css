@@ -104,7 +104,9 @@ html[data-consent-placement="bar"] .fc-consent-root .fc-dialog {
    html[data-consent-variant="post"] .fc-consent-root .fc-dialog { … } */
 
 /* AdSense: collapse a slot it couldn't fill, so no blank box is left behind
-   (Google's recommended way to hide unfilled ad units). */
-ins.adsbygoogle[data-ad-status="unfilled"] {
+   (Google's recommended way to hide unfilled ad units). A fixed-size ad's
+   wrapper (AdSenseBanner) goes with it, spacing and all. */
+ins.adsbygoogle[data-ad-status="unfilled"],
+.ad-slot:has(> ins.adsbygoogle[data-ad-status="unfilled"]) {
    display: none !important;
 }

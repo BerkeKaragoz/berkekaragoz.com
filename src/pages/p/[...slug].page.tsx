@@ -129,9 +129,11 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
                currentPageSlug={currentPageSlug}
                toc={toc}
                railFooter={
+                  // The rail is 14vw wide, so 160px from 1143px.
                   <AdSenseBanner
                      slot={ADSENSE_SLOTS.postRail}
-                     media="(min-width: 1024px)"
+                     size={[160, 600]}
+                     media="(min-width: 1143px)"
                      className="mt-6"
                   />
                }

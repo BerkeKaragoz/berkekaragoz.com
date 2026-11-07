@@ -14,6 +14,11 @@ type AdSenseBannerProps = {
    slot: string
    format?: string
    /**
+    * A fixed ad size in px, e.g. [300, 250], for a spot whose width is known
+    * (a desktop rail). Without it the ad is responsive and fills its column.
+    */
+   size?: readonly [width: number, height: number]
+   /**
     * A media query the ad needs, e.g. "(min-width: 1024px)" for a desktop-only
     * rail. AdSense can't size an ad inside a hidden container, so outside it
     * the ad isn't rendered at all.
@@ -42,7 +47,7 @@ const useMedia = (query: string | undefined) => {
  * space. It asks for a new ad on every page, including client-side navigation.
  */
 const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
-   const { slot, format = "auto", media, className } = props
+   const { slot, format = "auto", size, media, className } = props
    const m = useConsentMachine()
    const { asPath } = useRouter()
    const fits = useMedia(media)
@@ -54,6 +59,22 @@ const AdSenseBanner: React.FC<AdSenseBannerProps> = (props) => {
    }, [show, slot, asPath])
 
    if (!show) return null
+
+   // The fixed ad sits centred in a wrapper that carries the spacing, so its
+   // own box stays exactly the unit's size.
+   if (size) {
+      return (
+         <div className={`ad-slot ${className ?? ""}`}>
+            <ins
+               key={`${slot}:${asPath}`}
+               className="adsbygoogle block mx-auto"
+               style={{ width: size[0], height: size[1] }}
+               data-ad-client={ADSENSE_CLIENT}
+               data-ad-slot={slot}
+            />
+         </div>
+      )
+   }
 
    return (
       <ins
