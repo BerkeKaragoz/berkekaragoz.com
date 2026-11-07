@@ -111,7 +111,23 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
             </div>
          )}
 
-         <div className="flex flex-wrap gap-2">
+         {/* Reversed so the row reads Settings, Necessary, Accept, and when the
+             buttons wrap, Settings is the one that drops to the bottom row. */}
+         <div className="flex flex-row-reverse flex-wrap gap-2">
+            <button
+               type="button"
+               className={BUTTON}
+               onClick={() => decideOwn({ analytics: true, ads: true })}
+            >
+               {t("consent.acceptAll")}
+            </button>
+            <button
+               type="button"
+               className={BUTTON}
+               onClick={() => decideOwn({ analytics: false, ads: false })}
+            >
+               {t("consent.necessaryOnly")}
+            </button>
             {view === "first" ? (
                <button
                   type="button"
@@ -129,20 +145,6 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
                   {t("consent.save")}
                </button>
             )}
-            <button
-               type="button"
-               className={BUTTON}
-               onClick={() => decideOwn({ analytics: false, ads: false })}
-            >
-               {t("consent.necessaryOnly")}
-            </button>
-            <button
-               type="button"
-               className={BUTTON}
-               onClick={() => decideOwn({ analytics: true, ads: true })}
-            >
-               {t("consent.acceptAll")}
-            </button>
          </div>
       </section>
    )
