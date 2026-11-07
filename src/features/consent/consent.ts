@@ -4,6 +4,7 @@ import {
    CONSENT_NEEDED,
    CONSENT_STORAGE_KEY,
    GA_MEASUREMENT_ID,
+   TCF_DETECT_TIMEOUT_MS,
 } from "./config"
 import {
    createOwnChoice,
@@ -18,7 +19,9 @@ import {
 } from "./choice"
 import {
    clearAnalyticsCookies,
+   hasGoogleChoice,
    openGoogleSettings,
+   releaseGoogleMessage,
    startAds,
    startAnalytics,
    watchTcf,
@@ -127,21 +130,72 @@ const switchToOwnBanner = () => {
    if (stored) apply({ analytics: stored.analytics, ads: stored.ads })
 }
 
+// Google's tool only says whether it covers the visitor (TCF) once its message
+// is released, and releasing it shows the message to anyone who hasn't chosen.
+// So a visitor who has chosen before is detected on load, and a new visitor
+// only when the page asks (Consent's delay), by releasing Google's message
+// and falling back to our banner if Google doesn't cover them.
+
+let stopDetecting: (() => void) | null = null
+/** Open our banner as soon as detection lands on it: the page already asked. */
+let askWhenKnown = false
+
+const outsideTcf = () => {
+   if (consentMachine.data.mode !== "detecting") return
+   switchToOwnBanner()
+   if (askWhenKnown && !consentMachine.data.decided) consentMachine.event.openBanner()
+}
+
+// Google's tool can load, say GDPR applies, and still show nothing, e.g. when
+// no European regulations message is published. Then our banner asks instead.
+let silentTimer: ReturnType<typeof setTimeout> | undefined
+
 const onTcData = (data: TcData) => {
-   if (data.gdprApplies === false) {
-      if (consentMachine.data.mode === "detecting") switchToOwnBanner()
+   if (data.gdprApplies === false) return outsideTcf()
+   if (!data.eventStatus) {
+      if (consentMachine.data.mode === "detecting" && silentTimer === undefined) {
+         silentTimer = setTimeout(outsideTcf, TCF_DETECT_TIMEOUT_MS)
+      }
       return
    }
+   clearTimeout(silentTimer)
    consentMachine.event.setMode("tcf")
    if (tcfDecided(data)) apply(tcfGrants(data))
+}
+
+const detect = () => {
+   if (stopDetecting) return
+   releaseGoogleMessage()
+   const stopWatching = watchTcf(onTcData, outsideTcf)
+   stopDetecting = () => {
+      clearTimeout(silentTimer)
+      stopWatching()
+   }
 }
 
 /** Starts consent handling once, in the browser. Returns a cleanup. */
 export const startConsent = () => {
    if (!CONSENT_NEEDED) return () => {}
-   return watchTcf(onTcData, () => {
-      if (consentMachine.data.mode === "detecting") switchToOwnBanner()
-   })
+   if (!ADSENSE_CLIENT) {
+      switchToOwnBanner()
+      return () => {}
+   }
+   if (readOwnChoice() || hasGoogleChoice()) detect()
+   return () => {
+      stopDetecting?.()
+      stopDetecting = null
+   }
+}
+
+/** Asks the visitor, through whichever banner covers them. Pages call this after their delay. */
+export const askConsent = () => {
+   const { mode, decided } = consentMachine.data
+   if (decided) return
+   if (mode === "own") consentMachine.event.openBanner()
+   else if (mode === "detecting") {
+      askWhenKnown = true
+      detect()
+   }
 }
 
 /** Saves a choice made in our banner and applies it. */

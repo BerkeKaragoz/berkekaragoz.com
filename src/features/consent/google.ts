@@ -67,6 +67,14 @@ export const watchTcf = (onData: (data: TcData) => void, onAbsent: () => void) =
    }
 }
 
+/**
+ * Whether Google's tool has stored a choice for this visitor. FCCDCF is the
+ * first-party cookie its consent message keeps the TC string in; the name is
+ * undocumented, so if it changes, returning visitors are only detected after
+ * the page's delay instead of on load.
+ */
+export const hasGoogleChoice = () => /(?:^|;\s*)FCCDCF=/.test(document.cookie)
+
 /** Lets Google's message show. Before this, the head script holds it. */
 export const releaseGoogleMessage = () => {
    window.__consentReleased = true

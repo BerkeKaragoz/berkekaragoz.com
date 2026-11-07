@@ -12,6 +12,21 @@
       @apply text-primary-500 dark:text-primary-200 hover:text-primary-600 hover:shadow-md dark:hover:shadow-lg dark:hover:text-primary-100 hover:bg-radial-gradient-300 hover:bg-background-100 hover:dark:bg-background-800 active:bg-accent-200 dark:active:bg-accent-900;
    }
 
+   /* A card-input without the card: no background, border or shadow until
+      hovered, for the quieter action next to a card-input. The transparent
+      border keeps it the same size, so it lines up and stays as easy to hit. */
+   .card-input-ghost {
+      @apply inline-block transition-colors bg-transparent border border-transparent rounded-lg;
+   }
+
+   .card-input-ghost:not([disabled]) {
+      @apply text-primary-700 dark:text-primary-200 hover:text-primary-800 dark:hover:text-primary-100 hover:bg-background-200 dark:hover:bg-background-700 hover:bg-opacity-50 dark:hover:bg-opacity-40 active:bg-accent-200 dark:active:bg-accent-900;
+   }
+
+   .card-input-ghost[disabled] {
+      @apply cursor-default text-background-300 dark:text-background-500;
+   }
+
    .card-input[disabled] {
       @apply transition-none cursor-default shadow bg-none bg-opacity-80 border-background-200 text-background-300 bg-background-100 text-opacity-70 dark:bg-background-800 dark:bg-opacity-40 dark:text-background-500 dark:border-background-700;
    }

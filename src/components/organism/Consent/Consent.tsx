@@ -7,13 +7,13 @@ import {
    DEFAULT_PAGE_CONSENT,
 } from "@/features/consent/config"
 import {
+   askConsent,
    consentMachine,
    decideOwn,
    OFFERED,
    startConsent,
    useConsentMachine,
 } from "@/features/consent/consent"
-import { releaseGoogleMessage } from "@/features/consent/google"
 import { useTranslation } from "next-i18next"
 import { useRouter } from "next/router"
 import React from "react"
@@ -30,11 +30,13 @@ const BODY_KEY =
 
 // card-input's background matches the card the banner sits on, so the buttons
 // sit one step lighter, like the StateKit demo buttons (PostDemo/DemoUI.tsx).
-const BUTTON =
-   "px-3 py-1.5 text-sm font-medium card-input grow basis-0 whitespace-nowrap enabled:!bg-background-50 dark:enabled:!bg-background-700 enabled:text-primary-700 enabled:hover:text-primary-800"
+const BUTTON_BASE = "px-3 py-1.5 text-sm font-medium grow basis-0 whitespace-nowrap"
+const BUTTON = `${BUTTON_BASE} card-input enabled:!bg-background-50 dark:enabled:!bg-background-700 enabled:text-primary-700 enabled:hover:text-primary-800`
+const BUTTON_GHOST = `${BUTTON_BASE} card-input-ghost`
 
-// Accept, reject and choose have equal weight: same size, style and order of
-// prominence (ICO, EDPB, CNIL).
+// Reject stays on the first screen, the same size and text as Accept (ICO,
+// EDPB, CNIL: refusing must be as easy as accepting). It is the ghost variant
+// by the owner's choice; see docs/cookie-consent.md.
 const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
    const m = useConsentMachine()
    const { t } = useTranslation(COMMON_TNS)
@@ -111,14 +113,7 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
          <div className="flex flex-wrap gap-2">
             <button
                type="button"
-               className={BUTTON}
-               onClick={() => decideOwn({ analytics: true, ads: true })}
-            >
-               {t("consent.acceptAll")}
-            </button>
-            <button
-               type="button"
-               className={BUTTON}
+               className={BUTTON_GHOST}
                onClick={() => decideOwn({ analytics: false, ads: false })}
             >
                {t("consent.rejectAll")}
@@ -140,6 +135,13 @@ const Banner: React.FC<{ placement: ConsentPlacement }> = (props) => {
                   {t("consent.save")}
                </button>
             )}
+            <button
+               type="button"
+               className={BUTTON}
+               onClick={() => decideOwn({ analytics: true, ads: true })}
+            >
+               {t("consent.acceptAll")}
+            </button>
          </div>
       </section>
    )
@@ -170,14 +172,11 @@ const Consent: React.FC<{ page?: ConsentPageConfig }> = (props) => {
 
    const { mode, decided, bannerOpen } = m.data
 
-   // The delay restarts on every page, so each page decides when to ask.
+   // The delay restarts on every page, so each page decides when to ask. Once
+   // Google's message is released or our banner is open, it stays up.
    React.useEffect(() => {
-      if (decided || (mode !== "tcf" && mode !== "own")) return
-      if (mode === "own" && bannerOpen) return
-      const timer = setTimeout(() => {
-         if (mode === "tcf") releaseGoogleMessage()
-         else consentMachine.event.openBanner()
-      }, delayMs)
+      if (decided || mode === "off" || mode === "tcf" || bannerOpen) return
+      const timer = setTimeout(askConsent, delayMs)
       return () => clearTimeout(timer)
    }, [mode, decided, bannerOpen, delayMs, router.asPath])
 

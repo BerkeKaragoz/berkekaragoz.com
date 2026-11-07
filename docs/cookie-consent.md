@@ -59,6 +59,7 @@ Runner-up, if hacking the CSS gets too painful: Cookiebot's custom template, abo
 
 - **Nothing before consent.** GA4 and AdSense ad requests run only after a decision. Doing nothing, or simply browsing, is not consent (ICO, CNIL).
 - **Equal-weight buttons.** Accept and Reject get the same weight.
+  - Our banner orders them Reject all, Choose, Accept all. Reject is the ghost `card-input-ghost` variant (text only, background on hover), at the owner's choice. It keeps the same size, text and first-screen place, but the ICO asks for equal *prominence*, so a lighter Reject is a known risk. If the ICO or counsel raises it, switch Reject back to `card-input`.
   - In Google's message, turn on the "Do not consent" button for every country. TCF doesn't require it, but the ICO, EDPB and CNIL expect a reject option on the first screen.
   - Google says consent rates are higher without it, but those regulators expect one.
 - **Separate categories.** Our own banner has separate Analytics and Advertising toggles, both off by default.
@@ -76,6 +77,11 @@ Runner-up, if hacking the CSS gets too painful: Cookiebot's custom template, abo
 A delay is allowed, because TCF says the publisher decides "when the Framework UI will be shown". The cost: **every visit shorter than the delay gets no ads and no analytics.** It can be tuned per page.
 
 - **Google's message:** call `proceed()` through `controlledMessagingFunction` when the delay ends. Google warns this "may delay ads serving", which is the expected cost.
+- **Finding out who Google covers:** Google's tool only creates `__tcfapi`, and says whether GDPR applies, *after* `proceed()`. So:
+  - A new visitor isn't sorted until the delay ends. Then we release Google's message and watch `__tcfapi`.
+  - A visitor with a stored choice (our `consent` in localStorage, or Google's `FCCDCF` cookie) is sorted on load, so their choice applies straight away.
+  - If `__tcfapi` doesn't appear, GDPR doesn't apply, or Google loads but sends no consent event (no message published, so `displayStatus: hidden`), our banner asks after `TCF_DETECT_TIMEOUT_MS` (4 s).
+  - Found live on 7 Nov 2026: with no European message published, UK visitors were otherwise never asked.
 - **Ads and analytics:** for every visitor, `adsbygoogle.js` loads only after a decision and gtag.js only after analytics consent. Ad slots queue their requests until then.
 - **Test that Google's fallback message doesn't fire during the delay.** That's the "Allow Google to maximize message coverage" setting, and no timeout is documented.
 
