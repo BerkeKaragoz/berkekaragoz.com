@@ -83,6 +83,7 @@ export const PreviewPage: AppPage<{ defaultPost: MDXPost }> = (props) => {
       <PageContainer>
          <Head>
             <title>Post Preview | E. Berke Karagöz</title>
+            <meta name="robots" content="noindex, follow" />
          </Head>
          <Header />
          <Main>

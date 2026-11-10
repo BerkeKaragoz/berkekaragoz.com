@@ -6,7 +6,7 @@
    "scripts": {
       "dev": "next dev",
       "build": "next build",
-      "build:cloudflare": "next build --webpack && opennextjs-cloudflare build --skipNextBuild && wrangler deploy --dry-run --outdir .sites-worker && node scripts/stage-sites-build.mjs",
+      "build:cloudflare": "next build --webpack && next-sitemap && opennextjs-cloudflare build --skipNextBuild && wrangler deploy --dry-run --outdir .sites-worker && node scripts/stage-sites-build.mjs",
       "stage:sites": "node scripts/stage-sites-build.mjs",
       "postbuild": "next-sitemap",
       "start": "next start",

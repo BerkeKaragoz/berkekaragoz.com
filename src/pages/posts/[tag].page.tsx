@@ -32,6 +32,7 @@ export const TagPage: NextPage<{
       <PageContainer>
          <Head>
             <title>#{tag} Posts | E. Berke Karagöz</title>
+            <meta name="robots" content="noindex, follow" />
          </Head>
          <Header />
          <Main>

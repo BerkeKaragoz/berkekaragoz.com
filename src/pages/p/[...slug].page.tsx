@@ -57,9 +57,11 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
       `Read the post "${meta.title}" written on ${postDate.toLocaleDateString(
          locale
       )}.`
+   // Absolute and locale-less: post bodies are not translated, so every locale
+   // canonicalises to the default-locale URL.
    const canonicalUrl = isIndex
-      ? `/p/${meta.slug}`
-      : `/p/${meta.slug}/${currentPageSlug}`
+      ? `${HOST_URL}/p/${meta.slug}`
+      : `${HOST_URL}/p/${meta.slug}/${currentPageSlug}`
    // A page claims its own words, not the whole post's.
    const wordCount = isMultiPage ? (page?.wordCount ?? 0) : meta.wordCount
 
@@ -97,7 +99,7 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
             {meta.coverSrc && (
                <meta property="og:image" content={`${HOST_URL}${meta.coverSrc}`} />
             )}
-            <meta property="og:url" content={`${HOST_URL}/${canonicalUrl}`} />
+            <meta property="og:url" content={canonicalUrl} />
             <meta property="og:type" content="article" />
             <meta name="og:email" content="mail@berkekaragoz.com" />
 

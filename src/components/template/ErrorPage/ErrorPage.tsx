@@ -21,6 +21,7 @@ export const ErrorPage: React.FC<React.PropsWithChildren<ErrorPageProps>> = (
       <main className="flex flex-col items-center justify-center min-h-screen text-center">
          <Head>
             <title>{`${code || "Unknown"} Error`}</title>
+            <meta name="robots" content="noindex, follow" />
          </Head>
          <div className="flex-shrink-0">
             <div className="absolute -translate-y-12 xsh:-translate-x-12 xsh:-translate-y-28">
