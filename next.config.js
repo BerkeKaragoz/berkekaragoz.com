@@ -53,6 +53,16 @@ module.exports = {
             destination: "/p/shortkit/make-lazy",
             permanent: true,
          },
+         {
+            source: "/p/shortkit/installation",
+            destination: "/p/shortkit#installation",
+            permanent: true,
+         },
+         {
+            source: "/p/statekit/installation",
+            destination: "/p/statekit#installation",
+            permanent: true,
+         },
       ]
    },
    pageExtensions: [
