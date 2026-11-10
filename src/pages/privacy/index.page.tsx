@@ -59,7 +59,7 @@ const PARTS: Part[] = [
       title: "Analytics",
       when: OFFERED.analytics,
       body: [
-         `With your consent, Google Analytics counts visits: which pages are read, roughly from which country, on what kind of device. Google acts as my processor. Google signals, data sharing and ads linking are off, and the data is kept for ${GA_RETENTION}.`,
+         `With your consent, Google Analytics counts visits: which pages are read, roughly from which country, on what kind of device. It also records one event when the pitch graph has been in use for two minutes; the event says only that this happened and includes no audio. Google acts as my processor. Google signals, data sharing and ads linking are off, and the data is kept for ${GA_RETENTION}.`,
          <>
             The cookies it sets are listed in{" "}
             <A href={LINKS.gaCookies}>Google Analytics cookie usage</A>.
