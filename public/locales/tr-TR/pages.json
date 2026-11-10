@@ -65,6 +65,20 @@
          "title": "İletişime Geçin"
       }
    },
+   "about": {
+      "meta": {
+         "title": "Hakkımda | Berke Karagöz",
+         "description": "Ben Berke Karagöz, İstanbul doğumlu bir önyüz geliştiricisiyim. Yazılım geliştirmeye nasıl başladığımı, hobilerimi ve iş deneyimimi anlatıyorum."
+      }
+   },
+   "contact": {
+      "meta": {
+         "title": "İletişim | Berke Karagöz",
+         "description": "Berke Karagöz'e mail@berkekaragoz.com adresinden e-posta ile ya da GitHub ve LinkedIn üzerinden ulaşabilirsiniz."
+      },
+      "title": "İletişim",
+      "intro": "Bana e-posta ile ulaşabilir ya da beni GitHub ve LinkedIn'de bulabilirsiniz."
+   },
    "posts": {
       "index": {
          "heading": "Gönderiler",

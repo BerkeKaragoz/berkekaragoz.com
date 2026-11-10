@@ -63,7 +63,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      </LinkText>
                   </li>
                   <li className="mb-2">
-                     <LinkText href="/#about-me">
+                     <LinkText href="/about">
                         <Trans t={t} i18nKey="index.aboutMe.title">
                            About Me
                         </Trans>
@@ -73,6 +73,13 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <LinkText href="/#experience">
                         <Trans t={t} i18nKey="index.experience.title">
                            Experience
+                        </Trans>
+                     </LinkText>
+                  </li>
+                  <li className="mb-2">
+                     <LinkText href="/contact">
+                        <Trans t={t} i18nKey="contact.title">
+                           Contact
                         </Trans>
                      </LinkText>
                   </li>

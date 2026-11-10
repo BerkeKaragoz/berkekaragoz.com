@@ -65,6 +65,20 @@
          "title": "Get In Touch"
       }
    },
+   "about": {
+      "meta": {
+         "title": "About Me | Berke Karagöz",
+         "description": "I'm Berke Karagöz, a frontend engineer born in Istanbul. How I got into software development, my hobbies and my work experience."
+      }
+   },
+   "contact": {
+      "meta": {
+         "title": "Contact | Berke Karagöz",
+         "description": "Reach Berke Karagöz by email at mail@berkekaragoz.com, or on GitHub and LinkedIn."
+      },
+      "title": "Contact",
+      "intro": "You can reach me by email, or find me on GitHub and LinkedIn."
+   },
    "posts": {
       "index": {
          "heading": "Posts",
