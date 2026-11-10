@@ -65,5 +65,34 @@
       "noiseSuppression": "Gürültü bastırma hâlâ açık. Kısık notalar kaybolabilir.",
       "autoGainControl": "Otomatik kazanç hâlâ açık. Ses düzeyi sıçrayabilir.",
       "monoTab": "Sekme sesi mono."
+   },
+   "guide": {
+      "title": "Bu araç hakkında",
+      "use": {
+         "title": "Nasıl kullanılır",
+         "inputs": "“Mikrofonu aç” düğmesine basın ve mikrofona izin verin. Başka bir sekmenin sesini eklemek için “Sekme paylaş” düğmesine basın ve tarayıcının paylaşım penceresinde “Sekme sesini de paylaş” seçeneğini işaretleyin. Kulaklık kullanın, yoksa mikrofon sekmenin sesini de duyar.",
+         "graph": "Grafik son 8 saniyeyi gösterir; nota adları soldadır. Mavi çizgi mikrofon, turuncu çizgi paylaşılan sekmedir; her çizginin arkasındaki soluk gölge o kaynağın spektrumudur. Yeşil bant, mikrofona en yakın notadır.",
+         "readout": "Gösterge mikrofonun notasını, en yakın notadan kaç sent saptığını ve frekansını Hz olarak verir. 15 sent içindeyken bir onay işareti çıkar.",
+         "view": "“Aralık” kaç oktavın görüneceğini belirler. Grafiğin altındaki çubuğu sürükleyerek yüksekliğini değiştirin. “Tam ekran” yalnızca aracı gösterir."
+      },
+      "works": {
+         "title": "Nasıl çalışır",
+         "plain": "Sayfa sesin perdesini saniyede birçok kez ölçer ve her sonucu çizer. Her kaynakta tek bir perdeyi, 65 ile 1100 Hz arasında izler; perde bulamadığı yerde boşluk bırakır. Paylaşılan sekmede önce sol ve sağ kanalda aynı olan sesi tutar (ana vokal çoğunlukla oradadır) ve bası çıkarır.",
+         "detail": "Analiz tarayıcınızda çalışır. Bir AudioWorklet ses örneklerini bir Web Worker'a aktarır; Worker, YIN yöntemiyle perde adayları bulur. Ardından bir izleyici bu adaylardan en olası çizgiyi seçer ve yumuşatır."
+      },
+      "privacy": {
+         "title": "Gizlilik",
+         "audio": "Ses cihazınızda analiz edilir. Sayfa sesi kaydetmez ve hiçbir yere göndermez. Grafiği çizmek için yalnızca son birkaç saniyenin sonuçlarını bellekte tutar.",
+         "video": "Tarayıcılar bir sekmenin sesini yalnızca görüntüsüyle birlikte paylaşır. Sayfa, paylaşım başlar başlamaz görüntüyü durdurur ve kullanmaz.",
+         "storage": "Araç, tarayıcının yerel depolamasına iki ayar kaydeder: grafik yüksekliği ve aralık.",
+         "site": "Bu sitedeki reklamlar ve analiz ayrıca anlatılır:",
+         "siteLink": "Gizlilik ve çerezler"
+      },
+      "support": {
+         "title": "Tarayıcı desteği",
+         "mic": "Mikrofon için izniniz gerekir; tarayıcılar buna yalnızca https ya da localhost üzerinden açılan sayfalarda izin verir. Erişim engelliyse site ayarlarından izin verip tekrar deneyin.",
+         "tab": "Sekme sesi için Chrome ya da Edge gibi Chromium tabanlı bir masaüstü tarayıcı gerekir. Diğer tarayıcılarda “Sekme paylaş” düğmesi devre dışıdır.",
+         "processing": "Sayfa, tarayıcıdan yankı engellemeyi, gürültü bastırmayı ve otomatik kazancı kapatmasını ister. Biri açık kalırsa düğmelerin altında bir not çıkar. “Tam ekran” düğmesi yalnızca tarayıcının desteklediği yerde görünür."
+      }
    }
 }

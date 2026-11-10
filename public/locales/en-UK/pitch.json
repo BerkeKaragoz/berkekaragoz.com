@@ -65,5 +65,34 @@
       "noiseSuppression": "Noise suppression is still on. Quiet notes may drop out.",
       "autoGainControl": "Automatic gain is still on. Loudness may jump.",
       "monoTab": "Tab audio is mono."
+   },
+   "guide": {
+      "title": "About this tool",
+      "use": {
+         "title": "How to use it",
+         "inputs": "Press “Start mic” and allow the microphone. To add another tab's audio, press “Share a tab” and tick “Also share tab audio” in the browser's dialog. Use headphones, otherwise the mic also picks up the tab.",
+         "graph": "The graph shows the last 8 seconds, with note names on the left. The blue line is the mic and the orange line is the shared tab; the faint shading behind each line is its spectrum. The green band is the note nearest to the mic.",
+         "readout": "The readout gives the mic's note, how far it is from the nearest note in cents, and its frequency in Hz. A check mark appears within 15 cents.",
+         "view": "“Range” sets how many octaves are visible. Drag the bar under the graph to change its height. “Full screen” shows only the tool."
+      },
+      "works": {
+         "title": "How it works",
+         "plain": "The page measures the pitch of the sound many times a second and draws each result. It follows one pitch per source, between 65 and 1100 Hz, and leaves a gap where it finds none. For a shared tab it first keeps what is the same in the left and right channels, where a lead vocal usually sits, and removes the bass.",
+         "detail": "The analysis runs in your browser. An AudioWorklet passes the samples to a Web Worker, which finds pitch candidates with the YIN method. A tracker then picks the most likely line through them and smooths it."
+      },
+      "privacy": {
+         "title": "Privacy",
+         "audio": "The audio is analysed on your device. The page does not record it or send it anywhere. It keeps only the last few seconds of results in memory, to draw the graph.",
+         "video": "Browsers only share a tab's audio together with its video. The page stops the video as soon as sharing starts and does not use it.",
+         "storage": "The tool saves two settings in the browser's local storage: the graph height and the range.",
+         "site": "Ads and analytics on this site are covered separately:",
+         "siteLink": "Privacy and cookies"
+      },
+      "support": {
+         "title": "Browser support",
+         "mic": "The mic needs your permission, and browsers only allow it on pages opened over https or localhost. If access is blocked, allow it in the site settings and retry.",
+         "tab": "Tab audio needs a desktop Chromium browser such as Chrome or Edge. In other browsers the “Share a tab” button is disabled.",
+         "processing": "The page asks the browser to turn off echo cancellation, noise suppression and automatic gain. If one stays on, a note appears under the buttons. The “Full screen” button appears only where the browser supports it."
+      }
    }
 }

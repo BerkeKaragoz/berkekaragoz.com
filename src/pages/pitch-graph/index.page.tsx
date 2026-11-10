@@ -1,10 +1,12 @@
 import Main from "@/components/atomic/Main/Main"
 import AdSenseBanner from "@/components/molecular/AdSenseBanner/AdSenseBanner"
 import { ADSENSE_SLOTS } from "@/features/consent/config"
+import { sendAnalyticsEvent } from "@/features/consent/google"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
+import { watchActiveUse } from "@/features/pitch/activeUse"
 import { createPitchEngine } from "@/features/pitch/engine"
 import { PITCH_TNS } from "@/features/pitch/i18n"
 import { getPitchStaticProps } from "@/features/pitch/pageProps"
@@ -27,6 +29,7 @@ import {
    clampGraphHeight,
    isZoomStep,
 } from "./Controls"
+import { Guide } from "./Guide"
 import { PitchGraph } from "./PitchGraph"
 import { Readout } from "./Readout"
 import styles from "./pitch.module.css"
@@ -35,6 +38,8 @@ import styles from "./pitch.module.css"
 const ZOOM_STORAGE_KEY = "pitch.zoomSemitones.v2"
 const HEIGHT_STORAGE_KEY = "pitch.graphHeight"
 const READOUT_INTERVAL_MS = 100
+/** GA4 event for two minutes of use (see activeUse.ts). The name is also set in GA4. */
+const ACTIVE_USE_EVENT = "pitch_active_2min"
 
 const INITIAL_STATE: EngineState = {
    mic: "off",
@@ -110,6 +115,13 @@ const PitchPage: NextPage = () => {
       ]
       setEngineState(created.getState())
       setEngine(created)
+
+      // One analytics event for a visit that really used the tool.
+      if (!params.has("simulate")) {
+         unsubscribe.push(
+            watchActiveUse(created, () => sendAnalyticsEvent(ACTIVE_USE_EVENT))
+         )
+      }
 
       return () => {
          unsubscribe.forEach((off) => off())
@@ -244,6 +256,9 @@ const PitchPage: NextPage = () => {
             </Section>
             <Section block>
                <AdSenseBanner slot={ADSENSE_SLOTS.tool} className="mb-10" />
+            </Section>
+            <Section block className={`pb-10 sm:pb-14 ${styles.tool}`}>
+               <Guide />
             </Section>
          </Main>
          <Footer />

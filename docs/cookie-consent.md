@@ -126,6 +126,7 @@ These are inlined at build time. They're public ids, so they go in `.env.product
   Then put `<ConsentSlot />` where the inline banner should go. The delay restarts on each page. Google's message uses the same delay; `placement` and `variant` reach its CSS as `data-consent-placement` and `data-consent-variant` on `<html>`.
 - **Google's message styling:** `src/styles/google-consent.css`. It hasn't been checked against the real message yet, since that needs a live AdSense account.
 - **Ads:** `src/components/molecular/AdSenseBanner/AdSenseBanner.tsx` renders `<AdSenseBanner slot="…" />`. A slot with no ad takes no space: before consent, when AdSense leaves it unfilled, and when adsbygoogle.js is blocked or doesn't pick the slot up within 8 s. Its spacing (`className`) appears only once an ad has filled it.
+- **GA4 events:** `sendAnalyticsEvent` in `google.ts` sends one only when analytics is allowed. The only custom event is `pitch_active_2min`: the pitch graph's mic or shared tab has run for two minutes with the page in view (`src/features/pitch/activeUse.ts`). It carries no parameters.
 - **Consent records:** `POST /api/consent` stores our banner's choices through the object store. Google keeps the records for its message.
 - **Footer:** "Privacy and cookies" and "Cookie settings" links.
 - **Privacy page:** `/privacy`, English only, built to need few edits.

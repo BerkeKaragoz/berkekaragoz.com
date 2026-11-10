@@ -98,9 +98,13 @@ const loadScript = (id: string, src: string, crossOrigin?: string) => {
    document.head.appendChild(script)
 }
 
+// Withdrawing analytics consent reloads the page, which resets this.
+let analyticsStarted = false
+
 /** Loads GA4 after analytics consent (Consent Mode basic). */
 export const startAnalytics = () => {
    if (!GA_MEASUREMENT_ID || !window.gtag) return
+   analyticsStarted = true
    window.gtag("consent", "update", { analytics_storage: "granted" })
    loadScript(
       "consent-gtag",
@@ -111,6 +115,16 @@ export const startAnalytics = () => {
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
    })
+}
+
+/**
+ * Sends a GA4 event if the visitor allowed analytics. Returns whether it was
+ * sent, so a caller can try again after a later consent.
+ */
+export const sendAnalyticsEvent = (name: string, params: Record<string, unknown> = {}) => {
+   if (!analyticsStarted || !window.gtag) return false
+   window.gtag("event", name, params)
+   return true
 }
 
 /** Loads AdSense after a decision. Ad slots pushed earlier render then. */

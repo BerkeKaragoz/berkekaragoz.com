@@ -291,3 +291,81 @@
    outline: 2px solid var(--pitch-focus);
    outline-offset: 2px;
 }
+
+/* Guide: the accordions under the tool, shaped like the English IPA page's. */
+
+.guideTitle {
+   @apply text-xl font-semibold sm:text-2xl;
+}
+
+.guideList {
+   @apply mt-4 flex flex-col gap-3;
+}
+
+.guideItem {
+   @apply overflow-hidden rounded-xl border;
+   background: var(--pitch-surface);
+   border-color: var(--pitch-border);
+}
+
+.guideItem summary {
+   @apply relative flex cursor-pointer items-center p-5 pr-14;
+   list-style: none;
+}
+
+.guideItem summary::-webkit-details-marker {
+   display: none;
+}
+
+/* A plus, drawn as two lines; open, the upright one goes and leaves a minus. */
+.guideItem summary::after {
+   @apply absolute h-8 w-8 rounded-full;
+   right: 1.25rem;
+   content: "";
+   border: 1px solid var(--pitch-border);
+   background-color: var(--pitch-button);
+   background-image:
+      linear-gradient(currentColor, currentColor),
+      linear-gradient(currentColor, currentColor);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size:
+      0.625rem 1px,
+      1px 0.625rem;
+   color: var(--pitch-text);
+}
+
+.guideItem[open] summary::after {
+   background-size:
+      0.625rem 1px,
+      0 0;
+}
+
+.guideItem summary:focus-visible {
+   outline: 2px solid var(--pitch-focus);
+   outline-offset: -3px;
+}
+
+.guideItem summary h3 {
+   @apply text-lg font-semibold;
+}
+
+.guideContent {
+   @apply border-t p-5 pt-0;
+   border-color: var(--pitch-border);
+}
+
+.guideContent > p {
+   @apply mt-4 max-w-prose text-sm leading-relaxed;
+   color: var(--pitch-muted);
+}
+
+.guideContent a {
+   @apply underline;
+   color: var(--pitch-text);
+}
+
+.guideContent a:focus-visible {
+   outline: 2px solid var(--pitch-focus);
+   outline-offset: 2px;
+}
