@@ -17,6 +17,7 @@ import {
 import {
    IPA_SOUNDS,
    IpaSound,
+   SOUND_BY_ID,
    SoundCategory,
    sortSoundsForGuide,
    splitIpaIntoSounds,
@@ -60,6 +61,28 @@ const categoryOrder: CategoryFilter[] = [
    "monophthong",
    "diphthong",
 ]
+
+// The written-out list under the tool: every sound, grouped like the filters
+// and in the same order as the grid.
+const writtenSoundGroups = (
+   ["consonant", "monophthong", "diphthong"] as SoundCategory[]
+).map((category) => ({
+   category,
+   sounds: sortSoundsForGuide(
+      IPA_SOUNDS.filter((sound) => sound.category === category)
+   ),
+}))
+
+const writtenSoundId = (id: string) => `ipa-sound-${id}`
+
+const converterGuideParagraphs = [
+   "scope",
+   "dictionary",
+   "estimates",
+   "input",
+   "speech",
+   "privacy",
+] as const
 
 const ipaMarkGuides = [
    {
@@ -234,6 +257,29 @@ const SoundButton = ({
    </button>
 )
 
+// A sound's translatable text: the locale file first, then the English in
+// sounds.ts. The detail panel and the written-out list both read it here, so
+// they always show the same words.
+const useSoundText = () => {
+   const { t } = useTranslation(IPA_TNS)
+
+   return (sound: IpaSound) => ({
+      name: t(`sounds.${sound.id}.name`, {
+         defaultValue: sound.name,
+      }),
+      instructions: sound.instructions.map((instruction, index) =>
+         t(`sounds.${sound.id}.instructions.${index}`, {
+            defaultValue: instruction,
+         })
+      ),
+      variationNote: sound.variationNote
+         ? t(`sounds.${sound.id}.variationNote`, {
+              defaultValue: sound.variationNote,
+           })
+         : undefined,
+   })
+}
+
 const SoundCard = ({
    active,
    onPlay,
@@ -291,9 +337,7 @@ const SoundDetail = ({
    sound: IpaSound
 }) => {
    const { t } = useTranslation(IPA_TNS)
-   const translatedName = t(`sounds.${sound.id}.name`, {
-      defaultValue: sound.name,
-   })
+   const text = useSoundText()(sound)
 
    return (
       <aside
@@ -304,7 +348,7 @@ const SoundDetail = ({
             <div>
                <p className={styles.eyebrow}>{t(`categories.${sound.category}`)}</p>
                <h2 className={styles.detailSymbol}>/{sound.symbol}/</h2>
-               <p className={styles.detailName}>{translatedName}</p>
+               <p className={styles.detailName}>{text.name}</p>
             </div>
             <div className={styles.detailExample}>
                <span>{sound.example}</span>
@@ -331,12 +375,10 @@ const SoundDetail = ({
          <div className={styles.howTo}>
             <p className={styles.sectionLabel}>{t("soundsUi.howTo")}</p>
             <ol>
-               {sound.instructions.map((instruction, index) => (
+               {text.instructions.map((instruction, index) => (
                   <li key={`${sound.id}-${index}`}>
                      <span>{index + 1}</span>
-                     {t(`sounds.${sound.id}.instructions.${index}`, {
-                        defaultValue: instruction,
-                     })}
+                     {instruction}
                   </li>
                ))}
             </ol>
@@ -377,12 +419,8 @@ const SoundDetail = ({
             )}
          </div>
 
-         {sound.variationNote && (
-            <p className={styles.variationNote}>
-               {t(`sounds.${sound.id}.variationNote`, {
-                  defaultValue: sound.variationNote,
-               })}
-            </p>
+         {text.variationNote && (
+            <p className={styles.variationNote}>{text.variationNote}</p>
          )}
       </aside>
    )
@@ -1018,6 +1056,143 @@ const ConverterView = ({
    )
 }
 
+// Everything the detail panel can show, for all sounds at once. A native
+// <details>, so the text is in the page's HTML while it is closed.
+const AllSoundsText = () => {
+   const { t } = useTranslation(IPA_TNS)
+   const soundText = useSoundText()
+
+   return (
+      <details className={`card ${styles.marksGuide}`}>
+         <summary>
+            <div>
+               <p className={styles.eyebrow}>{t("soundsUi.reference")}</p>
+               <h2>{t("allSounds.title")}</h2>
+            </div>
+         </summary>
+         <div className={styles.marksContent}>
+            <p>{t("allSounds.intro")}</p>
+            {writtenSoundGroups.map(({ category, sounds }) => (
+               <section className={styles.writtenGroup} key={category}>
+                  <h3>{t(`categories.${category}`)}</h3>
+                  <div className={styles.writtenGrid}>
+                     {sounds.map((sound) => {
+                        const text = soundText(sound)
+                        const comparisons = sound.confusedWith.flatMap((id) => {
+                           const comparison = SOUND_BY_ID.get(id)
+                           return comparison ? [comparison] : []
+                        })
+
+                        return (
+                           <article
+                              className={styles.writtenSound}
+                              id={writtenSoundId(sound.id)}
+                              key={sound.id}
+                           >
+                              <h4>
+                                 <span className={styles.writtenSymbol}>
+                                    /{sound.symbol}/
+                                 </span>{" "}
+                                 <span className={styles.writtenName}>
+                                    {text.name}
+                                 </span>
+                              </h4>
+                              <dl>
+                                 <div>
+                                    <dt className={styles.sectionLabel}>
+                                       {t("allSounds.example")}
+                                    </dt>
+                                    <dd>
+                                       {sound.example}{" "}
+                                       <span className={styles.writtenIpa}>
+                                          /{sound.exampleIpa}/
+                                       </span>
+                                    </dd>
+                                 </div>
+                                 <div>
+                                    <dt className={styles.sectionLabel}>
+                                       {t("soundsUi.howTo")}
+                                    </dt>
+                                    <dd>
+                                       <ol>
+                                          {text.instructions.map(
+                                             (instruction, index) => (
+                                                <li key={index}>{instruction}</li>
+                                             )
+                                          )}
+                                       </ol>
+                                    </dd>
+                                 </div>
+                                 <div>
+                                    <dt className={styles.sectionLabel}>
+                                       {t("soundsUi.commonSpellings")}
+                                    </dt>
+                                    <dd>{sound.spellings.join(", ")}</dd>
+                                 </div>
+                                 {comparisons.length > 0 && (
+                                    <div>
+                                       <dt className={styles.sectionLabel}>
+                                          {t("soundsUi.compareWith")}
+                                       </dt>
+                                       <dd>
+                                          <ul className={styles.writtenLinks}>
+                                             {comparisons.map((comparison) => (
+                                                <li key={comparison.id}>
+                                                   <a
+                                                      href={`#${writtenSoundId(
+                                                         comparison.id
+                                                      )}`}
+                                                   >
+                                                      /{comparison.symbol}/
+                                                   </a>
+                                                </li>
+                                             ))}
+                                          </ul>
+                                       </dd>
+                                    </div>
+                                 )}
+                              </dl>
+                              {text.variationNote && (
+                                 <p className={styles.variationNote}>
+                                    {text.variationNote}
+                                 </p>
+                              )}
+                           </article>
+                        )
+                     })}
+                  </div>
+               </section>
+            ))}
+         </div>
+      </details>
+   )
+}
+
+// Plain account of what the converter does. Every sentence in the
+// converterGuide strings describes code in this file or in features/ipa;
+// update them together.
+const ConverterGuide = () => {
+   const { t } = useTranslation(IPA_TNS)
+
+   return (
+      <div className={styles.converterLayout}>
+         <details className={`card ${styles.marksGuide}`}>
+            <summary>
+               <div>
+                  <p className={styles.eyebrow}>{t("tabs.converter")}</p>
+                  <h2>{t("converterGuide.title")}</h2>
+               </div>
+            </summary>
+            <div className={`${styles.marksContent} ${styles.guideText}`}>
+               {converterGuideParagraphs.map((paragraph) => (
+                  <p key={paragraph}>{t(`converterGuide.${paragraph}`)}</p>
+               ))}
+            </div>
+         </details>
+      </div>
+   )
+}
+
 const IpaPage: NextPage = () => {
    const { t } = useTranslation(IPA_TNS)
    const router = useRouter()
@@ -1214,6 +1389,12 @@ const IpaPage: NextPage = () => {
                </Section>
                <Section block>
                   <AdSenseBanner slot={ADSENSE_SLOTS.tool} className="mt-4" />
+               </Section>
+               {/* One accordion per route, chosen from the pathname like the
+                   view itself, so each page's static HTML holds its own and a
+                   tab click swaps them. */}
+               <Section block className={`mt-8 ${styles.tool}`}>
+                  {view === "sounds" ? <AllSoundsText /> : <ConverterGuide />}
                </Section>
             </div>
          </Main>

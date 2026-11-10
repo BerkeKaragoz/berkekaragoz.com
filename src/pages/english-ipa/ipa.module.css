@@ -440,6 +440,7 @@
    outline-offset: -3px;
 }
 
+.marksGuide summary h2,
 .marksGuide summary h3 {
    @apply mt-1 text-xl font-semibold;
 }
@@ -490,6 +491,79 @@
 .markItem p {
    @apply mt-1 text-sm leading-relaxed;
    color: var(--ipa-muted);
+}
+
+/* The accordions under the tool reuse .marksGuide and .marksContent. */
+.guideText > p {
+   max-width: 70ch;
+}
+
+.writtenGroup {
+   @apply mt-6;
+}
+
+.writtenGroup > h3 {
+   @apply text-lg font-semibold;
+   color: var(--ipa-accent-strong);
+}
+
+.writtenGrid {
+   @apply grid gap-3 mt-3 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.writtenSound {
+   @apply min-w-0 p-3 rounded-lg;
+   border: 1px solid var(--ipa-border);
+   background: var(--ipa-surface-raised);
+   /* Clears the sticky header when a "compare with" link jumps here. */
+   scroll-margin-top: 5.5rem;
+}
+
+.writtenSound:target {
+   border-color: var(--ipa-accent);
+}
+
+.writtenSound h4 {
+   @apply flex flex-wrap items-baseline;
+   column-gap: 0.75rem;
+   row-gap: 0.125rem;
+}
+
+.writtenSymbol {
+   @apply font-monospace text-2xl font-semibold;
+   color: var(--ipa-accent-strong);
+}
+
+.writtenName {
+   @apply text-sm font-normal;
+   color: var(--ipa-muted);
+}
+
+.writtenSound dl {
+   @apply grid gap-3 mt-3;
+}
+
+.writtenSound dd {
+   @apply mt-1 text-sm leading-relaxed;
+   color: var(--ipa-muted);
+}
+
+.writtenSound ol {
+   @apply pl-5 list-decimal;
+}
+
+.writtenIpa {
+   @apply font-monospace;
+   color: var(--ipa-subtle);
+}
+
+.writtenLinks {
+   @apply flex flex-wrap gap-3;
+}
+
+.writtenLinks a {
+   @apply font-monospace underline;
+   color: var(--ipa-accent-strong);
 }
 
 .converterLayout {
