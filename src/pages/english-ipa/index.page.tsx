@@ -25,6 +25,8 @@ import {
 import { IPA_TNS } from "@/features/ipa/i18n"
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
 import { checkRandomTextAvailable, fetchRandomText } from "@/features/ipa/randomText"
+import { useCanonicalUrl } from "@/lib/i18n/useCanonicalUrl"
+import { HOST_URL } from "@/lib/utils/consts"
 import {
    CheckIcon,
    ClipboardCopyIcon,
@@ -1199,6 +1201,8 @@ const IpaPage: NextPage = () => {
    const view: View = router.pathname.endsWith("/text-to-ipa")
       ? "converter"
       : "sounds"
+   // The two views are two pages, and a ?sound= selection is not a third.
+   const canonicalUrl = useCanonicalUrl(viewRoutes[view])
    const [converterMounted, setConverterMounted] = useState(view === "converter")
    const [selectedSound, setSelectedSound] = useState(
       IPA_SOUNDS.find((sound) => sound.id === "schwa") ?? IPA_SOUNDS[0]
@@ -1295,10 +1299,12 @@ const IpaPage: NextPage = () => {
                      : "meta.description"
                )}
             />
+            <link rel="canonical" href={canonicalUrl} />
+            <meta property="og:url" content={canonicalUrl} />
             <meta property="og:type" content="website" />
             <meta property="og:title" content={t("meta.ogTitle")} />
             <meta property="og:description" content={t("meta.ogDescription")} />
-            <meta property="og:image" content="/og.png" />
+            <meta property="og:image" content={`${HOST_URL}/og.png`} />
             <meta property="og:image:width" content="1792" />
             <meta property="og:image:height" content="896" />
             <meta property="og:image:alt" content={t("meta.ogImageAlt")} />

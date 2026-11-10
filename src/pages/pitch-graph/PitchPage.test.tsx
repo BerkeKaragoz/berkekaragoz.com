@@ -17,6 +17,10 @@ jest.mock("@/components/molecular/AdSenseBanner/AdSenseBanner", () => ({
    __esModule: true,
    default: () => null,
 }))
+// So does the canonical URL.
+jest.mock("@/lib/i18n/useCanonicalUrl", () => ({
+   useCanonicalUrl: (path: string) => path,
+}))
 
 describe("pitch page with the simulated engine", () => {
    beforeAll(() => {

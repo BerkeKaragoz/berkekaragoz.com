@@ -4,12 +4,12 @@ import Section from "@/components/atomic/Section/Section"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
-import { DEFAULT_LOCALE, HOST_URL } from "@/lib/utils/consts"
+import { useCanonicalUrl } from "@/lib/i18n/useCanonicalUrl"
+import { DEFAULT_LOCALE } from "@/lib/utils/consts"
 import { GetStaticProps, NextPage } from "next"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
-import { useRouter } from "next/router"
 import React from "react"
 import AboutMe from "../_components/AboutMe"
 import Experience from "../_components/Experience"
@@ -20,17 +20,14 @@ import Experience from "../_components/Experience"
 
 const AboutPage: NextPage = () => {
    const { t } = useTranslation([PAGES_TNS])
-   const { locale, defaultLocale } = useRouter()
-
-   // Each language is its own page, so each one is its own canonical.
-   const localePath = locale && locale !== defaultLocale ? `/${locale}` : ""
+   const canonicalUrl = useCanonicalUrl("/about")
 
    return (
       <div>
          <Head>
             <title>{t("about.meta.title")}</title>
             <meta name="description" content={t("about.meta.description")} />
-            <link rel="canonical" href={`${HOST_URL}${localePath}/about`} />
+            <link rel="canonical" href={canonicalUrl} />
          </Head>
          <Header />
          <Main>

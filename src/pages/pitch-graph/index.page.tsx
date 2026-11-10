@@ -17,6 +17,7 @@ import {
 } from "@/features/pitch/session"
 import { createSimulatedEngine } from "@/features/pitch/simulatedEngine"
 import type { EngineState, PitchEngine } from "@/features/pitch/types"
+import { useCanonicalUrl } from "@/lib/i18n/useCanonicalUrl"
 import { NextPage } from "next"
 import { useTranslation } from "next-i18next"
 import Head from "next/head"
@@ -67,6 +68,7 @@ export const getStaticProps = getPitchStaticProps
 
 const PitchPage: NextPage = () => {
    const { t } = useTranslation(PITCH_TNS)
+   const canonicalUrl = useCanonicalUrl("/pitch-graph")
    const [session] = useState(() => createSession({ windowSeconds: 8 }))
    const [engine, setEngine] = useState<PitchEngine | null>(null)
    const [engineState, setEngineState] = useState<EngineState>(INITIAL_STATE)
@@ -193,6 +195,8 @@ const PitchPage: NextPage = () => {
          <Head>
             <title>{t("meta.title")}</title>
             <meta name="description" content={t("meta.description")} />
+            <link rel="canonical" href={canonicalUrl} />
+            <meta property="og:url" content={canonicalUrl} />
             <meta property="og:type" content="website" />
             <meta property="og:title" content={t("meta.title")} />
             <meta property="og:description" content={t("meta.description")} />
