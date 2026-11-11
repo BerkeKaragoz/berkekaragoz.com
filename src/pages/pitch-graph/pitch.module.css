@@ -91,6 +91,28 @@
    color: var(--pitch-button-on-text);
 }
 
+/* Pulses the mic button after it has sat unused for a while. */
+.nudge {
+   border-color: var(--pitch-voice);
+   animation: nudge 1.6s ease-out infinite;
+}
+
+@keyframes nudge {
+   from {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--pitch-voice) 55%, transparent);
+   }
+   to {
+      box-shadow: 0 0 0 12px color-mix(in srgb, var(--pitch-voice) 0%, transparent);
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .nudge {
+      animation: none;
+      box-shadow: 0 0 0 3px var(--pitch-voice);
+   }
+}
+
 .button[aria-disabled="true"] {
    @apply cursor-not-allowed opacity-50;
 }

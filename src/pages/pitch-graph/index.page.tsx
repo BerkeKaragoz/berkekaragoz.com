@@ -39,6 +39,8 @@ import styles from "./pitch.module.css"
 const ZOOM_STORAGE_KEY = "pitch.zoomSemitones.v2"
 const HEIGHT_STORAGE_KEY = "pitch.graphHeight"
 const READOUT_INTERVAL_MS = 100
+/** How long the mic may sit unused before its button pulses. */
+const NUDGE_AFTER_MS = 20000
 /** GA4 event for two minutes of use (see activeUse.ts). The name is also set in GA4. */
 const ACTIVE_USE_EVENT = "pitch_active_2min"
 
@@ -117,6 +119,9 @@ const PitchPage: NextPage = () => {
       ]
       setEngineState(created.getState())
       setEngine(created)
+      // The mic starts with the page; the browser asks for access first.
+      if (window.isSecureContext !== false)
+         created.enableMic().catch((error) => console.error(error))
 
       // One analytics event for a visit that really used the tool.
       if (!params.has("simulate")) {
@@ -169,6 +174,20 @@ const PitchPage: NextPage = () => {
       session.setActive({ voice: micOn, song: tabOn })
    }, [session, micOn, tabOn])
 
+   // Pulse the mic button once it has sat unused for a while.
+   const [nudgeMic, setNudgeMic] = useState(false)
+   const micIdle =
+      !insecure &&
+      (engineState.mic === "off" ||
+         engineState.mic === "denied" ||
+         engineState.mic === "error")
+   useEffect(() => {
+      setNudgeMic(false)
+      if (!micIdle) return
+      const id = setTimeout(() => setNudgeMic(true), NUDGE_AFTER_MS)
+      return () => clearTimeout(id)
+   }, [micIdle])
+
    // The readout at ~10 Hz; the graph reads the session every frame.
    useEffect(() => {
       const id = setInterval(() => {
@@ -214,6 +233,7 @@ const PitchPage: NextPage = () => {
                      state={engineState}
                      failed={failed}
                      insecure={insecure}
+                     nudgeMic={nudgeMic}
                      onMic={toggleMic}
                      onTab={toggleTab}
                   />

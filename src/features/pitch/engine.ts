@@ -136,14 +136,22 @@ export const createPitchEngine = (): PitchEngine => {
       send({ type: "init", sampleRate: audio.sampleRate })
    }
 
-   // Runs its synchronous part inside the user gesture: the AudioContext is
-   // created and resumed before anything awaits.
+   // A start without a user gesture (the mic on page load) may leave the
+   // context suspended until one; the first click or key press resumes it.
+   const resumeOnGesture = () => {
+      if (audio && audio.state === "suspended") audio.resume().catch(noop)
+   }
+   const GESTURES = ["pointerdown", "keydown"]
+
+   // Runs its synchronous part inside the user gesture, if any: the
+   // AudioContext is created and resumed before anything awaits.
    const ensureAudio = (): Promise<void> => {
       if (!audio) {
          audio = new AudioContext()
          sink = audio.createGain()
          sink.gain.value = 0
          sink.connect(audio.destination)
+         GESTURES.forEach((g) => window.addEventListener(g, resumeOnGesture, true))
       }
       if (audio.state === "suspended") audio.resume().catch(noop)
       if (!worker) startWorker()
@@ -283,6 +291,7 @@ export const createPitchEngine = (): PitchEngine => {
       })
       if (worker) worker.terminate()
       worker = null
+      GESTURES.forEach((g) => window.removeEventListener(g, resumeOnGesture, true))
       if (audio) audio.close().catch(noop)
       audio = null
       sink = null

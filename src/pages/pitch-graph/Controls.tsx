@@ -11,12 +11,14 @@ type ControlsProps = {
    failed?: boolean
    /** Opened over plain http on another host: the browser blocks mic and tab. */
    insecure?: boolean
+   /** Draws the eye to the mic button. */
+   nudgeMic?: boolean
    onMic: () => void
    onTab: () => void
 }
 
 export const Controls = (props: ControlsProps) => {
-   const { state, failed, insecure, onMic, onTab } = props
+   const { state, failed, insecure, nudgeMic, onMic, onTab } = props
    const { t } = useTranslation(PITCH_TNS)
 
    const micError =
@@ -43,7 +45,7 @@ export const Controls = (props: ControlsProps) => {
             <div className={styles.control}>
                <button
                   type="button"
-                  className={styles.button}
+                  className={`${styles.button} ${nudgeMic ? styles.nudge : ""}`}
                   aria-pressed={state.mic === "on"}
                   aria-busy={state.mic === "starting"}
                   aria-disabled={insecure || undefined}

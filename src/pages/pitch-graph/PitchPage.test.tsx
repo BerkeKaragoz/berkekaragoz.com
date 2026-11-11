@@ -34,7 +34,7 @@ describe("pitch page with the simulated engine", () => {
       window.history.replaceState({}, "", "/")
    })
 
-   it("mounts, runs the mic and the tab, and unmounts cleanly", async () => {
+   it("mounts, starts the mic by itself, runs the tab, and unmounts cleanly", async () => {
       const errors = jest.spyOn(console, "error")
       const { unmount } = render(<PitchPage />)
 
@@ -45,7 +45,6 @@ describe("pitch page with the simulated engine", () => {
          screen.getByRole("heading", { name: "intro.title" })
       ).toBeInTheDocument()
 
-      fireEvent.click(screen.getByRole("button", { name: "controls.mic.off" }))
       await screen.findByRole(
          "button",
          { name: "controls.mic.on" },
