@@ -14,6 +14,7 @@
          "starting": "Mikrofon açılıyor…",
          "on": "Mikrofonu kapat",
          "denied": "Mikrofonu tekrar dene",
+         "busy": "Mikrofonu tekrar dene",
          "error": "Mikrofonu tekrar dene"
       },
       "tab": {
@@ -55,6 +56,7 @@
    },
    "errors": {
       "micDenied": "Mikrofon erişimi engelli. Site ayarlarından izin verip tekrar deneyin.",
+      "micBusy": "Mikrofon açılamadı. Başka bir uygulama kullanıyor olabilir ya da sistem engelliyor olabilir (Windows'ta: Ayarlar › Gizlilik ve güvenlik › Mikrofon). Bunu düzeltip tekrar deneyin.",
       "noTabAudio": "Sekme sessiz paylaşıldı. “Sekme sesini de paylaş” işaretliyken tekrar paylaşın.",
       "unsupported": "Sekme sesi paylaşımı yalnızca masaüstü Chrome ve Edge'de çalışır.",
       "insecure": "Tarayıcı mikrofona ve sekme paylaşımına yalnızca https'te ya da localhost'ta izin verir. Bu sayfa düz http ile açık.",

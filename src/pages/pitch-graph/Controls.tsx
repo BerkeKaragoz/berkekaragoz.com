@@ -34,9 +34,11 @@ export const Controls = (props: ControlsProps) => {
    const micError =
       state.mic === "denied"
          ? t("errors.micDenied")
-         : state.mic === "error"
-           ? t("errors.generic")
-           : null
+         : state.mic === "busy"
+           ? t("errors.micBusy")
+           : state.mic === "error"
+             ? t("errors.generic")
+             : null
    const tabError =
       state.tab === "noAudio"
          ? t("errors.noTabAudio")

@@ -71,6 +71,13 @@ describe("pitch page with the simulated engine", () => {
       fireEvent.click(screen.getByRole("button", { name: "controls.tab.on" }))
       await screen.findByRole("button", { name: "controls.tab.off" })
 
+      // Stopped just now: the panel stays in reach, no overlay.
+      fireEvent.click(screen.getByRole("button", { name: "controls.mic.on" }))
+      await screen.findByRole("button", { name: "controls.mic.off" })
+      expect(
+         screen.getByRole("img", { name: "graph.ariaLabel" })
+      ).toBeInTheDocument()
+
       act(() => unmount())
       expect(errors).not.toHaveBeenCalled()
       errors.mockRestore()

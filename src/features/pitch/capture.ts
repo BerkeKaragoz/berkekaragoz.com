@@ -34,7 +34,7 @@ const TAB_OPTIONS: DisplayOptions = {
 
 export type MicCapture =
    | { ok: true; stream: MediaStream; warnings: EngineWarning[] }
-   | { ok: false; state: "denied" | "error"; error?: unknown }
+   | { ok: false; state: "denied" | "busy" | "error"; error?: unknown }
 
 export type TabCapture =
    | { ok: true; stream: MediaStream; warnings: EngineWarning[] }
@@ -93,14 +93,36 @@ export const canShareTabAudio = (): boolean => {
    return /(Chrome|Chromium)\//.test(ua) && !/Mobile|Android/.test(ua)
 }
 
+/** Wait before the one retry of a mic the system couldn't open. */
+const BUSY_RETRY_MS = 800
+
+/**
+ * NotReadableError (TrackStartError in old Chrome): permission was given but
+ * the OS or the device refused, e.g. another app holds the mic exclusively, the
+ * OS privacy settings block it, or a headset is switching modes.
+ */
+const isBusy = (error: unknown) =>
+   errorName(error) === "NotReadableError" || errorName(error) === "TrackStartError"
+
 export const openMic = async ({
    onEnded,
 }: CaptureOptions = {}): Promise<MicCapture> => {
+   const ask = () => navigator.mediaDevices.getUserMedia(MIC_CONSTRAINTS)
    let stream: MediaStream
    try {
-      stream = await navigator.mediaDevices.getUserMedia(MIC_CONSTRAINTS)
+      // A busy device often frees up a moment later; try once more.
+      stream = await ask().catch(async (error: unknown) => {
+         if (!isBusy(error)) throw error
+         await new Promise((resolve) => setTimeout(resolve, BUSY_RETRY_MS))
+         return ask()
+      })
    } catch (error) {
-      const state = errorName(error) === "NotAllowedError" ? "denied" : "error"
+      const state =
+         errorName(error) === "NotAllowedError"
+            ? "denied"
+            : isBusy(error)
+              ? "busy"
+              : "error"
       return { ok: false, state, error }
    }
 

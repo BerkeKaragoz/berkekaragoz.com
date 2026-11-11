@@ -59,7 +59,8 @@ export type EngineWarning =
    | "autoGainControl"
    | "monoTab" // tab audio arrived with one channel
 
-export type MicState = "off" | "starting" | "on" | "denied" | "error"
+/** "busy": allowed, but the system couldn't open the device (in use, blocked by the OS). */
+export type MicState = "off" | "starting" | "on" | "denied" | "busy" | "error"
 export type TabState =
    | "off"
    | "starting"

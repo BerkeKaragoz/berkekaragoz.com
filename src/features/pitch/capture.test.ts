@@ -67,6 +67,19 @@ describe("openMic", () => {
    })
 })
 
+describe("openMic on a busy device", () => {
+   it("retries once, then reports the mic busy", async () => {
+      setNavigator()
+      const busy = Object.assign(new Error("Could not start audio source"), {
+         name: "NotReadableError",
+      })
+      getUserMedia.mockRejectedValue(busy)
+      const result = await openMic()
+      expect(getUserMedia).toHaveBeenCalledTimes(2)
+      expect(result).toMatchObject({ ok: false, state: "busy" })
+   })
+})
+
 describe("openTab", () => {
    it("stops the share and returns noAudio without an audio track", async () => {
       setNavigator()

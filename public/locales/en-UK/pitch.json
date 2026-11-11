@@ -14,6 +14,7 @@
          "starting": "Starting mic…",
          "on": "Stop mic",
          "denied": "Retry mic",
+         "busy": "Retry mic",
          "error": "Retry mic"
       },
       "tab": {
@@ -55,6 +56,7 @@
    },
    "errors": {
       "micDenied": "Microphone access is blocked. Allow it in the site settings and retry.",
+      "micBusy": "The mic couldn't be opened. Another app may be using it, or the system may be blocking it (on Windows: Settings › Privacy & security › Microphone). Fix that and retry.",
       "noTabAudio": "The tab was shared without audio. Share it again with “Also share tab audio” ticked.",
       "unsupported": "Tab audio sharing only works in desktop Chrome and Edge.",
       "insecure": "The browser only allows the mic and tab sharing on https or localhost. This page is open over plain http.",

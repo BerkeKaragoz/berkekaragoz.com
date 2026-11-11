@@ -41,7 +41,11 @@ const HEIGHT_STORAGE_KEY = "pitch.graphHeight"
 /** When the mic was last on; within MIC_RESUME_MS it starts with the page. */
 const MIC_STORAGE_KEY = "pitch.micOnAt"
 const MIC_RESUME_MS = 2 * 60 * 60 * 1000
-const MIC_STAMP_EVERY_MS = 60 * 1000
+/** How often a running source refreshes its time in storage. */
+const STAMP_EVERY_MS = 60 * 1000
+/** When the mic or a tab was last on; the overlay stays away this long after. */
+const USED_STORAGE_KEY = "pitch.usedAt"
+const OVERLAY_COOLDOWN_MS = 10 * 60 * 1000
 
 /** Whether the mic was on within MIC_RESUME_MS, so starting it won't surprise. */
 const micRecentlyOn = () => {
@@ -61,6 +65,23 @@ const stampMic = (on: boolean) => {
       // Storage blocked: the mic just waits for a click next time.
    }
 }
+
+const readUsedAt = () => {
+   try {
+      return Number(window.localStorage.getItem(USED_STORAGE_KEY)) || 0
+   } catch {
+      return 0
+   }
+}
+
+const stampUsed = () => {
+   try {
+      window.localStorage.setItem(USED_STORAGE_KEY, String(Date.now()))
+   } catch {
+      // Storage blocked: the cooldown only lasts this visit.
+   }
+}
+
 const READOUT_INTERVAL_MS = 100
 /** How long the mic may sit unused before its button pulses. */
 const NUDGE_AFTER_MS = 20000
@@ -204,12 +225,36 @@ const PitchPage: NextPage = () => {
       if (micRefused) stampMic(false)
       if (!micOn) return
       stampMic(true)
-      const id = setInterval(() => stampMic(true), MIC_STAMP_EVERY_MS)
+      const id = setInterval(() => stampMic(true), STAMP_EVERY_MS)
       return () => clearInterval(id)
    }, [micOn, micRefused])
 
-   // Nothing running: the buttons sit centred over the panel.
-   const idle = !micOn && !tabOn
+   // Note when anything last ran: for ten minutes after, the overlay stays
+   // away, so stopping the mic doesn't throw the panel back under it.
+   const active = micOn || tabOn
+   const [usedAt, setUsedAt] = useState(0)
+   useEffect(() => setUsedAt(readUsedAt()), [])
+   useEffect(() => {
+      if (!active) return
+      stampUsed()
+      const id = setInterval(stampUsed, STAMP_EVERY_MS)
+      return () => {
+         clearInterval(id)
+         stampUsed()
+         setUsedAt(Date.now())
+      }
+   }, [active])
+   const [cooling, setCooling] = useState(false)
+   useEffect(() => {
+      const left = usedAt + OVERLAY_COOLDOWN_MS - Date.now()
+      if (left <= 0) return setCooling(false)
+      setCooling(true)
+      const id = setTimeout(() => setCooling(false), left)
+      return () => clearTimeout(id)
+   }, [usedAt])
+
+   // Nothing running, nor lately: the buttons sit centred over the panel.
+   const overlay = !active && !cooling
 
    // Pulse the mic button once it has sat unused for a while.
    const [nudgeMic, setNudgeMic] = useState(false)
@@ -217,6 +262,7 @@ const PitchPage: NextPage = () => {
       !insecure &&
       (engineState.mic === "off" ||
          engineState.mic === "denied" ||
+         engineState.mic === "busy" ||
          engineState.mic === "error")
    useEffect(() => {
       setNudgeMic(false)
@@ -270,7 +316,7 @@ const PitchPage: NextPage = () => {
                <div ref={panelRef} className={styles.panel}>
                   {/* Nothing running: the buttons sit centred over a dimmed
                       panel; the panel below keeps its layout but is out of reach. */}
-                  {idle && (
+                  {overlay && (
                      <div className={styles.overlay}>
                         <Controls
                            state={engineState}
@@ -285,8 +331,8 @@ const PitchPage: NextPage = () => {
                   )}
                   <div
                      className={styles.panelBody}
-                     aria-hidden={idle || undefined}
-                     inert={idle}
+                     aria-hidden={overlay || undefined}
+                     inert={overlay}
                   >
                      <Controls
                         state={engineState}
