@@ -13,12 +13,22 @@ type ControlsProps = {
    insecure?: boolean
    /** Draws the eye to the mic button. */
    nudgeMic?: boolean
+   /** Prefix of the ids the buttons' notes use; distinct per copy on the page. */
+   idPrefix?: string
    onMic: () => void
    onTab: () => void
 }
 
 export const Controls = (props: ControlsProps) => {
-   const { state, failed, insecure, nudgeMic, onMic, onTab } = props
+   const {
+      state,
+      failed,
+      insecure,
+      nudgeMic,
+      idPrefix = "pitch",
+      onMic,
+      onTab,
+   } = props
    const { t } = useTranslation(PITCH_TNS)
 
    const micError =
@@ -45,15 +55,15 @@ export const Controls = (props: ControlsProps) => {
             <div className={styles.control}>
                <button
                   type="button"
-                  className={`${styles.button} ${nudgeMic ? styles.nudge : ""}`}
+                  className={`${styles.button} ${styles.micButton} ${nudgeMic ? styles.nudge : ""}`}
                   aria-pressed={state.mic === "on"}
                   aria-busy={state.mic === "starting"}
                   aria-disabled={insecure || undefined}
                   aria-describedby={
                      insecure
-                        ? "pitch-insecure"
+                        ? `${idPrefix}-insecure`
                         : micError
-                          ? "pitch-mic-error"
+                          ? `${idPrefix}-mic-error`
                           : undefined
                   }
                   onClick={insecure ? undefined : onMic}
@@ -62,7 +72,11 @@ export const Controls = (props: ControlsProps) => {
                   {t(`controls.mic.${state.mic}`)}
                </button>
                {micError && (
-                  <p id="pitch-mic-error" className={styles.error} role="alert">
+                  <p
+                     id={`${idPrefix}-mic-error`}
+                     className={styles.error}
+                     role="alert"
+                  >
                      {micError}
                   </p>
                )}
@@ -71,17 +85,17 @@ export const Controls = (props: ControlsProps) => {
             <div className={styles.control}>
                <button
                   type="button"
-                  className={styles.button}
+                  className={`${styles.button} ${styles.tabButton}`}
                   aria-pressed={state.tab === "on"}
                   aria-busy={state.tab === "starting"}
                   aria-disabled={insecure || unsupported || undefined}
                   aria-describedby={
                      insecure
-                        ? "pitch-insecure"
+                        ? `${idPrefix}-insecure`
                         : unsupported
-                          ? "pitch-tab-unsupported"
+                          ? `${idPrefix}-tab-unsupported`
                           : tabError
-                            ? "pitch-tab-error"
+                            ? `${idPrefix}-tab-error`
                             : undefined
                   }
                   onClick={insecure || unsupported ? undefined : onTab}
@@ -90,12 +104,16 @@ export const Controls = (props: ControlsProps) => {
                   {t(`controls.tab.${state.tab}`)}
                </button>
                {unsupported && (
-                  <p id="pitch-tab-unsupported" className={styles.note}>
+                  <p id={`${idPrefix}-tab-unsupported`} className={styles.note}>
                      {t("errors.unsupported")}
                   </p>
                )}
                {tabError && (
-                  <p id="pitch-tab-error" className={styles.error} role="alert">
+                  <p
+                     id={`${idPrefix}-tab-error`}
+                     className={styles.error}
+                     role="alert"
+                  >
                      {tabError}
                   </p>
                )}
@@ -104,7 +122,7 @@ export const Controls = (props: ControlsProps) => {
          </div>
 
          {insecure && (
-            <p id="pitch-insecure" className={`${styles.note} mt-3`}>
+            <p id={`${idPrefix}-insecure`} className={`${styles.note} mt-3`}>
                {t("errors.insecure")}
             </p>
          )}

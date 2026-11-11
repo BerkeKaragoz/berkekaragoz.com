@@ -52,9 +52,61 @@
 }
 
 .panel {
-   @apply mt-8 rounded-xl border p-4 sm:p-6;
+   @apply relative mt-8 rounded-xl border p-4 sm:p-6;
    background: var(--pitch-surface);
    border-color: var(--pitch-border);
+}
+
+/* Over the panel while neither the mic nor a tab runs: the buttons, centred
+   and light on a dark scrim, whatever the theme. */
+.overlay {
+   @apply absolute inset-0 z-10 flex items-center justify-center p-6;
+   border-radius: inherit;
+   background: rgba(8, 8, 10, 0.68);
+   backdrop-filter: blur(3px);
+   --pitch-muted: #c9c8c1;
+   --pitch-error: #f6a58a;
+}
+
+.overlay .controls {
+   @apply justify-center gap-4 text-center;
+}
+
+.overlay .control {
+   @apply items-center;
+}
+
+/* Outlined in the source's colour, so they read as "start", not as the
+   filled "on" state. */
+.overlay .button {
+   @apply px-6 py-3 text-base;
+   background: rgba(255, 255, 255, 0.06);
+   border-width: 2px;
+   border-color: var(--accent);
+   color: #ffffff;
+}
+
+.overlay .button:hover {
+   background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.micButton {
+   --accent: var(--pitch-voice);
+}
+
+.tabButton {
+   --accent: var(--pitch-song);
+}
+
+.overlay .caption {
+   @apply mt-1;
+   flex-basis: 100%;
+   max-width: none;
+}
+
+.overlay .note,
+.overlay .error {
+   @apply text-center;
 }
 
 /* Controls */
@@ -245,6 +297,11 @@
 /* Full screen: the panel fills the screen and the graph takes what is left. */
 .panel:fullscreen {
    @apply m-0 flex flex-col overflow-auto rounded-none border-0;
+}
+
+.panel:fullscreen .panelBody {
+   @apply flex min-h-0 flex-col;
+   flex: 1 1 auto;
 }
 
 .panel:fullscreen .graph {

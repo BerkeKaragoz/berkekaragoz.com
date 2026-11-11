@@ -38,6 +38,29 @@ import styles from "./pitch.module.css"
 // v2: the default went from 1.5 to 2.5 octaves; old choices are dropped.
 const ZOOM_STORAGE_KEY = "pitch.zoomSemitones.v2"
 const HEIGHT_STORAGE_KEY = "pitch.graphHeight"
+/** When the mic was last on; within MIC_RESUME_MS it starts with the page. */
+const MIC_STORAGE_KEY = "pitch.micOnAt"
+const MIC_RESUME_MS = 2 * 60 * 60 * 1000
+const MIC_STAMP_EVERY_MS = 60 * 1000
+
+/** Whether the mic was on within MIC_RESUME_MS, so starting it won't surprise. */
+const micRecentlyOn = () => {
+   try {
+      const at = Number(window.localStorage.getItem(MIC_STORAGE_KEY))
+      return at > 0 && Date.now() - at < MIC_RESUME_MS
+   } catch {
+      return false
+   }
+}
+
+const stampMic = (on: boolean) => {
+   try {
+      if (on) window.localStorage.setItem(MIC_STORAGE_KEY, String(Date.now()))
+      else window.localStorage.removeItem(MIC_STORAGE_KEY)
+   } catch {
+      // Storage blocked: the mic just waits for a click next time.
+   }
+}
 const READOUT_INTERVAL_MS = 100
 /** How long the mic may sit unused before its button pulses. */
 const NUDGE_AFTER_MS = 20000
@@ -119,8 +142,9 @@ const PitchPage: NextPage = () => {
       ]
       setEngineState(created.getState())
       setEngine(created)
-      // The mic starts with the page; the browser asks for access first.
-      if (window.isSecureContext !== false)
+      // A mic that was on in the last two hours starts again with the page;
+      // anyone else gets the buttons, and the browser asks after a click.
+      if (window.isSecureContext !== false && micRecentlyOn())
          created.enableMic().catch((error) => console.error(error))
 
       // One analytics event for a visit that really used the tool.
@@ -174,6 +198,19 @@ const PitchPage: NextPage = () => {
       session.setActive({ voice: micOn, song: tabOn })
    }, [session, micOn, tabOn])
 
+   // Remember the mic while it runs; forget it once access is refused.
+   const micRefused = engineState.mic === "denied"
+   useEffect(() => {
+      if (micRefused) stampMic(false)
+      if (!micOn) return
+      stampMic(true)
+      const id = setInterval(() => stampMic(true), MIC_STAMP_EVERY_MS)
+      return () => clearInterval(id)
+   }, [micOn, micRefused])
+
+   // Nothing running: the buttons sit centred over the panel.
+   const idle = !micOn && !tabOn
+
    // Pulse the mic button once it has sat unused for a while.
    const [nudgeMic, setNudgeMic] = useState(false)
    const micIdle =
@@ -199,8 +236,10 @@ const PitchPage: NextPage = () => {
 
    const toggleMic = () => {
       if (!engine) return
-      if (engineState.mic === "on") engine.disableMic()
-      else engine.enableMic().catch((error) => console.error(error))
+      if (engineState.mic === "on") {
+         engine.disableMic()
+         stampMic(false)
+      } else engine.enableMic().catch((error) => console.error(error))
    }
 
    const toggleTab = () => {
@@ -229,53 +268,78 @@ const PitchPage: NextPage = () => {
                <p className={styles.intro}>{t("intro.description")}</p>
 
                <div ref={panelRef} className={styles.panel}>
-                  <Controls
-                     state={engineState}
-                     failed={failed}
-                     insecure={insecure}
-                     nudgeMic={nudgeMic}
-                     onMic={toggleMic}
-                     onTab={toggleTab}
-                  />
-                  <Readout readout={readout} />
-                  <PitchGraph
-                     session={session}
-                     engine={engine}
-                     semitones={zoom}
-                     height={fullscreen ? undefined : graphHeight}
-                     ariaLabel={t("graph.ariaLabel")}
-                  />
-                  {!fullscreen && (
-                     <HeightHandle
-                        value={graphHeight}
-                        onChange={changeGraphHeight}
-                     />
-                  )}
-                  <div className={styles.legend} aria-hidden="true">
-                     <span className={styles.legendItem}>
-                        <span className={`${styles.swatch} ${styles.swatchVoice}`} />
-                        {t("graph.voice")}
-                     </span>
-                     <span className={styles.legendItem}>
-                        <span className={`${styles.swatch} ${styles.swatchSong}`} />
-                        {t("graph.song")}
-                     </span>
-                     <span className={styles.legendItem}>
-                        <span
-                           className={`${styles.swatch} ${styles.swatchTarget}`}
+                  {/* Nothing running: the buttons sit centred over a dimmed
+                      panel; the panel below keeps its layout but is out of reach. */}
+                  {idle && (
+                     <div className={styles.overlay}>
+                        <Controls
+                           state={engineState}
+                           failed={failed}
+                           insecure={insecure}
+                           nudgeMic={nudgeMic}
+                           idPrefix="pitch-overlay"
+                           onMic={toggleMic}
+                           onTab={toggleTab}
                         />
-                        {t("graph.target")}
-                     </span>
+                     </div>
+                  )}
+                  <div
+                     className={styles.panelBody}
+                     aria-hidden={idle || undefined}
+                     inert={idle}
+                  >
+                     <Controls
+                        state={engineState}
+                        failed={failed}
+                        insecure={insecure}
+                        nudgeMic={nudgeMic}
+                        onMic={toggleMic}
+                        onTab={toggleTab}
+                     />
+                     <Readout readout={readout} />
+                     <PitchGraph
+                        session={session}
+                        engine={engine}
+                        semitones={zoom}
+                        height={fullscreen ? undefined : graphHeight}
+                        ariaLabel={t("graph.ariaLabel")}
+                     />
+                     {!fullscreen && (
+                        <HeightHandle
+                           value={graphHeight}
+                           onChange={changeGraphHeight}
+                        />
+                     )}
+                     <div className={styles.legend} aria-hidden="true">
+                        <span className={styles.legendItem}>
+                           <span
+                              className={`${styles.swatch} ${styles.swatchVoice}`}
+                           />
+                           {t("graph.voice")}
+                        </span>
+                        <span className={styles.legendItem}>
+                           <span
+                              className={`${styles.swatch} ${styles.swatchSong}`}
+                           />
+                           {t("graph.song")}
+                        </span>
+                        <span className={styles.legendItem}>
+                           <span
+                              className={`${styles.swatch} ${styles.swatchTarget}`}
+                           />
+                           {t("graph.target")}
+                        </span>
+                     </div>
+                     <Zoom
+                        value={zoom}
+                        onChange={changeZoom}
+                        fullscreen={
+                           canFullscreen
+                              ? { on: fullscreen, onToggle: toggleFullscreen }
+                              : undefined
+                        }
+                     />
                   </div>
-                  <Zoom
-                     value={zoom}
-                     onChange={changeZoom}
-                     fullscreen={
-                        canFullscreen
-                           ? { on: fullscreen, onToggle: toggleFullscreen }
-                           : undefined
-                     }
-                  />
                </div>
             </Section>
             <Section block>

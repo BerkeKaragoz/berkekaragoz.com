@@ -34,17 +34,19 @@ describe("pitch page with the simulated engine", () => {
       window.history.replaceState({}, "", "/")
    })
 
-   it("mounts, starts the mic by itself, runs the tab, and unmounts cleanly", async () => {
+   it("mounts, runs the mic and the tab, and unmounts cleanly", async () => {
       const errors = jest.spyOn(console, "error")
       const { unmount } = render(<PitchPage />)
 
       expect(
-         screen.getByRole("img", { name: "graph.ariaLabel" })
+         screen.getByRole("img", { name: "graph.ariaLabel", hidden: true })
       ).toBeInTheDocument()
       expect(
          screen.getByRole("heading", { name: "intro.title" })
       ).toBeInTheDocument()
 
+      // Nothing has run yet: the buttons wait on the overlay.
+      fireEvent.click(screen.getByRole("button", { name: "controls.mic.off" }))
       await screen.findByRole(
          "button",
          { name: "controls.mic.on" },
@@ -73,4 +75,16 @@ describe("pitch page with the simulated engine", () => {
       expect(errors).not.toHaveBeenCalled()
       errors.mockRestore()
    }, 10000)
+
+   it("starts the mic by itself if it was on in the last two hours", async () => {
+      window.localStorage.setItem("pitch.micOnAt", String(Date.now() - 60 * 1000))
+      const { unmount } = render(<PitchPage />)
+      await screen.findByRole(
+         "button",
+         { name: "controls.mic.on" },
+         { timeout: 2000 }
+      )
+      act(() => unmount())
+      window.localStorage.clear()
+   })
 })
