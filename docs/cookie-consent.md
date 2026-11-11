@@ -79,7 +79,10 @@ A delay is allowed, because TCF says the publisher decides "when the Framework U
 - **Google's message:** call `proceed()` through `controlledMessagingFunction` when the delay ends. Google warns this "may delay ads serving", which is the expected cost.
 - **Finding out who Google covers:** Google's tool only creates `__tcfapi`, and says whether GDPR applies, *after* `proceed()`. So:
   - A new visitor isn't sorted until the delay ends. Then we release Google's message and watch `__tcfapi`.
-  - A visitor with a stored choice (our `consent` in localStorage, or Google's `FCCDCF` cookie) is sorted on load, so their choice applies straight away.
+  - A visitor with a stored choice (our `consent` in localStorage, or Google's `FCCDCF` cookie) is sorted on load.
+    - A choice from our banner applies at once, without waiting for the answer. Otherwise ads would start, and take their room, up to 4 s into the page.
+    - If Google's tool then says it covers the visitor (they chose outside the EEA, UK and Switzerland and are now inside), our stored choice is deleted and Google's message decides. Anything already started is stopped by one reload.
+    - A choice from Google's message applies when its tool reports it.
   - If `__tcfapi` doesn't appear, GDPR doesn't apply, or Google loads but sends no consent event (no message published, so `displayStatus: hidden`), our banner asks after `TCF_DETECT_TIMEOUT_MS` (4 s).
   - Found live on 7 Nov 2026: with no European message published, UK visitors were otherwise never asked.
 - **Ads and analytics:** for every visitor, `adsbygoogle.js` loads only after a decision and gtag.js only after analytics consent. Ad slots queue their requests until then.
@@ -125,7 +128,12 @@ These are inlined at build time. They're public ids, so they go in `.env.product
 
   Then put `<ConsentSlot />` where the inline banner should go. The delay restarts on each page. Google's message uses the same delay; `placement` and `variant` reach its CSS as `data-consent-placement` and `data-consent-variant` on `<html>`.
 - **Google's message styling:** `src/styles/google-consent.css`. It hasn't been checked against the real message yet, since that needs a live AdSense account.
-- **Ads:** `src/components/molecular/AdSenseBanner/AdSenseBanner.tsx` renders `<AdSenseBanner slot="…" />`. A slot with no ad takes no space: before consent, when AdSense leaves it unfilled, and when adsbygoogle.js is blocked or doesn't pick the slot up within 8 s. Its spacing (`className`) appears only once an ad has filled it.
+- **Ads:** `src/components/molecular/AdSenseBanner/AdSenseBanner.tsx` renders `<AdSenseBanner slot="…" />`. Before consent a slot renders nothing. After it, how much room the slot takes is decided in one place, `AdSpace.tsx` beside it (to drop the behaviour, render the `ins` in a plain `<div className="ad-slot">`):
+   - **Held:** the slot assumes its ad will come and keeps the ad's room and spacing (`className`) from the start, so the page doesn't move when the ad arrives. A fixed ad holds its own height; a responsive one holds what AdSense gives it (`.ad-hold` in `src/styles/google-consent.css`).
+   - **Shown:** AdSense marked it filled (`data-ad-status="filled"`).
+   - **Gone:** no ad will come, so nothing is rendered: AdSense marked it unfilled, adsbygoogle.js is blocked, or the slot wasn't picked up within 8 s.
+   - **Folded:** AdSense picked the slot up but never asked for an ad within 3 s (no iframe in the `ins`; what an account that isn't approved yet gets), or asked and got no answer within 8 s. The slot is taken out of the page flow and clipped to no height, and stays mounted, so an ad that comes late still shows.
+   - **Memory:** when AdSense never asks for an ad, `localStorage["ads.serving"]` is set to `"0"` and slots start folded instead of held, so pages don't flash empty boxes while the account isn't serving. The first ad that fills sets it back to `"1"`. It is only written after ads consent.
 - **GA4 events:** `sendAnalyticsEvent` in `google.ts` sends one only when analytics is allowed. The only custom event is `pitch_active_2min`: the pitch graph's mic or shared tab has run for two minutes with the page in view (`src/features/pitch/activeUse.ts`). It carries no parameters.
 - **Consent records:** `POST /api/consent` stores our banner's choices through the object store. Google keeps the records for its message.
 - **Footer:** "Privacy and cookies" and "Cookie settings" links.

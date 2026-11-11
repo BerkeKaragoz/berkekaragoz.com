@@ -104,9 +104,22 @@ html[data-consent-placement="bar"] .fc-consent-root .fc-dialog {
    html[data-consent-variant="post"] .fc-consent-root .fc-dialog { … } */
 
 /* AdSense: collapse a slot it couldn't fill, so no blank box is left behind
-   (Google's recommended way to hide unfilled ad units). A fixed-size ad's
-   wrapper (AdSenseBanner) goes with it, spacing and all. */
+   (Google's recommended way to hide unfilled ad units). The slot's wrapper
+   (AdSpace) goes with it, spacing and all. */
 ins.adsbygoogle[data-ad-status="unfilled"],
-.ad-slot:has(> ins.adsbygoogle[data-ad-status="unfilled"]) {
+.ad-slot:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
    display: none !important;
+}
+
+/* The room a responsive ad is held before it arrives (AdSpace), so the page
+   doesn't move when it does. It is the size AdSense gives the ins when it
+   picks the slot up, measured on this site: a square as wide as the window up
+   to 487px, and 280px tall from 488px. */
+.ad-hold {
+   min-height: 100vw;
+}
+@media (min-width: 488px) {
+   .ad-hold {
+      min-height: 280px;
+   }
 }
