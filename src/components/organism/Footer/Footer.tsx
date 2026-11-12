@@ -96,10 +96,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <LinkText href="/posts">Blog</LinkText>
                   </li>
                   <li className="mb-2">
-                     {/* A static file: next/link would prefix the locale. */}
-                     <a href="/rss.xml">RSS</a>
-                  </li>
-                  <li className="mb-2">
                      <LinkText href="/english-ipa">English IPA</LinkText>
                   </li>
                   <li className="mb-2">
@@ -167,6 +163,10 @@ export const Footer: React.FC<FooterProps> = (props) => {
                         </button>
                      </li>
                   )}
+                  <li className="mb-2">
+                     {/* A static file: next/link would prefix the locale. */}
+                     <a href="/rss.xml">RSS</a>
+                  </li>
                </ul>
             </div>
          </Section>
