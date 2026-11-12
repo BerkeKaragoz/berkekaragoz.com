@@ -1,12 +1,11 @@
 import Main from "@/components/atomic/Main/Main"
 import AdSenseBanner from "@/components/molecular/AdSenseBanner/AdSenseBanner"
 import { ADSENSE_SLOTS } from "@/features/consent/config"
-import { sendAnalyticsEvent } from "@/features/consent/google"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
-import { watchActiveUse } from "@/features/pitch/activeUse"
+import { watchPitchActiveUse } from "@/features/pitch/analytics"
 import { createPitchEngine } from "@/features/pitch/engine"
 import { PITCH_TNS } from "@/features/pitch/i18n"
 import { getPitchStaticProps } from "@/features/pitch/pageProps"
@@ -85,8 +84,6 @@ const stampUsed = () => {
 const READOUT_INTERVAL_MS = 100
 /** How long the mic may sit unused before its button pulses. */
 const NUDGE_AFTER_MS = 20000
-/** GA4 event for two minutes of use (see activeUse.ts). The name is also set in GA4. */
-const ACTIVE_USE_EVENT = "pitch_active_2min"
 
 const INITIAL_STATE: EngineState = {
    mic: "off",
@@ -169,11 +166,7 @@ const PitchPage: NextPage = () => {
          created.enableMic().catch((error) => console.error(error))
 
       // One analytics event for a visit that really used the tool.
-      if (!params.has("simulate")) {
-         unsubscribe.push(
-            watchActiveUse(created, () => sendAnalyticsEvent(ACTIVE_USE_EVENT))
-         )
-      }
+      if (!params.has("simulate")) unsubscribe.push(watchPitchActiveUse(created))
 
       return () => {
          unsubscribe.forEach((off) => off())
