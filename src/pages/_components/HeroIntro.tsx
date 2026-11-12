@@ -32,8 +32,8 @@ const HeroIntro: React.FC<ComponentPropsWithTranslation<Record<string, never>>> 
                </h1>
                <p className="max-w-sm mt-3 mb-2 ms-1 text-background-700 dark:text-background-400">
                   <Trans t={t} i18nKey="index.hero.subtitle">
-                     A curious frontend engineer who had been gaining various
-                     insights about web development.
+                     A curious software engineer who builds tools, libraries and
+                     apps.
                   </Trans>
                </p>
             </div>

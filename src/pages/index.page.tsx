@@ -15,6 +15,7 @@ import AboutMe from "./_components/AboutMe"
 import Experience from "./_components/Experience"
 import HeroIntro from "./_components/HeroIntro"
 import HeroWidget from "./_components/HeroWidget"
+import Posts from "./_components/Posts"
 import Projects from "./_components/Projects"
 import ReachMe from "./_components/ReachMe"
 import Socials from "./_components/Socials"
@@ -32,9 +33,9 @@ const fetchCoinData = (apiUrl: string) =>
 export const getStaticProps = async (ctx: Parameters<GetStaticProps>[0]) => {
    const { locale = DEFAULT_LOCALE } = ctx
 
-   const latestPostMetas = getAllPosts()
-      .slice(0, 3)
-      .map((post) => post.meta)
+   const allPosts = getAllPosts()
+   const latestPostMetas = allPosts.slice(0, 3).map((post) => post.meta)
+   const recentPostMetas = allPosts.slice(0, 5).map((post) => post.meta)
 
    const btcPricePromise = fetchCoinData(BTC_PRICE_API)
    const ethPricePromise = fetchCoinData(ETH_PRICE_API)
@@ -60,24 +61,26 @@ export const getStaticProps = async (ctx: Parameters<GetStaticProps>[0]) => {
          ...ssrConfig,
          // Will be passed to the page component as props
          latestPostMetas,
+         recentPostMetas,
+         postCount: allPosts.length,
       },
    }
 }
 
 const Homepage: NextPage<
-   { latestPostMetas: PostMeta[] } & Awaited<
+   { latestPostMetas: PostMeta[]; recentPostMetas: PostMeta[] } & Awaited<
       ReturnType<typeof getStaticProps>
    >["props"]
 > = (props) => {
-   const { latestPostMetas, initialCoinPrices } = props
+   const { latestPostMetas, recentPostMetas, postCount, initialCoinPrices } = props
 
    return (
       <PageContainer>
          <Head>
-            <title>E. Berke Karagöz | Web Developer</title>
+            <title>E. Berke Karagöz | Software Engineer</title>
             <meta
                name="description"
-               content="Hi, I'm Berke Karagöz. A curious frontend engineer who had been gaining various insights about web development."
+               content="Hi, I'm Berke Karagöz. A curious software engineer who builds tools, libraries and apps."
             />
          </Head>
 
@@ -114,12 +117,18 @@ const Homepage: NextPage<
             </div>
 
             <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+               <Section id="posts">
+                  <Posts posts={recentPostMetas} postCount={postCount} />
+               </Section>
+            </div>
+
+            <div className="bg-linear-gradient-100">
                <Section id="about-me">
                   <AboutMe />
                </Section>
             </div>
 
-            <div className="pb-8 bg-linear-gradient-100">
+            <div className="pb-8 dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
                <Section id="experience">
                   <Experience />
                </Section>

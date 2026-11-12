@@ -3,7 +3,7 @@
       "title": "Home",
       "hero": {
          "title": "Hi, I'm <br/><2>{{name}}</2>.",
-         "subtitle": "A curious frontend engineer who had been gaining various insights about web development.",
+         "subtitle": "A curious software engineer who builds tools, libraries and apps.",
          "actionButton": "Go to my blog",
          "boxServerDesc": "My general purpose NGINX, Ubuntu 20.04 server. I use it as a toolbox.",
          "widget": {
@@ -24,9 +24,13 @@
          "yaverSubtitle": "Voice-first CRM",
          "seeMore": "And more repositories..."
       },
+      "posts": {
+         "title": "Posts",
+         "seeAll": "All {{count}} posts"
+      },
       "aboutMe": {
          "title": "About Me",
-         "article": "<0>Hi, my name is Berke. I was born in Istanbul. My interest in computer technology has been there since I was a kid. That led me to discover designing opportunities. Starting from gaming forums to designing graphics for various reasons. I have started to learn about software development just before I matriculated to Bilkent University <1></1>.</0><1>Since then, I have been learning about multiple fields of software development. Focusing on front-end development abled me to utilize my graphic design skills with programming.</1><2>As for the hobbies, competitive gaming is one of my biggest ones. I play the chess of FPS, Quake, actively. In addition to this, I had been playing Counter-Strike and more others. After, I have been working as a tournament manager.</2>"
+         "article": "<0>Hi, my name is Berke. I was born in Istanbul. My interest in computer technology has been there since I was a kid. That led me to discover designing opportunities. Starting from gaming forums to designing graphics for various reasons. I have started to learn about software development just before I matriculated to Bilkent University <1></1>.</0><1>Since then, I have been learning about multiple fields of software development. I started with front-end development, which let me use my graphic design skills with programming.</1><2>As for the hobbies, competitive gaming is one of my biggest ones. I play the chess of FPS, Quake, actively. In addition to this, I had been playing Counter-Strike and more others. After, I have been working as a tournament manager.</2>"
       },
       "experience": {
          "jul": "Jul",
@@ -68,7 +72,7 @@
    "about": {
       "meta": {
          "title": "About Me | Berke Karagöz",
-         "description": "I'm Berke Karagöz, a frontend engineer born in Istanbul. How I got into software development, my hobbies and my work experience."
+         "description": "I'm Berke Karagöz, a software engineer born in Istanbul. How I got into software development, my hobbies and my work experience."
       }
    },
    "contact": {

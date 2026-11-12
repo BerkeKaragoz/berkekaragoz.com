@@ -31,7 +31,7 @@ const AboutMe: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = 
          </h2>
          <div className="flex flex-col items-center lg:flex-row-reverse">
             <button
-               className="flex-grow-0 flex-shrink-0 p-2 rounded-full image-wrapper card-input dark:bg-background-900"
+               className="flex-grow-0 flex-shrink-0 p-2 rounded-full image-wrapper card-input"
                onClick={() => setAssetIndex((s) => (s + 1) % assetNames.length)}
             >
                <Image
@@ -44,7 +44,7 @@ const AboutMe: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = 
                   blurDataURL={assetBlurs[assetIndex]}
                />
             </button>
-            <article className="p-4 mt-8 lg:mt-0 lg:mr-8 max-w-prose card dark:bg-background-900">
+            <article className="p-4 mt-8 lg:mt-0 lg:mr-8 max-w-prose card">
                <Trans t={t} i18nKey="index.aboutMe.article">
                   <p className="indent-xs">
                      {
@@ -55,8 +55,8 @@ const AboutMe: React.FC<ComponentPropsWithTranslation<Record<string, never>>> = 
                   </p>
                   <p className="mt-2 indent-xs">
                      Since then, I have been learning about multiple fields of
-                     software development. Focusing on front-end development abled me
-                     to utilize my graphic design skills with programming.
+                     software development. I started with front-end development, which
+                     let me use my graphic design skills with programming.
                   </p>
                   <p className="mt-2 indent-xs">
                      As for the hobbies, competitive gaming is one of my biggest

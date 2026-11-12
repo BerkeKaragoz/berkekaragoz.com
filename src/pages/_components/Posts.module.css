@@ -1,0 +1,174 @@
+/* Bento: the newest post takes a 2×2 block, the others fill around it. */
+.bento {
+   @apply grid gap-3;
+   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+   .bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (min-width: 1024px) {
+   .bento {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+   }
+}
+
+/* Same frame as a project card: a ring on hover around the card. */
+.tile {
+   @apply block rounded-lg p-1 text-left hover:ring-2;
+}
+
+.tile:focus-visible {
+   @apply outline-none ring-2;
+}
+
+@media (min-width: 640px) {
+   .featured {
+      grid-column: span 2;
+   }
+}
+
+@media (min-width: 1024px) {
+   .featured {
+      grid-row: span 2;
+   }
+}
+
+.body {
+   @apply flex h-full w-full flex-col overflow-hidden p-2;
+}
+
+/* Covers */
+
+/* isolate keeps the badge's z-index inside the card, under the fixed header. */
+.cover {
+   @apply relative isolate w-full shrink-0 overflow-hidden rounded-md;
+   aspect-ratio: 16 / 9;
+}
+
+.coverFeatured {
+   @apply flex-1;
+   min-height: 12rem;
+}
+
+.image {
+   @apply object-cover;
+   transition: transform 400ms ease;
+}
+
+.tile:hover .image {
+   transform: scale(1.04);
+}
+
+/* No cover: the first tag, large, on the site's primary-to-accent gradient. */
+.tagCover {
+   @apply absolute inset-0 flex items-center justify-center px-3 text-2xl font-bold tracking-tight;
+   color: theme("colors.white");
+   background-image: linear-gradient(
+      290deg,
+      theme("colors.accent.600"),
+      theme("colors.primary.600")
+   );
+   overflow-wrap: anywhere;
+   transition: transform 400ms ease;
+}
+
+.coverFeatured .tagCover {
+   @apply text-5xl;
+}
+
+.tile:hover .tagCover {
+   transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .image,
+   .tagCover {
+      transition: none;
+   }
+
+   .tile:hover .image,
+   .tile:hover .tagCover {
+      transform: none;
+   }
+}
+
+/* Text */
+
+.text {
+   @apply flex flex-col gap-1 px-1 pt-3 pb-1;
+}
+
+.meta {
+   @apply text-xs;
+}
+
+.title {
+   @apply text-base font-semibold leading-snug;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   overflow: hidden;
+}
+
+.featured .title {
+   @apply text-xl sm:text-2xl;
+}
+
+.excerpt {
+   @apply text-sm;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 3;
+   overflow: hidden;
+}
+
+.tags {
+   @apply mt-1 flex flex-wrap gap-1;
+}
+
+.tag {
+   @apply rounded px-1.5 py-0.5 text-xs;
+   background: rgb(0 0 0 / 0.06);
+}
+
+:global(.dark) .tag {
+   background: rgb(255 255 255 / 0.07);
+}
+
+/* "Latest" on the featured cover. */
+.badge {
+   @apply absolute left-2 top-2 z-10 rounded-md px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-white shadow;
+   background-image: linear-gradient(
+      290deg,
+      theme("colors.accent.600"),
+      theme("colors.primary.600")
+   );
+}
+
+/* Below sm the bento keeps its shape by size instead of by span: the newest
+   post stays a full card, the others become rows with a thumbnail. */
+@media (max-width: 639px) {
+   .tile:not(.featured) .body {
+      flex-direction: row;
+      align-items: center;
+      gap: theme("spacing.3");
+   }
+
+   .tile:not(.featured) .cover {
+      width: 7.5rem;
+   }
+
+   .tile:not(.featured) .text {
+      flex: 1 1 0%;
+      min-width: 0;
+      padding: 0;
+   }
+
+   .tile:not(.featured) .tagCover {
+      font-size: 0.875rem;
+   }
+}

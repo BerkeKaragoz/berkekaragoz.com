@@ -3,7 +3,7 @@
       "title": "Anasayfa",
       "hero": {
          "title": "Merhaba, ben <br/><2>{{name}}</2>.",
-         "subtitle": "Web teknolojileri hakkında çeşitli bilgiler edinen meraklı bir önyüz geliştiricisiyim.",
+         "subtitle": "Araçlar, kütüphaneler ve uygulamalar geliştiren meraklı bir yazılım mühendisiyim.",
          "actionButton": "Bloğuma gidin",
          "boxServerDesc": "Genel amaçlı NGINX, Ubuntu 20.04 serverim. Bir toolbox olarak kullanıyorum.",
          "widget": {
@@ -24,9 +24,13 @@
          "yaverSubtitle": "Sesle çalışan CRM",
          "seeMore": "Ve daha fazla repository'ler..."
       },
+      "posts": {
+         "title": "Gönderiler",
+         "seeAll": "{{count}} gönderinin tümü"
+      },
       "aboutMe": {
          "title": "Hakkımda",
-         "article": "<0>Merhaba ben Berke. İstanbul'da doğdum. Çocukluğumdan beri bilgisayarlarla ilgiliyim. Bunun sayesinde tasarım üzerinde bir kaç fırsat yakaladım. Oyun forumlarından başlayarak grafikler tasarlamaya başladım. Bilkent Üniversitesi'ne <1></1> kayıt olmadan önce yazılım geliştirme ile ilgili bilgiler edinmeye başladım.</0><1>O zamandan beri yazılımın birden fazla alanında bilgiler ediniyorum. Önyüz geliştirmeye odaklanmam sayesinde hem programlama hem de tasarım üzerine yeteneklerimi bir arada kullanabilir oldum.</1><2>Hobilerime gelirsek, rekabetçi oyunlar en büyükleri arasında. FPS'in satrançı olarak bilinen Quake'i aktif olarak oynuyorum. Buna ek olarak Counter-Strike gibi oyunlarla geçmişim oldu. Buralardan edindiğim tecrübeler ile şu anda turnuva yöneticisi olarak çalışıyorum.</2>"
+         "article": "<0>Merhaba ben Berke. İstanbul'da doğdum. Çocukluğumdan beri bilgisayarlarla ilgiliyim. Bunun sayesinde tasarım üzerinde bir kaç fırsat yakaladım. Oyun forumlarından başlayarak grafikler tasarlamaya başladım. Bilkent Üniversitesi'ne <1></1> kayıt olmadan önce yazılım geliştirme ile ilgili bilgiler edinmeye başladım.</0><1>O zamandan beri yazılımın birden fazla alanında bilgiler ediniyorum. Önyüz geliştirmeyle başladım; bu sayede programlama ve tasarım yeteneklerimi bir arada kullanabildim.</1><2>Hobilerime gelirsek, rekabetçi oyunlar en büyükleri arasında. FPS'in satrançı olarak bilinen Quake'i aktif olarak oynuyorum. Buna ek olarak Counter-Strike gibi oyunlarla geçmişim oldu. Buralardan edindiğim tecrübeler ile şu anda turnuva yöneticisi olarak çalışıyorum.</2>"
       },
       "experience": {
          "jul": "Tem",
@@ -44,7 +48,7 @@
          "present": "Halen",
          "mos": "ay",
          "yr": "yıl",
-         "efgRole": "Yazılım Mühenisi, Önyüz",
+         "efgRole": "Yazılım Mühendisi, Önyüz",
          "efgDesc": "<0><1>Tournament Core takımında ESL Tournament Admin ürününün önyüzünü geliştiriyorum.</1><1>Çözümler uyguluyor, önyüz kısmına yapılan kod değişikliklerini inceliyor, geliştiriciler için araçlar geliştiriyor ve eski bir turnuva yöneticisi olarak tecrübemi kullanıyorum.</1></0>",
          "selfRole": "Önyüz Mühendisi",
          "selfDesc": "<0><1>Danışmanlık ve yazılım geliştirme servisleri sunuyorum.</1><1>Geliştiricilerin aplikasyonları veya siteleri için yapım, onarım, genişletme ve iyileştirme planlamalarına yardım ediyorum.</1></0>",
@@ -68,7 +72,7 @@
    "about": {
       "meta": {
          "title": "Hakkımda | Berke Karagöz",
-         "description": "Ben Berke Karagöz, İstanbul doğumlu bir önyüz geliştiricisiyim. Yazılım geliştirmeye nasıl başladığımı, hobilerimi ve iş deneyimimi anlatıyorum."
+         "description": "Ben Berke Karagöz, İstanbul doğumlu bir yazılım mühendisiyim. Yazılım geliştirmeye nasıl başladığımı, hobilerimi ve iş deneyimimi anlatıyorum."
       }
    },
    "contact": {
