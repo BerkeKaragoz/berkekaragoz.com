@@ -105,8 +105,8 @@
       inset: 0;
       background: linear-gradient(
          290deg,
-         theme("colors.accent.600 / 5%"),
-         theme("colors.primary.600 / 5%")
+         theme("colors.accent.600 / 7%"),
+         theme("colors.primary.600 / 7%")
       );
       /* The plus shapes of .bg-plus-pattern, same tile. */
       /* prettier-ignore */
@@ -121,11 +121,13 @@
       );
    }
 
+   /* Deep shades at a higher opacity: on the dark band the pluses take more
+      colour than with the light shades, but barely get brighter. */
    .dark .plus-band-tint::before {
       background: linear-gradient(
          290deg,
-         theme("colors.accent.400 / 6%"),
-         theme("colors.primary.400 / 6%")
+         theme("colors.accent.800 / 17%"),
+         theme("colors.primary.800 / 17%")
       );
    }
 
