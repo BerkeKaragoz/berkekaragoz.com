@@ -1,8 +1,6 @@
-// Measures how long the tool is really in use: the mic or a shared tab is
-// running and the page is in view. A visit that reaches the goal counts as a
-// successful one.
-
-import type { PitchEngine } from "./types"
+// Measures how long a tool is really in use: whatever the tool counts as use
+// is happening and the page is in view. A visit that reaches the goal counts
+// as a successful one.
 
 /** Use that counts as a successful visit. */
 export const ACTIVE_USE_GOAL_MS = 2 * 60 * 1000
@@ -27,19 +25,17 @@ export const createActiveUseTimer = (goalMs = ACTIVE_USE_GOAL_MS) => {
 }
 
 /**
- * Calls `onGoal` once the engine has been in use for the goal time. `onGoal`
- * returns whether it could report; if not, it is asked again each tick.
- * Returns a cleanup.
+ * Calls `onGoal` once `isActive` has held, with the page in view, for the goal
+ * time. `onGoal` returns whether it could report; if not, it is asked again
+ * each tick. Returns a cleanup.
  */
 export const watchActiveUse = (
-   engine: Pick<PitchEngine, "getState">,
+   isActive: () => boolean,
    onGoal: () => boolean
 ) => {
    const timer = createActiveUseTimer()
    const id = setInterval(() => {
-      const { mic, tab } = engine.getState()
-      const active =
-         (mic === "on" || tab === "on") && document.visibilityState === "visible"
+      const active = isActive() && document.visibilityState === "visible"
       if (timer.tick(Date.now(), active) && onGoal()) clearInterval(id)
    }, TICK_MS)
    return () => clearInterval(id)

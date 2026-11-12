@@ -134,7 +134,11 @@ These are inlined at build time. They're public ids, so they go in `.env.product
    - **Gone:** no ad will come, so nothing is rendered: AdSense marked it unfilled, adsbygoogle.js is blocked, or the slot wasn't picked up within 8 s.
    - **Folded:** AdSense picked the slot up but never asked for an ad within 3 s (no iframe in the `ins`; what an account that isn't approved yet gets), or asked and got no answer within 8 s. The slot is taken out of the page flow and clipped to no height, and stays mounted, so an ad that comes late still shows.
    - **Memory:** when AdSense never asks for an ad, `localStorage["ads.serving"]` is set to `"0"` and slots start folded instead of held, so pages don't flash empty boxes while the account isn't serving. The first ad that fills sets it back to `"1"`. It is only written after ads consent.
-- **GA4 events:** `sendAnalyticsEvent` in `google.ts` sends one only when analytics is allowed. The only custom event is `pitch_active_2min`: the pitch graph's mic or shared tab has run for two minutes with the page in view (`src/features/pitch/activeUse.ts`). It carries no parameters.
+- **GA4 events:** `sendAnalyticsEvent` in `google.ts` sends one only when analytics is allowed. None carries parameters, each goes out at most once per visit, and each name is also set in GA4. The two-minute ones add up time with the page in view through `src/lib/utils/activeUse.ts`.
+   - `pitch_active_2min`: the pitch graph's mic or shared tab has run for two minutes (`src/features/pitch/analytics.ts`).
+   - `ipa_convert`: the English IPA converter converted text the visitor asked for, not the example it converts on entry.
+   - `ipa_listen`: a sound or word clip played, or text was read aloud.
+   - `ipa_active_2min`: the visitor clicked, typed, scrolled or listened for two minutes; a click, key or scroll counts for 30 s after it (`src/features/ipa/analytics.ts`).
 - **Consent records:** `POST /api/consent` stores our banner's choices through the object store. Google keeps the records for its message.
 - **Footer:** "Privacy and cookies" and "Cookie settings" links.
 - **Privacy page:** `/privacy`, English only, built to need few edits.

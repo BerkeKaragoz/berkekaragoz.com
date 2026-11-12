@@ -35,7 +35,12 @@ module.exports = {
          },
          {
             source: "/ipa/text-to-ipa",
-            destination: "/english-ipa/text-to-ipa",
+            destination: "/english-ipa",
+            permanent: true,
+         },
+         {
+            source: "/english-ipa/text-to-ipa",
+            destination: "/english-ipa",
             permanent: true,
          },
          {
@@ -80,6 +85,8 @@ module.exports = {
       "p.ts",
    ], // for custom page extensions
    images: {
+      // Every `quality` a next/image caller passes, plus the default 75.
+      qualities: [40, 60, 75, 80],
       domains: ["upload.wikimedia.org", "user-images.githubusercontent.com"],
    },
 }

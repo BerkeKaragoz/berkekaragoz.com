@@ -3,6 +3,7 @@ import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
 import Tooltip from "@/components/atomic/Tooltip/Tooltip"
 import AdSenseBanner from "@/components/molecular/AdSenseBanner/AdSenseBanner"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import { ADSENSE_SLOTS } from "@/features/consent/config"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
@@ -22,6 +23,7 @@ import {
    sortSoundsForGuide,
    splitIpaIntoSounds,
 } from "@/features/ipa/sounds"
+import { useIpaEvents } from "@/features/ipa/analytics"
 import { IPA_TNS } from "@/features/ipa/i18n"
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
 import { checkRandomTextAvailable, fetchRandomText } from "@/features/ipa/randomText"
@@ -52,10 +54,12 @@ type CategoryFilter = SoundCategory | "all"
 const EXAMPLE_TEXT = "A bright blue bird sang near the old oak tree."
 const CONVERTER_INPUT_KEY = "ipa-converter-input"
 
+// Each view's page, in tab order. The first is the tool's landing page.
 const viewRoutes: Record<View, string> = {
-   sounds: "/english-ipa",
-   converter: "/english-ipa/text-to-ipa",
+   converter: "/english-ipa",
+   sounds: "/english-ipa/sounds",
 }
+const views = Object.keys(viewRoutes) as View[]
 
 const categoryOrder: CategoryFilter[] = [
    "all",
@@ -596,6 +600,7 @@ const SoundsView = ({
 const ConverterView = ({
    canSpeak,
    isSpeaking,
+   onConvert,
    onPlay,
    onPlaySound,
    onSelectSound,
@@ -604,6 +609,8 @@ const ConverterView = ({
 }: {
    canSpeak: boolean
    isSpeaking: boolean
+   /** A conversion the visitor asked for succeeded. */
+   onConvert: () => void
    onPlay: (text: string, rate?: number) => void
    onPlaySound: (sound: IpaSound) => void
    onSelectSound: (sound: IpaSound) => void
@@ -658,16 +665,17 @@ const ConverterView = ({
       window.sessionStorage.setItem(CONVERTER_INPUT_KEY, input)
    }, [input, inputHydrated])
 
+   /** Converts the input. Resolves to whether it did, for `onConvert`. */
    const convert = async () => {
       const sourceText = input
 
       if (!sourceText.trim()) {
          setTokens([])
          setSelectedIndex(null)
-         return
+         return false
       }
 
-      if (loading || sourceText === convertedInput) return
+      if (loading || sourceText === convertedInput) return false
 
       setLoading(true)
       setError("")
@@ -704,11 +712,17 @@ const ConverterView = ({
                (token) => token.type === "word" && token.pronunciations.length
             )
          )
+         return true
       } catch {
          setError(t("converter.dictionaryError"))
+         return false
       } finally {
          setLoading(false)
       }
+   }
+
+   const convertForVisitor = async () => {
+      if (await convert()) onConvert()
    }
 
    useEffect(() => {
@@ -837,7 +851,7 @@ const ConverterView = ({
                      (event.metaKey || event.ctrlKey) &&
                      event.key === "Enter"
                   )
-                     void convert()
+                     void convertForVisitor()
                }}
             />
             <div className={styles.convertActions}>
@@ -845,7 +859,7 @@ const ConverterView = ({
                   type="button"
                   className={`${styles.actionButton} ${styles.primaryButton}`}
                   disabled={!canConvert}
-                  onClick={() => void convert()}
+                  onClick={() => void convertForVisitor()}
                >
                   {loading ? t("converter.converting") : t("converter.convert")}
                </button>
@@ -1198,9 +1212,8 @@ const ConverterGuide = () => {
 const IpaPage: NextPage = () => {
    const { t } = useTranslation(IPA_TNS)
    const router = useRouter()
-   const view: View = router.pathname.endsWith("/text-to-ipa")
-      ? "converter"
-      : "sounds"
+   const view =
+      views.find((option) => viewRoutes[option] === router.pathname) ?? views[0]
    // The two views are two pages, and a ?sound= selection is not a third.
    const canonicalUrl = useCanonicalUrl(viewRoutes[view])
    const [converterMounted, setConverterMounted] = useState(view === "converter")
@@ -1217,6 +1230,7 @@ const IpaPage: NextPage = () => {
       speechUnavailable,
       stop,
    } = useBritishSpeech()
+   const { trackConvert, trackListen } = useIpaEvents(isSpeaking)
 
    useEffect(() => {
       if (view === "converter") setConverterMounted(true)
@@ -1260,7 +1274,10 @@ const IpaPage: NextPage = () => {
 
       activeAudio.current = audio
       audio.preload = "auto"
-      audio.onplay = () => setMessage("")
+      audio.onplay = () => {
+         setMessage("")
+         trackListen()
+      }
       audio.onended = () => {
          if (activeAudio.current === audio) activeAudio.current = null
       }
@@ -1314,7 +1331,7 @@ const IpaPage: NextPage = () => {
 
          <Header />
          <Main>
-            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <PlusBand>
                <Section className="flex-col py-12 sm:py-20">
                   <p className="text-sm font-semibold tracking-widest uppercase text-caption-color">
                      {t("hero.eyebrow")}
@@ -1326,7 +1343,7 @@ const IpaPage: NextPage = () => {
                      {t("hero.description")}
                   </p>
                </Section>
-            </div>
+            </PlusBand>
 
             <div className="pb-12 bg-linear-gradient-100">
                <Section block className={`py-8 ${styles.tool}`} id="ipa-tool">
@@ -1334,7 +1351,7 @@ const IpaPage: NextPage = () => {
                      className="flex justify-between w-full max-w-prose mx-auto gap-4 mb-10 rounded-lg bg-opacity-5 dark:bg-opacity-30"
                      aria-label={t("toolLabel")}
                   >
-                     {(["sounds", "converter"] as View[]).map((option) => (
+                     {views.map((option) => (
                         <Link
                            key={option}
                            href={viewRoutes[option]}
@@ -1384,6 +1401,7 @@ const IpaPage: NextPage = () => {
                         <ConverterView
                            canSpeak={canSpeak}
                            isSpeaking={isSpeaking}
+                           onConvert={trackConvert}
                            onPlay={speak}
                            onPlaySound={(sound) => playAudio(sound, "sound")}
                            onSelectSound={openSound}
