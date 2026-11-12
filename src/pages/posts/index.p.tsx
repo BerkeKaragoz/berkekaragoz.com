@@ -8,7 +8,7 @@ import PostList from "@/components/organism/PostList/PostList"
 import { getAllPosts, PostMeta } from "@/lib/api/blog"
 import { COMMON_TNS, GLOSSARY_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { DEFAULT_LOCALE } from "@/lib/utils/consts"
-import { BeakerIcon } from "@heroicons/react/outline"
+import { BeakerIcon, RssIcon } from "@heroicons/react/outline"
 import { GetStaticProps, NextPage } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Head from "next/head"
@@ -47,13 +47,17 @@ export const PostsPage: NextPage<{
                         Posts
                      </Trans>
                   </h1>
-                  <LinkText
-                     href="/posts/preview"
-                     className="self-end text-sm sm:text-base"
-                  >
-                     Preview
-                     <BeakerIcon className="inline-block h-4 w-4 sm:h-5 sm:w-5 ml-0.5" />
-                  </LinkText>
+                  <div className="flex self-end gap-4 text-sm sm:text-base">
+                     {/* A static file: next/link would prefix the locale. */}
+                     <a href="/rss.xml">
+                        RSS
+                        <RssIcon className="inline-block h-4 w-4 sm:h-5 sm:w-5 ml-0.5" />
+                     </a>
+                     <LinkText href="/posts/preview">
+                        Preview
+                        <BeakerIcon className="inline-block h-4 w-4 sm:h-5 sm:w-5 ml-0.5" />
+                     </LinkText>
+                  </div>
                </div>
                <p>
                   <Trans

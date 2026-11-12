@@ -19,6 +19,9 @@
 /.open-next
 /.sites-worker
 
+# written by scripts/generate-feed.mjs on every build
+/public/rss.xml
+
 # misc
 .DS_Store
 *.pem

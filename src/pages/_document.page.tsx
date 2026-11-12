@@ -39,6 +39,12 @@ class MyDocument extends Document {
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
             <link rel="icon" href="/favicon.ico" />
+            <link
+               rel="alternate"
+               type="application/rss+xml"
+               title="E. Berke Karagöz | Posts"
+               href="/rss.xml"
+            />
 
             <link href={FONT_LINK_HREF} rel="stylesheet" />
          </Head>
