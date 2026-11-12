@@ -7,6 +7,7 @@ import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import LinkBox from "@/components/atomic/LinkBox/LinkBox"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import { GetStaticProps, NextPage } from "next"
 import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
 import { DEFAULT_LOCALE } from "@/lib/utils/consts"
@@ -43,7 +44,7 @@ const LobiumPage: NextPage = () => (
       </Head>
       <Header />
       <Main>
-         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+         <PlusBand className="h-24" />
          <Section className="flex-col py-8">
             <h1 className="text-5xl font-semibold text-center text-caption-color lg:text-left">
                Lobium
@@ -138,7 +139,7 @@ const LobiumPage: NextPage = () => (
                </LinkBox>
             </div>
          </Section>
-         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+         <PlusBand className="h-24" />
       </Main>
       <Footer />
    </div>

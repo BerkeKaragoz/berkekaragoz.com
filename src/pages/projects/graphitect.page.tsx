@@ -1,5 +1,6 @@
 import Main from "@/components/atomic/Main/Main"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import React, { useEffect, useRef } from "react"
@@ -123,7 +124,7 @@ const GraphitectPage: NextPage<{ samples: Sample[] }> = ({ samples }) => (
       </Head>
       <Header />
       <Main>
-         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+         <PlusBand className="h-24" />
          <Section className="flex-col py-8">
             <h1 className="text-5xl font-semibold text-center text-caption-color lg:text-left">
                Graphitect
@@ -197,7 +198,7 @@ const GraphitectPage: NextPage<{ samples: Sample[] }> = ({ samples }) => (
                Rust, Tauri 2 and WebAssembly, drawn with Skia. Windows, pre-release.
             </p>
          </Section>
-         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+         <PlusBand className="h-24" />
       </Main>
       <Footer />
    </div>

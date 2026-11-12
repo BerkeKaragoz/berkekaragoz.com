@@ -2,6 +2,7 @@ import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import PostList from "@/components/organism/PostList/PostList"
@@ -36,7 +37,7 @@ export const TagPage: NextPage<{
          </Head>
          <Header />
          <Main>
-            <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-16" />
             <Section block className="py-16">
                <h1 className="mt-0 h1">
                   <Trans t={t} i18nKey="[tag].heading">
@@ -89,7 +90,7 @@ export const TagPage: NextPage<{
                )}
                <PostList postMetas={postMetas} />
             </Section>
-            <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-24" />
          </Main>
          <Footer />
       </PageContainer>

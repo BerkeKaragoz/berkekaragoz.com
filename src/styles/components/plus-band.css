@@ -1,0 +1,254 @@
+/* The plus pattern, and the effects behind it in a PlusBand (PlusBand.tsx).
+   The effects sit in one box behind the band's content and only ever animate
+   opacity or transform, so nothing repaints while they run. */
+@layer components {
+   /* A plus every 60px, starting 10px in. The tint mask below and the glyph
+      sheet in PlusBand.tsx are drawn on the same grid. */
+   .bg-plus-pattern {
+      /* prettier-ignore */
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23555' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+         linear-gradient(
+            135deg,
+             theme("colors.primary.300")22,
+            theme("colors.accent.300")32
+         );
+   }
+
+   .dark .bg-plus-pattern {
+      /* prettier-ignore */
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23555' fill-opacity='0.075'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+         linear-gradient(
+            135deg,
+             theme("colors.primary.700")20,
+            theme("colors.accent.800")33
+         );
+   }
+
+   .plus-band-fx {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      container-type: size;
+      /* The cloud mask tiles in px, the width and height of each mask's SVG.
+         Unitless, so steps() can take them too. */
+      --cloud-a-tile: 600;
+      --cloud-b-tile: 840;
+   }
+
+   /* Clouds: the primary button gradient (sky to indigo at 290deg, as in
+      .card-input-primary) showing through a cloud mask, the way a rendered
+      clouds layer is used as a mask in an image editor. Where the clouds are,
+      the band gets a faint wash and the pluses take the gradient colour.
+
+      There are two cloud masks, each a fixed tile of fractal noise (same
+      seed every time): one period per tile and two octaves, so the shapes
+      are large and soft. One slides sideways, the other downwards, and only
+      where both are dense does anything show, so the shapes keep changing
+      instead of one texture sliding past. Both paths are a whole tile long
+      and loop without a seam.
+
+      Three nested boxes do it with transforms only:
+        cloud-a  carries mask A and slides right by its tile;
+        cloud-b  carries mask B, cancels A (translate) and slides down by its
+                 own tile (transform);
+        tint     cancels B, so the gradient and the pluses never move.
+      Every slide takes one step per pixel of its tile, which keeps the
+      pluses sharp, and both step every 1/30 s (20s for 600px, 28s for
+      840px) so the layers redraw together. */
+   .plus-band-cloud-a {
+      position: absolute;
+      left: calc(var(--cloud-a-tile) * -1px);
+      top: 0;
+      width: calc(100% + var(--cloud-a-tile) * 1px);
+      height: 100%;
+      /* prettier-ignore */
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.001667' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.8 0 0 0 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+      animation: plus-band-cloud-a 20s steps(var(--cloud-a-tile)) infinite paused;
+      will-change: transform;
+   }
+
+   .plus-band-cloud-b {
+      position: absolute;
+      left: calc(var(--cloud-a-tile) * 1px);
+      top: calc(var(--cloud-b-tile) * -1px);
+      width: 100cqw;
+      height: calc(100cqh + var(--cloud-b-tile) * 1px);
+      /* prettier-ignore */
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='840' height='840'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.00119' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.8 0 0 0 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+      animation:
+         plus-band-cloud-a-hold 20s steps(var(--cloud-a-tile)) infinite paused,
+         plus-band-cloud-b 28s steps(var(--cloud-b-tile)) infinite paused;
+      will-change: transform, translate;
+   }
+
+   .plus-band-tint {
+      position: absolute;
+      left: 0;
+      top: calc(var(--cloud-b-tile) * 1px);
+      width: 100cqw;
+      height: 100cqh;
+      background: linear-gradient(
+         290deg,
+         theme("colors.accent.600 / 3%"),
+         theme("colors.primary.600 / 3%")
+      );
+      animation: plus-band-cloud-b-hold 28s steps(var(--cloud-b-tile)) infinite
+         paused;
+      will-change: transform;
+   }
+
+   .plus-band-tint::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+         290deg,
+         theme("colors.accent.600 / 5%"),
+         theme("colors.primary.600 / 5%")
+      );
+      /* The plus shapes of .bg-plus-pattern, same tile. */
+      /* prettier-ignore */
+      mask-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/svg%3E");
+   }
+
+   .dark .plus-band-tint {
+      background: linear-gradient(
+         290deg,
+         theme("colors.accent.400 / 3%"),
+         theme("colors.primary.400 / 3%")
+      );
+   }
+
+   .dark .plus-band-tint::before {
+      background: linear-gradient(
+         290deg,
+         theme("colors.accent.400 / 6%"),
+         theme("colors.primary.400 / 6%")
+      );
+   }
+
+   /* Clouds only run while their band is in view. */
+   .plus-band-fx[data-in-view] .plus-band-cloud-a,
+   .plus-band-fx[data-in-view] .plus-band-cloud-b,
+   .plus-band-fx[data-in-view] .plus-band-tint {
+      animation-play-state: running;
+   }
+
+   /* Lens: a small round window under the mouse that shows a sheet of the
+      pluses and tiny glyphs in the cells between them. PlusBand.tsx moves the
+      lens to the pointer and the sheet back by the same amount, so the
+      glyphs stay on the pattern's grid while only two transforms change.
+      Flat across its middle and soft only at the rim, so what you see is
+      which cells are lit, not a light fading out from the pointer. */
+   .plus-band-lens {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 11rem;
+      aspect-ratio: 1;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      mask-image: radial-gradient(closest-side, #000 50%, transparent);
+      will-change: transform;
+   }
+
+   .plus-band-lens[data-shown] {
+      opacity: 1;
+      transition-duration: 0.25s;
+   }
+
+   .plus-band-sheet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100cqw;
+      height: 100cqh;
+      will-change: transform;
+   }
+
+   /* The sheet's cells: a steady layer of pluses and glyphs that stay dimly
+      lit, and a few pulse layers, each a scattered group of other cells that
+      fade in from nothing and back out on its own beat, so cells come and go
+      at different times. PlusBand.tsx makes the masks and gives each pulse
+      layer its cycle and offset; the pulses only run while the lens shows. */
+   .plus-band-steady,
+   .plus-band-pulse {
+      position: absolute;
+      inset: 0;
+   }
+
+   .plus-band-steady {
+      background-color: theme("colors.primary.600 / 8%");
+   }
+
+   .plus-band-pulse {
+      background-color: theme("colors.primary.600 / 12%");
+      opacity: 0;
+      animation: plus-band-pulse ease-in-out infinite paused;
+   }
+
+   .dark .plus-band-steady {
+      background-color: theme("colors.primary.400 / 8%");
+   }
+
+   .dark .plus-band-pulse {
+      background-color: theme("colors.primary.400 / 12%");
+   }
+
+   .plus-band-lens[data-shown] .plus-band-pulse {
+      animation-play-state: running;
+   }
+
+   @media (prefers-reduced-motion: reduce) {
+      .plus-band-cloud-a,
+      .plus-band-cloud-b,
+      .plus-band-tint,
+      .plus-band-pulse {
+         animation: none;
+      }
+   }
+
+   /* Keep these inside the layer: keyframes at the root of a file here are
+      dropped from the stylesheet Next serves. They read the tile sizes from
+      the animated element. */
+   @keyframes plus-band-cloud-a {
+      to {
+         transform: translate3d(calc(var(--cloud-a-tile) * 1px), 0, 0);
+      }
+   }
+
+   @keyframes plus-band-cloud-a-hold {
+      to {
+         translate: calc(var(--cloud-a-tile) * -1px) 0;
+      }
+   }
+
+   @keyframes plus-band-cloud-b {
+      to {
+         transform: translate3d(0, calc(var(--cloud-b-tile) * 1px), 0);
+      }
+   }
+
+   @keyframes plus-band-cloud-b-hold {
+      to {
+         transform: translate3d(0, calc(var(--cloud-b-tile) * -1px), 0);
+      }
+   }
+
+   /* Fades in, holds, fades out, and stays gone for the last fifth. */
+   @keyframes plus-band-pulse {
+      0%,
+      80%,
+      100% {
+         opacity: 0;
+      }
+
+      25%,
+      55% {
+         opacity: 1;
+      }
+   }
+}

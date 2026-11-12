@@ -2,6 +2,7 @@ import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import PostList from "@/components/organism/PostList/PostList"
@@ -39,7 +40,7 @@ export const PostsPage: NextPage<{
          </Head>
          <Header />
          <Main>
-            <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-16" />
             <Section as="article" className="py-16" block>
                <div className="flex justify-between mb-6">
                   <h1 className="my-0 h1">
@@ -102,7 +103,7 @@ export const PostsPage: NextPage<{
 
                <GithubCommentSection disableReactions />
             </Section>
-            <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-24" />
          </Main>
          <Footer />
       </PageContainer>

@@ -4,6 +4,7 @@ import { ADSENSE_SLOTS } from "@/features/consent/config"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import { GithubCommentSection } from "@/components/organism/GithubCommentSection"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
@@ -124,7 +125,7 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
          </Head>
          <Header />
          <Main>
-            <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-16" />
 
             <PostLayout
                meta={meta}
@@ -193,7 +194,7 @@ export const PostPage: AppPage<{ post: MDXPost }> = (props) => {
                </Section>
             </PostLayout>
 
-            <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-24" />
          </Main>
          <Footer />
       </PageContainer>

@@ -1,6 +1,7 @@
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import { Header } from "@/components/organism/Header/Header"
 import { getAllPosts, PostMeta } from "@/lib/api/blog"
@@ -87,7 +88,7 @@ const Homepage: NextPage<
          <Header />
 
          <Main>
-            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <PlusBand>
                <div className="hero-edge-fade">
                   <Section
                      id="hero"
@@ -108,7 +109,7 @@ const Homepage: NextPage<
                <Section id="socials">
                   <Socials />
                </Section>
-            </div>
+            </PlusBand>
 
             <div className="bg-radial-gradient-100">
                <Section id="projects">
@@ -116,11 +117,11 @@ const Homepage: NextPage<
                </Section>
             </div>
 
-            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <PlusBand>
                <Section id="posts">
                   <Posts posts={recentPostMetas} postCount={postCount} />
                </Section>
-            </div>
+            </PlusBand>
 
             <div className="bg-linear-gradient-100">
                <Section id="about-me">
@@ -128,7 +129,7 @@ const Homepage: NextPage<
                </Section>
             </div>
 
-            <div className="pb-8 dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <PlusBand className="pb-8">
                <Section id="experience">
                   <Experience />
                </Section>
@@ -136,7 +137,7 @@ const Homepage: NextPage<
                <Section id="contact">
                   <ReachMe />
                </Section>
-            </div>
+            </PlusBand>
          </Main>
 
          <Footer />

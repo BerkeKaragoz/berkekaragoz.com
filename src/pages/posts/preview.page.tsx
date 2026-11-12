@@ -2,6 +2,7 @@ import LinkText from "@/components/atomic/LinkText/LinkText"
 import Main from "@/components/atomic/Main/Main"
 import PageContainer from "@/components/atomic/PageContainer/PageContainer"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import PostCard from "@/components/molecular/PostCard/PostCard"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
@@ -87,7 +88,7 @@ export const PreviewPage: AppPage<{ defaultPost: MDXPost }> = (props) => {
          </Head>
          <Header />
          <Main>
-            <div className="h-16 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-16" />
             <Section prose block className="mb-8">
                <div className="block sm:flex justify-between">
                   <h1 className="h1 mb-2">Post Preview</h1>
@@ -181,7 +182,7 @@ export const PreviewPage: AppPage<{ defaultPost: MDXPost }> = (props) => {
                />
             </div>
 
-            <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+            <PlusBand className="h-24" />
          </Main>
          <Footer />
       </PageContainer>

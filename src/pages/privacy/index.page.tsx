@@ -1,5 +1,6 @@
 import Main from "@/components/atomic/Main/Main"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import { CONSENT_NEEDED } from "@/features/consent/config"
@@ -129,7 +130,7 @@ const PrivacyPage: NextPage = () => (
       </Head>
       <Header />
       <Main>
-         <div className="h-24 bg-plus-pattern dark:bg-primary-900 dark:bg-opacity-20" />
+         <PlusBand className="h-24" />
          <Section className="flex-col py-8">
             <div lang="en">
                <h1 className="text-4xl font-semibold text-caption-color">

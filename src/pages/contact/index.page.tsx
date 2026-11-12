@@ -1,5 +1,6 @@
 import Main from "@/components/atomic/Main/Main"
 import Section from "@/components/atomic/Section/Section"
+import PlusBand from "@/components/molecular/PlusBand/PlusBand"
 import Footer from "@/components/organism/Footer/Footer"
 import Header from "@/components/organism/Header/Header"
 import { COMMON_TNS, PAGES_TNS } from "@/lib/i18n/consts"
@@ -29,7 +30,7 @@ const ContactPage: NextPage = () => {
          </Head>
          <Header />
          <Main>
-            <div className="dark:bg-primary-900 bg-plus-pattern dark:bg-opacity-20">
+            <PlusBand>
                <div className="h-24" />
                <Section className="flex-col pt-8">
                   <h1 className="text-5xl font-semibold text-center text-caption-color lg:text-left">
@@ -44,7 +45,7 @@ const ContactPage: NextPage = () => {
                <Section>
                   <Socials />
                </Section>
-            </div>
+            </PlusBand>
          </Main>
          <Footer />
       </div>
