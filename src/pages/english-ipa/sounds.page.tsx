@@ -1,5 +1,5 @@
 import { getIpaStaticProps } from "@/features/ipa/pageProps"
-import IpaPage from "./index.page"
+import IpaPage from "./text-to-ipa.page"
 
 export const getStaticProps = getIpaStaticProps
 

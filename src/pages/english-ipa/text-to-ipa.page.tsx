@@ -54,9 +54,10 @@ type CategoryFilter = SoundCategory | "all"
 const EXAMPLE_TEXT = "A bright blue bird sang near the old oak tree."
 const CONVERTER_INPUT_KEY = "ipa-converter-input"
 
-// Each view's page, in tab order. The first is the tool's landing page.
+// Each view's page, in tab order. The first is the tool's landing page:
+// /english-ipa redirects to it (next.config.js).
 const viewRoutes: Record<View, string> = {
-   converter: "/english-ipa",
+   converter: "/english-ipa/text-to-ipa",
    sounds: "/english-ipa/sounds",
 }
 const views = Object.keys(viewRoutes) as View[]

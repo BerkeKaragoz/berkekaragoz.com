@@ -96,7 +96,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                      <LinkText href="/posts">Blog</LinkText>
                   </li>
                   <li className="mb-2">
-                     <LinkText href="/english-ipa">English IPA</LinkText>
+                     <LinkText href="/english-ipa/text-to-ipa">English IPA</LinkText>
                   </li>
                   <li className="mb-2">
                      <LinkText href="/pitch-graph">Pitch graph</LinkText>

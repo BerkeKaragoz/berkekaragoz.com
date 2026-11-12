@@ -30,17 +30,18 @@ module.exports = {
       return [
          {
             source: "/ipa",
-            destination: "/english-ipa",
+            destination: "/english-ipa/text-to-ipa",
             permanent: true,
          },
          {
             source: "/ipa/text-to-ipa",
-            destination: "/english-ipa",
+            destination: "/english-ipa/text-to-ipa",
             permanent: true,
          },
          {
-            source: "/english-ipa/text-to-ipa",
-            destination: "/english-ipa",
+            // The converter is the IPA tool's landing page.
+            source: "/english-ipa",
+            destination: "/english-ipa/text-to-ipa",
             permanent: true,
          },
          {
