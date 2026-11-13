@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react"
 
 // The plus pattern (.bg-plus-pattern) puts a plus every 60px, starting 10px
 // in. The glyphs sit on a finer grid of cells that shares those centres, and
-// the cells that hold a plus get that same plus, so the two never collide or
+// the cells that hold a plus are left empty, so the two never collide or
 // drift apart.
 const PLUS_PITCH = 60
 const CELL_PITCH = 20
@@ -16,8 +16,8 @@ const GLYPH_SIZE = 15
 const GLYPH_BASELINE = Math.round(GLYPH_SIZE * 0.35)
 const GLYPHS = ["0", "1", "&lt;", "&gt;", "/", "{", "}", "=", "*", ";", ":", "#", "$", "%", "|", "~", "^", "?"]
 
-/** The share of glyphs that pulse rather than stay lit; the pluses always
- *  stay. Each pulsing glyph joins one group and is gone between its pulses. */
+/** The share of glyphs that pulse rather than stay lit. Each pulsing glyph
+ *  joins one group and is gone between its pulses. */
 const PULSE_SHARE = 0.35
 /** One beat per pulse group, in seconds: how long its cycle is and where in
  *  it the group starts. The cycles don't divide each other, so the groups
@@ -42,9 +42,9 @@ const svgMask = (width: number, height: number, body: string) => {
    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
 }
 
-/** One tile of the glyph sheet: the pluses themselves and a random scatter
- *  of small glyphs over the cells between them. The pluses and most glyphs
- *  go in `steady`, always lit; the rest go in `pulses`, one group per beat. */
+/** One tile of the glyph sheet: a random scatter of small glyphs over the
+ *  cells between the pluses. Most go in `steady`, always lit; the rest go in
+ *  `pulses`, one group per beat. */
 const makeGlyphMasks = (): GlyphMasks => {
    const steady: string[] = []
    const pulses: string[][] = PULSE_BEATS.map(() => [])
@@ -56,12 +56,10 @@ const makeGlyphMasks = (): GlyphMasks => {
          const x = GRID_OFFSET + col * CELL_PITCH
          const y = GRID_OFFSET + row * CELL_PITCH
 
-         if (row % plusEvery === 0 && col % plusEvery === 0) {
-            // Same shape and size as the plus in .bg-plus-pattern.
-            steady.push(
-               `<path d='M${x - 2} ${y - 10}h4v8h8v4h-8v8h-4v-8h-8v-4h8z'/>`
-            )
-         } else if (Math.random() < FILL_CHANCE) {
+         // The cells that hold a plus stay empty.
+         if (row % plusEvery === 0 && col % plusEvery === 0) continue
+
+         if (Math.random() < FILL_CHANCE) {
             const char = GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
             const group =
                Math.random() < PULSE_SHARE
@@ -84,25 +82,10 @@ let glyphMasks: GlyphMasks | undefined
 
 const getGlyphMasks = () => (glyphMasks ??= makeGlyphMasks())
 
-// One observer for all bands: marks the ones in view so only their clouds run.
-let inViewObserver: IntersectionObserver | undefined
-
-const getInViewObserver = () => {
-   inViewObserver ??= new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-         entry.target.toggleAttribute("data-in-view", entry.isIntersecting)
-      }
-   })
-
-   return inViewObserver
-}
-
 /**
- * A band with the plus-pattern backdrop and its effects, behind the content:
- * the button gradient drifting through a cloud mask and tinting the pluses
- * under it (pure CSS, see plus-band.css), and a small lens under the mouse
- * that lights some pluses and tiny glyphs between them, most of them coming
- * and going on their own beats.
+ * A band with the plus-pattern backdrop and, behind the content, a small lens
+ * under the mouse that lights tiny glyphs between the pluses, most of them
+ * coming and going on their own beats (see plus-band.css).
  *
  * The glyph sheet is static tiled images, like the plus pattern; the pulses
  * only fade layers in and out. A mouse move costs one frame callback that
@@ -119,17 +102,6 @@ const PlusBand: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
    const sheetRef = useRef<HTMLDivElement>(null)
    // Set after mount, and only with a mouse; the lens renders once it is.
    const [masks, setMasks] = useState<GlyphMasks>()
-
-   useEffect(() => {
-      const fx = fxRef.current
-
-      if (!fx) return
-
-      const observer = getInViewObserver()
-      observer.observe(fx)
-
-      return () => observer.unobserve(fx)
-   }, [])
 
    useEffect(() => {
       if (window.matchMedia("(hover: hover) and (pointer: fine)").matches)
@@ -197,11 +169,6 @@ const PlusBand: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
          {...rest}
       >
          <div ref={fxRef} className="plus-band-fx" aria-hidden="true">
-            <div className="plus-band-cloud-a">
-               <div className="plus-band-cloud-b">
-                  <div className="plus-band-tint" />
-               </div>
-            </div>
             {masks && (
                <div ref={lensRef} className="plus-band-lens">
                   <div ref={sheetRef} className="plus-band-sheet">
