@@ -19,6 +19,7 @@ import {
 } from "./choice"
 import {
    clearAnalyticsCookies,
+   grantAdConsent,
    hasGoogleChoice,
    openGoogleSettings,
    releaseGoogleMessage,
@@ -124,7 +125,12 @@ const apply = (next: Grants) => {
       return
    }
    if (next.analytics && !before.analytics) startAnalytics()
-   if (next.ads && !before.ads) startAds()
+   if (next.ads && !before.ads) {
+      // A TCF decision always grants "ads" here (tcfGrants), whatever the
+      // visitor chose, so only our banner's choice may reach consent mode.
+      if (consentMachine.data.mode !== "tcf") grantAdConsent()
+      startAds()
+   }
 }
 
 const recordOwnChoice = (choice: OwnChoice) => {

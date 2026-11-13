@@ -127,6 +127,16 @@ export const sendAnalyticsEvent = (name: string, params: Record<string, unknown>
    return true
 }
 
+/**
+ * Tells Google's tags the visitor allowed ads on our banner, so GA4 may share
+ * their events with Google Ads, e.g. a key event imported as a conversion.
+ * Personalisation stays denied. Not for visitors of Google's message: Google's
+ * tags read their TC string instead.
+ */
+export const grantAdConsent = () => {
+   window.gtag?.("consent", "update", { ad_storage: "granted", ad_user_data: "granted" })
+}
+
 /** Loads AdSense after a decision. Ad slots pushed earlier render then. */
 export const startAds = () => {
    if (!ADSENSE_CLIENT) return

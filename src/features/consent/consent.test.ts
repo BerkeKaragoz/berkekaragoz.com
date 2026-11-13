@@ -22,6 +22,7 @@ jest.mock("./google", () => {
       releaseGoogleMessage: jest.fn(),
       openGoogleSettings: jest.fn(),
       startAds: jest.fn(),
+      grantAdConsent: jest.fn(),
       startAnalytics: jest.fn(),
       clearAnalyticsCookies: jest.fn(),
    }
@@ -67,6 +68,7 @@ describe("startConsent", () => {
          grants: { analytics: true, ads: true },
       })
       expect(google.startAds).toHaveBeenCalledTimes(1)
+      expect(google.grantAdConsent).toHaveBeenCalledTimes(1)
       expect(google.startAnalytics).toHaveBeenCalledTimes(1)
       // Still finds out whether Google's message covers the visitor.
       expect(google.watchTcf).toHaveBeenCalledTimes(1)
@@ -138,6 +140,8 @@ describe("startConsent", () => {
       google.tcf.onData?.({ gdprApplies: true, eventStatus: "tcloaded" })
       expect(consentMachine.data).toMatchObject({ mode: "tcf", decided: true })
       expect(google.startAds).toHaveBeenCalledTimes(1)
+      // Google's tags read the TC string; "ads" here isn't the visitor's answer.
+      expect(google.grantAdConsent).not.toHaveBeenCalled()
    })
 
    it("keeps a decision made in Google's message when its settings reopen", async () => {
