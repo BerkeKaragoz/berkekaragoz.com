@@ -42,9 +42,11 @@ export const Controls = (props: ControlsProps) => {
    const tabError =
       state.tab === "noAudio"
          ? t("errors.noTabAudio")
-         : state.tab === "error"
-           ? t("errors.generic")
-           : null
+         : state.tab === "unreadable"
+           ? t("errors.tabUnreadable")
+           : state.tab === "error"
+             ? t("errors.generic")
+             : null
    const unsupported = !insecure && state.tab === "unsupported"
 
    return (

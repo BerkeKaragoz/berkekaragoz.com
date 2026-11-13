@@ -22,6 +22,7 @@
          "starting": "Bir sekme seçin…",
          "on": "Paylaşımı durdur",
          "noAudio": "Sesle tekrar paylaş",
+         "unreadable": "Sekme paylaş",
          "unsupported": "Sekme paylaş",
          "error": "Paylaşımı tekrar dene"
       },
@@ -46,7 +47,9 @@
       "inTuneCheck": "15 sent içinde",
       "hz": "Frekans",
       "hzValue": "{{value}} Hz",
-      "target": "En yakın nota"
+      "target": "En yakın nota",
+      "micLevel": "Düzey",
+      "dbValue": "{{value}} dB"
    },
    "graph": {
       "ariaLabel": "Son 8 saniyenin perdesi. Mikrofon mavi çizgi, paylaşılan sekme turuncu çizgi, mikrofonun en yakın notası yeşil bant.",
@@ -58,6 +61,7 @@
       "micDenied": "Mikrofon erişimi engelli. Site ayarlarından izin verip tekrar deneyin.",
       "micBusy": "Mikrofon açılamadı. Başka bir uygulama kullanıyor olabilir ya da sistem engelliyor olabilir (Windows'ta: Ayarlar › Gizlilik ve güvenlik › Mikrofon). Bunu düzeltip tekrar deneyin.",
       "noTabAudio": "Sekme sessiz paylaşıldı. “Sekme sesini de paylaş” işaretliyken tekrar paylaşın.",
+      "tabUnreadable": "Tarayıcı bu sesi yakalayamadı. Bazı uygulama pencerelerinde böyle olur. Bunun yerine bir tarayıcı sekmesi paylaşın.",
       "unsupported": "Sekme sesi paylaşımı yalnızca masaüstü Chrome ve Edge'de çalışır.",
       "insecure": "Tarayıcı mikrofona ve sekme paylaşımına yalnızca https'te ya da localhost'ta izin verir. Bu sayfa düz http ile açık.",
       "generic": "Başlatılamadı. Tekrar deneyin."
@@ -73,8 +77,8 @@
       "use": {
          "title": "Nasıl kullanılır",
          "inputs": "“Mikrofonu aç” düğmesine basın ve mikrofona izin verin. Başka bir sekmenin sesini eklemek için “Sekme paylaş” düğmesine basın ve tarayıcının paylaşım penceresinde “Sekme sesini de paylaş” seçeneğini işaretleyin. Kulaklık kullanın, yoksa mikrofon sekmenin sesini de duyar.",
-         "graph": "Grafik son 8 saniyeyi gösterir; nota adları soldadır. Mavi çizgi mikrofon, turuncu çizgi paylaşılan sekmedir; her çizginin arkasındaki soluk gölge o kaynağın spektrumudur. Yeşil bant, mikrofona en yakın notadır.",
-         "readout": "Gösterge mikrofonun notasını, en yakın notadan kaç sent saptığını ve frekansını Hz olarak verir. 15 sent içindeyken bir onay işareti çıkar.",
+         "graph": "Grafik son 8 saniyeyi gösterir; nota adları iki yandadır. Mavi çizgi mikrofon, turuncu çizgi paylaşılan sekmedir; her çizginin arkasındaki soluk gölge o kaynağın spektrumudur. Yeşil bant, mikrofona en yakın notadır. Ses yükseldikçe çizgi kalınlaşır ve biraz daha açık renk olur; çok kısıkken hafifçe solar. Sağ kenardaki çubuk, mikrofonun (mavi) ve sekmenin (turuncu) düzeyini mikrofonunuza ya da sekme sesine göre dBFS olarak gösterir; yanındaki çentik, mikrofonda perde algılamanın açıldığı düzeydir.",
+         "readout": "Gösterge mikrofonun notasını, en yakın notadan kaç sent saptığını ve frekansını Hz olarak verir. Sonunda mikrofonun ses düzeyini dBFS olarak gösterir; çizgi sessizlik demektir. 15 sent içindeyken bir onay işareti çıkar.",
          "view": "“Aralık” kaç oktavın görüneceğini belirler. Grafiğin altındaki çubuğu sürükleyerek yüksekliğini değiştirin. “Tam ekran” yalnızca aracı gösterir."
       },
       "works": {

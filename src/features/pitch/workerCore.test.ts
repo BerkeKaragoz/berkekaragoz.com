@@ -24,6 +24,7 @@ const frameAt = (source: Source, startFrame: number): PitchFrame => ({
    time: startFrame / 48000,
    midi: 60,
    confidence: 1,
+   db: -20,
 })
 
 /** One frame per block, timed at the block's first sample. */

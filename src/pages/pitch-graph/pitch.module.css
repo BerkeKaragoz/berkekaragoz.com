@@ -17,6 +17,8 @@
    --pitch-grid: #e1e0d9;
    --pitch-grid-c: #c3c2b7;
    --pitch-label: #898781;
+   --pitch-meter-track: rgba(31, 31, 29, 0.1);
+   --pitch-gate: #898781;
    /* r, g, b of the debug salience heatmap */
    color: var(--pitch-text);
 }
@@ -40,6 +42,8 @@
    --pitch-grid: #2c2c2a;
    --pitch-grid-c: #383835;
    --pitch-label: #898781;
+   --pitch-meter-track: rgba(236, 235, 230, 0.12);
+   --pitch-gate: #898781;
 }
 
 .title {
@@ -243,6 +247,17 @@
 
 .stat {
    @apply flex flex-col;
+}
+
+/* Input levels, pushed to the end of the readout row. */
+.levels {
+   @apply ml-auto flex gap-x-6;
+}
+
+/* Fixed width, so changing values don't move anything. */
+.levelStat {
+   @apply flex flex-col items-end;
+   min-width: 6.5rem;
 }
 
 .statLabel {

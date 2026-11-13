@@ -6,6 +6,7 @@ export interface PitchFrame {
    time: number // AudioContext seconds the pitch belongs to (within the analysis window)
    midi: number | null
    confidence: number // 0..1
+   db: number // frame level, dBFS (RMS), for unvoiced frames too
 }
 
 /** A source's spectrum over one short stretch, on the graph's pitch scale. */
@@ -61,11 +62,13 @@ export type EngineWarning =
 
 /** "busy": allowed, but the system couldn't open the device (in use, blocked by the OS). */
 export type MicState = "off" | "starting" | "on" | "denied" | "busy" | "error"
+/** "unreadable": shared with audio, but the browser couldn't open it (seen with app windows on Windows). */
 export type TabState =
    | "off"
    | "starting"
    | "on"
    | "noAudio"
+   | "unreadable"
    | "unsupported"
    | "error"
 

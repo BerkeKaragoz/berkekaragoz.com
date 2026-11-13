@@ -136,9 +136,11 @@ export const createPitchEngine = (): PitchEngine => {
       send({ type: "init", sampleRate: audio.sampleRate })
    }
 
-   // A start without a user gesture (the mic on page load) may leave the
-   // context suspended until one; the first click or key press resumes it.
-   const resumeOnGesture = () => {
+   // A start without a user gesture (the mic on page load) leaves the context
+   // suspended. Chromium, Firefox and Safari let it run anyway once the page
+   // is capturing, so start() resumes again after the capture opens; the
+   // first click or key press is the fallback.
+   const resumeAudio = () => {
       if (audio && audio.state === "suspended") audio.resume().catch(noop)
    }
    const GESTURES = ["pointerdown", "keydown"]
@@ -151,9 +153,9 @@ export const createPitchEngine = (): PitchEngine => {
          sink = audio.createGain()
          sink.gain.value = 0
          sink.connect(audio.destination)
-         GESTURES.forEach((g) => window.addEventListener(g, resumeOnGesture, true))
+         GESTURES.forEach((g) => window.addEventListener(g, resumeAudio, true))
       }
-      if (audio.state === "suspended") audio.resume().catch(noop)
+      resumeAudio()
       if (!worker) startWorker()
       if (!moduleReady) {
          const loading = audio.audioWorklet.addModule(PITCH_TAP_URL)
@@ -234,6 +236,8 @@ export const createPitchEngine = (): PitchEngine => {
          setState(sourcePatch(source, capture.state))
          return
       }
+      // Now capturing, the page may run audio without a gesture.
+      resumeAudio()
 
       try {
          await ready
@@ -291,7 +295,7 @@ export const createPitchEngine = (): PitchEngine => {
       })
       if (worker) worker.terminate()
       worker = null
-      GESTURES.forEach((g) => window.removeEventListener(g, resumeOnGesture, true))
+      GESTURES.forEach((g) => window.removeEventListener(g, resumeAudio, true))
       if (audio) audio.close().catch(noop)
       audio = null
       sink = null

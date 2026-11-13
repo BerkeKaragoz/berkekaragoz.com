@@ -50,6 +50,8 @@ export const createSongAnalyzer = (sampleRate: number): SongAnalyzer => {
    const b = new Float64Array(size)
    const sum = new Float64Array(size) // overlap-add of the rebuilt centre
    const block = new Float32Array(hop)
+   /** The raw mix of the same hop, for the level: sqrt((L² + R²) / 2) per sample. */
+   const levelBlock = new Float32Array(hop)
    let filled = 0
    /** Absolute sample of left[0]; null until the first block after a reset. */
    let start: number | null = null
@@ -91,8 +93,11 @@ export const createSongAnalyzer = (sampleRate: number): SongAnalyzer => {
       fft.inverse(a)
       for (let n = 0; n < size; n++) sum[n] += (a[n] * hann[n]) / OVERLAP_GAIN
       // The first hop has every window it will get: hand it to the tracker.
-      for (let n = 0; n < hop; n++) block[n] = sum[n]
-      const frames = voice.push(block, start as number)
+      for (let n = 0; n < hop; n++) {
+         block[n] = sum[n]
+         levelBlock[n] = Math.sqrt((left[n] * left[n] + right[n] * right[n]) / 2)
+      }
+      const frames = voice.push(block, start as number, levelBlock)
       for (let i = 0; i < frames.length; i++) out.push(frames[i])
       sum.copyWithin(0, hop)
       sum.fill(0, size - hop)

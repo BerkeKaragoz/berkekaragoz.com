@@ -16,6 +16,19 @@ import { createYin, VOICE_MAX_HZ, VOICE_MIN_HZ, voiceFraming } from "./yin"
 /** Longest stretch the spectrum may carry the line after YIN loses the voice. */
 const FOLLOW_SECONDS = 0.3
 
+export interface VoiceAnalyzer extends Omit<Analyzer, "push"> {
+   /**
+    * `level`, when given on every push, is a second signal on the same samples
+    * whose RMS becomes the frames' `db` (the song passes its raw mix, so the
+    * level is the tab's, not the extracted centre's). Only its squares matter.
+    */
+   push(
+      samples: Float32Array,
+      startFrame: number,
+      level?: Float32Array
+   ): PitchFrame[]
+}
+
 /**
  * `source` tags the frames: the tab line runs this tracker on the mix's centre,
  * with `harmonicCheck` on. In a mix YIN often lands on a harmonic, or loses
@@ -26,7 +39,7 @@ export const createVoiceAnalyzer = (
    sampleRate: number,
    source: Source = "voice",
    options: { harmonicCheck?: boolean } = {}
-): Analyzer => {
+): VoiceAnalyzer => {
    const { window, hop } = voiceFraming(sampleRate)
    const yin = createYin({ sampleRate, window })
    const minMidi = hzToMidi(VOICE_MIN_HZ)
@@ -40,6 +53,8 @@ export const createVoiceAnalyzer = (
    const latency = (tracker.delay * hop + yin.span - offset) / sampleRate
 
    let buffer = new Float32Array(Math.max(4096, yin.span * 2))
+   /** The `level` signal, laid out like `buffer`. */
+   let levelBuffer = new Float32Array(buffer.length)
    let length = 0
    /** Absolute sample of buffer[0]; null until the first block after a reset. */
    let bufferStart: number | null = null
@@ -89,7 +104,7 @@ export const createVoiceAnalyzer = (
          const midi = follow(frame)
          // Once the spectrum loses it too, wait for the tracker.
          if (midi === null) voiced = null
-         return { source, time, midi, confidence: 0 }
+         return { source, time, midi, confidence: 0, db: frame.db }
       }
       voicedIndex = frame.index
 
@@ -109,23 +124,39 @@ export const createVoiceAnalyzer = (
          laterAt = earlierAt
       }
       voiced = midi
-      return { source, time, midi, confidence: frame.confidence }
+      return { source, time, midi, confidence: frame.confidence, db: frame.db }
    }
 
-   const push = (samples: Float32Array, startFrame: number): PitchFrame[] => {
+   const levelRms = (read: number) => {
+      let sum = 0
+      for (let i = read; i < read + yin.span; i++)
+         sum += levelBuffer[i] * levelBuffer[i]
+      return Math.sqrt(sum / yin.span)
+   }
+
+   const push = (
+      samples: Float32Array,
+      startFrame: number,
+      level?: Float32Array
+   ): PitchFrame[] => {
+      if (level && level.length !== samples.length)
+         throw new Error("level and samples blocks differ in length")
       if (bufferStart !== null && startFrame !== bufferStart + length) reset()
       if (bufferStart === null) {
          bufferStart = startFrame
          origin = startFrame
       }
       if (length + samples.length > buffer.length) {
-         const grown = new Float32Array(
-            Math.max(buffer.length * 2, length + samples.length)
-         )
+         const size = Math.max(buffer.length * 2, length + samples.length)
+         const grown = new Float32Array(size)
          grown.set(buffer.subarray(0, length))
          buffer = grown
+         const grownLevel = new Float32Array(size)
+         grownLevel.set(levelBuffer.subarray(0, length))
+         levelBuffer = grownLevel
       }
       buffer.set(samples, length)
+      if (level) levelBuffer.set(level, length)
       length += samples.length
 
       const out: PitchFrame[] = []
@@ -140,7 +171,9 @@ export const createVoiceAnalyzer = (
             }
             result.candidates = harmonics.refine(result.candidates)
          }
-         const tracked = tracker.push(result)
+         const tracked = tracker.push(
+            level ? { ...result, level: levelRms(read) } : result
+         )
          for (let i = 0; i < tracked.length; i++) out.push(place(tracked[i]))
          analysed++
          read += hop
@@ -149,6 +182,7 @@ export const createVoiceAnalyzer = (
       if (read > 0) {
          const keep = Math.min(read, length)
          buffer.copyWithin(0, keep, length)
+         levelBuffer.copyWithin(0, keep, length)
          length -= keep
          bufferStart += keep
       }

@@ -41,7 +41,7 @@ export type TabCapture =
    | {
         ok: false
         // "off": the user closed the picker without sharing.
-        state: "off" | "noAudio" | "unsupported" | "error"
+        state: "off" | "noAudio" | "unreadable" | "unsupported" | "error"
         error?: unknown
      }
 
@@ -152,6 +152,10 @@ export const openTab = async ({
       }
       if (name === "NotSupportedError")
          return { ok: false, state: "unsupported", error }
+      // Chrome on Windows captures a window's audio through process loopback,
+      // which can fail to open ("Could not start audio source"). A retry can't
+      // run here: the picker needs a fresh user gesture.
+      if (isBusy(error)) return { ok: false, state: "unreadable", error }
       return { ok: false, state: "error", error }
    }
 

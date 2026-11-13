@@ -8,6 +8,11 @@ import styles from "./pitch.module.css"
 
 const EMPTY = "–"
 
+/** At or below this level (dBFS) an input counts as silent and shows a dash. */
+const SILENT_DB = -60
+
+const formatDb = (db: number) => (db < 0 ? `−${-db}` : String(db))
+
 const formatCents = (cents: number) => {
    const rounded = Math.round(cents)
    return rounded > 0 ? `+${rounded}` : rounded < 0 ? `−${-rounded}` : "0"
@@ -20,7 +25,11 @@ type ReadoutProps = {
 export const Readout = (props: ReadoutProps) => {
    const { readout } = props
    const { t } = useTranslation(PITCH_TNS)
-   const { midi, hz, cents, target, inTune } = readout
+   const { midi, hz, cents, target, inTune, micDb } = readout
+   const level = (db: number | null) =>
+      db === null || db <= SILENT_DB
+         ? EMPTY
+         : t("readout.dbValue", { value: formatDb(db) })
 
    return (
       <div className={styles.readout}>
@@ -59,6 +68,12 @@ export const Readout = (props: ReadoutProps) => {
                <dd className={`${styles.statValue} ${styles.targetValue}`}>
                   {target === null ? EMPTY : noteName(target)}
                </dd>
+            </div>
+         </dl>
+         <dl className={styles.levels}>
+            <div className={styles.levelStat}>
+               <dt className={styles.statLabel}>{t("readout.micLevel")}</dt>
+               <dd className={styles.statValue}>{level(micDb)}</dd>
             </div>
          </dl>
       </div>

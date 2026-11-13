@@ -26,6 +26,8 @@ export interface Readout {
    /** Target note (integer midi). */
    target: number | null
    inTune: boolean
+   /** Mean mic level (dBFS, rounded) over the last 150 ms, null while off. */
+   micDb: number | null
 }
 
 export interface VisibleRange {
@@ -54,8 +56,11 @@ export interface Session {
       source: Source,
       from: number,
       to: number,
-      cb: (time: number, midi: number | null) => void
+      cb: (time: number, midi: number | null, db: number) => void
    ): void
+   /** The newest frame's level (dBFS), null until a frame arrives after the
+    *  source was last switched on. */
+   latestLevel(source: Source): number | null
    /** Spectrum frames with time in [from, to], in time order. */
    forEachSpectrum(
       source: Source,
@@ -129,6 +134,11 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
       voice: createTrack(),
       song: createTrack(),
    }
+   /** Frame level (dBFS), parallel to `tracks`: same times, same head. */
+   const levels: Record<Source, Track<number>> = {
+      voice: createTrack(),
+      song: createTrack(),
+   }
    const spectra: Record<Source, Track<SpectrumFrame>> = {
       voice: createTrack(),
       song: createTrack(),
@@ -194,12 +204,15 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
       addFrames: (frames) => {
          frames.forEach((frame) => {
             push(tracks[frame.source], frame.time, frame.midi)
+            push(levels[frame.source], frame.time, frame.db)
             fresh[frame.source] = true
          })
          const sources: Source[] = ["voice", "song"]
          sources.forEach((source) => {
             const last = lastTime(tracks[source])
-            if (last !== null) dropBefore(tracks[source], last - keepSeconds)
+            if (last === null) return
+            dropBefore(tracks[source], last - keepSeconds)
+            dropBefore(levels[source], last - keepSeconds)
          })
       },
 
@@ -249,12 +262,25 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
       targetAt,
 
       readout: () => {
+         const micLevel = () => {
+            const end = lastTime(levels.voice)
+            if (end === null || !active.voice || !fresh.voice) return null
+            // Mean power, not mean dB, so one quiet frame doesn't pull it down.
+            let power = 0
+            let count = 0
+            forEachIn(levels.voice, end - READOUT_SECONDS, end, (_, db) => {
+               power += 10 ** (db / 10)
+               count++
+            })
+            return count === 0 ? null : Math.round(10 * Math.log10(power / count))
+         }
          const empty: Readout = {
             midi: null,
             hz: null,
             cents: null,
             target: null,
             inTune: false,
+            micDb: micLevel(),
          }
          const edge = latest("voice")
          if (edge === null || !active.voice) return empty
@@ -270,6 +296,7 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
          const midi = sum / count
          const cents = target === null ? null : centsBetween(target, midi)
          return {
+            ...empty,
             midi,
             hz: midiToHz(midi),
             cents,
@@ -278,8 +305,24 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
          }
       },
 
-      forEachFrame: (source, from, to, cb) =>
-         forEachIn(tracks[source], from, to, cb),
+      latestLevel: (source) => {
+         const track = levels[source]
+         // Not the last run's level, before this run's first frame.
+         if (!fresh[source] || lastTime(track) === null) return null
+         return track.values[track.values.length - 1]
+      },
+
+      forEachFrame: (source, from, to, cb) => {
+         const track = tracks[source]
+         const level = levels[source]
+         // Same times and head in both tracks, so one index serves both.
+         for (
+            let i = lowerBound(track, from);
+            i < track.times.length && track.times[i] <= to;
+            i++
+         )
+            cb(track.times[i], track.values[i], level.values[i])
+      },
 
       forEachSpectrum: (source, from, to, cb) =>
          forEachIn(spectra[source], from, to, (_, frame) => cb(frame)),

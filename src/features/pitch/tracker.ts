@@ -23,7 +23,10 @@ export interface TrackerOptions {
 
 export interface TrackerInput {
    candidates: PitchCandidate[]
+   /** RMS of the analysed signal; it drives the gate. */
    rms: number
+   /** RMS to report as the frame's level when it differs from `rms` (the song's raw mix). */
+   level?: number
 }
 
 export interface TrackedFrame {
@@ -31,6 +34,8 @@ export interface TrackedFrame {
    index: number
    midi: number | null
    confidence: number
+   /** RMS level of the frame, dBFS. */
+   db: number
 }
 
 export interface Tracker {
@@ -40,6 +45,12 @@ export interface Tracker {
    reset(): void
 }
 
+/** Lowest level reported, dBFS; digital silence would otherwise be about -240. */
+export const LEVEL_FLOOR_DB = -100
+/** Where the gate opens unless the options say otherwise, dBFS. */
+export const DEFAULT_GATE_ON_DB = -55
+const levelDb = (rms: number) =>
+   Math.max(LEVEL_FLOOR_DB, 20 * Math.log10(rms + 1e-12))
 const OBSERVATION_FLOOR = 1e-3
 const GATED = Math.log(1e-8)
 /** A committed pitch takes the nearest candidate's exact value within this distance. */
@@ -48,6 +59,7 @@ const SNAP_SEMITONES = 0.2
 interface Committed {
    midi: number | null
    confidence: number
+   db: number
 }
 
 export const createTracker = (opts: TrackerOptions): Tracker => {
@@ -57,7 +69,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
    const medianHalf = (medianFrames - 1) / 2
    const reach = Math.round((opts.maxStepSemitones ?? 2.5) / binSize)
    const switchP = opts.switchProbability ?? 0.01
-   const gateOn = opts.gateOnDb ?? -55
+   const gateOn = opts.gateOnDb ?? DEFAULT_GATE_ON_DB
    const gateOff = opts.gateOffDb ?? -60
    const unvoicedWeight = opts.unvoicedWeight ?? 0.1
 
@@ -81,6 +93,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
    const ring = lag + 1
    const back = new Int32Array(ring * states)
    const inputs: PitchCandidate[][] = new Array(ring)
+   const levels = new Float64Array(ring)
    const history: Committed[] = []
 
    let frame = 0
@@ -96,7 +109,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
    reset()
 
    const observe = (input: TrackerInput) => {
-      const db = 20 * Math.log10(input.rms + 1e-12)
+      const db = levelDb(input.rms)
       gateOpen = gateOpen ? db >= gateOff : db >= gateOn
       if (!gateOpen) {
          observation.fill(GATED)
@@ -160,6 +173,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
       if (cur[unvoiced] > best) best = cur[unvoiced]
       for (let j = 0; j < states; j++) cur[j] -= best
       inputs[frame % ring] = input.candidates
+      levels[frame % ring] = levelDb(input.level ?? input.rms)
       const swap = prev
       prev = cur
       cur = swap
@@ -173,7 +187,8 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
       const newest = frame - 1
       for (let k = newest; k > newest - lag; k--)
          state = back[(k % ring) * states + state]
-      if (state === unvoiced) return { midi: null, confidence: 0 }
+      const db = levels[(newest - lag) % ring]
+      if (state === unvoiced) return { midi: null, confidence: 0, db }
       const centre = binMidi(state)
       const candidates = inputs[(newest - lag) % ring]
       let midi = centre
@@ -187,7 +202,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
          }
          if (distance <= 0.5) confidence += candidates[i].probability
       }
-      return { midi, confidence: Math.min(1, confidence) }
+      return { midi, confidence: Math.min(1, confidence), db }
    }
 
    /** Median over the frame's voiced run within ±medianHalf frames. */
@@ -195,7 +210,12 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
       const centre = history[centreIndex]
       const index = frame - 1 - lag - (history.length - 1 - centreIndex)
       if (centre.midi === null || medianHalf === 0)
-         return { index, midi: centre.midi, confidence: centre.confidence }
+         return {
+            index,
+            midi: centre.midi,
+            confidence: centre.confidence,
+            db: centre.db,
+         }
       const values: number[] = [centre.midi]
       for (let k = centreIndex - 1; k >= centreIndex - medianHalf && k >= 0; k--) {
          const m = history[k].midi
@@ -211,7 +231,7 @@ export const createTracker = (opts: TrackerOptions): Tracker => {
       const mid = values.length >> 1
       const midi =
          values.length % 2 ? values[mid] : (values[mid - 1] + values[mid]) / 2
-      return { index, midi, confidence: centre.confidence }
+      return { index, midi, confidence: centre.confidence, db: centre.db }
    }
 
    const push = (input: TrackerInput): TrackedFrame[] => {

@@ -140,6 +140,25 @@ const voiceMidiAt = (t: number): number | null => {
    return target + drift
 }
 
+/** Level in dBFS of the melody at time t: a note swells in, peaks, fades out; rests are room noise. */
+const melodyDbAt = (t: number, seed: number): number => {
+   const local = ((t % melodyLength) + melodyLength) % melodyLength
+   const i = SEGMENTS.findIndex((seg) => local < seg.end)
+   const seg = SEGMENTS[i < 0 ? SEGMENTS.length - 1 : i]
+   const room = -68 + 2 * smoothNoise(t, 6, seed + 3)
+   if (seg.midi === null) return room
+   const length = seg.end - seg.start
+   const since = local - seg.start
+   // Each note has its own loudness, -34..-16 dBFS, with a slow wobble.
+   const peak = -25 + 9 * hashNoise(i * 31 + seed) + 1.5 * smoothNoise(t, 3, seed)
+   const attack = smoothstep(since / 0.08)
+   // The last 40% fades, a long note also swells towards the middle.
+   const release = 1 - smoothstep((since / length - 0.6) / 0.4)
+   const swell = 3 * Math.sin((Math.PI * since) / length)
+   const level = peak + swell - 30 * (1 - release)
+   return room + (level - room) * attack
+}
+
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /** Levels per row: each sounding note's harmonics, louder low ones first, over a faint floor. */
@@ -220,6 +239,10 @@ export const createSimulatedEngine = (): PitchEngine => {
                time,
                midi: midi === null ? null : midi + jitter,
                confidence: midi === null ? 0.1 : 0.9,
+               db: melodyDbAt(
+                  source === "voice" ? time - VOICE_LAG : time,
+                  source === "voice" ? 5 : 9
+               ),
             })
          }
          next[source] = hop

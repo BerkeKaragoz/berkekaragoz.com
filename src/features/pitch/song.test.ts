@@ -45,6 +45,17 @@ describe("createSongAnalyzer", () => {
       expect(settledMidi(frames)).toBeCloseTo(hzToMidi(330), 0)
    })
 
+   it("reports the raw mix's level, not the extracted centre's", () => {
+      // A sine panned hard left: no centre to extract, yet the tab is loud.
+      const sine = tone({ hz: 220, seconds: 1, harmonics: [1], amplitude: 0.5 })
+      const frames = feed(sine, new Float32Array(sine.length))
+      const settled = frames.filter((f) => f.time > 0.5).map((f) => f.db)
+      // Power mean of L and R: 0.5 / sqrt(2) on one side of two, about -12 dBFS.
+      const expected = 10 * Math.log10((0.5 * 0.5) / 2 / 2)
+      expect(settled.length).toBeGreaterThan(0)
+      settled.forEach((db) => expect(db).toBeCloseTo(expected, 0))
+   })
+
    it("drops the centred bass", () => {
       const bass = tone({ hz: 55, seconds: 2, harmonics: [1, 0.3], amplitude: 0.6 })
       const both = add(voice, bass)
@@ -54,10 +65,9 @@ describe("createSongAnalyzer", () => {
    it("tracks mono input, on the input's clock", () => {
       const start = 4800
       const frames = feed(voice, undefined, start)
-      expect(settledMidi(frames.map((f) => ({ ...f, time: f.time - start / RATE })))).toBeCloseTo(
-         hzToMidi(330),
-         0
-      )
+      expect(
+         settledMidi(frames.map((f) => ({ ...f, time: f.time - start / RATE })))
+      ).toBeCloseTo(hzToMidi(330), 0)
       expect(frames[0].time).toBeGreaterThanOrEqual(start / RATE)
    })
 })

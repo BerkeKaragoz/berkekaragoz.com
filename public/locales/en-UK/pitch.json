@@ -22,6 +22,7 @@
          "starting": "Choose a tab…",
          "on": "Stop sharing",
          "noAudio": "Share again with audio",
+         "unreadable": "Share a tab",
          "unsupported": "Share a tab",
          "error": "Retry sharing"
       },
@@ -46,7 +47,9 @@
       "inTuneCheck": "Within 15 cents",
       "hz": "Frequency",
       "hzValue": "{{value}} Hz",
-      "target": "Nearest note"
+      "target": "Nearest note",
+      "micLevel": "Level",
+      "dbValue": "{{value}} dB"
    },
    "graph": {
       "ariaLabel": "Pitch over the last 8 seconds. The mic is the blue line, the shared tab the orange line, the mic's nearest note the green band.",
@@ -58,6 +61,7 @@
       "micDenied": "Microphone access is blocked. Allow it in the site settings and retry.",
       "micBusy": "The mic couldn't be opened. Another app may be using it, or the system may be blocking it (on Windows: Settings › Privacy & security › Microphone). Fix that and retry.",
       "noTabAudio": "The tab was shared without audio. Share it again with “Also share tab audio” ticked.",
+      "tabUnreadable": "The browser couldn’t capture that audio. This happens with some app windows. Share a browser tab instead.",
       "unsupported": "Tab audio sharing only works in desktop Chrome and Edge.",
       "insecure": "The browser only allows the mic and tab sharing on https or localhost. This page is open over plain http.",
       "generic": "Couldn't start. Retry."
@@ -73,8 +77,8 @@
       "use": {
          "title": "How to use it",
          "inputs": "Press “Start mic” and allow the microphone. To add another tab's audio, press “Share a tab” and tick “Also share tab audio” in the browser's dialog. Use headphones, otherwise the mic also picks up the tab.",
-         "graph": "The graph shows the last 8 seconds, with note names on the left. The blue line is the mic and the orange line is the shared tab; the faint shading behind each line is its spectrum. The green band is the note nearest to the mic.",
-         "readout": "The readout gives the mic's note, how far it is from the nearest note in cents, and its frequency in Hz. A check mark appears within 15 cents.",
+         "graph": "The graph shows the last 8 seconds, with note names on both sides. The blue line is the mic and the orange line is the shared tab; the faint shading behind each line is its spectrum. The green band is the note nearest to the mic. A line gets thicker and slightly brighter as the sound gets louder, and fades a little when it is very quiet. The bar at the right edge shows the level of the mic in blue and of the tab in orange, in dBFS, relative to your microphone or the tab audio, with a tick for the level where the mic's pitch detection switches on.",
+         "readout": "The readout gives the mic's note, how far it is from the nearest note in cents, and its frequency in Hz. At the end it gives the mic's level in dBFS; a dash means silence. A check mark appears within 15 cents.",
          "view": "“Range” sets how many octaves are visible. Drag the bar under the graph to change its height. “Full screen” shows only the tool."
       },
       "works": {

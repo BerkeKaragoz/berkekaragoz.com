@@ -88,4 +88,14 @@ describe("openTab", () => {
       expect(await openTab()).toEqual({ ok: false, state: "noAudio" })
       expect(video.stop).toHaveBeenCalled()
    })
+
+   it("reports unreadable when the shared audio can't be opened", async () => {
+      setNavigator()
+      const failed = Object.assign(new Error("Could not start audio source"), {
+         name: "NotReadableError",
+      })
+      getDisplayMedia.mockRejectedValue(failed)
+      expect(await openTab()).toMatchObject({ ok: false, state: "unreadable" })
+      expect(getDisplayMedia).toHaveBeenCalledTimes(1)
+   })
 })

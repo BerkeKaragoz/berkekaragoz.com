@@ -5,6 +5,7 @@ import {
    SPECTRUM_ROWS,
    SPECTRUM_ROWS_PER_SEMITONE,
 } from "@/features/pitch/spectrum"
+import { DEFAULT_GATE_ON_DB } from "@/features/pitch/tracker"
 import type { PitchEngine, Source, SpectrumFrame } from "@/features/pitch/types"
 import React, { useEffect, useRef } from "react"
 import styles from "./pitch.module.css"
@@ -15,8 +16,71 @@ const BAND_SNAP_SECONDS = 0.08
 /** Gaps longer than this break a line. */
 const LINE_GAP_SECONDS = 0.05
 const DOT_MAX_AGE_SECONDS = 0.12
-const LABEL_GUTTER = 40
+/** Width of the note-label column on each side of the plot, in px: fits two-letter names. */
+const LABEL_GUTTER = 20
+/** Gap between the plot and the right-hand labels, in px. */
+const LABEL_INSET = 5
 const RIGHT_PAD = 10
+
+// Loudness styling of the lines. The level is the frame's RMS in dBFS, relative
+// to the input, not a sound pressure.
+/** Level at and below which a line counts as quiet (L = 0), in dBFS. */
+const DB_QUIET = -60
+/** Level at and above which a line counts as loud (L = 1), in dBFS. */
+const DB_LOUD = -12
+/** The level is smoothed over about this long before it styles the line. */
+const DB_SMOOTH_SECONDS = 0.03
+/** Voice line width at L = 0 and L = 1, in px. The line stays centred on the pitch. */
+const VOICE_WIDTH_QUIET = 2.0
+const VOICE_WIDTH_LOUD = 3.25
+/** The song line's widths are the voice's times this. */
+const SONG_WIDTH_SCALE = 0.8
+/** The song line's whitening and glow are the voice's times these; mixes are noisier. */
+const SONG_WHITEN_SCALE = 0.5
+const SONG_GLOW_SCALE = 0.4
+/** Most the line colour moves toward white (0..1). */
+const WHITEN_MAX = 0.25
+/** Whitening starts at this L and eases in to WHITEN_MAX at WHITEN_END_L. */
+const WHITEN_START_L = 0.15
+const WHITEN_END_L = 0.7
+/** Glow follows the whitening's curve: blur radius in CSS px and peak opacity. */
+const GLOW_BLUR = 6
+const GLOW_ALPHA = 0.55
+/** Opacity is 1 down to this level, in dBFS ... */
+const FADE_START_DB = -34
+/** ... then eases down to FADE_MIN_ALPHA at this level, and stays there below it. */
+const FADE_END_DB = -48
+const FADE_MIN_ALPHA = 0.9
+/** The ribbon's colour stops are this far apart in time. */
+const GRADIENT_STEP_SECONDS = 0.02
+/** Points this many neighbours away give a ribbon point its direction. */
+const NORMAL_REACH = 2
+
+// Level meter at the right edge of the canvas, right of the mirrored note
+// labels: one bar, the tab's level behind the mic's. Scale is linear in dBFS;
+// the mic's number is in the readout.
+/** Space reserved right of the right-hand labels for the bar, in px. */
+const METER_STRIP = 16
+const METER_WIDTH = 4
+const METER_MARGIN = 2
+/** Opacity of the tab's fill behind the mic's. */
+const METER_SONG_FILL_ALPHA = 0.3
+/** The mic's peak and the tab's level strips: height, and overhang each side of the bar, in px. */
+const METER_STRIP_HEIGHT = 3
+const METER_STRIP_OVERHANG = 2
+/** Space above and below the bar, in px. */
+const METER_PAD_Y = 4
+/** Meter range, in dBFS. */
+const METER_MIN_DB = -60
+const METER_MAX_DB = 0
+/** The mic's gate opens at this level, marked with a tick. */
+const METER_GATE_DB = DEFAULT_GATE_ON_DB
+/** The fill rises with this time constant and falls with METER_RELEASE_SECONDS. */
+const METER_ATTACK_SECONDS = 0.02
+const METER_RELEASE_SECONDS = 0.3
+/** The peak tick holds this long, then falls this many dB per second. */
+const METER_PEAK_HOLD_SECONDS = 1
+const METER_PEAK_FALL_DB_PER_SECOND = 20
 /**
  * Following one voice, the tab line moves less than this between 10 ms
  * frames; a bigger step is a switch to another line, so the line breaks there
@@ -34,6 +98,41 @@ interface Colors {
    grid: string
    gridC: string
    label: string
+   meterTrack: string
+   gate: string
+}
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+const smoothstep = (from: number, to: number, v: number) => {
+   const c = clamp01((v - from) / (to - from))
+   return c * c * (3 - 2 * c)
+}
+
+/** Loudness L (0..1), whitening and opacity for a smoothed level. */
+const levelStyle = (db: number) => {
+   const loud = clamp01((db - DB_QUIET) / (DB_LOUD - DB_QUIET))
+   const glow = smoothstep(WHITEN_START_L, WHITEN_END_L, loud)
+   return {
+      loud,
+      glow,
+      whiten: WHITEN_MAX * glow,
+      alpha: 1 - (1 - FADE_MIN_ALPHA) * smoothstep(FADE_START_DB, FADE_END_DB, db),
+   }
+}
+
+const lineColor = (rgb: [number, number, number], whiten: number, alpha: number) => {
+   const mix = (c: number) => Math.round(c + (255 - c) * whiten)
+   return (
+      "rgba(" +
+      mix(rgb[0]) +
+      "," +
+      mix(rgb[1]) +
+      "," +
+      mix(rgb[2]) +
+      "," +
+      alpha.toFixed(3) +
+      ")"
+   )
 }
 
 const rgbOf = (hex: string): [number, number, number] => {
@@ -54,6 +153,8 @@ const readColors = (el: Element): Colors => {
       grid: get("--pitch-grid", "#e1e0d9"),
       gridC: get("--pitch-grid-c", "#c3c2b7"),
       label: get("--pitch-label", "#898781"),
+      meterTrack: get("--pitch-meter-track", "rgba(137,135,129,0.25)"),
+      gate: get("--pitch-gate", "#898781"),
    }
 }
 
@@ -141,12 +242,103 @@ export const PitchGraph = (props: PitchGraphProps) => {
          return edge
       }
 
+      // Level meter state per source, on the wall clock. null while that input is off.
+      interface Meter {
+         level: number
+         peak: number
+         peakAt: number
+         at: number
+      }
+      const meters: Record<Source, Meter | null> = { voice: null, song: null }
+
+      /** Advances a source's meter to now, or drops it when the input is off. */
+      const stepMeter = (source: Source, on: boolean, now: number) => {
+         const db = on ? session.latestLevel(source) : null
+         if (db === null) {
+            meters[source] = null
+            return null
+         }
+         const level = Math.min(METER_MAX_DB, Math.max(METER_MIN_DB, db))
+         let m = meters[source]
+         if (m === null) {
+            m = { level, peak: level, peakAt: now, at: now }
+            meters[source] = m
+            return m
+         }
+         const dt = Math.min(0.25, Math.max(0, now - m.at))
+         const tau = level > m.level ? METER_ATTACK_SECONDS : METER_RELEASE_SECONDS
+         m.level += (level - m.level) * (1 - Math.exp(-dt / tau))
+         if (level >= m.peak) {
+            m.peak = level
+            m.peakAt = now
+         } else if (now - m.peakAt > METER_PEAK_HOLD_SECONDS) {
+            m.peak = Math.max(level, m.peak - METER_PEAK_FALL_DB_PER_SECOND * dt)
+         }
+         m.at = now
+         return m
+      }
+
+      /**
+       * One bar. The tab sits behind: a faint orange fill the mic's blue fill
+       * covers, and an orange strip at its level. The mic adds its peak tick.
+       */
+      const drawMeters = () => {
+         const state = engine ? engine.getState() : null
+         const now = performance.now() / 1000
+         const voice = stepMeter("voice", state?.mic === "on", now)
+         const song = stepMeter("song", state?.tab === "on", now)
+         if (!voice && !song) return
+
+         const left = width - METER_MARGIN - METER_WIDTH
+         const top = METER_PAD_Y
+         const barHeight = Math.max(1, height - 2 * METER_PAD_Y)
+         const bottom = top + barHeight
+         const yOf = (db: number) =>
+            top +
+            barHeight * (1 - (db - METER_MIN_DB) / (METER_MAX_DB - METER_MIN_DB))
+         /** A marker wider and thicker than the bar, so it reads over the fills. */
+         const drawStrip = (db: number) =>
+            ctx.fillRect(
+               left - METER_STRIP_OVERHANG,
+               Math.round(yOf(db)) - METER_STRIP_HEIGHT / 2,
+               METER_WIDTH + 2 * METER_STRIP_OVERHANG,
+               METER_STRIP_HEIGHT
+            )
+         ctx.fillStyle = colors.meterTrack
+         ctx.fillRect(left, top, METER_WIDTH, barHeight)
+         if (song) {
+            ctx.fillStyle = lineColor(rgbOf(colors.song), 0, METER_SONG_FILL_ALPHA)
+            const songTop = yOf(song.level)
+            ctx.fillRect(left, songTop, METER_WIDTH, bottom - songTop)
+         }
+         if (voice) {
+            ctx.fillStyle = colors.voice
+            const voiceTop = yOf(voice.level)
+            ctx.fillRect(left, voiceTop, METER_WIDTH, bottom - voiceTop)
+            drawStrip(voice.peak)
+         }
+         if (song) {
+            ctx.fillStyle = colors.song
+            drawStrip(song.level)
+         }
+         // The mic's gate-open tick, left of the bar. The tab gets none: its
+         // gate reads the extracted centre, not the mix the bar shows.
+         if (voice) {
+            ctx.fillStyle = colors.gate
+            ctx.fillRect(left - 3, Math.round(yOf(METER_GATE_DB)), 3, 1)
+         }
+      }
+
       const draw = () => {
          const win = session.windowSeconds
          const edge = nextEdge()
          const range = session.range(edge === null ? 0 : edge, semitonesRef.current)
          const plotLeft = LABEL_GUTTER
-         const plotWidth = Math.max(1, width - LABEL_GUTTER - RIGHT_PAD)
+         const plotWidth = Math.max(
+            1,
+            width - 2 * LABEL_GUTTER - RIGHT_PAD - METER_STRIP
+         )
+         const labelRight = plotLeft + plotWidth + RIGHT_PAD + LABEL_INSET
          const span = range.max - range.min
          const start = edge === null ? 0 : edge - win
          const pxPerSecond = plotWidth / win
@@ -159,7 +351,9 @@ export const PitchGraph = (props: PitchGraphProps) => {
 
          // Semitone grid and labels.
          ctx.font = "11px system-ui, -apple-system, Segoe UI, sans-serif"
-         ctx.textAlign = "right"
+         // Same labels on both sides, left aligned: the left ones line up with
+         // the readout above; three-letter names may overflow.
+         ctx.textAlign = "left"
          ctx.textBaseline = "middle"
          ctx.lineWidth = 1
          // Zoomed out, label fewer notes so the labels don't overlap.
@@ -178,14 +372,15 @@ export const PitchGraph = (props: PitchGraphProps) => {
             ctx.strokeStyle = isC ? colors.gridC : colors.grid
             ctx.beginPath()
             ctx.moveTo(plotLeft, yy)
-            ctx.lineTo(width, yy)
+            ctx.lineTo(plotLeft + plotWidth + RIGHT_PAD, yy)
             ctx.stroke()
             ctx.globalAlpha = 1
             if (labelled(n) || n === target) {
                const isTarget = n === target
                ctx.fillStyle = isTarget ? colors.bandLabel : colors.label
                ctx.font = `${isTarget ? "600 " : ""}11px system-ui, -apple-system, Segoe UI, sans-serif`
-               ctx.fillText(noteName(n), plotLeft - 8, yy)
+               ctx.fillText(noteName(n), 0, yy)
+               ctx.fillText(noteName(n), labelRight, yy)
             }
          }
 
@@ -326,38 +521,172 @@ export const PitchGraph = (props: PitchGraphProps) => {
             ctx.globalAlpha = 1
          }
 
+         /** Smoothed level and time of the voice line's newest frame, for the dot. */
+         const head = { time: -Infinity, db: DB_QUIET }
+
+         const xs: number[] = []
+         const ys: number[] = []
+         const ts: number[] = []
+         const dbs: number[] = []
+
          const drawLine = (source: Source) => {
-            ctx.strokeStyle = source === "voice" ? colors.voice : colors.song
-            ctx.lineWidth = source === "voice" ? 2.5 : 2
-            ctx.lineJoin = "round"
-            ctx.lineCap = "round"
+            const rgb = rgbOf(source === "voice" ? colors.voice : colors.song)
+            const scale = source === "voice" ? 1 : SONG_WIDTH_SCALE
+            // The tab is usually a dense mix, so its loud styling is toned down.
+            const whitenScale = source === "voice" ? 1 : SONG_WHITEN_SCALE
+            const glowScale = source === "voice" ? 1 : SONG_GLOW_SCALE
+            const styleOf = (db: number) => {
+               const st = levelStyle(db)
+               st.whiten *= whitenScale
+               st.glow *= glowScale
+               return st
+            }
+            const halfWidth = (db: number) =>
+               (scale / 2) *
+               (VOICE_WIDTH_QUIET +
+                  (VOICE_WIDTH_LOUD - VOICE_WIDTH_QUIET) * levelStyle(db).loud)
             const maxStep = source === "song" ? SONG_MAX_STEP_SEMITONES : Infinity
-            ctx.beginPath()
-            let hasPrev = false
+
+            // One filled ribbon per run: offset along the local normal, round
+            // ends, one horizontal gradient for the whitening and opacity.
+            const flushRun = () => {
+               const n = xs.length
+               if (n === 0) return
+               if (n === 1) {
+                  const st = styleOf(dbs[0])
+                  ctx.fillStyle = lineColor(rgb, st.whiten, st.alpha)
+                  ctx.beginPath()
+                  ctx.arc(xs[0], ys[0], halfWidth(dbs[0]), 0, Math.PI * 2)
+                  ctx.fill()
+                  xs.length = ys.length = ts.length = dbs.length = 0
+                  return
+               }
+               const nx: number[] = []
+               const ny: number[] = []
+               for (let i = 0; i < n; i++) {
+                  const a = Math.max(0, i - NORMAL_REACH)
+                  const b = Math.min(n - 1, i + NORMAL_REACH)
+                  const dx = xs[b] - xs[a]
+                  const dy = ys[b] - ys[a]
+                  const len = Math.hypot(dx, dy)
+                  // The tangent turned a quarter; flat when there is no direction.
+                  nx.push(len > 0 ? -dy / len : 0)
+                  ny.push(len > 0 ? dx / len : 1)
+               }
+               const h0 = halfWidth(dbs[0])
+               const h1 = halfWidth(dbs[n - 1])
+               const gx0 = xs[0] - h0
+               const gx1 = xs[n - 1] + h1
+               const gradient = ctx.createLinearGradient(gx0, 0, gx1, 0)
+               // Same stops, opacity from the glow; its shadow is the glow.
+               const glowGradient = ctx.createLinearGradient(gx0, 0, gx1, 0)
+               let maxGlow = 0
+               let lastStop = -Infinity
+               let lastOffset = 0
+               for (let i = 0; i < n; i++) {
+                  if (i !== n - 1 && ts[i] - lastStop < GRADIENT_STEP_SECONDS)
+                     continue
+                  lastStop = ts[i]
+                  const st = styleOf(dbs[i])
+                  lastOffset = Math.max(
+                     lastOffset,
+                     clamp01((xs[i] - gx0) / (gx1 - gx0))
+                  )
+                  gradient.addColorStop(
+                     lastOffset,
+                     lineColor(rgb, st.whiten, st.alpha)
+                  )
+                  glowGradient.addColorStop(
+                     lastOffset,
+                     lineColor(rgb, st.whiten, GLOW_ALPHA * st.glow)
+                  )
+                  maxGlow = Math.max(maxGlow, st.glow)
+               }
+               const tracePath = () => {
+                  ctx.beginPath()
+                  for (let i = 0; i < n; i++) {
+                     const h = halfWidth(dbs[i])
+                     const px = xs[i] + nx[i] * h
+                     const py = ys[i] + ny[i] * h
+                     if (i === 0) ctx.moveTo(px, py)
+                     else ctx.lineTo(px, py)
+                  }
+                  const endAngle = Math.atan2(ny[n - 1], nx[n - 1])
+                  ctx.arc(
+                     xs[n - 1],
+                     ys[n - 1],
+                     h1,
+                     endAngle,
+                     endAngle - Math.PI,
+                     true
+                  )
+                  for (let i = n - 1; i >= 0; i--) {
+                     const h = halfWidth(dbs[i])
+                     ctx.lineTo(xs[i] - nx[i] * h, ys[i] - ny[i] * h)
+                  }
+                  const startAngle = Math.atan2(-ny[0], -nx[0])
+                  ctx.arc(xs[0], ys[0], h0, startAngle, startAngle - Math.PI, true)
+                  ctx.closePath()
+               }
+               if (maxGlow > 0.01) {
+                  ctx.shadowColor = lineColor(rgb, WHITEN_MAX * whitenScale, 1)
+                  ctx.shadowBlur = GLOW_BLUR * dpr
+                  ctx.fillStyle = glowGradient
+                  tracePath()
+                  ctx.fill()
+                  ctx.shadowBlur = 0
+                  ctx.shadowColor = "transparent"
+               }
+               ctx.fillStyle = gradient
+               tracePath()
+               ctx.fill()
+               xs.length = ys.length = ts.length = dbs.length = 0
+            }
+
             let prevTime = 0
             let prevBucket = 0
+            let hasPrev = false
             // Pitch of the previous frame, drawn or thinned out.
             let lastMidi: number | null = null
-            session.forEachFrame(source, start - 0.1, edge, (time, midi) => {
+            // Level smoothed over DB_SMOOTH_SECONDS, fed by every frame.
+            let smooth = 0
+            let smoothTime = -Infinity
+            session.forEachFrame(source, start - 0.1, edge, (time, midi, db) => {
+               const dt = time - smoothTime
+               smooth =
+                  dt > 0.1 || dt <= 0
+                     ? db
+                     : smooth +
+                       (db - smooth) * (1 - Math.exp(-dt / DB_SMOOTH_SECONDS))
+               smoothTime = time
+               if (source === "voice") {
+                  head.time = time
+                  head.db = smooth
+               }
                if (
                   midi === null ||
                   (lastMidi !== null && Math.abs(midi - lastMidi) > maxStep)
-               )
+               ) {
+                  flushRun()
                   hasPrev = false
+               }
                lastMidi = midi
                if (midi === null) return
                // Thin points along time, not screen x, so the line moves with
                // the graph instead of shimmering as it scrolls.
                const bucket = Math.floor(time * pxPerSecond)
                const joins = hasPrev && time - prevTime <= LINE_GAP_SECONDS
-               if (joins && bucket === prevBucket) return
-               if (joins) ctx.lineTo(x(time), y(midi))
-               else ctx.moveTo(x(time), y(midi))
+               if (!joins) flushRun()
+               else if (bucket === prevBucket) return
+               xs.push(x(time))
+               ys.push(y(midi))
+               ts.push(time)
+               dbs.push(smooth)
                hasPrev = true
                prevTime = time
                prevBucket = bucket
             })
-            ctx.stroke()
+            flushRun()
          }
 
          const drawDot = () => {
@@ -372,10 +701,18 @@ export const PitchGraph = (props: PitchGraphProps) => {
                }
             )
             if (last.midi === null) return
-            ctx.fillStyle = colors.voice
+            const st = levelStyle(head.time === last.time ? head.db : DB_LOUD)
+            const rgb = rgbOf(colors.voice)
+            if (st.glow > 0.01) {
+               ctx.shadowColor = lineColor(rgb, WHITEN_MAX, GLOW_ALPHA * st.glow)
+               ctx.shadowBlur = GLOW_BLUR * dpr
+            }
+            ctx.fillStyle = lineColor(rgb, st.whiten, st.alpha)
             ctx.beginPath()
             ctx.arc(x(last.time), y(last.midi), 4.5, 0, Math.PI * 2)
             ctx.fill()
+            ctx.shadowBlur = 0
+            ctx.shadowColor = "transparent"
          }
 
          ctx.save()
@@ -391,6 +728,7 @@ export const PitchGraph = (props: PitchGraphProps) => {
          drawDot()
 
          ctx.restore()
+         drawMeters()
       }
 
       let frame = 0

@@ -9,7 +9,8 @@ const frames = (
    source: Source,
    from: number,
    to: number,
-   midi: number | null | ((t: number) => number | null)
+   midi: number | null | ((t: number) => number | null),
+   db: number | ((t: number) => number) = -30
 ): PitchFrame[] => {
    const out: PitchFrame[] = []
    const n = Math.round((to - from) / HOP)
@@ -20,6 +21,7 @@ const frames = (
          time,
          midi: typeof midi === "function" ? midi(time) : midi,
          confidence: 1,
+         db: typeof db === "function" ? db(time) : db,
       })
    }
    return out
@@ -51,5 +53,45 @@ describe("alignedEdge", () => {
       s.setActive({ voice: false, song: true })
       s.addFrames(frames("song", 0, 1.5, 60))
       expect(s.alignedEdge()).toBeCloseTo(1.495)
+   })
+})
+
+describe("levels", () => {
+   it("carries db with unvoiced frames too", () => {
+      const s = createSession()
+      s.addFrames(frames("voice", 0, 0.1, null, -50))
+      s.addFrames(frames("voice", 0.1, 0.2, 60, -20))
+      const seen: [number | null, number][] = []
+      s.forEachFrame("voice", 0, 1, (_, midi, db) => seen.push([midi, db]))
+      expect(seen[0]).toEqual([null, -50])
+      expect(seen[seen.length - 1]).toEqual([60, -20])
+      expect(s.latestLevel("voice")).toBe(-20)
+      expect(s.latestLevel("song")).toBeNull()
+   })
+
+   it("drops levels together with frames", () => {
+      const s = createSession({ windowSeconds: 1 })
+      // Long enough that the dropped frames are cut off the arrays, which is
+      // when the two tracks' indices would part if only one were cut.
+      s.addFrames(frames("voice", 0, 10, 60, (t) => -t))
+      let first = Infinity
+      s.forEachFrame("voice", 0, 20, (time, _, db) => {
+         first = Math.min(first, time)
+         expect(db).toBeCloseTo(-time)
+      })
+      expect(first).toBeGreaterThan(7.9)
+   })
+
+   it("shows no level from the last run once the mic is back on", () => {
+      const s = createSession()
+      s.setActive({ voice: true, song: false })
+      s.addFrames(frames("voice", 0, 1, 60, -15))
+      expect(s.readout().micDb).toBe(-15)
+      s.setActive({ voice: false, song: false })
+      s.setActive({ voice: true, song: false })
+      expect(s.latestLevel("voice")).toBeNull()
+      expect(s.readout().micDb).toBeNull()
+      s.addFrames(frames("voice", 1, 2, 60, -40))
+      expect(s.latestLevel("voice")).toBe(-40)
    })
 })

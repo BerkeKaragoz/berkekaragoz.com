@@ -98,6 +98,7 @@ const EMPTY_READOUT: ReadoutValues = {
    cents: null,
    target: null,
    inTune: false,
+   micDb: null,
 }
 
 const sameReadout = (a: ReadoutValues, b: ReadoutValues) =>
@@ -105,7 +106,8 @@ const sameReadout = (a: ReadoutValues, b: ReadoutValues) =>
    a.hz === b.hz &&
    a.cents === b.cents &&
    a.target === b.target &&
-   a.inTune === b.inTune
+   a.inTune === b.inTune &&
+   a.micDb === b.micDb
 
 export const getStaticProps = getPitchStaticProps
 

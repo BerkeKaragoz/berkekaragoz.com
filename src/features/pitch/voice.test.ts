@@ -1,6 +1,7 @@
 /** @jest-environment node */
 import { midiToHz } from "./notes"
 import { glideCurve, harmonicAmplitudes, melodyLine, tone } from "./testSignals"
+import { LEVEL_FLOOR_DB } from "./tracker"
 import type { PitchFrame } from "./types"
 import { createVoiceAnalyzer } from "./voice"
 
@@ -30,6 +31,26 @@ const cents = (midi: number | null, truth: number) =>
    Math.abs((midi as number) - truth) * 100
 
 const voicedOnly = (frames: PitchFrame[]) => frames.filter((f) => f.midi !== null)
+
+describe("createVoiceAnalyzer levels", () => {
+   it("reports frame level in dBFS, voiced or not", () => {
+      const loud = run(tone({ hz: 220, harmonics: EIGHT, seconds: 0.6 }))
+      const signal = tone({ hz: 220, harmonics: EIGHT, seconds: 0.6 })
+      const quiet = run(signal.map((x) => x * 0.1))
+      const level = (frames: PitchFrame[]) =>
+         median(frames.filter((f) => f.time >= 0.1).map((f) => f.db))
+      expect(level(loud) - level(quiet)).toBeCloseTo(20, 0)
+      // Below the gate: no pitch, still a level.
+      const faint = run(signal.map((x) => x * 1e-4))
+      const unvoiced = faint.filter((f) => f.midi === null)
+      expect(unvoiced.length).toBeGreaterThan(0)
+      expect(unvoiced.every((f) => Number.isFinite(f.db) && f.db < -60)).toBe(true)
+      // Digital silence sits on the floor instead of about -240.
+      const silence = run(new Float32Array(SR / 2))
+      expect(silence.length).toBeGreaterThan(0)
+      expect(silence.every((f) => f.db === LEVEL_FLOOR_DB)).toBe(true)
+   })
+})
 
 describe("createVoiceAnalyzer", () => {
    it("tracks steady tones E2..A5 to a median error of 5 cents", () => {
