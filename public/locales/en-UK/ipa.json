@@ -117,10 +117,10 @@
       "dictionaryCredit": "Dictionary: Britfone 100.0.1 · Standard English pronunciation"
    },
    "converterGuide": {
-      "title": "How the converter works",
+      "title": "About the converter",
       "scope": "The converter transcribes British English only. The transcription is broad: sounds, stress and length, without finer phonetic detail or intonation.",
-      "dictionary": "Each word is looked up in Britfone 100.0.1, a British English pronunciation dictionary by Jose Llarena, used under the MIT licence. The copy here has 15,212 entries. If a word has more than one pronunciation, the first is shown; select the word to choose another.",
-      "estimates": "A word that is not in the dictionary gets an estimated pronunciation, marked with a dotted blue underline. The converter tries, in order: a dictionary word plus an ending such as -s, -ed or -ing; letter names for a word of two to five capital letters; a dictionary word with re- or -isation; two dictionary words joined together; and finally spelling rules. Estimates can be wrong.",
+      "dictionary": "Each word is looked up in Britfone 100.0.1, a British English pronunciation dictionary by Jose Llarena, used under the MIT licence. If a word has more than one pronunciation, the first is shown; select the word to choose another.",
+      "estimates": "A word that is not in the dictionary gets an estimated pronunciation, marked with a dotted blue underline. Estimates can be wrong.",
       "input": "Only the letters A to Z and apostrophes form words; digits, punctuation and other characters are left as written. The limit is 10,000 characters.",
       "speech": "Play reads the English text, not the IPA, with a British English voice from your browser's speech synthesis. It is not a recording. Without such a voice, Play is disabled.",
       "privacy": "The conversion runs in your browser: the page downloads dictionary files from this site and looks the words up locally, so the text is not sent to a server to be converted. It is kept in the tab's session storage. The “Wikipedia passage” button fetches a random passage from English Wikipedia, and the page checks that Wikipedia is reachable when the converter opens. Neither request includes your text."

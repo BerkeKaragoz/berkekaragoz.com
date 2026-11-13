@@ -165,7 +165,7 @@
    @apply items-end mb-5;
 }
 
-.libraryHeader h2 {
+.libraryHeader h1 {
    @apply mt-2 text-3xl font-semibold sm:text-4xl;
    color: var(--ipa-accent-strong);
 }
@@ -440,8 +440,7 @@
    outline-offset: -3px;
 }
 
-.marksGuide summary h2,
-.marksGuide summary h3 {
+.marksGuide summary h2 {
    @apply mt-1 text-xl font-semibold;
 }
 
@@ -484,7 +483,7 @@
    color: var(--ipa-subtle);
 }
 
-.markItem h4 {
+.markItem h3 {
    @apply mt-3 text-sm font-semibold;
 }
 

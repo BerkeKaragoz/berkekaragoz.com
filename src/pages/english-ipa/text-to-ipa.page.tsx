@@ -478,7 +478,7 @@ const SoundsView = ({
                <div className={styles.libraryHeader}>
                   <div>
                      <p className={styles.eyebrow}>{t("soundsUi.reference")}</p>
-                     <h2 id="sounds-title">{t("soundsUi.title")}</h2>
+                     <h1 id="sounds-title">{t("soundsUi.title")}</h1>
                   </div>
                   <label className={styles.searchBox}>
                      <SearchIcon aria-hidden="true" />
@@ -566,7 +566,7 @@ const SoundsView = ({
             <summary>
                <div>
                   <p className={styles.eyebrow}>{t("marks.eyebrow")}</p>
-                  <h3>{t("marks.title")}</h3>
+                  <h2>{t("marks.title")}</h2>
                </div>
                <span>{t("marks.summary")}</span>
             </summary>
@@ -579,11 +579,11 @@ const SoundsView = ({
                            <span className={styles.markSymbol}>{mark.symbol}</span>
                            <span className={styles.markExample}>{mark.example}</span>
                         </div>
-                        <h4>
+                        <h3>
                            {t(`marks.items.${mark.id}.name`, {
                               defaultValue: mark.name,
                            })}
-                        </h4>
+                        </h3>
                         <p>
                            {t(`marks.items.${mark.id}.description`, {
                               defaultValue: mark.description,
@@ -817,6 +817,9 @@ const ConverterView = ({
          className={styles.converterLayout}
          aria-label={t("converter.ariaLabel")}
       >
+         {/* The page's h1, for crawlers and screen readers only: the
+             converter has no visible heading. The title minus the brand. */}
+         <h1 className="sr-only">{t("meta.converterTitle").split(" | ")[0]}</h1>
          <div className={`card ${styles.converterCard}`}>
             <div className={styles.inputHeader}>
                <label htmlFor="ipa-input">{t("converter.englishText")}</label>
@@ -1217,7 +1220,15 @@ const IpaPage: NextPage = () => {
       views.find((option) => viewRoutes[option] === router.pathname) ?? views[0]
    // The two views are two pages, and a ?sound= selection is not a third.
    const canonicalUrl = useCanonicalUrl(viewRoutes[view])
+   // A view mounts the first time it is shown and then stays mounted, so its
+   // state survives tab switches and the other route's server HTML leaves it
+   // out. The latch is set during render, not in an effect, so the render
+   // that shows a panel already has its content: no empty frame on any path
+   // (tab, openSound, ?sound= link, back/forward).
+   const [soundsMounted, setSoundsMounted] = useState(view === "sounds")
    const [converterMounted, setConverterMounted] = useState(view === "converter")
+   if (view === "sounds" && !soundsMounted) setSoundsMounted(true)
+   if (view === "converter" && !converterMounted) setConverterMounted(true)
    const [selectedSound, setSelectedSound] = useState(
       IPA_SOUNDS.find((sound) => sound.id === "schwa") ?? IPA_SOUNDS[0]
    )
@@ -1232,10 +1243,6 @@ const IpaPage: NextPage = () => {
       stop,
    } = useBritishSpeech()
    const { trackConvert, trackListen } = useIpaEvents(isSpeaking)
-
-   useEffect(() => {
-      if (view === "converter") setConverterMounted(true)
-   }, [view])
 
    useEffect(() => {
       const requestedSound =
@@ -1337,9 +1344,11 @@ const IpaPage: NextPage = () => {
                   <p className="text-sm font-semibold tracking-widest uppercase text-caption-color">
                      {t("hero.eyebrow")}
                   </p>
-                  <h1 className="max-w-4xl mt-4 text-4xl font-semibold leading-tight sm:text-6xl text-caption-color">
+                  {/* Not a heading: each view's own h1 sits in its panel
+                      below, so the two routes carry different h1s. */}
+                  <p className="max-w-4xl mt-4 text-4xl font-semibold leading-tight sm:text-6xl text-caption-color">
                      {t("hero.title")}
-                  </h1>
+                  </p>
                   <p className="max-w-prose mt-5 text-lg leading-relaxed text-subtitle-color">
                      {t("hero.description")}
                   </p>
@@ -1359,9 +1368,6 @@ const IpaPage: NextPage = () => {
                            scroll={false}
                            aria-current={view === option ? "page" : undefined}
                            className="flex-grow p-2 text-center no-underline card-input hover:no-underline"
-                           onClick={() => {
-                              if (option === "converter") setConverterMounted(true)
-                           }}
                         >
                            <span
                               className={cn(
@@ -1390,13 +1396,15 @@ const IpaPage: NextPage = () => {
                      </div>
                   )}
 
-                  <div hidden={view !== "sounds"}>
-                     <SoundsView
-                        selected={selectedSound}
-                        onPlay={playAudio}
-                        onSelect={setSelectedSound}
-                     />
-                  </div>
+                  {soundsMounted && (
+                     <div hidden={view !== "sounds"}>
+                        <SoundsView
+                           selected={selectedSound}
+                           onPlay={playAudio}
+                           onSelect={setSelectedSound}
+                        />
+                     </div>
+                  )}
                   {converterMounted && (
                      <div hidden={view !== "converter"}>
                         <ConverterView

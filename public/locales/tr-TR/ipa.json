@@ -117,10 +117,10 @@
       "dictionaryCredit": "Britfone 100.0.1 · Standart İngilizce telaffuz sözlüğü"
    },
    "converterGuide": {
-      "title": "IPA'ya çevirme aracı nasıl çalışır?",
+      "title": "IPA'ya çevirme aracı hakkında",
       "scope": "Araç yalnızca Britanya İngilizcesini IPA'ya çevirir. Sonuç geniş bir çevriyazıdır: sesleri, vurguyu ve ses uzunluğunu gösterir; söyleyişin daha ince ayrıntılarını ve tonlamayı göstermez.",
-      "dictionary": "Her kelime, Jose Llarena'nın hazırladığı Britanya İngilizcesi telaffuz sözlüğü Britfone 100.0.1'de aranır. Sözlük MIT lisansıyla kullanılır; buradaki kopyasında 15.212 madde vardır. Bir kelimenin birden fazla telaffuzu varsa ilki gösterilir; kelimeyi seçerek başka bir telaffuz seçeneğine geçebilirsiniz.",
-      "estimates": "Sözlükte bulunmayan kelimelerin telaffuzu tahmin edilir ve noktalı mavi alt çizgiyle işaretlenir. Araç sırasıyla şunları dener: sözlükteki bir kelimeye -s, -ed veya -ing gibi bir ek eklemek; iki ila beş büyük harften oluşan bir kelimeyi harf adlarıyla okumak; sözlükteki bir kelimeye re- veya -isation eklemek; sözlükteki iki kelimeyi birleştirmek; son olarak yazım kurallarını uygulamak. Tahminler yanlış olabilir.",
+      "dictionary": "Her kelime, Jose Llarena'nın hazırladığı Britanya İngilizcesi telaffuz sözlüğü Britfone 100.0.1'de aranır. Sözlük MIT lisansıyla kullanılır. Bir kelimenin birden fazla telaffuzu varsa ilki gösterilir; kelimeyi seçerek başka bir telaffuz seçeneğine geçebilirsiniz.",
+      "estimates": "Sözlükte bulunmayan kelimelerin telaffuzu tahmin edilir ve noktalı mavi alt çizgiyle işaretlenir. Tahminler yanlış olabilir.",
       "input": "Yalnızca A'dan Z'ye harfler ve kesme işareti kelime oluşturur; rakamlar, noktalama işaretleri ve diğer karakterler yazıldığı gibi bırakılır. Metin en fazla 10.000 karakter olabilir.",
       "speech": "Dinle düğmesi IPA'yı değil, İngilizce metni okur. Bunun için tarayıcınızın metin seslendirme özelliğindeki bir Britanya İngilizcesi sesini kullanır; ses kaydı çalmaz. Böyle bir ses yoksa düğme devre dışı kalır.",
       "privacy": "Çeviri tarayıcınızda yapılır: sayfa sözlük dosyalarını bu siteden indirir ve kelimeleri tarayıcıda arar; metniniz çevrilmek üzere bir sunucuya gönderilmez. Metin, sekmenin oturum depolamasında tutulur. “Wikipedia'dan bir bölüm” düğmesi İngilizce Wikipedia'dan rastgele bir bölüm getirir; sayfa ayrıca araç açıldığında Wikipedia'ya ulaşılıp ulaşılamadığını denetler. Bu iki istekte de metniniz yer almaz."
