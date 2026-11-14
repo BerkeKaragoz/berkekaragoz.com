@@ -1,8 +1,9 @@
 import { PITCH_TNS } from "@/features/pitch/i18n"
+import { detectPlatform, type Platform } from "@/features/pitch/platform"
 import { ArrowsExpandIcon } from "@heroicons/react/solid"
 import type { EngineState } from "@/features/pitch/types"
 import { useTranslation } from "next-i18next"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styles from "./pitch.module.css"
 
 type ControlsProps = {
@@ -30,15 +31,20 @@ export const Controls = (props: ControlsProps) => {
       onTab,
    } = props
    const { t } = useTranslation(PITCH_TNS)
+   // After mount, so the server HTML doesn't depend on the visitor's platform.
+   const [platform, setPlatform] = useState<Platform>("other")
+   useEffect(() => setPlatform(detectPlatform()), [])
 
    const micError =
       state.mic === "denied"
          ? t("errors.micDenied")
-         : state.mic === "busy"
-           ? t("errors.micBusy")
-           : state.mic === "error"
-             ? t("errors.generic")
-             : null
+         : state.mic === "systemDenied"
+           ? t("errors.micSystemDenied", { context: platform })
+           : state.mic === "busy"
+             ? t("errors.micBusy", { context: platform })
+             : state.mic === "error"
+               ? t("errors.generic")
+               : null
    const tabError =
       state.tab === "noAudio"
          ? t("errors.noTabAudio")
@@ -109,7 +115,7 @@ export const Controls = (props: ControlsProps) => {
                </button>
                {unsupported && (
                   <p id={`${idPrefix}-tab-unsupported`} className={styles.note}>
-                     {t("errors.unsupported")}
+                     {t("errors.unsupported", { context: platform })}
                   </p>
                )}
                {tabError && (

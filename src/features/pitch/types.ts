@@ -60,8 +60,20 @@ export type EngineWarning =
    | "autoGainControl"
    | "monoTab" // tab audio arrived with one channel
 
-/** "busy": allowed, but the system couldn't open the device (in use, blocked by the OS). */
-export type MicState = "off" | "starting" | "on" | "denied" | "busy" | "error"
+/**
+ * "denied": the browser refused it for this site.
+ * "systemDenied": the OS refused it to the browser (e.g. Android app permissions).
+ * "busy": allowed, but the system couldn't open the device (in use, blocked by the OS).
+ */
+export type MicState =
+   | "off"
+   | "starting"
+   | "on"
+   | "denied"
+   | "systemDenied"
+   | "busy"
+   | "error"
+
 /** "unreadable": shared with audio, but the browser couldn't open it (seen with app windows on Windows). */
 export type TabState =
    | "off"

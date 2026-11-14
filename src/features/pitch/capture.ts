@@ -34,7 +34,11 @@ const TAB_OPTIONS: DisplayOptions = {
 
 export type MicCapture =
    | { ok: true; stream: MediaStream; warnings: EngineWarning[] }
-   | { ok: false; state: "denied" | "busy" | "error"; error?: unknown }
+   | {
+        ok: false
+        state: "denied" | "systemDenied" | "busy" | "error"
+        error?: unknown
+     }
 
 export type TabCapture =
    | { ok: true; stream: MediaStream; warnings: EngineWarning[] }
@@ -57,6 +61,11 @@ interface UserAgentDataLike {
 
 const errorName = (error: unknown): string =>
    error && typeof error === "object" && "name" in error ? String(error.name) : ""
+
+const errorMessage = (error: unknown): string =>
+   error && typeof error === "object" && "message" in error
+      ? String(error.message)
+      : ""
 
 export const stopStream = (stream: MediaStream) => {
    stream.getTracks().forEach((track) => track.stop())
@@ -104,6 +113,14 @@ const BUSY_RETRY_MS = 800
 const isBusy = (error: unknown) =>
    errorName(error) === "NotReadableError" || errorName(error) === "TrackStartError"
 
+/**
+ * Chromium rejects with NotAllowedError "Permission denied by system" when the
+ * OS withholds the mic from the browser itself (Android app permissions, macOS
+ * privacy settings), as opposed to "Permission denied" for the site.
+ */
+const deniedState = (error: unknown): "denied" | "systemDenied" =>
+   /by system/i.test(errorMessage(error)) ? "systemDenied" : "denied"
+
 export const openMic = async ({
    onEnded,
 }: CaptureOptions = {}): Promise<MicCapture> => {
@@ -119,7 +136,7 @@ export const openMic = async ({
    } catch (error) {
       const state =
          errorName(error) === "NotAllowedError"
-            ? "denied"
+            ? deniedState(error)
             : isBusy(error)
               ? "busy"
               : "error"

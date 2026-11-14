@@ -67,6 +67,23 @@ describe("openMic", () => {
    })
 })
 
+describe("openMic when refused", () => {
+   const refused = (message: string) =>
+      Object.assign(new Error(message), { name: "NotAllowedError" })
+
+   it("reports denied when the site is blocked", async () => {
+      setNavigator()
+      getUserMedia.mockRejectedValue(refused("Permission denied"))
+      expect(await openMic()).toMatchObject({ ok: false, state: "denied" })
+   })
+
+   it("reports systemDenied when the OS withholds the mic", async () => {
+      setNavigator()
+      getUserMedia.mockRejectedValue(refused("Permission denied by system"))
+      expect(await openMic()).toMatchObject({ ok: false, state: "systemDenied" })
+   })
+})
+
 describe("openMic on a busy device", () => {
    it("retries once, then reports the mic busy", async () => {
       setNavigator()

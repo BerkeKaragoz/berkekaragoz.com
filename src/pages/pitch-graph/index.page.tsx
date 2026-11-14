@@ -215,7 +215,8 @@ const PitchPage: NextPage = () => {
    }, [session, micOn, tabOn])
 
    // Remember the mic while it runs; forget it once access is refused.
-   const micRefused = engineState.mic === "denied"
+   const micRefused =
+      engineState.mic === "denied" || engineState.mic === "systemDenied"
    useEffect(() => {
       if (micRefused) stampMic(false)
       if (!micOn) return
@@ -257,6 +258,7 @@ const PitchPage: NextPage = () => {
       !insecure &&
       (engineState.mic === "off" ||
          engineState.mic === "denied" ||
+         engineState.mic === "systemDenied" ||
          engineState.mic === "busy" ||
          engineState.mic === "error")
    useEffect(() => {
