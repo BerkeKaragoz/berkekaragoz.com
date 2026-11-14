@@ -93,12 +93,13 @@ const INITIAL_STATE: EngineState = {
 }
 
 const EMPTY_READOUT: ReadoutValues = {
+   source: null,
    midi: null,
    hz: null,
    cents: null,
    target: null,
    inTune: false,
-   micDb: null,
+   db: null,
 }
 
 const sameReadout = (a: ReadoutValues, b: ReadoutValues) =>
@@ -107,7 +108,8 @@ const sameReadout = (a: ReadoutValues, b: ReadoutValues) =>
    a.cents === b.cents &&
    a.target === b.target &&
    a.inTune === b.inTune &&
-   a.micDb === b.micDb
+   a.db === b.db &&
+   a.source === b.source
 
 export const getStaticProps = getPitchStaticProps
 

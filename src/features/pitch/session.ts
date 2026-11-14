@@ -18,16 +18,18 @@ const DEFAULT_CENTER = (57 + 74) / 2
 const MAX_FRAME_GAP = 0.03
 
 export interface Readout {
-   /** Mean voice midi over the last 150 ms of voiced frames, null when silent. */
+   /** The source read: the mic while it runs, else the tab; null when neither runs. */
+   source: Source | null
+   /** Mean midi over the last 150 ms of voiced frames, null when silent. */
    midi: number | null
    hz: number | null
-   /** Cents from the target to the voice. */
+   /** Cents from the target to the source's pitch. */
    cents: number | null
-   /** Target note (integer midi). */
+   /** Target note (integer midi): the note nearest the source's pitch. */
    target: number | null
    inTune: boolean
-   /** Mean mic level (dBFS, rounded) over the last 150 ms, null while off. */
-   micDb: number | null
+   /** Mean level (dBFS, rounded) over the last 150 ms, null while off. */
+   db: number | null
 }
 
 export interface VisibleRange {
@@ -262,32 +264,42 @@ export const createSession = ({ windowSeconds = 8 } = {}): Session => {
       targetAt,
 
       readout: () => {
-         const micLevel = () => {
-            const end = lastTime(levels.voice)
-            if (end === null || !active.voice || !fresh.voice) return null
+         // The mic while it runs; the tab stands in while the mic is off.
+         const source: Source | null = active.voice
+            ? "voice"
+            : active.song
+              ? "song"
+              : null
+         const level = () => {
+            if (source === null || !fresh[source]) return null
+            const end = lastTime(levels[source])
+            if (end === null) return null
             // Mean power, not mean dB, so one quiet frame doesn't pull it down.
             let power = 0
             let count = 0
-            forEachIn(levels.voice, end - READOUT_SECONDS, end, (_, db) => {
+            forEachIn(levels[source], end - READOUT_SECONDS, end, (_, db) => {
                power += 10 ** (db / 10)
                count++
             })
             return count === 0 ? null : Math.round(10 * Math.log10(power / count))
          }
          const empty: Readout = {
+            source,
             midi: null,
             hz: null,
             cents: null,
             target: null,
             inTune: false,
-            micDb: micLevel(),
+            db: level(),
          }
-         const edge = latest("voice")
-         if (edge === null || !active.voice) return empty
-         const target = targetAt(edge)
+         if (source === null || !fresh[source]) return empty
+         const edge = latest(source)
+         if (edge === null) return empty
+         const nearest = midiAt(source, edge)
+         const target = nearest === null ? null : Math.round(nearest)
          let sum = 0
          let count = 0
-         forEachIn(tracks.voice, edge - READOUT_SECONDS, edge, (_, midi) => {
+         forEachIn(tracks[source], edge - READOUT_SECONDS, edge, (_, midi) => {
             if (midi === null) return
             sum += midi
             count++

@@ -25,7 +25,7 @@ type ReadoutProps = {
 export const Readout = (props: ReadoutProps) => {
    const { readout } = props
    const { t } = useTranslation(PITCH_TNS)
-   const { midi, hz, cents, target, inTune, micDb } = readout
+   const { midi, hz, cents, target, inTune, db } = readout
    const level = (db: number | null) =>
       db === null || db <= SILENT_DB
          ? EMPTY
@@ -73,7 +73,7 @@ export const Readout = (props: ReadoutProps) => {
          <dl className={styles.levels}>
             <div className={styles.levelStat}>
                <dt className={styles.statLabel}>{t("readout.micLevel")}</dt>
-               <dd className={styles.statValue}>{level(micDb)}</dd>
+               <dd className={styles.statValue}>{level(db)}</dd>
             </div>
          </dl>
       </div>

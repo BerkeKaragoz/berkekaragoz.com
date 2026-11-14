@@ -89,7 +89,7 @@
          "title": "Nasıl kullanılır",
          "inputs": "“Mikrofonu aç” düğmesine basın ve mikrofona izin verin. Başka bir sekmenin sesini eklemek için “Sekme paylaş” düğmesine basın ve tarayıcının paylaşım penceresinde “Sekme sesini de paylaş” seçeneğini işaretleyin. Kulaklık kullanın, yoksa mikrofon sekmenin sesini de duyar.",
          "graph": "Grafik son 8 saniyeyi gösterir; nota adları iki yandadır. Mavi çizgi mikrofon, turuncu çizgi paylaşılan sekmedir; her çizginin arkasındaki soluk gölge o kaynağın spektrumudur. Yeşil bant, mikrofona en yakın notadır. Ses yükseldikçe çizgi kalınlaşır ve biraz daha açık renk olur; çok kısıkken hafifçe solar. Sağ kenardaki çubuk, mikrofonun (mavi) ve sekmenin (turuncu) düzeyini mikrofonunuza ya da sekme sesine göre dBFS olarak gösterir; yanındaki çentik, mikrofonda perde algılamanın açıldığı düzeydir.",
-         "readout": "Gösterge mikrofonun notasını, en yakın notadan kaç sent saptığını ve frekansını Hz olarak verir. Sonunda mikrofonun ses düzeyini dBFS olarak gösterir; çizgi sessizlik demektir. 15 sent içindeyken bir onay işareti çıkar.",
+         "readout": "Gösterge mikrofonun notasını, en yakın notadan kaç sent saptığını ve frekansını Hz olarak verir. Sonunda mikrofonun ses düzeyini dBFS olarak gösterir; çizgi sessizlik demektir. Mikrofon kapalıyken bir sekme paylaşılıyorsa bunları sekme için verir. 15 sent içindeyken bir onay işareti çıkar.",
          "view": "“Aralık” kaç oktavın görüneceğini belirler. Grafiğin altındaki çubuğu sürükleyerek yüksekliğini değiştirin. “Tam ekran” yalnızca aracı gösterir."
       },
       "works": {

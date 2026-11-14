@@ -56,6 +56,37 @@ describe("alignedEdge", () => {
    })
 })
 
+describe("readout", () => {
+   it("reads the mic while it runs, even with a tab shared", () => {
+      const s = createSession()
+      s.setActive({ voice: true, song: true })
+      s.addFrames(frames("song", 0, 1, 64.2, -10))
+      s.addFrames(frames("voice", 0, 1, 66.9, -20))
+      expect(s.readout()).toMatchObject({
+         source: "voice",
+         target: 67,
+         db: -20,
+      })
+   })
+
+   it("reads the tab while the mic is off", () => {
+      const s = createSession()
+      s.setActive({ voice: false, song: true })
+      s.addFrames(frames("voice", 0, 1, 66.9, -20))
+      s.addFrames(frames("song", 0, 1, 64.2, -10))
+      const r = s.readout()
+      expect(r).toMatchObject({ source: "song", target: 64, db: -10 })
+      expect(r.midi).toBeCloseTo(64.2)
+      expect(r.cents).toBeCloseTo(20)
+   })
+
+   it("is empty with nothing running", () => {
+      const s = createSession()
+      s.addFrames(frames("song", 0, 1, 64.2))
+      expect(s.readout()).toMatchObject({ source: null, midi: null, db: null })
+   })
+})
+
 describe("levels", () => {
    it("carries db with unvoiced frames too", () => {
       const s = createSession()
@@ -86,11 +117,11 @@ describe("levels", () => {
       const s = createSession()
       s.setActive({ voice: true, song: false })
       s.addFrames(frames("voice", 0, 1, 60, -15))
-      expect(s.readout().micDb).toBe(-15)
+      expect(s.readout().db).toBe(-15)
       s.setActive({ voice: false, song: false })
       s.setActive({ voice: true, song: false })
       expect(s.latestLevel("voice")).toBeNull()
-      expect(s.readout().micDb).toBeNull()
+      expect(s.readout().db).toBeNull()
       s.addFrames(frames("voice", 1, 2, 60, -40))
       expect(s.latestLevel("voice")).toBe(-40)
    })
